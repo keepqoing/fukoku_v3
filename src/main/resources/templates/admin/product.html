@@ -3,14 +3,21 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="admin/layout">
+      layout:decorator="admin/layout" ng-app="fukoku">
 
 <head>
 
     <title>product</title>
     
+    <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
+    <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/d3/d3.min.js}" charset="utf-8"></script>
+    <script th:src="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/angular-nvd3/dist/angular-nvd3.js}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-sanitize.js"></script>
+    
 </head>
-<body>
+<body ng-controller="MainCtrl">
 
 <div layout:fragment="content">
 
@@ -28,14 +35,14 @@
                         <div class="row">
                             <div>
                                 <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3 col-xs-12">
-                                    <button type="button" id="btnNew" class="btn btn-success">라인추가</button>
+                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">Add Product</button>
                                 </div>
                             </div>
                         </div>
-                        
+                         <br/>
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                                <table class="table">
+                                <table  class="table table-bordered table-striped" id="dtTable">
                                     <thead class="table-head">
                                     <tr>
                                         <th>#</th>
@@ -48,8 +55,17 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-	                                    <tr>
-	                                    
+	                                    <tr  ng-repeat="f in products">
+	                                    	<td>{{f.id}}</td>
+	                                    	<td>{{f.name}}</td>
+	                                    	<td>{{f.type}}</td>
+	                                    	<td>{{f.start_date}}</td>
+	                                    	<td>{{f.end_date}}</td>
+	                                    	<td>{{f.remark}}</td>
+	                                    	<td style="width:100px">
+	                                    			<button data-f-id="{{f.id}}" ng-click="btEdit(f.id)" style="width:30px;" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i></button>
+	                                    			<button data-f-id="{{f.id}}" ng-click="btDelete(f.id)" style="width:30px" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i></button>
+	                                    			                                    	</td>
 	                                    </tr>
                                     </tbody>
                                 </table>
@@ -66,7 +82,7 @@
     <!-- Modal -->
 
     <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-         id="modalLine">
+         id="modalFrm">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
@@ -76,45 +92,54 @@
                     <h4 class="modal-title">라인관리</h4>
                 </div>
 
-                <form class="form-horizontal" enctype="multipart/form-data">
+                <form class="form-horizontal" enctype="multipart/form-data" id="frm" ng-submit="onSubmitFrm()">
                     <div class="box-body">
+                        
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">라인명:</label>
+                            <label for="txtName" class="col-sm-2 control-label">Name:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtName" placeholder="라인명"/>
+                                <input type="text" class="form-control" id="txtName" placeholder="" required/>
                             </div>
                         </div>
+                        
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">공장:</label>
+                            <label for="txtName" class="col-sm-2 control-label">Type:</label>
                             <div class="col-sm-10">
-                                <select class="form-control" id="selectFactory">
-                                    <option value="">공장</option>
-                                </select>
+                                <input type="text" class="form-control" id="txtType" placeholder="" required/>
                             </div>
                         </div>
+                        
                         <div class="form-group">
-                            <label for="txtLocation" class="col-sm-2 control-label">위치:</label>
+                            <label for="txtName" class="col-sm-2 control-label">Customer name:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtLocation" placeholder="위치"/>
+                                <input type="text" class="form-control" id="txtCustomerName" placeholder="" required/>
                             </div>
                         </div>
+                        
                         <div class="form-group">
-                            <label for="txtProduct" class="col-sm-2 control-label">생산제품:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtProduct" placeholder="생산제품"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">제작날짜</label>
+                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">Start date</label>
                             <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                <div class='input-group date' id='date'>
-                                    <input type='text' class="form-control" id="txtDate" placeholder="제작날짜"/>
+                                <div class='input-group date' id='startDate'>
+                                    <input type='text' class="form-control" id="txtStartDate" placeholder="" required/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 </div>
                             </div>
                         </div>
+                        
+                        <div class="form-group">
+                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">End date</label>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                <div class='input-group date' id='endDate'>
+                                    <input type='text' class="form-control" id="txtEndDate" placeholder="" required/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="form-group">
                             <label for="txtRemark" class="col-sm-2 control-label">설명:</label>
                             <div class="col-sm-10">
@@ -124,9 +149,8 @@
                     </div><!-- /.box-body -->
                     <div class="box-footer">
                         <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
-                        <button type="button" class="btn btn-primary pull-right btn-flat" id="btnSave">저장</button>
-                        <button type="button" class="btn btn-primary pull-right btn-flat" id="btnSaveUpdate"
-                                style="display:none;">Save
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">Save</button>
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">Update
                         </button>
                     </div><!-- /.box-footer -->
                 </form>
@@ -134,34 +158,15 @@
         </div>
     </div>
 
-    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-         id="modalMessage" style="z-index: 10000">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="TITLE2">메시지</h4>
-                </div>
-                <div class="modal-body">
-                    <h5 id="MESSAGE1"><strong>이 기록을 삭제 하시겠습니까?</strong></h5>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-red btn-default btn-ripple" data-dismiss="modal">아니</button>
-                    <button type="button" class="btn btn-indigo btn-danger" id="btnOk">승인</button>
-                </div>
-            </div><!--.modal-content-->
-        </div>
-    </div>
-    
-    
 </div>
 <th:block layout:fragment="script">
-<script src="/static/admin/javascripts_v3/product.js"></script>
+<script th:src="@{/static/admin/javascript_v3/product.js}"></script>
 <script>
 		
         $(document).ready(function () {
             $(function () {
-                $('#startDate','#endDate').datetimepicker({
-                    format: 'YYYY-MM-DD',
+                $('#startDate,#endDate').datetimepicker({
+                	format: 'YYYY-MM-DD HH:mm:ss',
                     defaultDate: new Date()
                 });
             });

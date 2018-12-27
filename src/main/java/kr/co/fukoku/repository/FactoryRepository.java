@@ -12,8 +12,9 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 import org.apache.ibatis.annotations.One;
 
-
+import kr.co.fukoku.model.Factory;
 import kr.co.fukoku.model.Product;
+import kr.co.fukoku.model.form.FactoryFrm;
 import kr.co.fukoku.model.form.ProductFrm;
 
 @Repository
@@ -28,7 +29,7 @@ public interface FactoryRepository {
 				one = @One(select  = "kr.co.fukoku.repository.Product.findAll")
 		    )
 	})
-	List<Product> findAll();
+	List<Factory> findAll();
 	
 	@Select("Select * from factory where id=#{id} and status='1'")
 	@Results(value={
@@ -39,25 +40,35 @@ public interface FactoryRepository {
 				one = @One(select  = "kr.co.fukoku.repository.Product.findAll")
 			)
 	})
-	Product findOne(@Param("id") long  id);
+	Factory findOne(@Param("id") long  id);
 	
-	@Insert("INSERT INTO product ("
-			+ "	name, type, start_date, end_date, customer_name, remark"
+	@Insert("INSERT INTO factory ("
+			+ " seq, name, ref_product_id, address , product_type,start_date, end_date, remark"
 			+ ") VALUES ("
-			+ "	#{f.name}, #{f.type}, #{f.startDate}, #{f.endDate}, #{f.customerName}, #{f.remark}"
+			+ "	#{f.seq}, "
+			+ "	#{f.name}, "
+			+ " #{f.refProdcutId}, "
+			+ " #{f.address}, "
+			+ " #{f.productType}, "
+			+ " #{f.startDate}, "
+			+ " #{f.endDate}, "
+			+ " #{f.remark}"
 			+ ");")
-	boolean save(@Param("f") ProductFrm frm);
+	boolean save(@Param("f") FactoryFrm frm);
 	
-	@Update("UPDATE product SET"
-			+ "	name=#{f.name}, "
-			+ "	type=#{f.type}, "
-			+ "	start_date=#{f.startDate}, "
-			+ "	end_date=#{f.endDate},"
-			+ " remark=#{f.remark}"
-			+ " WHERE id=#{f.id}")
-	boolean update(@Param("f") ProductFrm frm);
+	@Update("UPDATE factory SET"
+			+ "	seq=#{f.seq}, "
+			+ " name=#{f.name},"
+			+ " ref_product_id=#{f.refProdcutId},"
+			+ " address=#{f.address} ,"
+			+ " product_type=#{f.productType},"
+			+ " start_date=#{f.startDate},"
+			+ " end_date=#{f.endDate},"
+			+ " remark=#{f.remark} "
+			+ "		 WHERE id=#{f.id}")
+	boolean update(@Param("f") FactoryFrm frm);
 	
-	@Delete("DELETE FROM product WHERE id=#{id}")
+	@Delete("DELETE FROM factory WHERE id=#{id}")
 	boolean delete(@Param("id") long id);
 	
 }

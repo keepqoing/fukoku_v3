@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 
 
 @Configuration
-@MapperScan("kr.ac.cbnu.cgac.fukoku.fukoku.repositories.header.mybatis")
+@MapperScan("kr.co.fukoku.repository")
 public class MyBatisConfiguration {
 
     private DataSource dataSource;
