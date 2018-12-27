@@ -3,6 +3,7 @@ package kr.co.fukoku;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+// Hello
 @SpringBootApplication
 public class FukokuV3Application {
 
