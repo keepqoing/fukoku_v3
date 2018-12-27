@@ -26,7 +26,7 @@ public interface FactoryRepository {
 			@Result(property="endDate",column="end_date"),
 			@Result(property="productType",column="product_type"),
 			@Result(property="product", column="ref_product_id",
-				one = @One(select  = "kr.co.fukoku.repository.Product.findAll")
+				one = @One(select  = "kr.co.fukoku.repository.ProductRepository.findOne")
 		    )
 	})
 	List<Factory> findAll();
@@ -37,7 +37,7 @@ public interface FactoryRepository {
 			@Result(property="endDate",column="end_date"),
 			@Result(property="productType",column="product_type"),
 			@Result(property="product", column="ref_product_id",
-				one = @One(select  = "kr.co.fukoku.repository.Product.findAll")
+				one = @One(select  = "kr.co.fukoku.repository.ProductRepository.findOne")
 			)
 	})
 	Factory findOne(@Param("id") long  id);
@@ -47,7 +47,7 @@ public interface FactoryRepository {
 			+ ") VALUES ("
 			+ "	#{f.seq}, "
 			+ "	#{f.name}, "
-			+ " #{f.refProdcutId}, "
+			+ " #{f.refProductId}, "
 			+ " #{f.address}, "
 			+ " #{f.productType}, "
 			+ " #{f.startDate}, "
@@ -59,7 +59,7 @@ public interface FactoryRepository {
 	@Update("UPDATE factory SET"
 			+ "	seq=#{f.seq}, "
 			+ " name=#{f.name},"
-			+ " ref_product_id=#{f.refProdcutId},"
+			+ " ref_product_id=#{f.refProductId},"
 			+ " address=#{f.address} ,"
 			+ " product_type=#{f.productType},"
 			+ " start_date=#{f.startDate},"

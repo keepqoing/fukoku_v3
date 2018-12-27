@@ -13,7 +13,7 @@ public class FactoryFrm {
 	@JsonProperty("name")
 	private String name;
 	@JsonProperty("product")
-	private long refProdcutId;
+	private long refProductId;
 	@JsonProperty("address")
 	private String address;
 	@JsonProperty("product_type")
@@ -30,13 +30,13 @@ public class FactoryFrm {
 	public FactoryFrm() {
 		super();
 	}
-	public FactoryFrm(long id, long seq, String name, long refProdcutId, String address, String productType,
+	public FactoryFrm(long id, long seq, String name, long refProductId, String address, String productType,
 			String startDate, String endDate, String remark, String status) {
 		super();
 		this.id = id;
 		this.seq = seq;
 		this.name = name;
-		this.refProdcutId = refProdcutId;
+		this.refProductId = refProductId;
 		this.address = address;
 		this.productType = productType;
 		this.startDate = startDate;
@@ -62,11 +62,11 @@ public class FactoryFrm {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public long getRefProdcutId() {
-		return refProdcutId;
+	public long getRefProductId() {
+		return refProductId;
 	}
-	public void setRefProdcutId(long refProdcutId) {
-		this.refProdcutId = refProdcutId;
+	public void setRefProductId(long refProductId) {
+		this.refProductId = refProductId;
 	}
 	public String getAddress() {
 		return address;
@@ -106,7 +106,7 @@ public class FactoryFrm {
 	}
 	@Override
 	public String toString() {
-		return "FactoryFrm [id=" + id + ", seq=" + seq + ", name=" + name + ", refProdcutId=" + refProdcutId
+		return "FactoryFrm [id=" + id + ", seq=" + seq + ", name=" + name + ", refProductId=" + refProductId
 				+ ", address=" + address + ", productType=" + productType + ", startDate=" + startDate + ", endDate="
 				+ endDate + ", remark=" + remark + ", status=" + status + "]";
 	}

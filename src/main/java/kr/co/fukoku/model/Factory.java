@@ -13,7 +13,7 @@ public class Factory {
 	@JsonProperty("name")
 	private String name;
 	@JsonProperty("product")
-	private Product prodcut;
+	private Product product;
 	@JsonProperty("address")
 	private String address;
 	@JsonProperty("product_type")
@@ -31,13 +31,13 @@ public class Factory {
 	public Factory() {
 		super();
 	}
-	public Factory(long id, long seq, String name, Product prodcut, String address, String productType,
+	public Factory(long id, long seq, String name, Product product, String address, String productType,
 			String startDate, String endDate, String remark, String status) {
 		super();
 		this.id = id;
 		this.seq = seq;
 		this.name = name;
-		this.prodcut = prodcut;
+		this.product = product;
 		this.address = address;
 		this.productType = productType;
 		this.startDate = startDate;
@@ -63,11 +63,11 @@ public class Factory {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Product getProdcut() {
-		return prodcut;
+	public Product getProduct() {
+		return product;
 	}
-	public void setProdcut(Product prodcut) {
-		this.prodcut = prodcut;
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 	public String getAddress() {
 		return address;
@@ -107,7 +107,7 @@ public class Factory {
 	}
 	@Override
 	public String toString() {
-		return "Factory [id=" + id + ", seq=" + seq + ", name=" + name + ", prodcut=" + prodcut + ", address=" + address
+		return "Factory [id=" + id + ", seq=" + seq + ", name=" + name + ", product=" + product + ", address=" + address
 				+ ", productType=" + productType + ", startDate=" + startDate + ", endDate=" + endDate + ", remark="
 				+ remark + ", status=" + status + "]";
 	}
