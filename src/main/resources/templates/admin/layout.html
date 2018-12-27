@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Each token will be replaced by their respective titles in the resulting page.-->
+		<title layout:title-pattern="$CONTENT_TITLE - $DECORATOR_TITLE"></title>
+		<link th:replace="admin/fragments/style"/>
+		<div th:replace="admin/fragments/script"></div>
+		<th:block layout:fragment="script"></th:block>
+	</head>
+	<body class="skin-blue sidebar-mini">
+		<div class="wrapper">
+	
+			<div th:replace="admin/fragments/header"></div>
+			
+			<div th:replace="admin/fragments/leftside"></div>
+		
+			<div class="content-wrapper" style="margin-left: 295px">
+				<div layout:fragment="content"></div>
+			</div>
+		
+			<div th:replace="admin/fragments/footer"></div>
+		</div>
+	</body>
+</html>

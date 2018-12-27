@@ -1,0 +1,39 @@
+/*
+ * Component: Users List
+ * ---------------------
+ */
+.users-list {
+  &:extend(.list-unstyled);
+  > li {
+    width: 25%;
+    float: left;
+    padding: 10px;
+    text-align: center;
+    img {
+      .border-radius(50%);
+      max-width: 100%;
+      height: auto;
+    }
+    > a:hover {
+      &,
+      .users-list-combinedGroupId {
+        color: #999;
+      }
+    }
+  }
+}
+.users-list-combinedGroupId,
+.users-list-startDate {
+  display: block;
+}
+.users-list-combinedGroupId {
+  font-weight: 600;
+  color: #444;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.users-list-startDate {
+  color: #999;
+  font-size: 12px;
+}
