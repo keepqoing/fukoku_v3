@@ -7,7 +7,7 @@
 
 <head>
 
-    <title>Factory</title>
+    <title>ProcessVar</title>
     
     <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
     <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
@@ -23,7 +23,7 @@
 
     <section class="content-header">
         <h1>
-            Factory
+            ProcessVar
         </h1>
     </section>
 
@@ -47,25 +47,17 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Ref Product</th>
-                                        <th>Address</th>
-                                        <th>Product type</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
+                                        <th>Ref Process</th>
                                         <th>Seq</th>
                                         <th>설명</th>
                                         <th>수정</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-	                                    <tr  ng-repeat="f in factories">
+	                                    <tr  ng-repeat="f in processVars">
 	                                    	<td>{{f.id}}</td>
 	                                    	<td>{{f.name}}</td>
-	                                    	<td>{{f.product.name}}</td>
-	                                    	<td>{{f.address}}</td>
-	                                    	<td>{{f.product_type}}</td>
-	                                    	<td>{{f.start_date}}</td>
-	                                    	<td>{{f.end_date}}</td>
+	                                    	<td>{{f.process.name}}</td>
 	                                    	<td>{{f.seq}}</td>
 	                                    	<td>{{f.remark}}</td>
 	                                    	<td style="width:100px">
@@ -108,55 +100,18 @@
                             </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Ref Product:</label>
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">Ref Process:</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="selectOpt"  required>
-                                	<option value="">Product</option>
-                                	<option ng-repeat="o in products" value="{{o.id}}">{{o.name}}</option>
+                                	<option value="">Process</option>
+                                	<option ng-repeat="o in processes" value="{{o.id}}">{{o.name}}</option>
                                 </select>
                             </div>
                         </div>
                         
+                       
                         
-                        <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Product Type:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtProductType" placeholder="" required/>
-                            </div>
-                        </div>
-                        
-                        
-                        <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Address:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtAddress" placeholder="" required/>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">Start date</label>
-                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                <div class='input-group date' id='startDate'>
-                                    <input type='text' class="form-control" id="txtStartDate" placeholder="" required/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">End date</label>
-                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                <div class='input-group date' id='endDate'>
-                                    <input type='text' class="form-control" id="txtEndDate" placeholder="" required/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
                         
                         <div class="form-group">
                             <label for="txtName" class="col-sm-2 control-label">Seq:</label>
@@ -185,18 +140,7 @@
 
 </div>
 <th:block layout:fragment="script">
-<script th:src="@{/static/admin/javascript_v3/factory.js}"></script>
-<script>
-		
-        $(document).ready(function () {
-            $(function () {
-                $('#startDate,#endDate').datetimepicker({
-                	format: 'YYYY-MM-DD HH:mm:ss',
-                    defaultDate: new Date()
-                });
-            });
-        });
-    </script>
+<script th:src="@{/static/admin/javascript_v3/process-var.js}"></script>
 </th:block>
 </body>
 </html>

@@ -7,7 +7,7 @@
 
 <head>
 
-    <title>Factory</title>
+    <title>Line</title>
     
     <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
     <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
@@ -23,7 +23,7 @@
 
     <section class="content-header">
         <h1>
-            Factory
+            Line
         </h1>
     </section>
 
@@ -47,8 +47,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Ref Product</th>
-                                        <th>Address</th>
+                                        <th>Ref Factory</th>
+                                        <th>Layout name</th>
                                         <th>Product type</th>
                                         <th>Start Date</th>
                                         <th>End Date</th>
@@ -58,11 +58,11 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-	                                    <tr  ng-repeat="f in factories">
+	                                    <tr  ng-repeat="f in lines">
 	                                    	<td>{{f.id}}</td>
 	                                    	<td>{{f.name}}</td>
-	                                    	<td>{{f.product.name}}</td>
-	                                    	<td>{{f.address}}</td>
+	                                    	<td>{{f.factory.name}}</td>
+	                                    	<td>{{f.layout_name}}</td>
 	                                    	<td>{{f.product_type}}</td>
 	                                    	<td>{{f.start_date}}</td>
 	                                    	<td>{{f.end_date}}</td>
@@ -109,11 +109,11 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Ref Product:</label>
+                            <label for="txtName" class="col-sm-2 control-label">Ref Factory:</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="selectOpt"  required>
                                 	<option value="">Product</option>
-                                	<option ng-repeat="o in products" value="{{o.id}}">{{o.name}}</option>
+                                	<option ng-repeat="o in factories" value="{{o.id}}">{{o.name}}</option>
                                 </select>
                             </div>
                         </div>
@@ -128,9 +128,9 @@
                         
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Address:</label>
+                            <label for="txtName" class="col-sm-2 control-label">Layout name:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtAddress" placeholder="" required/>
+                                <input type="text" class="form-control" id="txtLayoutName" placeholder="" required/>
                             </div>
                         </div>
                         
@@ -185,7 +185,7 @@
 
 </div>
 <th:block layout:fragment="script">
-<script th:src="@{/static/admin/javascript_v3/factory.js}"></script>
+<script th:src="@{/static/admin/javascript_v3/line.js}"></script>
 <script>
 		
         $(document).ready(function () {

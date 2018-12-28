@@ -3,42 +3,24 @@ var app = angular.module('fukoku', ['nvd3','ngSanitize']);
 app.controller('MainCtrl', function($scope, $http) {
 	
 	$scope.message;
-	$scope.products;
-	$scope.factories;
+	$scope.machines;
 	$scope.id;
 	$scope.action;
 	$scope.dtTable = $("#dtTable");
 	
-	$scope.findAllProduct = function(){
-        var post = $http({
-            method: "GET",
-            url: "/v3/api/fukoku/product",
-            dataType: 'json',
-            headers: { "Content-Type": "application/json" }
-        });
-        post.success(function (response, status) {
-            if(response.code == 200){
-            	console.log(response.data);
-            	$scope.products = response.data;
-            }
-            
-        });
-        post.error(function (data, status) {
-            console.log(data);
-        });
-    }
 	
 	$scope.findAll = function(){
         var post = $http({
             method: "GET",
-            url: "/v3/api/fukoku/factory",
+            url: "/v3/api/fukoku/machine",
             dataType: 'json',
             headers: { "Content-Type": "application/json" }
         });
         post.success(function (response, status) {
-        	$scope.factories = null;
+        	$scope.machines = null;
+        	console.log(response);
             if(response.code == 200){
-            	$scope.factories = response.data;
+            	$scope.machines = response.data;
             }else{
             	$scope.message = response.message;
             }
@@ -51,7 +33,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.findOne = function(id){
         var post = $http({
             method: "GET",
-            url: "/v3/api/fukoku/factory/"+id,
+            url: "/v3/api/fukoku/machine/"+id,
             dataType: 'json',
             headers: { "Content-Type": "application/json" }
         });
@@ -60,11 +42,15 @@ app.controller('MainCtrl', function($scope, $http) {
             	console.log(response);
             	$scope.id = response.data.id;
             	$("#txtName").val(response.data.name);
-            	$("#selectOpt").val(response.data.product.id);
-            	$("#txtStartDate").val(response.data.start_date);
-            	$("#txtEndDate").val(response.data.end_date);
-            	$("#txtAddress").val(response.data.address);
-            	$("#txtProductType").val(response.data.product_type);
+            	$("#txtIP").val(response.data.ip);
+            	$("#txtImportDate").val(response.data.import_date);
+            	$("#txtCode").val(response.data.code);
+            	$("#txtManufacturer").val(response.data.manufacturer);
+            	$("#txtFacilityStaff").val(response.data.facility_staff);
+            	$("#txtFacilityContactPerson").val(response.data.facility_contact_person);
+            	$("#txtPlctype").val(response.data.plc_type);
+            	$("#txtPlcCommunicationDevice").val(response.data.plc_communication_device);
+            	$("#txtStation").val(response.data.station);
             	$("#txtSeq").val(response.data.seq);
             	$("#txtRemark").val(response.data.remark);
             }else{
@@ -81,17 +67,21 @@ app.controller('MainCtrl', function($scope, $http) {
 				"id" : $scope.id,
 				"seq" : $("#txtSeq").val(),
 				"name" : $("#txtName").val(),
-				"ref_product_id" : $("#selectOpt").val(),
-				"product_type" : $("#txtProductType").val(),
-				"start_date" : $("#startDate").find("input").val(),
-				"end_date" : $("#endDate").find("input").val(),
-				"address" : $("#txtAddress").val(),
+				"ip" : $("#txtIP").val(),
+				"import_date" : $("#importDate").find("input").val(),
+				"code" : $("#txtCode").val(),
+				"manufacturer" : $("#txtManufacturer").val(),
+				"facility_staff" : $("#txtFacilityStaff").val(),
+				"facility_contact_person" : $("#txtFacilityContactPerson").val(),
+				"plc_type" : $("#txtPlctype").val(),
+				"plc_communication_device" : $("#txtPlcCommunicationDevice").val(),
+				"station" : $("#txtStation").val(),
 				"remark" : $("#txtRemark").val(),
 		}
 		console.log("data", data);
         var post = $http({
             method: method,
-            url: "/v3/api/fukoku/factory",
+            url: "/v3/api/fukoku/machine",
             dataType: 'json',
             data : JSON.stringify(data),
             headers: { "Content-Type": "application/json" }
@@ -102,6 +92,7 @@ app.controller('MainCtrl', function($scope, $http) {
             	$scope.findAll();
             	$("#modalFrm").modal('hide');
             	swal({position: 'top-end',type: 'success',title: 'Data has been saved',showConfirmButton: false,timer: 1500})
+           
             }else{
             	$scope.message = response.message;
             	swal({position: 'top-end',type: 'error',title: 'Data has not been saved',showConfirmButton: false,timer: 1500})
@@ -120,7 +111,6 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.btAdd = function(){
 		$scope.action = "add";
 		$('#frm').trigger("reset");
-		$scope.findAllProduct();
 		$("#btUpdate").hide();
 		$("#btSave").show();
 		$("#modalFrm").modal('show');
@@ -130,7 +120,6 @@ app.controller('MainCtrl', function($scope, $http) {
 		console.log(id);
 		$scope.action = "update";
 		$('#frm').trigger("reset");
-		$scope.findAllProduct();
 		$scope.findOne(id);
 		$("#btSave").hide();
 		$("#btUpdate").show();
@@ -153,8 +142,8 @@ app.controller('MainCtrl', function($scope, $http) {
 	
 	
 	$scope.btDelete = function(id){
-		swal({  title: "Factory" ,   
-			text: "Are you sure you want to deleted this factory?",   
+		swal({  title: "Machine" ,   
+			text: "Are you sure you want to deleted this machine?",   
 			type: "info",  
 			showCancelButton: true,   
 			closeOnConfirm: false,   
@@ -162,7 +151,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		}, function(){   
 			var post = $http({
 	            method: "DELETE",
-	            url: "/v3/api/fukoku/factory/"+id,
+	            url: "/v3/api/fukoku/machine/"+id,
 	            dataType: 'json',
 	            headers: { "Content-Type": "application/json" }
 	        });

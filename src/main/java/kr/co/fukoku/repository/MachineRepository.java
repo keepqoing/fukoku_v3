@@ -26,8 +26,9 @@ public interface MachineRepository {
 	@Results(value={
 			@Result(property="importDate",column="import_date"),
 			@Result(property="facilityStaff",column="facility_staff"),
+			@Result(property="facilityContactPerson",column="facility_contact_person"),
 			@Result(property="plcType",column="plc_type"),
-			@Result(property="plcCommunication", column="plc_communication")
+			@Result(property="plcCommunicationDevice", column="plc_communication_device")
 	})
 	List<Machine> findAll();
 	
@@ -35,14 +36,15 @@ public interface MachineRepository {
 	@Results(value={
 			@Result(property="importDate",column="import_date"),
 			@Result(property="facilityStaff",column="facility_staff"),
+			@Result(property="facilityContactPerson",column="facility_contact_person"),
 			@Result(property="plcType",column="plc_type"),
-			@Result(property="plcCommunication", column="plc_communication")
+			@Result(property="plcCommunicationDevice", column="plc_communication_device")
 	})
 	Machine findOne(@Param("id") long  id);
 	
 	@Insert("INSERT INTO machine ("
 			+ " seq, name, ip ,import_date, code, manufacturer, facility_staff"
-			+ " , plc_type, plc_communication ,remark"
+			+ " , plc_type, plc_communication_device ,remark, facility_contact_person, station"
 			+ ") VALUES ("
 			+ "	#{f.seq}, "
 			+ "	#{f.name}, "
@@ -52,8 +54,10 @@ public interface MachineRepository {
 			+ " #{f.manufacturer}, "
 			+ " #{f.facilityStaff}, "
 			+ " #{f.plcType}, "
-			+ " #{f.plcCommunication}, "
-			+ " #{f.remark}"
+			+ " #{f.plcCommunicationDevice}, "
+			+ " #{f.remark},"
+			+ " #{f.facilityContactPerson},"
+			+ " #{f.station}"
 			+ ");")
 	boolean save(@Param("f") MachineFrm frm);
 	
@@ -66,8 +70,10 @@ public interface MachineRepository {
 			+ " manufacturer=#{f.manufacturer},"
 			+ " facility_staff=#{f.facilityStaff},"
 			+ " plc_type=#{f.plcType},"
-			+ " plc_communication=#{f.plcCommunication},"
-			+ " remark=#{f.remark} "
+			+ " plc_communication_device=#{f.plcCommunicationDevice},"
+			+" facility_contact_person=#{f.facilityContactPerson},"
+			+ " remark=#{f.remark}, "
+			+ " station=#{f.station} "
 			+ "		 WHERE id=#{f.id}")
 	boolean update(@Param("f") MachineFrm frm);
 	

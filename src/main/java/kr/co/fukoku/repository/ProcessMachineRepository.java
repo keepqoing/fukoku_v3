@@ -26,10 +26,10 @@ public interface ProcessMachineRepository {
 	@Select("Select * from process_machine where status='1'")
 	@Results(value={
 			@Result(property="process", column="ref_process_id",
-				one = @One(select  = "kr.co.fukoku.repository.Process.findAll")
+				one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findOne")
 		    ),
 			@Result(property="machine", column="ref_machine_id",
-				one = @One(select  = "kr.co.fukoku.repository.Machine.findAll")
+				one = @One(select  = "kr.co.fukoku.repository.MachineRepository.findOne")
 	    )
 	})
 	List<ProcessMachine> findAll();
@@ -37,8 +37,11 @@ public interface ProcessMachineRepository {
 	@Select("Select * from process_machine where id=#{id} and status='1'")
 	@Results(value={
 			@Result(property="process", column="ref_process_id",
-					one = @One(select  = "kr.co.fukoku.repository.Process.findAll")
-			)
+				one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findOne")
+		    ),
+			@Result(property="machine", column="ref_machine_id",
+				one = @One(select  = "kr.co.fukoku.repository.MachineRepository.findOne")
+	    )
 	})
 	ProcessMachine findOne(@Param("id") long  id);
 	

@@ -76,11 +76,13 @@ app.controller('MainCtrl', function($scope, $http) {
         post.success(function (response, status) {
             if(response.code == 200){
             	$scope.message = response.message;
+            	$scope.findAll();
             	swal({position: 'top-end',type: 'success',title: 'Data has been saved',showConfirmButton: false,timer: 1500})
             }else{
             	$scope.message = response.message;
             	swal({position: 'top-end',type: 'error',title: 'Data has not been saved',showConfirmButton: false,timer: 1500})
             }
+            
         });
         post.error(function (data, status) {
             console.log(data);
@@ -115,7 +117,6 @@ app.controller('MainCtrl', function($scope, $http) {
 		}else{
 			$scope.save("PUT");
 		}
-		$scope.findAll();
 		$("#modalFrm").modal('hide');
 	}
 	

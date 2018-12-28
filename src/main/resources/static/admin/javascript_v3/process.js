@@ -2,43 +2,22 @@ var app = angular.module('fukoku', ['nvd3','ngSanitize']);
 
 app.controller('MainCtrl', function($scope, $http) {
 	
-	$scope.message;
-	$scope.products;
-	$scope.factories;
+	$scope.processes;
 	$scope.id;
 	$scope.action;
 	$scope.dtTable = $("#dtTable");
 	
-	$scope.findAllProduct = function(){
-        var post = $http({
-            method: "GET",
-            url: "/v3/api/fukoku/product",
-            dataType: 'json',
-            headers: { "Content-Type": "application/json" }
-        });
-        post.success(function (response, status) {
-            if(response.code == 200){
-            	console.log(response.data);
-            	$scope.products = response.data;
-            }
-            
-        });
-        post.error(function (data, status) {
-            console.log(data);
-        });
-    }
-	
 	$scope.findAll = function(){
         var post = $http({
             method: "GET",
-            url: "/v3/api/fukoku/factory",
+            url: "/v3/api/fukoku/process",
             dataType: 'json',
             headers: { "Content-Type": "application/json" }
         });
         post.success(function (response, status) {
-        	$scope.factories = null;
+        	$scope.processes = null;
             if(response.code == 200){
-            	$scope.factories = response.data;
+            	$scope.processes = response.data;
             }else{
             	$scope.message = response.message;
             }
@@ -51,7 +30,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.findOne = function(id){
         var post = $http({
             method: "GET",
-            url: "/v3/api/fukoku/factory/"+id,
+            url: "/v3/api/fukoku/process/"+id,
             dataType: 'json',
             headers: { "Content-Type": "application/json" }
         });
@@ -60,11 +39,7 @@ app.controller('MainCtrl', function($scope, $http) {
             	console.log(response);
             	$scope.id = response.data.id;
             	$("#txtName").val(response.data.name);
-            	$("#selectOpt").val(response.data.product.id);
-            	$("#txtStartDate").val(response.data.start_date);
-            	$("#txtEndDate").val(response.data.end_date);
-            	$("#txtAddress").val(response.data.address);
-            	$("#txtProductType").val(response.data.product_type);
+            	$("#txtType").val(response.data.type);
             	$("#txtSeq").val(response.data.seq);
             	$("#txtRemark").val(response.data.remark);
             }else{
@@ -81,17 +56,13 @@ app.controller('MainCtrl', function($scope, $http) {
 				"id" : $scope.id,
 				"seq" : $("#txtSeq").val(),
 				"name" : $("#txtName").val(),
-				"ref_product_id" : $("#selectOpt").val(),
-				"product_type" : $("#txtProductType").val(),
-				"start_date" : $("#startDate").find("input").val(),
-				"end_date" : $("#endDate").find("input").val(),
-				"address" : $("#txtAddress").val(),
+				"type" : $("#txtType").val(),
 				"remark" : $("#txtRemark").val(),
 		}
 		console.log("data", data);
         var post = $http({
             method: method,
-            url: "/v3/api/fukoku/factory",
+            url: "/v3/api/fukoku/process",
             dataType: 'json',
             data : JSON.stringify(data),
             headers: { "Content-Type": "application/json" }
@@ -120,7 +91,6 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.btAdd = function(){
 		$scope.action = "add";
 		$('#frm').trigger("reset");
-		$scope.findAllProduct();
 		$("#btUpdate").hide();
 		$("#btSave").show();
 		$("#modalFrm").modal('show');
@@ -130,7 +100,6 @@ app.controller('MainCtrl', function($scope, $http) {
 		console.log(id);
 		$scope.action = "update";
 		$('#frm').trigger("reset");
-		$scope.findAllProduct();
 		$scope.findOne(id);
 		$("#btSave").hide();
 		$("#btUpdate").show();
@@ -153,8 +122,8 @@ app.controller('MainCtrl', function($scope, $http) {
 	
 	
 	$scope.btDelete = function(id){
-		swal({  title: "Factory" ,   
-			text: "Are you sure you want to deleted this factory?",   
+		swal({  title: "Process" ,   
+			text: "Are you sure you want to deleted this process?",   
 			type: "info",  
 			showCancelButton: true,   
 			closeOnConfirm: false,   
@@ -162,7 +131,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		}, function(){   
 			var post = $http({
 	            method: "DELETE",
-	            url: "/v3/api/fukoku/factory/"+id,
+	            url: "/v3/api/fukoku/process/"+id,
 	            dataType: 'json',
 	            headers: { "Content-Type": "application/json" }
 	        });

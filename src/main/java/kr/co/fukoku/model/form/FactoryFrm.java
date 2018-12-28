@@ -12,7 +12,7 @@ public class FactoryFrm {
 	private long  seq;
 	@JsonProperty("name")
 	private String name;
-	@JsonProperty("product")
+	@JsonProperty("ref_product_id")
 	private long refProductId;
 	@JsonProperty("address")
 	private String address;

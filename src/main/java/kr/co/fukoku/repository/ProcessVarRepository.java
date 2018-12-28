@@ -25,7 +25,7 @@ public interface ProcessVarRepository {
 	@Select("Select * from process_var where status='1'")
 	@Results(value={
 			@Result(property="process", column="ref_process_id",
-				one = @One(select  = "kr.co.fukoku.repository.Process.findAll")
+				one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findAll")
 		    )
 	})
 	List<ProcessVar> findAll();
@@ -33,7 +33,7 @@ public interface ProcessVarRepository {
 	@Select("Select * from process_var where id=#{id} and status='1'")
 	@Results(value={
 			@Result(property="process", column="ref_process_id",
-					one = @One(select  = "kr.co.fukoku.repository.Process.findAll")
+					one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findAll")
 			)
 	})
 	ProcessVar findOne(@Param("id") long  id);

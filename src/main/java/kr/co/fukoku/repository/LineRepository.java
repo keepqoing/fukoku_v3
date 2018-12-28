@@ -29,7 +29,7 @@ public interface LineRepository {
 			@Result(property="layoutName",column="layout_name"),
 			@Result(property="productType",column="product_type"),
 			@Result(property="factory", column="ref_factory_id",
-				one = @One(select  = "kr.co.fukoku.repository.Factory.findAll")
+				one = @One(select  = "kr.co.fukoku.repository.FactoryRepository.findAll")
 		    )
 	})
 	List<Line> findAll();
@@ -41,7 +41,7 @@ public interface LineRepository {
 			@Result(property="layoutName",column="layout_name"),
 			@Result(property="productType",column="product_type"),
 			@Result(property="factory", column="ref_factory_id",
-				one = @One(select  = "kr.co.fukoku.repository.Factory.findAll")
+				one = @One(select  = "kr.co.fukoku.repository.FactoryRepository.findAll")
 		    )
 	})
 	Line findOne(@Param("id") long  id);

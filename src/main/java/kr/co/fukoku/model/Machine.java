@@ -22,19 +22,25 @@ public class Machine {
 	private String manufacturer;
 	@JsonProperty("facility_staff")
 	private String facilityStaff;
+	@JsonProperty("facility_contact_person")
+	private String facilityContactPerson;
 	@JsonProperty("plc_type")
 	private String plcType;
-	@JsonProperty("plc_communication")
-	private String plcCommunication;
+	@JsonProperty("plc_communication_device")
+	private String plcCommunicationDevice;
 	@JsonProperty("remark")
 	private String remark;
 	@JsonProperty("status")
 	private String status;
+	@JsonProperty("station")
+	private String station;
 	public Machine() {
 		super();
 	}
+	
 	public Machine(long id, long seq, String name, String ip, String importDate, String code, String manufacturer,
-			String facilityStaff, String plcType, String plcCommunication, String remark, String status) {
+			String facilityStaff, String facilityContactPerson, String plcType, String plcCommunicationDevice, String remark,
+			String status) {
 		super();
 		this.id = id;
 		this.seq = seq;
@@ -44,11 +50,29 @@ public class Machine {
 		this.code = code;
 		this.manufacturer = manufacturer;
 		this.facilityStaff = facilityStaff;
+		this.facilityContactPerson = facilityContactPerson;
 		this.plcType = plcType;
-		this.plcCommunication = plcCommunication;
+		this.plcCommunicationDevice = plcCommunicationDevice;
 		this.remark = remark;
 		this.status = status;
 	}
+
+	public String getStation() {
+		return station;
+	}
+
+	public void setStation(String station) {
+		this.station = station;
+	}
+
+	public String getFacilityContactPerson() {
+		return facilityContactPerson;
+	}
+
+	public void setFacilityContactPerson(String facilityContactPerson) {
+		this.facilityContactPerson = facilityContactPerson;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -103,11 +127,11 @@ public class Machine {
 	public void setPlcType(String plcType) {
 		this.plcType = plcType;
 	}
-	public String getPlcCommunication() {
-		return plcCommunication;
+	public String getPlcCommunicationDevice() {
+		return plcCommunicationDevice;
 	}
-	public void setPlcCommunication(String plcCommunication) {
-		this.plcCommunication = plcCommunication;
+	public void setPlcCommunicationDevice(String plcCommunicationDevice) {
+		this.plcCommunicationDevice = plcCommunicationDevice;
 	}
 	public String getRemark() {
 		return remark;
@@ -121,14 +145,14 @@ public class Machine {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
 	@Override
 	public String toString() {
 		return "Machine [id=" + id + ", seq=" + seq + ", name=" + name + ", ip=" + ip + ", importDate=" + importDate
 				+ ", code=" + code + ", manufacturer=" + manufacturer + ", facilityStaff=" + facilityStaff
-				+ ", plcType=" + plcType + ", plcCommunication=" + plcCommunication + ", remark=" + remark + ", status="
-				+ status + "]";
+				+ ", facilityContactPerson=" + facilityContactPerson + ", plcType=" + plcType + ", plcCommunicationDevice="
+				+ plcCommunicationDevice + ", remark=" + remark + ", status=" + status + "]";
 	}
-	
 	
 	
 	

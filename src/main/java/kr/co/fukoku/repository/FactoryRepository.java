@@ -42,7 +42,7 @@ public interface FactoryRepository {
 	})
 	Factory findOne(@Param("id") long  id);
 	
-	@Insert("INSERT INTO factory ("
+	@Insert("insert into factory ("
 			+ " seq, name, ref_product_id, address , product_type,start_date, end_date, remark"
 			+ ") VALUES ("
 			+ "	#{f.seq}, "

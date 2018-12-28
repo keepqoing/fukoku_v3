@@ -91,6 +91,7 @@ public class FactoryRestController {
     public ResponseEntity<Map<String,Object>> save(@RequestBody FactoryFrm frm)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
+        	System.out.print(frm.toString());
         	if(repository.save(frm)) {
         		map.put("message", "Data has been inserted!");
         		map.put("code", 200);
@@ -110,6 +111,7 @@ public class FactoryRestController {
     public ResponseEntity<Map<String,Object>> update(@RequestBody FactoryFrm frm)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
+        	System.out.print(frm.toString());
         	if(repository.update(frm)) {
         		map.put("message", "Data has been updated!");
         		map.put("code", 200);

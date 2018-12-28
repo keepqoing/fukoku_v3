@@ -7,7 +7,7 @@
 
 <head>
 
-    <title>Factory</title>
+    <title>Machine</title>
     
     <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
     <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
@@ -23,7 +23,7 @@
 
     <section class="content-header">
         <h1>
-            Factory
+            Machine
         </h1>
     </section>
 
@@ -47,25 +47,33 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Ref Product</th>
-                                        <th>Address</th>
-                                        <th>Product type</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
+                                        <th>IP</th>
+                                        <th>Imported Date</th>
+                                        <th>Code</th>
+                                        <th>Manufacturer</th>
+                                        <th>Facility staff</th>
+                                        <th>Facility Contact person</th>
+                                        <th>PLC type</th>
+                                        <th>PLC communication device</th>
+                                        <th>station</th>
                                         <th>Seq</th>
                                         <th>설명</th>
                                         <th>수정</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-	                                    <tr  ng-repeat="f in factories">
+	                                    <tr  ng-repeat="f in machines">
 	                                    	<td>{{f.id}}</td>
 	                                    	<td>{{f.name}}</td>
-	                                    	<td>{{f.product.name}}</td>
-	                                    	<td>{{f.address}}</td>
-	                                    	<td>{{f.product_type}}</td>
-	                                    	<td>{{f.start_date}}</td>
-	                                    	<td>{{f.end_date}}</td>
+	                                    	<td>{{f.ip}}</td>
+	                                    	<td>{{f.import_date}}</td>
+	                                    	<td>{{f.code}}</td>
+	                                    	<td>{{f.manufacturer}}</td>
+	                                    	<td>{{f.facility_staff}}</td>
+	                                    	<td>{{f.facility_contact_person}}</td>
+	                                    	<td>{{f.plc_type}}</td>
+	                                    	<td>{{f.plc_communication_device}}</td>
+	                                    	<td>{{f.station}}</td>
 	                                    	<td>{{f.seq}}</td>
 	                                    	<td>{{f.remark}}</td>
 	                                    	<td style="width:100px">
@@ -109,36 +117,17 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Ref Product:</label>
+                            <label for="txtName" class="col-sm-2 control-label">IP:</label>
                             <div class="col-sm-10">
-                                <select class="form-control" id="selectOpt"  required>
-                                	<option value="">Product</option>
-                                	<option ng-repeat="o in products" value="{{o.id}}">{{o.name}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        
-                        <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Product Type:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtProductType" placeholder="" required/>
-                            </div>
-                        </div>
-                        
-                        
-                        <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Address:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtAddress" placeholder="" required/>
+                                <input type="text" class="form-control" id="txtIP" placeholder="" required/>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">Start date</label>
+                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">Imported date</label>
                             <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                <div class='input-group date' id='startDate'>
-                                    <input type='text' class="form-control" id="txtStartDate" placeholder="" required/>
+                                <div class='input-group date' id='importDate'>
+                                    <input type='text' class="form-control" id="txtImportDate" placeholder="" required/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -147,16 +136,58 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">End date</label>
-                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                <div class='input-group date' id='endDate'>
-                                    <input type='text' class="form-control" id="txtEndDate" placeholder="" required/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
+                            <label for="txtName" class="col-sm-2 control-label">Code:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtCode" placeholder="" required/>
                             </div>
                         </div>
+                        
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">Manufacturer:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtManufacturer" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">Facility staff:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtFacilityStaff" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">facility contact person:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtFacilityContactPerson" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">PLC type:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtPlctype" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">PLC communication device:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtPlcCommunicationDevice" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">Station:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtStation" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        
+                   
                         
                         <div class="form-group">
                             <label for="txtName" class="col-sm-2 control-label">Seq:</label>
@@ -185,12 +216,12 @@
 
 </div>
 <th:block layout:fragment="script">
-<script th:src="@{/static/admin/javascript_v3/factory.js}"></script>
+<script th:src="@{/static/admin/javascript_v3/machine.js}"></script>
 <script>
 		
         $(document).ready(function () {
             $(function () {
-                $('#startDate,#endDate').datetimepicker({
+                $('#importDate').datetimepicker({
                 	format: 'YYYY-MM-DD HH:mm:ss',
                     defaultDate: new Date()
                 });

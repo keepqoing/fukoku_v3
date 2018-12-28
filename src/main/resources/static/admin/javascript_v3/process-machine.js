@@ -2,26 +2,47 @@ var app = angular.module('fukoku', ['nvd3','ngSanitize']);
 
 app.controller('MainCtrl', function($scope, $http) {
 	
-	$scope.message;
-	$scope.products;
-	$scope.factories;
+	$scope.processes;
+	$scope.machines;
+	$scope.processMachines;
 	$scope.id;
 	$scope.action;
 	$scope.dtTable = $("#dtTable");
 	
-	$scope.findAllProduct = function(){
+	$scope.findProcesses = function(){
         var post = $http({
             method: "GET",
-            url: "/v3/api/fukoku/product",
+            url: "/v3/api/fukoku/process",
             dataType: 'json',
             headers: { "Content-Type": "application/json" }
         });
         post.success(function (response, status) {
+        	$scope.processes = null;
             if(response.code == 200){
-            	console.log(response.data);
-            	$scope.products = response.data;
+            	$scope.processes = response.data;
+            }else{
+            	$scope.message = response.message;
             }
-            
+        });
+        post.error(function (data, status) {
+            console.log(data);
+        });
+    }
+	
+	$scope.findMachines = function(){
+        var post = $http({
+            method: "GET",
+            url: "/v3/api/fukoku/machine",
+            dataType: 'json',
+            headers: { "Content-Type": "application/json" }
+        });
+        post.success(function (response, status) {
+        	$scope.machines = null;
+            if(response.code == 200){
+            	$scope.machines = response.data;
+            }else{
+            	$scope.message = response.message;
+            }
         });
         post.error(function (data, status) {
             console.log(data);
@@ -31,14 +52,14 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.findAll = function(){
         var post = $http({
             method: "GET",
-            url: "/v3/api/fukoku/factory",
+            url: "/v3/api/fukoku/process-machine",
             dataType: 'json',
             headers: { "Content-Type": "application/json" }
         });
         post.success(function (response, status) {
-        	$scope.factories = null;
+        	$scope.processMachines = null;
             if(response.code == 200){
-            	$scope.factories = response.data;
+            	$scope.processMachines = response.data;
             }else{
             	$scope.message = response.message;
             }
@@ -51,7 +72,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.findOne = function(id){
         var post = $http({
             method: "GET",
-            url: "/v3/api/fukoku/factory/"+id,
+            url: "/v3/api/fukoku/process-machine/"+id,
             dataType: 'json',
             headers: { "Content-Type": "application/json" }
         });
@@ -60,11 +81,8 @@ app.controller('MainCtrl', function($scope, $http) {
             	console.log(response);
             	$scope.id = response.data.id;
             	$("#txtName").val(response.data.name);
-            	$("#selectOpt").val(response.data.product.id);
-            	$("#txtStartDate").val(response.data.start_date);
-            	$("#txtEndDate").val(response.data.end_date);
-            	$("#txtAddress").val(response.data.address);
-            	$("#txtProductType").val(response.data.product_type);
+            	$("#selectOptProcess").val(response.data.process.id);
+            	$("#selectOptMachine").val(response.data.machine.id);
             	$("#txtSeq").val(response.data.seq);
             	$("#txtRemark").val(response.data.remark);
             }else{
@@ -81,17 +99,14 @@ app.controller('MainCtrl', function($scope, $http) {
 				"id" : $scope.id,
 				"seq" : $("#txtSeq").val(),
 				"name" : $("#txtName").val(),
-				"ref_product_id" : $("#selectOpt").val(),
-				"product_type" : $("#txtProductType").val(),
-				"start_date" : $("#startDate").find("input").val(),
-				"end_date" : $("#endDate").find("input").val(),
-				"address" : $("#txtAddress").val(),
+				"ref_process_id" : $("#selectOptProcess").val(),
+				"ref_machine_id" : $("#selectOptMachine").val(),
 				"remark" : $("#txtRemark").val(),
 		}
 		console.log("data", data);
         var post = $http({
             method: method,
-            url: "/v3/api/fukoku/factory",
+            url: "/v3/api/fukoku/process-machine",
             dataType: 'json',
             data : JSON.stringify(data),
             headers: { "Content-Type": "application/json" }
@@ -120,7 +135,8 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.btAdd = function(){
 		$scope.action = "add";
 		$('#frm').trigger("reset");
-		$scope.findAllProduct();
+		$scope.findProcesses();
+		$scope.findMachines();
 		$("#btUpdate").hide();
 		$("#btSave").show();
 		$("#modalFrm").modal('show');
@@ -130,7 +146,8 @@ app.controller('MainCtrl', function($scope, $http) {
 		console.log(id);
 		$scope.action = "update";
 		$('#frm').trigger("reset");
-		$scope.findAllProduct();
+		$scope.findProcesses();
+		$scope.findMachines();
 		$scope.findOne(id);
 		$("#btSave").hide();
 		$("#btUpdate").show();
@@ -153,8 +170,8 @@ app.controller('MainCtrl', function($scope, $http) {
 	
 	
 	$scope.btDelete = function(id){
-		swal({  title: "Factory" ,   
-			text: "Are you sure you want to deleted this factory?",   
+		swal({  title: "ProcessMachine" ,   
+			text: "Are you sure you want to deleted this process-machine?",   
 			type: "info",  
 			showCancelButton: true,   
 			closeOnConfirm: false,   
@@ -162,7 +179,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		}, function(){   
 			var post = $http({
 	            method: "DELETE",
-	            url: "/v3/api/fukoku/factory/"+id,
+	            url: "/v3/api/fukoku/process-machine/"+id,
 	            dataType: 'json',
 	            headers: { "Content-Type": "application/json" }
 	        });
