@@ -7,7 +7,7 @@
 
 <head>
 
-    <title>Line</title>
+    <title>라인관리</title>
     
     <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
     <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
@@ -23,7 +23,7 @@
 
     <section class="content-header">
         <h1>
-            Line
+            	라인관리
         </h1>
     </section>
 
@@ -35,7 +35,7 @@
                         <div class="row">
                             <div>
                                 <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3 col-xs-12">
-                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">Add Factory</button>
+                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">라인추가</button>
                                 </div>
                             </div>
                         </div>
@@ -46,13 +46,13 @@
                                     <thead class="table-head">
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>Ref Factory</th>
-                                        <th>Layout name</th>
-                                        <th>Product type</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
-                                        <th>Seq</th>
+                                        <th>라인명</th> <!-- name -->
+                                        <th>공장명</th> <!-- ref factory -->
+                                        <th>라인설계도면</th> <!-- layout name -->
+                                        <th>생산제품유형</th> <!-- product type -->
+                                        <th>가동시작일</th> <!-- start date -->
+                                        <th>가동종료일</th> <!-- end date -->
+                                        <th>순번</th>
                                         <th>설명</th>
                                         <th>수정</th>
                                     </tr>
@@ -102,17 +102,17 @@
                     <div class="box-body">
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Name:</label>
+                            <label for="txtName" class="col-sm-2 control-label">라인명:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtName" placeholder="" required/>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Ref Factory:</label>
+                            <label for="txtName" class="col-sm-2 control-label">공장명:</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="selectOpt"  required>
-                                	<option value="">Product</option>
+                                	<option value="">공장명</option>
                                 	<option ng-repeat="o in factories" value="{{o.id}}">{{o.name}}</option>
                                 </select>
                             </div>
@@ -120,7 +120,7 @@
                         
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Product Type:</label>
+                            <label for="txtName" class="col-sm-2 control-label">생산제품유형:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtProductType" placeholder="" required/>
                             </div>
@@ -128,14 +128,14 @@
                         
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Layout name:</label>
+                            <label for="txtName" class="col-sm-2 control-label">라인설계도면:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtLayoutName" placeholder="" required/>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">Start date</label>
+                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">가동시작일</label>
                             <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                 <div class='input-group date' id='startDate'>
                                     <input type='text' class="form-control" id="txtStartDate" placeholder="" required/>
@@ -147,7 +147,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">End date</label>
+                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">가동종료일</label>
                             <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                 <div class='input-group date' id='endDate'>
                                     <input type='text' class="form-control" id="txtEndDate" placeholder="" required/>
@@ -159,7 +159,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Seq:</label>
+                            <label for="txtName" class="col-sm-2 control-label">순번:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtSeq" placeholder="" required/>
                             </div>
@@ -174,8 +174,8 @@
                     </div><!-- /.box-body -->
                     <div class="box-footer">
                         <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
-                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">Save</button>
-                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">Update
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">저장</button>
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">저장
                         </button>
                     </div><!-- /.box-footer -->
                 </form>

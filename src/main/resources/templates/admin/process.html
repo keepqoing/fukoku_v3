@@ -7,7 +7,7 @@
 
 <head>
 
-    <title>Process</title>
+    <title>공정관리</title>
     
     <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
     <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
@@ -23,7 +23,7 @@
 
     <section class="content-header">
         <h1>
-            Process
+           	 공정관리
         </h1>
     </section>
 
@@ -35,7 +35,7 @@
                         <div class="row">
                             <div>
                                 <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3 col-xs-12">
-                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">Add Factory</button>
+                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">공정추가</button>
                                 </div>
                             </div>
                         </div>
@@ -46,9 +46,9 @@
                                     <thead class="table-head">
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>Type</th>
-                                        <th>Seq</th>
+                                        <th>공정명</th>
+                                        <th>유형</th>
+                                        <th>순번</th>
                                         <th>설명</th>
                                         <th>수정</th>
                                     </tr>
@@ -94,14 +94,14 @@
                     <div class="box-body">
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Name:</label>
+                            <label for="txtName" class="col-sm-2 control-label">공정명:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtName" placeholder="" required/>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Type:</label>
+                            <label for="txtName" class="col-sm-2 control-label">유형:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtType" placeholder="" required/>
                             </div>
@@ -109,7 +109,7 @@
                         
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Seq:</label>
+                            <label for="txtName" class="col-sm-2 control-label">순번:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtSeq" placeholder="" required/>
                             </div>
@@ -124,9 +124,8 @@
                     </div><!-- /.box-body -->
                     <div class="box-footer">
                         <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
-                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">Save</button>
-                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">Update
-                        </button>
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">저장</button>
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">저장</button>
                     </div><!-- /.box-footer -->
                 </form>
             </div>

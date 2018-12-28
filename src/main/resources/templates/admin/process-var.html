@@ -7,7 +7,7 @@
 
 <head>
 
-    <title>ProcessVar</title>
+    <title>공정변수관리</title>
     
     <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
     <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
@@ -23,7 +23,7 @@
 
     <section class="content-header">
         <h1>
-            ProcessVar
+            공정변수관리
         </h1>
     </section>
 
@@ -35,7 +35,7 @@
                         <div class="row">
                             <div>
                                 <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3 col-xs-12">
-                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">Add Factory</button>
+                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">공정변수추가</button>
                                 </div>
                             </div>
                         </div>
@@ -46,9 +46,9 @@
                                     <thead class="table-head">
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>Ref Process</th>
-                                        <th>Seq</th>
+                                        <th>공정변수명</th>
+                                        <th>공정명</th>
+                                        <th>순번</th>
                                         <th>설명</th>
                                         <th>수정</th>
                                     </tr>
@@ -87,24 +87,24 @@
                 <div class="box box-primary modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">라인관리</h4>
+                    <h4 class="modal-title">공정변수관리</h4>
                 </div>
 
                 <form class="form-horizontal" enctype="multipart/form-data" id="frm" ng-submit="onSubmitFrm()">
                     <div class="box-body">
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Name:</label>
+                            <label for="txtName" class="col-sm-2 control-label">공정변수명:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtName" placeholder="" required/>
                             </div>
                         </div>
                         
                          <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Ref Process:</label>
+                            <label for="txtName" class="col-sm-2 control-label">공정명:</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="selectOpt"  required>
-                                	<option value="">Process</option>
+                                	<option value="">공정명</option>
                                 	<option ng-repeat="o in processes" value="{{o.id}}">{{o.name}}</option>
                                 </select>
                             </div>
@@ -114,7 +114,7 @@
                         
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Seq:</label>
+                            <label for="txtName" class="col-sm-2 control-label">순번:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtSeq" placeholder="" required/>
                             </div>
@@ -129,8 +129,8 @@
                     </div><!-- /.box-body -->
                     <div class="box-footer">
                         <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
-                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">Save</button>
-                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">Update
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">저장</button>
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">저장
                         </button>
                     </div><!-- /.box-footer -->
                 </form>

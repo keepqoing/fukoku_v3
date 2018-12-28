@@ -7,7 +7,7 @@
 
 <head>
 
-    <title>product</title>
+    <title>품종관리</title>
     
     <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
     <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
@@ -23,7 +23,7 @@
 
     <section class="content-header">
         <h1>
-            product
+            품종관리
         </h1>
     </section>
 
@@ -35,7 +35,7 @@
                         <div class="row">
                             <div>
                                 <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3 col-xs-12">
-                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">Add Product</button>
+                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">품종추가</button>
                                 </div>
                             </div>
                         </div>
@@ -46,10 +46,11 @@
                                     <thead class="table-head">
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>Type</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
+                                        <th>제품명</th>
+                                        <th>제품유형</th>
+                                        <th>납품시작일</th>
+                                        <th>납품종료일</th>
+                                        <th>고객사</th>
                                         <th>설명</th>
                                         <th>수정</th>
                                     </tr>
@@ -61,6 +62,7 @@
 	                                    	<td>{{f.type}}</td>
 	                                    	<td>{{f.start_date}}</td>
 	                                    	<td>{{f.end_date}}</td>
+	                                    	<td>{{f.customer_name}}</td>
 	                                    	<td>{{f.remark}}</td>
 	                                    	<td style="width:100px">
 	                                    			<button data-f-id="{{f.id}}" ng-click="btEdit(f.id)" style="width:30px;" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i></button>
@@ -96,28 +98,28 @@
                     <div class="box-body">
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Name:</label>
+                            <label for="txtName" class="col-sm-2 control-label">제품명:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtName" placeholder="" required/>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Type:</label>
+                            <label for="txtName" class="col-sm-2 control-label">제품유형:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtType" placeholder="" required/>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Customer name:</label>
+                            <label for="txtName" class="col-sm-2 control-label">고객사:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtCustomerName" placeholder="" required/>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">Start date</label>
+                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">납품시작일</label>
                             <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                 <div class='input-group date' id='startDate'>
                                     <input type='text' class="form-control" id="txtStartDate" placeholder="" required/>
@@ -129,7 +131,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">End date</label>
+                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">납품종료일</label>
                             <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                 <div class='input-group date' id='endDate'>
                                     <input type='text' class="form-control" id="txtEndDate" placeholder="" required/>
@@ -149,8 +151,8 @@
                     </div><!-- /.box-body -->
                     <div class="box-footer">
                         <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
-                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">Save</button>
-                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">Update
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">저장</button>
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">저장
                         </button>
                     </div><!-- /.box-footer -->
                 </form>

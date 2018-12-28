@@ -7,7 +7,7 @@
 
 <head>
 
-    <title>Machine</title>
+    <title>설비관리</title>
     
     <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
     <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
@@ -23,7 +23,7 @@
 
     <section class="content-header">
         <h1>
-            Machine
+            	설비관리
         </h1>
     </section>
 
@@ -35,7 +35,7 @@
                         <div class="row">
                             <div>
                                 <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3 col-xs-12">
-                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">Add Factory</button>
+                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">설비추가</button>
                                 </div>
                             </div>
                         </div>
@@ -46,17 +46,17 @@
                                     <thead class="table-head">
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>IP</th>
-                                        <th>Imported Date</th>
-                                        <th>Code</th>
-                                        <th>Manufacturer</th>
-                                        <th>Facility staff</th>
-                                        <th>Facility Contact person</th>
-                                        <th>PLC type</th>
-                                        <th>PLC communication device</th>
-                                        <th>station</th>
-                                        <th>Seq</th>
+                                        <th>설비명</th>
+                                        <th>IP 주소</th>
+                                        <th>도입일</th> <!-- imported date -->
+                                        <th>자산코드</th>  <!-- code -->
+                                        <th>제작업체</th> <!-- Manufacturer -->
+                                        <th>제작업체 담당자</th> <!-- Facility staff -->
+                                        <th>제작업체 연락처</th> <!-- Facility Contact person -->
+                                        <th>PLC 종류</th> <!-- plc_type -->
+                                        <th>통신모듈명</th> <!-- PLC communication device -->
+                                        <th>통신모듈 Station</th> <!-- 통신모듈 Station -->
+                                        <th>순번</th>
                                         <th>설명</th>
                                         <th>수정</th>
                                     </tr>
@@ -103,28 +103,28 @@
                 <div class="box box-primary modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">라인관리</h4>
+                    <h4 class="modal-title">설비관리</h4>
                 </div>
 
                 <form class="form-horizontal" enctype="multipart/form-data" id="frm" ng-submit="onSubmitFrm()">
                     <div class="box-body">
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Name:</label>
+                            <label for="txtName" class="col-sm-2 control-label">설비명:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtName" placeholder="" required/>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">IP:</label>
+                            <label for="txtName" class="col-sm-2 control-label">IP 주소:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtIP" placeholder="" required/>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">Imported date</label>
+                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">도입일</label>
                             <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                 <div class='input-group date' id='importDate'>
                                     <input type='text' class="form-control" id="txtImportDate" placeholder="" required/>
@@ -136,49 +136,49 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Code:</label>
+                            <label for="txtName" class="col-sm-2 control-label">자산코드:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtCode" placeholder="" required/>
                             </div>
                         </div>
                         
                          <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Manufacturer:</label>
+                            <label for="txtName" class="col-sm-2 control-label">제작업체:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtManufacturer" placeholder="" required/>
                             </div>
                         </div>
                         
                          <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Facility staff:</label>
+                            <label for="txtName" class="col-sm-2 control-label">제작업체 담당자:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtFacilityStaff" placeholder="" required/>
                             </div>
                         </div>
                         
                          <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">facility contact person:</label>
+                            <label for="txtName" class="col-sm-2 control-label">제작업체 연락처:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtFacilityContactPerson" placeholder="" required/>
                             </div>
                         </div>
                         
                          <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">PLC type:</label>
+                            <label for="txtName" class="col-sm-2 control-label">PLC 종류:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtPlctype" placeholder="" required/>
                             </div>
                         </div>
                         
                          <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">PLC communication device:</label>
+                            <label for="txtName" class="col-sm-2 control-label">통신모듈명:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtPlcCommunicationDevice" placeholder="" required/>
                             </div>
                         </div>
                         
                          <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Station:</label>
+                            <label for="txtName" class="col-sm-2 control-label">통신모듈 Station:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtStation" placeholder="" required/>
                             </div>
@@ -190,7 +190,7 @@
                    
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Seq:</label>
+                            <label for="txtName" class="col-sm-2 control-label">순번:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtSeq" placeholder="" required/>
                             </div>
@@ -205,8 +205,8 @@
                     </div><!-- /.box-body -->
                     <div class="box-footer">
                         <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
-                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">Save</button>
-                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">Update
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">저장</button>
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">저장
                         </button>
                     </div><!-- /.box-footer -->
                 </form>
