@@ -5,6 +5,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.message;
 	$scope.lines;
 	$scope.factories;
+	$scope.products;
 	$scope.id;
 	$scope.action;
 	$scope.dtTable = $("#dtTable");
@@ -20,6 +21,25 @@ app.controller('MainCtrl', function($scope, $http) {
             if(response.code == 200){
             	console.log(response.data);
             	$scope.factories = response.data;
+            }
+            
+        });
+        post.error(function (data, status) {
+            console.log(data);
+        });
+    }
+	
+	$scope.findAllProduct = function(){
+        var post = $http({
+            method: "GET",
+            url: "/v3/api/fukoku/product",
+            dataType: 'json',
+            headers: { "Content-Type": "application/json" }
+        });
+        post.success(function (response, status) {
+            if(response.code == 200){
+            	console.log(response.data);
+            	$scope.products = response.data;
             }
             
         });
@@ -60,7 +80,8 @@ app.controller('MainCtrl', function($scope, $http) {
             	console.log(response);
             	$scope.id = response.data.id;
             	$("#txtName").val(response.data.name);
-            	$("#selectOpt").val(response.data.factory.id);
+            	$("#selectOptFactory").val(response.data.factory.id);
+            	$("#selectOptProduct").val(response.data.product.id);
             	$("#txtStartDate").val(response.data.start_date);
             	$("#txtEndDate").val(response.data.end_date);
             	$("#txtLayoutName").val(response.data.layout_name);
@@ -81,8 +102,8 @@ app.controller('MainCtrl', function($scope, $http) {
 				"id" : $scope.id,
 				"seq" : $("#txtSeq").val(),
 				"name" : $("#txtName").val(),
-				"ref_factory_id" : $("#selectOpt").val(),
-				"product_type" : $("#txtProductType").val(),
+				"ref_factory_id" : $("#selectOptFactory").val(),
+				"ref_product_id" : $("#selectOptProduct").val(),
 				"layout_name" : $("#txtLayoutName").val(),
 				"start_date" : $("#startDate").find("input").val(),
 				"end_date" : $("#endDate").find("input").val(),
@@ -122,6 +143,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		$scope.action = "add";
 		$('#frm').trigger("reset");
 		$scope.findAllFactory();
+		$scope.findAllProduct();
 		$("#btUpdate").hide();
 		$("#btSave").show();
 		$("#modalFrm").modal('show');
@@ -132,6 +154,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		$scope.action = "update";
 		$('#frm').trigger("reset");
 		$scope.findAllFactory()
+		$scope.findAllProduct();
 		$scope.findOne(id);
 		$("#btSave").hide();
 		$("#btUpdate").show();

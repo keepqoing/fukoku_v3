@@ -24,32 +24,22 @@ public interface FactoryRepository {
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),
-			@Result(property="productType",column="product_type"),
-			@Result(property="product", column="ref_product_id",
-				one = @One(select  = "kr.co.fukoku.repository.ProductRepository.findOne")
-		    )
 	})
 	List<Factory> findAll();
 	
 	@Select("Select * from factory where id=#{id} and status='1'")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
-			@Result(property="endDate",column="end_date"),
-			@Result(property="productType",column="product_type"),
-			@Result(property="product", column="ref_product_id",
-				one = @One(select  = "kr.co.fukoku.repository.ProductRepository.findOne")
-			)
+			@Result(property="endDate",column="end_date")
 	})
 	Factory findOne(@Param("id") long  id);
 	
 	@Insert("insert into factory ("
-			+ " seq, name, ref_product_id, address , product_type,start_date, end_date, remark"
+			+ " seq, name, address , start_date, end_date, remark"
 			+ ") VALUES ("
 			+ "	#{f.seq}, "
 			+ "	#{f.name}, "
-			+ " #{f.refProductId}, "
 			+ " #{f.address}, "
-			+ " #{f.productType}, "
 			+ " #{f.startDate}, "
 			+ " #{f.endDate}, "
 			+ " #{f.remark}"
@@ -59,9 +49,7 @@ public interface FactoryRepository {
 	@Update("UPDATE factory SET"
 			+ "	seq=#{f.seq}, "
 			+ " name=#{f.name},"
-			+ " ref_product_id=#{f.refProductId},"
 			+ " address=#{f.address} ,"
-			+ " product_type=#{f.productType},"
 			+ " start_date=#{f.startDate},"
 			+ " end_date=#{f.endDate},"
 			+ " remark=#{f.remark} "

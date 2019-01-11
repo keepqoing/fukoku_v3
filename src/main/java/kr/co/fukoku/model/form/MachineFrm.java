@@ -12,6 +12,8 @@ public class MachineFrm {
 	private long  seq;
 	@JsonProperty("name")
 	private String name;
+	@JsonProperty("ref_factory_id")
+	private long refFactoryId;
 	@JsonProperty("ip")
 	private String ip;
 	@JsonProperty("import_date")
@@ -34,12 +36,24 @@ public class MachineFrm {
 	private String status;
 	@JsonProperty("station")
 	private String station;
-	
-	public String getStation() {
-		return station;
-	}
-
-	public void setStation(String station) {
+	public MachineFrm(long id, long seq, String name, long refFactoryId, String ip, String importDate, String code,
+			String manufacturer, String facilityStaff, String facilityContactPerson, String plcType,
+			String plcCommunicationDevice, String remark, String status, String station) {
+		super();
+		this.id = id;
+		this.seq = seq;
+		this.name = name;
+		this.refFactoryId = refFactoryId;
+		this.ip = ip;
+		this.importDate = importDate;
+		this.code = code;
+		this.manufacturer = manufacturer;
+		this.facilityStaff = facilityStaff;
+		this.facilityContactPerson = facilityContactPerson;
+		this.plcType = plcType;
+		this.plcCommunicationDevice = plcCommunicationDevice;
+		this.remark = remark;
+		this.status = status;
 		this.station = station;
 	}
 	public MachineFrm() {
@@ -62,6 +76,12 @@ public class MachineFrm {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public long getRefFactoryId() {
+		return refFactoryId;
+	}
+	public void setRefFactoryId(long refFactoryId) {
+		this.refFactoryId = refFactoryId;
 	}
 	public String getIp() {
 		return ip;
@@ -123,31 +143,14 @@ public class MachineFrm {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public MachineFrm(long id, long seq, String name, String ip, String importDate, String code, String manufacturer,
-			String facilityStaff, String facilityContactPerson, String plcType, String plcCommunication, String remark,
-			String status) {
-		super();
-		this.id = id;
-		this.seq = seq;
-		this.name = name;
-		this.ip = ip;
-		this.importDate = importDate;
-		this.code = code;
-		this.manufacturer = manufacturer;
-		this.facilityStaff = facilityStaff;
-		this.facilityContactPerson = facilityContactPerson;
-		this.plcType = plcType;
-		this.plcCommunicationDevice = plcCommunicationDevice;
-		this.remark = remark;
-		this.status = status;
+	public String getStation() {
+		return station;
 	}
-	@Override
-	public String toString() {
-		return "MachineFrm [id=" + id + ", seq=" + seq + ", name=" + name + ", ip=" + ip + ", importDate=" + importDate
-				+ ", code=" + code + ", manufacturer=" + manufacturer + ", facilityStaff=" + facilityStaff
-				+ ", facilityContactPerson=" + facilityContactPerson + ", plcType=" + plcType + ", plcCommunicationDevice="
-				+ plcCommunicationDevice + ", remark=" + remark + ", status=" + status + "]";
+	public void setStation(String station) {
+		this.station = station;
 	}
+	
+	
 	
 	
 	

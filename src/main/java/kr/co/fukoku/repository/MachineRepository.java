@@ -28,7 +28,10 @@ public interface MachineRepository {
 			@Result(property="facilityStaff",column="facility_staff"),
 			@Result(property="facilityContactPerson",column="facility_contact_person"),
 			@Result(property="plcType",column="plc_type"),
-			@Result(property="plcCommunicationDevice", column="plc_communication_device")
+			@Result(property="plcCommunicationDevice", column="plc_communication_device"),
+			@Result(property="factory", column="ref_factory_id",
+				one = @One(select  = "kr.co.fukoku.repository.FactoryRepository.findOne")
+			)
 	})
 	List<Machine> findAll();
 	
@@ -38,16 +41,20 @@ public interface MachineRepository {
 			@Result(property="facilityStaff",column="facility_staff"),
 			@Result(property="facilityContactPerson",column="facility_contact_person"),
 			@Result(property="plcType",column="plc_type"),
-			@Result(property="plcCommunicationDevice", column="plc_communication_device")
+			@Result(property="plcCommunicationDevice", column="plc_communication_device"),
+			@Result(property="factory", column="ref_factory_id",
+				one = @One(select  = "kr.co.fukoku.repository.FactoryRepository.findOne")
+			)
 	})
 	Machine findOne(@Param("id") long  id);
 	
 	@Insert("INSERT INTO machine ("
-			+ " seq, name, ip ,import_date, code, manufacturer, facility_staff"
+			+ " seq, name, ref_factory_id,ip ,import_date, code, manufacturer, facility_staff"
 			+ " , plc_type, plc_communication_device ,remark, facility_contact_person, station"
 			+ ") VALUES ("
 			+ "	#{f.seq}, "
 			+ "	#{f.name}, "
+			+ "	#{f.refFactoryId}, "
 			+ " #{f.ip}, "
 			+ " #{f.importDate}, "
 			+ " #{f.code}, "
@@ -64,6 +71,7 @@ public interface MachineRepository {
 	@Update("UPDATE machine SET"
 			+ "	seq=#{f.seq}, "
 			+ " name=#{f.name},"
+			+ " ref_factory_id=#{f.refFactoryId},"
 			+ " ip=#{f.ip},"
 			+ " import_date=#{f.importDate},"
 			+ " code=#{f.code},"

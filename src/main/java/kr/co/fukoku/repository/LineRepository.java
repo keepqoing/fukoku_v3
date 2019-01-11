@@ -27,10 +27,12 @@ public interface LineRepository {
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),
 			@Result(property="layoutName",column="layout_name"),
-			@Result(property="productType",column="product_type"),
 			@Result(property="factory", column="ref_factory_id",
-				one = @One(select  = "kr.co.fukoku.repository.FactoryRepository.findAll")
-		    )
+				one = @One(select  = "kr.co.fukoku.repository.FactoryRepository.findOne")
+		    ),
+			@Result(property="product", column="ref_product_id",
+				one = @One(select  = "kr.co.fukoku.repository.ProductRepository.findOne")
+			)
 	})
 	List<Line> findAll();
 	
@@ -39,21 +41,23 @@ public interface LineRepository {
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),
 			@Result(property="layoutName",column="layout_name"),
-			@Result(property="productType",column="product_type"),
 			@Result(property="factory", column="ref_factory_id",
-				one = @One(select  = "kr.co.fukoku.repository.FactoryRepository.findAll")
-		    )
+				one = @One(select  = "kr.co.fukoku.repository.FactoryRepository.findOne")
+		    ),
+			@Result(property="product", column="ref_product_id",
+				one = @One(select  = "kr.co.fukoku.repository.ProductRepository.findOne")
+			)
 	})
 	Line findOne(@Param("id") long  id);
 	
 	@Insert("INSERT INTO line ("
-			+ " seq, name, ref_factory_id, layout_name , product_type,start_date, end_date, remark"
+			+ " seq, name, ref_factory_id, layout_name , ref_product_id,start_date, end_date, remark"
 			+ ") VALUES ("
 			+ "	#{f.seq}, "
 			+ "	#{f.name}, "
 			+ " #{f.refFactoryId}, "
 			+ " #{f.layoutName}, "
-			+ " #{f.productType}, "
+			+ " #{f.refProductId}, "
 			+ " #{f.startDate}, "
 			+ " #{f.endDate}, "
 			+ " #{f.remark}"
@@ -65,7 +69,7 @@ public interface LineRepository {
 			+ " name=#{f.name},"
 			+ " ref_factory_id=#{f.refFactoryId},"
 			+ " layout_name=#{f.layoutName} ,"
-			+ " product_type=#{f.productType},"
+			+ " ref_product_id=#{f.refProductId},"
 			+ " start_date=#{f.startDate},"
 			+ " end_date=#{f.endDate},"
 			+ " remark=#{f.remark} "

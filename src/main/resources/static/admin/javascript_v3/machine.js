@@ -6,8 +6,27 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.machines;
 	$scope.id;
 	$scope.action;
+	$scope.factories;
 	$scope.dtTable = $("#dtTable");
 	
+	$scope.findAllFactory = function(){
+        var post = $http({
+            method: "GET",
+            url: "/v3/api/fukoku/factory",
+            dataType: 'json',
+            headers: { "Content-Type": "application/json" }
+        });
+        post.success(function (response, status) {
+            if(response.code == 200){
+            	console.log(response.data);
+            	$scope.factories = response.data;
+            }
+            
+        });
+        post.error(function (data, status) {
+            console.log(data);
+        });
+    }
 	
 	$scope.findAll = function(){
         var post = $http({
@@ -43,6 +62,7 @@ app.controller('MainCtrl', function($scope, $http) {
             	$scope.id = response.data.id;
             	$("#txtName").val(response.data.name);
             	$("#txtIP").val(response.data.ip);
+            	$("#selectOptFactory").val(response.data.factory.id);
             	$("#txtImportDate").val(response.data.import_date);
             	$("#txtCode").val(response.data.code);
             	$("#txtManufacturer").val(response.data.manufacturer);
@@ -67,6 +87,7 @@ app.controller('MainCtrl', function($scope, $http) {
 				"id" : $scope.id,
 				"seq" : $("#txtSeq").val(),
 				"name" : $("#txtName").val(),
+				"ref_factory_id" : $("#selectOptFactory").val(),
 				"ip" : $("#txtIP").val(),
 				"import_date" : $("#importDate").find("input").val(),
 				"code" : $("#txtCode").val(),
@@ -111,6 +132,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.btAdd = function(){
 		$scope.action = "add";
 		$('#frm').trigger("reset");
+		$scope.findAllFactory();
 		$("#btUpdate").hide();
 		$("#btSave").show();
 		$("#modalFrm").modal('show');
@@ -120,6 +142,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		console.log(id);
 		$scope.action = "update";
 		$('#frm').trigger("reset");
+		$scope.findAllFactory();
 		$scope.findOne(id);
 		$("#btSave").hide();
 		$("#btUpdate").show();
