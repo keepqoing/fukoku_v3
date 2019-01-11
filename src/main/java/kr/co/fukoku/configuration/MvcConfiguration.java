@@ -19,6 +19,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
 	
 		//TODO: BACKEND OFFICE ROUTING
 		registry.addViewController("/").setViewName("/admin/product");
+		registry.addViewController("/admin").setViewName("/admin/product");
 		registry.addViewController("/admin/product").setViewName("/admin/product");
 		
 		registry.addViewController("/admin/factory").setViewName("/admin/factory");
@@ -27,6 +28,10 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/process").setViewName("/admin/process");
 		registry.addViewController("/admin/process-var").setViewName("/admin/process-var");
 		registry.addViewController("/admin/process-machine").setViewName("/admin/process-machine");
+		
+		registry.addViewController("/admin/department-code").setViewName("/admin/department-code");
+		
+		
 	
 	}
 	
