@@ -45,22 +45,24 @@
                                 <table  class="table table-bordered table-striped" id="dtTable">
                                     <thead class="table-head">
                                     <tr>
-                                        <th>#</th>
+                                        <!-- <th>#</th> -->
+                                        <th>순번</th>
                                         <th>공정설비명</th>
                                         <th>공정명</th>
                                         <th>설비명</th>
-                                        <th>순번</th>
+                                        
                                         <th>설명</th>
                                         <th>수정</th>
                                     </tr>
                                     </thead>
                                     <tbody>
 	                                    <tr  ng-repeat="f in processMachines">
-	                                    	<td>{{f.id}}</td>
+	                                    	<!-- <td>{{f.id}}</td> -->
+	                                    	<td>{{f.seq}}</td>
 	                                    	<td>{{f.name}}</td>
 	                                    	<td>{{f.process.name}}</td>
 	                                    	<td>{{f.machine.name}}</td>
-	                                    	<td>{{f.seq}}</td>
+	                                    	
 	                                    	<td>{{f.remark}}</td>
 	                                    	<td style="width:100px">
 	                                    			<button data-f-id="{{f.id}}" ng-click="btEdit(f.id)" style="width:30px;" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i></button>

@@ -55,7 +55,7 @@ app.controller('MainCtrl', function($scope, $http) {
         });
     }
 	
-	$scope.save = function(method){
+	$scope.save = function(method){ 
 		var data = {
 				"id" : $scope.id,
 				"name" : $("#txtName").val(),

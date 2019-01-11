@@ -35,7 +35,7 @@
                         <div class="row">
                             <div>
                                 <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3 col-xs-12">
-                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">품종추가</button>
+                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">제품추가</button>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                                 <table  class="table table-bordered table-striped" id="dtTable">
                                     <thead class="table-head">
                                     <tr>
-                                        <th>#</th>
+                                       <!--  <th>#</th> -->
                                         <th>제품명</th>
                                         <th>제품유형</th>
                                         <th>납품시작일</th>
@@ -57,7 +57,7 @@
                                     </thead>
                                     <tbody>
 	                                    <tr  ng-repeat="f in products">
-	                                    	<td>{{f.id}}</td>
+	                                    	<!-- <td>{{f.id}}</td> -->
 	                                    	<td>{{f.name}}</td>
 	                                    	<td>{{f.type}}</td>
 	                                    	<td>{{f.start_date}}</td>
@@ -91,7 +91,7 @@
                 <div class="box box-primary modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">라인관리</h4>
+                    <h4 class="modal-title">제품관리</h4>
                 </div>
 
                 <form class="form-horizontal" enctype="multipart/form-data" id="frm" ng-submit="onSubmitFrm()">

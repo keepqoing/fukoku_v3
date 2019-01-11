@@ -45,7 +45,8 @@ public interface ProductRepository {
 			+ "	type=#{f.type}, "
 			+ "	start_date=#{f.startDate}, "
 			+ "	end_date=#{f.endDate},"
-			+ " remark=#{f.remark}"
+			+ " remark=#{f.remark}, "
+			+ " customer_name=#{f.customerName}" 
 			+ " WHERE id=#{f.id}")
 	boolean update(@Param("f") ProductFrm frm);
 	
