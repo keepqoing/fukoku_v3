@@ -12,8 +12,8 @@ public class Machine {
 	private long  seq;
 	@JsonProperty("name")
 	private String name;
-	@JsonProperty("factory")
-	private Factory factory;
+	@JsonProperty("process")
+	private Process process;
 	@JsonProperty("ip")
 	private String ip;
 	@JsonProperty("import_date")
@@ -40,14 +40,14 @@ public class Machine {
 		super();
 	}
 	
-	public Machine(long id, long seq, String name, Factory factory, String ip, String importDate, String code,
+	public Machine(long id, long seq, String name, Process process, String ip, String importDate, String code,
 			String manufacturer, String facilityStaff, String facilityContactPerson, String plcType,
 			String plcCommunicationDevice, String remark, String status, String station) {
 		super();
 		this.id = id;
 		this.seq = seq;
 		this.name = name;
-		this.factory = factory;
+		this.process = process;
 		this.ip = ip;
 		this.importDate = importDate;
 		this.code = code;
@@ -79,11 +79,11 @@ public class Machine {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Factory getFactory() {
-		return factory;
+	public Process getProcess() {
+		return process;
 	}
-	public void setFactory(Factory factory) {
-		this.factory = factory;
+	public void setProcess(Process process) {
+		this.process = process;
 	}
 	public String getIp() {
 		return ip;
