@@ -2,45 +2,25 @@ var app = angular.module('fukoku', ['nvd3','ngSanitize']);
 
 app.controller('MainCtrl', function($scope, $http) {
 	
-	$scope.processes;
-	$scope.processVars;
+	$scope.message;
+	$scope.departments;
 	$scope.id;
 	$scope.action;
 	$scope.dtTable = $("#dtTable");
 	
-	$scope.classClicked = "clicked";
 	
-	$scope.findProcesses = function(){
-        var post = $http({
-            method: "GET",
-            url: "/v3/api/fukoku/process",
-            dataType: 'json',
-            headers: { "Content-Type": "application/json" }
-        });
-        post.success(function (response, status) {
-        	$scope.processes = null;
-            if(response.code == 200){
-            	$scope.processes = response.data;
-            }else{
-            	$scope.message = response.message;
-            }
-        });
-        post.error(function (data, status) {
-            console.log(data);
-        });
-    }
 	
 	$scope.findAll = function(){
         var post = $http({
             method: "GET",
-            url: "/v3/api/fukoku/process-var",
+            url: "/v3/api/fukoku/department",
             dataType: 'json',
             headers: { "Content-Type": "application/json" }
         });
         post.success(function (response, status) {
-        	$scope.processVars = null;
+        	$scope.departments = null;
             if(response.code == 200){
-            	$scope.processVars = response.data;
+            	$scope.departments = response.data;
             }else{
             	$scope.message = response.message;
             }
@@ -53,7 +33,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.findOne = function(id){
         var post = $http({
             method: "GET",
-            url: "/v3/api/fukoku/process-var/"+id,
+            url: "/v3/api/fukoku/department/"+id,
             dataType: 'json',
             headers: { "Content-Type": "application/json" }
         });
@@ -62,10 +42,9 @@ app.controller('MainCtrl', function($scope, $http) {
             	console.log(response);
             	$scope.id = response.data.id;
             	$("#txtName").val(response.data.name);
-            	$("#selectOpt").val(response.data.process.id);
+            	$("#txtCode").val(response.data.code);
             	$("#txtSeq").val(response.data.seq);
             	$("#txtRemark").val(response.data.remark);
-            	$("#txtItemType").val(response.data.item_type);
             }else{
             	$scope.message = response.message;
             }
@@ -80,14 +59,13 @@ app.controller('MainCtrl', function($scope, $http) {
 				"id" : $scope.id,
 				"seq" : $("#txtSeq").val(),
 				"name" : $("#txtName").val(),
-				"ref_process_id" : $("#selectOpt").val(),
+				"code" : $("#txtCode").val(),
 				"remark" : $("#txtRemark").val(),
-				"item_type" : $("#txtItemType").val(),
 		}
 		console.log("data", data);
         var post = $http({
             method: method,
-            url: "/v3/api/fukoku/process-var",
+            url: "/v3/api/fukoku/department",
             dataType: 'json',
             data : JSON.stringify(data),
             headers: { "Content-Type": "application/json" }
@@ -116,7 +94,6 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.btAdd = function(){
 		$scope.action = "add";
 		$('#frm').trigger("reset");
-		$scope.findProcesses();
 		$("#btUpdate").hide();
 		$("#btSave").show();
 		$("#modalFrm").modal('show');
@@ -126,7 +103,6 @@ app.controller('MainCtrl', function($scope, $http) {
 		console.log(id);
 		$scope.action = "update";
 		$('#frm').trigger("reset");
-		$scope.findProcesses();
 		$scope.findOne(id);
 		$("#btSave").hide();
 		$("#btUpdate").show();
@@ -149,8 +125,8 @@ app.controller('MainCtrl', function($scope, $http) {
 	
 	
 	$scope.btDelete = function(id){
-		swal({  title: "ProcessVar" ,   
-			text: "Are you sure you want to deleted this process-var?",   
+		swal({  title: "Department" ,   
+			text: "Are you sure you want to deleted this department?",   
 			type: "info",  
 			showCancelButton: true,   
 			closeOnConfirm: false,   
@@ -158,7 +134,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		}, function(){   
 			var post = $http({
 	            method: "DELETE",
-	            url: "/v3/api/fukoku/process-var/"+id,
+	            url: "/v3/api/fukoku/department/"+id,
 	            dataType: 'json',
 	            headers: { "Content-Type": "application/json" }
 	        });
@@ -180,31 +156,9 @@ app.controller('MainCtrl', function($scope, $http) {
 	}
 
 	
-$scope.btFindProcess = function(s){
-		
-	$scope.classClicked = "clicked r";
-	
-	
-		
-	// $scope.buttonClick= function (s){$scope.selectedButton =s }
-	 
-		//alert(name);
-		//$(".btFindProcess").css("background-color","00acd6");
-		//$(this).css("background-color","rebeccapurple");
-		
-		//$('input[type="button"].red').removeClass('red')
-		// $('.btFindProcess').removeClass('red')
-	    //$(this).addClass('red');
-	 
-		
-}
-
-  
-
 	
 	
 	$scope.findAll();
-	$scope.findProcesses();
 	
 	
 });

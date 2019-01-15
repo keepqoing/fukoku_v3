@@ -32,7 +32,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.findAllProduct = function(){
         var post = $http({
             method: "GET",
-            url: "/v3/api/fukoku/product",
+            url: "/v3/api/fukoku/product/distinct",
             dataType: 'json',
             headers: { "Content-Type": "application/json" }
         });

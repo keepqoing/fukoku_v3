@@ -40,6 +40,8 @@ app.controller('MainCtrl', function($scope, $http) {
             	$scope.id = response.data.id;
             	$("#txtName").val(response.data.name);
             	$("#txtType").val(response.data.type);
+            	$("#txtRepVariableName").val(response.data.rep_variable_name);
+            	$("#txtDespPicture").val(response.data.desp_picture);
             	$("#txtSeq").val(response.data.seq);
             	$("#txtRemark").val(response.data.remark);
             }else{
@@ -56,6 +58,8 @@ app.controller('MainCtrl', function($scope, $http) {
 				"id" : $scope.id,
 				"seq" : $("#txtSeq").val(),
 				"name" : $("#txtName").val(),
+				"rep_variable_name" : $("#txtRepVariableName").val(),
+				"desp_picture" : $("#txtDespPicture").val(),
 				"type" : $("#txtType").val(),
 				"remark" : $("#txtRemark").val(),
 		}
@@ -152,6 +156,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		});		
 	}
 
+	
 	
 	
 	

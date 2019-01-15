@@ -61,7 +61,7 @@
 	                                    	<td>{{f.seq}}</td>
 	                                    	<td>{{f.name}}</td>
 	                                    	<td>{{f.factory.name}}</td>
-	                                    	<td>{{f.product.name}}</td>
+	                                    	<td>{{f.product.type}}</td>
 	                                    	<td>{{f.layout_name}}</td>
 	                                    	<td>{{f.start_date}}</td>
 	                                    	<td>{{f.end_date}}</td>
@@ -130,7 +130,7 @@
                             <div class="col-sm-10">
                                 <select class="form-control" id="selectOptProduct"  required>
                                 	<option value="">제품</option>
-                                	<option ng-repeat="o in products" value="{{o.id}}">{{o.name}}</option>
+                                	<option ng-repeat="o in products" value="{{o.id}}">{{o.type}}</option>
                                 </select>
                             </div>
                         </div>

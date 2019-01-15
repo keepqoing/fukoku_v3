@@ -24,6 +24,7 @@ public interface ProcessVarRepository {
 
 	@Select("Select * from process_var where status='1'")
 	@Results(value={
+			@Result(property="itemType", column="item_type"),
 			@Result(property="process", column="ref_process_id",
 				one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findOne")
 		    )
@@ -32,6 +33,8 @@ public interface ProcessVarRepository {
 	
 	@Select("Select * from process_var where id=#{id} and status='1'")
 	@Results(value={
+			
+			@Result(property="itemType", column="item_type"),
 			@Result(property="process", column="ref_process_id",
 					one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findOne")
 			)
@@ -39,12 +42,12 @@ public interface ProcessVarRepository {
 	ProcessVar findOne(@Param("id") long  id);
 	
 	@Insert("INSERT INTO process_var ("
-			+ " seq, name, ref_process_id, remark"
+			+ " seq, name, ref_process_id, remark,itemType"
 			+ ") VALUES ("
 			+ "	#{f.seq}, "
 			+ "	#{f.name}, "
 			+ " #{f.refProcessId}, "
-			+ " #{f.remark}"
+			+ " #{f.remark}, #{f.itemType} "
 			+ ");")
 	boolean save(@Param("f") ProcessVarFrm frm);
 	
@@ -52,7 +55,7 @@ public interface ProcessVarRepository {
 			+ "	seq=#{f.seq}, "
 			+ " name=#{f.name},"
 			+ " ref_process_id=#{f.refProcessId},"
-			+ " remark=#{f.remark} "
+			+ " remark=#{f.remark} , item_type=#{f.itemType}"
 			+ "		 WHERE id=#{f.id}")
 	boolean update(@Param("f") ProcessVarFrm frm);
 	

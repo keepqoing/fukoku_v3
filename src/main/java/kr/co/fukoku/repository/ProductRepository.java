@@ -53,4 +53,12 @@ public interface ProductRepository {
 	@Delete("DELETE FROM product WHERE id=#{id}")
 	boolean delete(@Param("id") long id);
 	
+	@Select("Select type,id from product where  status='1' GROUP BY type")
+	@Results(value={
+			@Result(property="startDate",column="start_date"),
+			@Result(property="endDate",column="end_date"),
+			@Result(property="customerName",column="customer_name")
+	})
+	List<Product> findAllDistinct();
+	
 }

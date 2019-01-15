@@ -10,21 +10,38 @@ public class ProcessFrm {
 	private long  seq;
 	@JsonProperty("name")
 	private String name;
+	
+	@JsonProperty("rep_variable_name")
+	private String repVariableName;
+	
+	@JsonProperty("desp_picture")
+	private String despPicture;
+	
+	
 	@JsonProperty("type")
 	private String type;
 	@JsonProperty("remark")
 	private String remark;
 	@JsonProperty("status")
 	private String status;
-	public ProcessFrm(long id, long seq, String name, String type, String remark, String status) {
+	
+	
+	
+	
+	public ProcessFrm(long id, long seq, String name, String repVariableName, String despPicture, String type,
+			String remark, String status) {
 		super();
 		this.id = id;
 		this.seq = seq;
 		this.name = name;
+		this.repVariableName = repVariableName;
+		this.despPicture = despPicture;
 		this.type = type;
 		this.remark = remark;
 		this.status = status;
 	}
+	
+	
 	public ProcessFrm() {
 		super();
 	}
@@ -64,10 +81,25 @@ public class ProcessFrm {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	@Override
-	public String toString() {
-		return "Process [id=" + id + ", seq=" + seq + ", name=" + name + ", type=" + type + ", remark=" + remark
-				+ ", status=" + status + "]";
+
+
+	public String getRepVariableName() {
+		return repVariableName;
+	}
+
+
+	public void setRepVariableName(String repVariableName) {
+		this.repVariableName = repVariableName;
+	}
+
+
+	public String getDespPicture() {
+		return despPicture;
+	}
+
+
+	public void setDespPicture(String despPicture) {
+		this.despPicture = despPicture;
 	}
 	
 	

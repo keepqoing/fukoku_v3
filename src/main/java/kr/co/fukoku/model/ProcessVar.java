@@ -16,7 +16,11 @@ public class ProcessVar {
 	private String remark;
 	@JsonProperty("status")
 	private String status;
-	public ProcessVar(long id, long seq, String name, Process process, String remark, String status) {
+	
+	@JsonProperty("item_type")
+	private String itemType;
+	
+	public ProcessVar(long id, long seq, String name, Process process, String remark, String status, String itemType) {
 		super();
 		this.id = id;
 		this.seq = seq;
@@ -24,6 +28,7 @@ public class ProcessVar {
 		this.process = process;
 		this.remark = remark;
 		this.status = status;
+		this.itemType = itemType;
 	}
 	public ProcessVar() {
 		super();
@@ -63,6 +68,13 @@ public class ProcessVar {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	public String getItemType() {
+		return itemType;
+	}
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
 	}
 	@Override
 	public String toString() {

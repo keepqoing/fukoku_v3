@@ -23,7 +23,7 @@
 
     <section class="content-header">
         <h1>
-            부서코드관리
+            	부서코드관리
         </h1>
     </section>
 
@@ -35,7 +35,7 @@
                         <div class="row">
                             <div>
                                 <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3 col-xs-12">
-                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">품종추가</button>
+                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">부서코드추가</button>
                                 </div>
                             </div>
                         </div>
@@ -45,29 +45,23 @@
                                 <table  class="table table-bordered table-striped" id="dtTable">
                                     <thead class="table-head">
                                     <tr>
-                                        <th>#</th>
-                                        <th>제품명</th>
-                                        <th>제품유형</th>
-                                        <th>납품시작일</th>
-                                        <th>납품종료일</th>
-                                        <th>고객사</th>
+                                       <th>순번</th> <!-- Seq -->
+                                        <th>부서이름</th>
+                                        <th>부서코드</th>
                                         <th>설명</th>
                                         <th>수정</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-	                                    <tr  ng-repeat="f in products">
-	                                    	<td>{{f.id}}</td>
+	                                    <tr  ng-repeat="f in departments">
+	                                    	<td>{{f.seq}}</td>
 	                                    	<td>{{f.name}}</td>
-	                                    	<td>{{f.type}}</td>
-	                                    	<td>{{f.start_date}}</td>
-	                                    	<td>{{f.end_date}}</td>
-	                                    	<td>{{f.customer_name}}</td>
+	                                    	<td>{{f.code}}</td>
 	                                    	<td>{{f.remark}}</td>
 	                                    	<td style="width:100px">
 	                                    			<button data-f-id="{{f.id}}" ng-click="btEdit(f.id)" style="width:30px;" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i></button>
 	                                    			<button data-f-id="{{f.id}}" ng-click="btDelete(f.id)" style="width:30px" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i></button>
-	                                    			                                    	</td>
+	                                     	</td>
 	                                    </tr>
                                     </tbody>
                                 </table>
@@ -91,56 +85,36 @@
                 <div class="box box-primary modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">라인관리</h4>
+                    <h4 class="modal-title">부서코드관리</h4>
                 </div>
 
                 <form class="form-horizontal" enctype="multipart/form-data" id="frm" ng-submit="onSubmitFrm()">
                     <div class="box-body">
+                    
+                    
+                     <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">순번:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtSeq" placeholder="" required/>
+                            </div>
+                        </div>
                         
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">제품명:</label>
+                            <label for="txtName" class="col-sm-2 control-label">부서이름:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtName" placeholder="" required/>
                             </div>
                         </div>
                         
+                     
+                        
                         <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">제품유형:</label>
+                            <label for="txtName" class="col-sm-2 control-label">부서코드:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtType" placeholder="" required/>
+                                <input type="text" class="form-control" id="txtCode" placeholder="" required/>
                             </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">고객사:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtCustomerName" placeholder="" required/>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">납품시작일</label>
-                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                <div class='input-group date' id='startDate'>
-                                    <input type='text' class="form-control" id="txtStartDate" placeholder="" required/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">납품종료일</label>
-                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                <div class='input-group date' id='endDate'>
-                                    <input type='text' class="form-control" id="txtEndDate" placeholder="" required/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
                         
                         <div class="form-group">
                             <label for="txtRemark" class="col-sm-2 control-label">설명:</label>
@@ -152,7 +126,7 @@
                     <div class="box-footer">
                         <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
                         <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">저장</button>
-                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">저장
+                        <button type="submit" class="btn btn-info pull-right btn-flat" id="btUpdate" style="display:none;">저장
                         </button>
                     </div><!-- /.box-footer -->
                 </form>
@@ -162,7 +136,7 @@
 
 </div>
 <th:block layout:fragment="script">
-<script th:src="@{/static/admin/javascript_v3/product.js}"></script>
+<script th:src="@{/static/admin/javascript_v3/department.js}"></script>
 <script>
 		
         $(document).ready(function () {

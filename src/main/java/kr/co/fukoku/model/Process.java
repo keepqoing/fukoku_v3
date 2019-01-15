@@ -10,17 +10,32 @@ public class Process {
 	private long  seq;
 	@JsonProperty("name")
 	private String name;
+	
+	@JsonProperty("rep_variable_name")
+	private String repVariableName;
+	
+	@JsonProperty("desp_picture")
+	private String despPicture;
+	
+	
 	@JsonProperty("type")
 	private String type;
 	@JsonProperty("remark")
 	private String remark;
 	@JsonProperty("status")
 	private String status;
-	public Process(long id, long seq, String name, String type, String remark, String status) {
+	
+	
+	
+	
+	public Process(long id, long seq, String name, String repVariableName, String despPicture, String type,
+			String remark, String status) {
 		super();
 		this.id = id;
 		this.seq = seq;
 		this.name = name;
+		this.repVariableName = repVariableName;
+		this.despPicture = despPicture;
 		this.type = type;
 		this.remark = remark;
 		this.status = status;
@@ -64,11 +79,29 @@ public class Process {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public String getRepVariableName() {
+		return repVariableName;
+	}
+	public void setRepVariableName(String repVariableName) {
+		this.repVariableName = repVariableName;
+	}
+	public String getDespPicture() {
+		return despPicture;
+	}
+	public void setDespPicture(String despPicture) {
+		this.despPicture = despPicture;
+	}
 	@Override
 	public String toString() {
-		return "Process [id=" + id + ", seq=" + seq + ", name=" + name + ", type=" + type + ", remark=" + remark
-				+ ", status=" + status + "]";
+		return "Process [id=" + id + ", seq=" + seq + ", name=" + name + ", repVariableName=" + repVariableName
+				+ ", despPicture=" + despPicture + ", type=" + type + ", remark=" + remark + ", status=" + status
+				+ ", getId()=" + getId() + ", getSeq()=" + getSeq() + ", getName()=" + getName() + ", getType()="
+				+ getType() + ", getRemark()=" + getRemark() + ", getStatus()=" + getStatus()
+				+ ", getRepVariableName()=" + getRepVariableName() + ", getDespPicture()=" + getDespPicture()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+				+ "]";
 	}
+	
 	
 	
 	
