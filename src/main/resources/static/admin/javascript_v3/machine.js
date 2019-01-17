@@ -7,7 +7,39 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.id;
 	$scope.action;
 	$scope.processes;
-	$scope.dtTable = $("#dtTable");
+	$scope.dtTable;
+		
+		angular.element(document).ready(function() {
+			$scope.dtTable = $("#dtTable");
+			$scope.dtTable.dataTable({
+				'paging'      : false,
+			     'lengthChange': false,
+			     'info'        : false,
+				 "language": {
+					 
+			            //"lengthMenu": "Display _MENU_ records per page",
+			            "lengthMenu":"디스플레이 _MENU_ 페이지 당 기록",
+			            
+			            "zeroRecords": "아무것도 찾을 수 없음", // nothing found
+			            
+			            //"info": "Showing page _PAGE_ of _PAGES_",
+			            "info" : "_PAGE_ 페이지 중 _PAGES_ 페이지 표시",
+			            
+			            //"search":         "Search:",
+			            "search":         "검색:",
+			            
+			            "infoEmpty": "No records available",
+			            "infoFiltered": "(filtered from _MAX_ total records)",
+			            
+			            "paginate": {
+			                "first":      "먼저",
+			                "last":       "마지막",
+			                "next":       "다음 것",
+			                "previous":   "너무 이른"
+			            }
+			        }
+			});
+		});
 	
 	$scope.findAllProcess = function(){
         var post = $http({
@@ -125,9 +157,7 @@ app.controller('MainCtrl', function($scope, $http) {
         });
     }
 	
-	angular.element(document).ready(function() {
-		$scope.dtTable.dataTable();
-	});
+	
 	
 	$scope.btAdd = function(){
 		$scope.action = "add";

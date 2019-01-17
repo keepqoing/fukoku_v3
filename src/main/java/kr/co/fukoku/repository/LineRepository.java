@@ -22,7 +22,7 @@ import kr.co.fukoku.model.form.ProductFrm;
 @Repository
 public interface LineRepository {
 
-	@Select("Select * from line where status='1'")
+	@Select("Select * from line where status='1' order by seq asc")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),

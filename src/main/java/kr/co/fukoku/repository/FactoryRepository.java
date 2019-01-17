@@ -20,7 +20,7 @@ import kr.co.fukoku.model.form.ProductFrm;
 @Repository
 public interface FactoryRepository {
 
-	@Select("Select * from factory where status='1'")
+	@Select("Select * from factory where status='1' order by seq asc")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),

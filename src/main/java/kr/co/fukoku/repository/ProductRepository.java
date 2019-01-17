@@ -17,7 +17,7 @@ import kr.co.fukoku.model.form.ProductFrm;
 @Repository
 public interface ProductRepository {
 
-	@Select("Select * from product where status='1'")
+	@Select("Select * from product where status='1' order by id asc")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),

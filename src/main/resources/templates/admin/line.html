@@ -16,6 +16,10 @@
     <script th:src="@{/static/admin/angular/bower_components/angular-nvd3/dist/angular-nvd3.js}"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-sanitize.js"></script>
     
+    
+    
+    
+    
 </head>
 <body ng-controller="MainCtrl">
 
@@ -41,8 +45,9 @@
                         </div>
                          <br/>
                         <div class="row">
+                        
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                                <table  class="table table-bordered table-striped" id="dtTable">
+								<table  class="table table-bordered table-striped" id="dtTable">
                                     <thead class="table-head">
                                     <tr>
                                         <th>순번</th>
@@ -192,6 +197,8 @@
 
 </div>
 <th:block layout:fragment="script">
+
+
 <script th:src="@{/static/admin/javascript_v3/line.js}"></script>
 <script>
 		
@@ -203,6 +210,10 @@
                 });
             });
         });
+        
+        
+     
+        
     </script>
 </th:block>
 </body>
