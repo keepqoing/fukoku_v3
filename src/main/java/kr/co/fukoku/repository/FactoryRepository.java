@@ -1,6 +1,7 @@
 package kr.co.fukoku.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -8,26 +9,31 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
-import org.apache.ibatis.annotations.One;
 
 import kr.co.fukoku.model.Factory;
-import kr.co.fukoku.model.Product;
 import kr.co.fukoku.model.form.FactoryFrm;
-import kr.co.fukoku.model.form.ProductFrm;
+import kr.co.fukoku.repository.sql.FactorySQLBuilder;
 
 @Repository
 public interface FactoryRepository {
 
-	@Select("Select * from factory where status='1' order by seq asc")
+	
+	@SelectProvider(type = FactorySQLBuilder.class, method = "find")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),
 	})
-	List<Factory> findAll();
+	List<Factory> findAll(@Param("f") FactoryFrm frm);
 	
-	@Select("Select * from factory where id=#{id} and status='1'")
+	@SelectProvider(type = FactorySQLBuilder.class, method = "find")
+	List<Map<String, Object>> findMap(@Param("f") FactoryFrm frm);
+	
+	@Select("select * from factory where status='1' and \n" +
+			"start_date <= CURRENT_TIMESTAMP and end_date >= CURRENT_TIMESTAMP and \n" +
+			"id =#{id} order by id asc;")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date")
@@ -45,6 +51,20 @@ public interface FactoryRepository {
 			+ " #{f.remark}"
 			+ ");")
 	boolean save(@Param("f") FactoryFrm frm);
+	
+	@Insert("<script>insert into factory ("
+			+ " seq, name, address , start_date, end_date, remark"
+			+ ") VALUES "
+			+ " <foreach collection='lst' item='f' separator=','>("
+			+ "	#{f.seq}, "
+			+ "	#{f.name}, "
+			+ " #{f.address}, "
+			+ " #{f.startDate}, "
+			+ " #{f.endDate}, "
+			+ " #{f.remark}"
+			+ " )"
+			+ "</foreach></script>")
+	boolean saveLst(@Param("lst") List<FactoryFrm>  lst);
 	
 	@Update("UPDATE factory SET"
 			+ "	seq=#{f.seq}, "

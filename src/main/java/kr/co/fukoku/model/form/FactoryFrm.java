@@ -29,6 +29,15 @@ public class FactoryFrm {
 	}
 
 	
+	
+
+	public FactoryFrm(String name) {
+		super();
+		this.name = name;
+	}
+
+
+
 
 	public FactoryFrm(long id, long seq, String name, String address, String startDate, String endDate, String remark,
 			String status) {
