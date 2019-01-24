@@ -29,6 +29,11 @@ public class LineFrm {
 	public LineFrm() {
 		super();
 	}
+	
+	public LineFrm(String name) {
+		super();
+		this.name = name;
+	}
 
 	public LineFrm(long id, long seq, String name, long refFactoryId, String layoutName, long refProductId,
 			String startDate, String endDate, String remark, String status) {

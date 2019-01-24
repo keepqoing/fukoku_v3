@@ -62,7 +62,7 @@ app.controller('MainCtrl', function($scope, $http) {
         });
         post.success(function (response, status) {
         	$scope.factories = null;
-        	console.log(response);
+        	//console.log(response);
             if(response.code == 200){
             	$scope.factories = response.data;
             }else{
@@ -135,8 +135,6 @@ app.controller('MainCtrl', function($scope, $http) {
         });
     }
 	
-	
-	
 	$scope.delete = function(id){
 		swal({  title: "Factory" ,   
 			text: "Are you sure you want to deleted this factory?",   
@@ -163,7 +161,6 @@ app.controller('MainCtrl', function($scope, $http) {
 	        post.error(function (data, status) {
 	            console.log(data);
 	        });
-		
 				
 		});		
 	}
@@ -212,7 +209,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	};
 	
 	$scope.btSearch = function(){
-		alert($("#txtSearch").val());
+		//alert($("#txtSearch").val());
 		$scope.findAll($("#txtSearch").val());
 	}
 

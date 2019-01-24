@@ -2,6 +2,7 @@ package kr.co.fukoku.utils;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,7 +52,8 @@ public class ReadExcelDynamic {
 						obj.put(COLUMN[columnIndex], currentCell.getStringCellValue());
 					} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
 						//System.out.println((long)currentCell.getNumericCellValue()+"--");
-						obj.put(COLUMN[columnIndex], currentCell.getNumericCellValue());
+						String str = NumberToTextConverter.toText(currentCell.getNumericCellValue());
+						obj.put(COLUMN[columnIndex], str);
 					}
 
 				}

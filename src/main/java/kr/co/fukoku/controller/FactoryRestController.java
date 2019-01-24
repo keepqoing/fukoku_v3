@@ -170,7 +170,7 @@ public class FactoryRestController {
 		
 		for(int i=0;i<jsonArr.length();i++) {
 			FactoryFrm  f = new FactoryFrm();
-			f.setSeq( Long.parseLong((String) jsonArr.getJSONObject(i).get("seq"))  );
+			f.setSeq( Long.parseLong((String) jsonArr.getJSONObject(i).get("seq")))  ;
 			f.setName( (String) jsonArr.getJSONObject(i).get("name")  );
 			f.setAddress( (String) jsonArr.getJSONObject(i).get("address")  );
 			f.setStartDate( (String) jsonArr.getJSONObject(i).get("start_date")  );

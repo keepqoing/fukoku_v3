@@ -28,6 +28,13 @@ public class ProcessFrm {
 	
 	
 	
+	
+	public ProcessFrm(String name) {
+		super();
+		this.name = name;
+	}
+
+
 	public ProcessFrm(long id, long seq, String name, String repVariableName, String despPicture, String type,
 			String remark, String status) {
 		super();

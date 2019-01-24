@@ -32,6 +32,17 @@ public class Line {
 	}
 	
 	
+	
+	
+
+	public Line(String name) {
+		super();
+		this.name = name;
+	}
+
+
+
+
 
 	public Line(long id, long seq, String name, Factory factory, String layoutName, Product product, String startDate,
 			String endDate, String remark, String status) {

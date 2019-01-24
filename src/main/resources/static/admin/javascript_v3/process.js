@@ -2,12 +2,22 @@ var app = angular.module('fukoku', ['nvd3','ngSanitize']);
 
 app.controller('MainCtrl', function($scope, $http) {
 	
+	/**
+	 * Variable
+	 */
 	$scope.processes;
 	$scope.id;
 	$scope.action;
-
-	$scope.dtTable;
 	
+	
+	
+	
+	/***
+	 * Function()
+	 */
+	
+	/*
+	$scope.dtTable;
 	angular.element(document).ready(function() {
 		$scope.dtTable = $("#dtTable");
 		$scope.dtTable.dataTable({
@@ -38,16 +48,20 @@ app.controller('MainCtrl', function($scope, $http) {
 		            }
 		        }
 		});
-	});
+	});*/
 	
 	
 	
 	
-	$scope.findAll = function(){
+	$scope.findAll = function(data){
+		var data = {
+				"name" : data,
+		};
         var post = $http({
-            method: "GET",
-            url: "/v3/api/fukoku/process",
+        	method: "POST",
+            url: "/v3/api/fukoku/process/find",
             dataType: 'json',
+            data : JSON.stringify(data),
             headers: { "Content-Type": "application/json" }
         });
         post.success(function (response, status) {
@@ -110,7 +124,7 @@ app.controller('MainCtrl', function($scope, $http) {
         post.success(function (response, status) {
             if(response.code == 200){
             	$scope.message = response.message;
-            	$scope.findAll();
+            	$scope.findAll("");
             	$("#modalFrm").modal('hide');
             	swal({position: 'top-end',type: 'success',title: 'Data has been saved',showConfirmButton: false,timer: 1500})
             }else{
@@ -123,6 +137,50 @@ app.controller('MainCtrl', function($scope, $http) {
             swal({position: 'top-end',type: 'error',title: 'Data has not been saved',showConfirmButton: false,timer: 1500})
         });
     }
+	
+	$scope.delete = function(id){
+		swal({  title: "Process" ,   
+			text: "Are you sure you want to deleted this process?",   
+			type: "info",  
+			showCancelButton: true,   
+			closeOnConfirm: false,   
+			showLoaderOnConfirm: true, 
+		}, function(){   
+			var post = $http({
+	            method: "DELETE",
+	            url: "/v3/api/fukoku/process/"+id,
+	            dataType: 'json',
+	            headers: { "Content-Type": "application/json" }
+	        });
+	        post.success(function (response, status) {
+	        	$scope.products = null;
+	            if(response.code == 200){
+	            	swal({position: 'top-end',type: 'success',title: 'Data has been deleted',showConfirmButton: false,timer: 1500})
+	            }else{
+	            	swal({position: 'top-end',type: 'error',title: 'Data has been deleted',showConfirmButton: false,timer: 1500})
+	            }
+	            $scope.findAll("");
+	        });
+	        post.error(function (data, status) {
+	            console.log(data);
+	        });
+		
+				
+		});		
+	}
+	
+	
+	/*******************************************************************************
+	 * Onload()
+	 *******************************************************************************/
+	
+	$scope.findAll("");
+	
+	
+	/*******************************************************************************
+	 * Event()
+	 *******************************************************************************/
+	
 
 	
 	$scope.btAdd = function(){
@@ -153,48 +211,66 @@ app.controller('MainCtrl', function($scope, $http) {
 		
 	}
 	
-	
-	
-	
-	
-	
-	
 	$scope.btDelete = function(id){
-		swal({  title: "Process" ,   
-			text: "Are you sure you want to deleted this process?",   
-			type: "info",  
-			showCancelButton: true,   
-			closeOnConfirm: false,   
-			showLoaderOnConfirm: true, 
-		}, function(){   
-			var post = $http({
-	            method: "DELETE",
-	            url: "/v3/api/fukoku/process/"+id,
-	            dataType: 'json',
-	            headers: { "Content-Type": "application/json" }
-	        });
-	        post.success(function (response, status) {
-	        	$scope.products = null;
-	            if(response.code == 200){
-	            	swal({position: 'top-end',type: 'success',title: 'Data has been deleted',showConfirmButton: false,timer: 1500})
-	            }else{
-	            	swal({position: 'top-end',type: 'error',title: 'Data has been deleted',showConfirmButton: false,timer: 1500})
-	            }
-	            $scope.findAll();
-	        });
-	        post.error(function (data, status) {
-	            console.log(data);
-	        });
-		
-				
-		});		
+		$scope.delete(id);
 	}
+	
+	
+	$scope.btSearch = function(){
+		//alert($("#txtSearch").val());
+		$scope.findAll($("#txtSearch").val());
+	}
+
+	
+	$scope.btExport = function(){
+		$http({
+		    url: '/v3/api/fukoku/process/download',
+		    method: "GET",
+		    headers: {
+		       'Content-type': 'application/json'
+		    },
+		    responseType: 'arraybuffer'
+		}).success(function (data, status, headers, config) {
+			 var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+			 var objectUrl = URL.createObjectURL(blob);
+			 window.open(objectUrl);
+			 
+
+		    
+		}).error(function (data, status, headers, config) {
+		    //upload failed
+		});
+	}
+	
+	$('#btImport').change(function() {
+	    $.ajax({
+    	    url: "/v3/api/fukoku/process/import",
+    	    type: "POST",
+    	    data: new FormData($("#fileUploadForm")[0]),
+    	    enctype: 'multipart/form-data',
+    	    processData: false,
+    	    contentType: false,
+    	    cache: false,
+    	    success: function () {
+    	    	$scope.findAll("");
+    	    	swal({position: 'top-end',type: 'success',title: 'Data has been imported.',showConfirmButton: false,timer: 1500})
+    	    },
+    	    error: function () {
+    	    	swal({position: 'top-end',type: 'error',title: 'Data has been imported.',showConfirmButton: false,timer: 1500})
+    	    }
+    	});
+	    
+	});
+
+	
+	
+	
 
 	
 	
 	
 	
-	$scope.findAll();
+	
 	
 	
 });

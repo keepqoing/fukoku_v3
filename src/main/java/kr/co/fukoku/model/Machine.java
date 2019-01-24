@@ -36,6 +36,14 @@ public class Machine {
 	private String status;
 	@JsonProperty("station")
 	private String station;
+	
+	
+	
+	public Machine(String name) {
+		super();
+		this.name = name;
+	}
+
 	public Machine() {
 		super();
 	}

@@ -18,6 +18,12 @@ public class ProcessVarFrm {
 	private String status;
 	@JsonProperty("item_type")
 	private String itemType;
+	
+	public ProcessVarFrm(String name) {
+		super();
+		this.name = name;
+	}
+	
 	public ProcessVarFrm(long id, long seq, String name, long refProcessId, String remark, String status, String itemType) {
 		super();
 		this.id = id;

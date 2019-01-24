@@ -20,6 +20,12 @@ public class ProcessVar {
 	@JsonProperty("item_type")
 	private String itemType;
 	
+	
+	
+	public ProcessVar(String name) {
+		super();
+		this.name = name;
+	}
 	public ProcessVar(long id, long seq, String name, Process process, String remark, String status, String itemType) {
 		super();
 		this.id = id;

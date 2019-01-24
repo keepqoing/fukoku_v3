@@ -45,23 +45,25 @@
                 <div class="box box-primary">
                     <div class="box-body">
                         <div class="row">
-                            <div>
-                                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3 col-xs-12">
-                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">공정항목추가</button>
+                            <div class="col-xl-10 col-lg-10 col-md-6 col-sm-6 col-xs-12">
+                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">공장추가</button>
+                                    <form id="fileUploadForm"  class="btn btn-info btn-file">Import <input type="file" id="btImport" name="file" (change)="btImport()"> </form>
+                                    <button type="button" id="btExport" class="btn btn-info" ng-click="btExport()">Export</button>
                                 </div>
-                            </div>
+                                
+                                <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                     <div class="box-tools">
+						                <div class="input-group input-group-sm" style="min-width: 150px;">
+						                  <input type="text" name="table_search" class="form-control pull-right" id="txtSearch" placeholder="검색">
+						
+						                  <div class="input-group-btn">
+						                    <button type="button" class="btn btn-default" ng-click="btSearch()"><i class="fa fa-search"></i></button>
+						                  </div>
+						                </div>
+						              </div>
+                                </div>
                         </div>
                         <br/>
-<!--                         <div class="row"> -->
-<!--                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"> -->
-<!--                                       <button type="button" class="btn btn-info btFindProcess"  ng-click="btFindProcess('all')">ALL</button>   -->
-<!-- 				                      <button style="margin-right: 4px" type="button" class="btn" id="{{classClicked}}"  ng-repeat="f in processes" ng-click="btFindProcess(f.name)">{{f.name}}</button>   -->
-                                
-                                 
-                                
-<!--                                 </div> -->
-<!--                         </div> -->
-                        
                         
                          <br/>
                         <div class="row">

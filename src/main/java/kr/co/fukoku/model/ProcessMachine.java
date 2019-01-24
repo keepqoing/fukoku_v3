@@ -8,30 +8,14 @@ public class ProcessMachine {
 	private long  id;
 	@JsonProperty("seq")
 	private long  seq;
-	@JsonProperty("name")
-	private String name;
 	@JsonProperty("process")
 	private Process process;
 	@JsonProperty("machine")
 	private Machine machine;
-	@JsonProperty("remark")
-	private String remark;
-	@JsonProperty("status")
-	private String status;
-	public ProcessMachine(long id, long seq, String name, Process process, Machine machine, String remark,
-			String status) {
-		super();
-		this.id = id;
-		this.seq = seq;
-		this.name = name;
-		this.process = process;
-		this.machine = machine;
-		this.remark = remark;
-		this.status = status;
-	}
-	public ProcessMachine() {
-		super();
-	}
+	@JsonProperty("process_chain_element")
+	private ProcessChainElement processChainElement;
+	@JsonProperty("next_sequence")
+	private String nextSequence;
 	public long getId() {
 		return id;
 	}
@@ -43,12 +27,6 @@ public class ProcessMachine {
 	}
 	public void setSeq(long seq) {
 		this.seq = seq;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public Process getProcess() {
 		return process;
@@ -62,23 +40,19 @@ public class ProcessMachine {
 	public void setMachine(Machine machine) {
 		this.machine = machine;
 	}
-	public String getRemark() {
-		return remark;
+	public ProcessChainElement getProcessChainElement() {
+		return processChainElement;
 	}
-	public void setRemark(String remark) {
-		this.remark = remark;
+	public void setProcessChainElement(ProcessChainElement processChainElement) {
+		this.processChainElement = processChainElement;
 	}
-	public String getStatus() {
-		return status;
+	public String getNextSequence() {
+		return nextSequence;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+	public void setNextSequence(String nextSequence) {
+		this.nextSequence = nextSequence;
 	}
-	@Override
-	public String toString() {
-		return "ProcessMachine [id=" + id + ", seq=" + seq + ", name=" + name + ", process=" + process + ", machine="
-				+ machine + ", remark=" + remark + ", status=" + status + "]";
-	}
+	
 	
 	
 	

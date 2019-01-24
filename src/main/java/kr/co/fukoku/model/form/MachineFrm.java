@@ -36,6 +36,13 @@ public class MachineFrm {
 	private String status;
 	@JsonProperty("station")
 	private String station;
+	
+	public MachineFrm(String name) {
+		super();
+		this.name = name;
+	}
+	
+	
 	public MachineFrm(long id, long seq, String name, long refProcessId, String ip, String importDate, String code,
 			String manufacturer, String facilityStaff, String facilityContactPerson, String plcType,
 			String plcCommunicationDevice, String remark, String status, String station) {

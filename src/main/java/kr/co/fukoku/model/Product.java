@@ -20,6 +20,7 @@ public class Product {
 	private String remark;
 	@JsonProperty("status")
 	private String status;
+	
 	public Product(long id, String name, String type, String startDate, String endDate, String customerName,
 			String remark, String status) {
 		super();

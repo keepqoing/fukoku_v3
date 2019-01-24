@@ -2,6 +2,11 @@ var app = angular.module('fukoku', ['nvd3','ngSanitize']);
 
 app.controller('MainCtrl', function($scope, $http) {
 	
+	/**
+	 * Variable
+	 */
+	
+	
 	$scope.processes;
 	$scope.machines;
 	$scope.processMachines;
@@ -9,7 +14,11 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.action;
 	$scope.dtTable;
 	
-	angular.element(document).ready(function() {
+	
+	/***
+	 * Function()
+	 */
+	/*angular.element(document).ready(function() {
 		$scope.dtTable = $("#dtTable");
 		$scope.dtTable.dataTable({
 			'paging'      : false,
@@ -40,12 +49,17 @@ app.controller('MainCtrl', function($scope, $http) {
 		        }
 		});
 	});
+	*/
 	
 	$scope.findProcesses = function(){
+		var data = {
+				"name" : "",
+		};
         var post = $http({
-            method: "GET",
-            url: "/v3/api/fukoku/process",
+            method: "POST",
+            url: "/v3/api/fukoku/process/find",
             dataType: 'json',
+            data : JSON.stringify(data),
             headers: { "Content-Type": "application/json" }
         });
         post.success(function (response, status) {
@@ -62,10 +76,14 @@ app.controller('MainCtrl', function($scope, $http) {
     }
 	
 	$scope.findMachines = function(){
+		var data = {
+				"name" : "",
+		};
         var post = $http({
-            method: "GET",
-            url: "/v3/api/fukoku/machine",
+            method: "POST",
+            url: "/v3/api/fukoku/machine/find",
             dataType: 'json',
+            data : JSON.stringify(data),
             headers: { "Content-Type": "application/json" }
         });
         post.success(function (response, status) {
@@ -81,11 +99,15 @@ app.controller('MainCtrl', function($scope, $http) {
         });
     }
 	
-	$scope.findAll = function(){
+	$scope.findAll = function(data){
+		var data = {
+				"name" : "",
+		};
         var post = $http({
-            method: "GET",
-            url: "/v3/api/fukoku/process-machine",
+        	method: "POST",
+            url: "/v3/api/fukoku/process-machine/find",
             dataType: 'json',
+            data : JSON.stringify(data),
             headers: { "Content-Type": "application/json" }
         });
         post.success(function (response, status) {
@@ -116,7 +138,7 @@ app.controller('MainCtrl', function($scope, $http) {
             	$("#selectOptProcess").val(response.data.process.id);
             	$("#selectOptMachine").val(response.data.machine.id);
             	$("#txtSeq").val(response.data.seq);
-            	$("#txtRemark").val(response.data.remark);
+            	$("#txtNextSequence").val(response.data.nextSequence);
             }else{
             	$scope.message = response.message;
             }
@@ -130,10 +152,9 @@ app.controller('MainCtrl', function($scope, $http) {
 		var data = {
 				"id" : $scope.id,
 				"seq" : $("#txtSeq").val(),
-				"name" : $("#txtName").val(),
 				"ref_process_id" : $("#selectOptProcess").val(),
 				"ref_machine_id" : $("#selectOptMachine").val(),
-				"remark" : $("#txtRemark").val(),
+				"next_sequence" : $("#txtNextSequence").val(),
 		}
 		console.log("data", data);
         var post = $http({
@@ -146,7 +167,7 @@ app.controller('MainCtrl', function($scope, $http) {
         post.success(function (response, status) {
             if(response.code == 200){
             	$scope.message = response.message;
-            	$scope.findAll();
+            	$scope.findAll("");
             	$("#modalFrm").modal('hide');
             	swal({position: 'top-end',type: 'success',title: 'Data has been saved',showConfirmButton: false,timer: 1500})
             }else{
@@ -161,6 +182,20 @@ app.controller('MainCtrl', function($scope, $http) {
     }
 	
 	
+	
+	/*******************************************************************************
+	 * Onload()
+	 *******************************************************************************/
+	
+	$scope.findAll("");
+	
+	
+	
+	
+	
+	/*******************************************************************************
+	 * Event()
+	 *******************************************************************************/
 	
 	$scope.btAdd = function(){
 		$scope.action = "add";
@@ -192,12 +227,6 @@ app.controller('MainCtrl', function($scope, $http) {
 		}
 		
 	}
-	
-	
-	
-	
-	
-	
 	
 	$scope.btDelete = function(id){
 		swal({  title: "ProcessMachine" ,   
@@ -231,9 +260,49 @@ app.controller('MainCtrl', function($scope, $http) {
 	}
 
 	
+	$scope.btExport = function(){
+		$http({
+		    url: '/v3/api/fukoku/process-machine/download',
+		    method: "GET",
+		    headers: {
+		       'Content-type': 'application/json'
+		    },
+		    responseType: 'arraybuffer'
+		}).success(function (data, status, headers, config) {
+			 var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+			 var objectUrl = URL.createObjectURL(blob);
+			 window.open(objectUrl);
+			 
+
+		    
+		}).error(function (data, status, headers, config) {
+		    //upload failed
+		});
+	}
+	
+	$('#btImport').change(function() {
+	    $.ajax({
+    	    url: "/v3/api/fukoku/process-machine/import",
+    	    type: "POST",
+    	    data: new FormData($("#fileUploadForm")[0]),
+    	    enctype: 'multipart/form-data',
+    	    processData: false,
+    	    contentType: false,
+    	    cache: false,
+    	    success: function () {
+    	    	$scope.findAll("");
+    	    	swal({position: 'top-end',type: 'success',title: 'Data has been imported.',showConfirmButton: false,timer: 1500})
+    	    },
+    	    error: function () {
+    	    	swal({position: 'top-end',type: 'error',title: 'Data has been imported.',showConfirmButton: false,timer: 1500})
+    	    }
+    	});
+	    
+	});
 	
 	
-	$scope.findAll();
+	
+	
 	
 	
 });

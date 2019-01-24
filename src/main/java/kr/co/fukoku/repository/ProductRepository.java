@@ -1,6 +1,7 @@
 package kr.co.fukoku.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -8,24 +9,28 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import kr.co.fukoku.model.Product;
+import kr.co.fukoku.model.form.FactoryFrm;
 import kr.co.fukoku.model.form.ProductFrm;
+import kr.co.fukoku.repository.sql.FactorySQLBuilder;
+import kr.co.fukoku.repository.sql.ProductSQLBuilder;
 
 @Repository
 public interface ProductRepository {
 
-	@Select("Select * from product where status='1' order by id asc")
+	@SelectProvider(type = ProductSQLBuilder.class, method = "find")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),
 			@Result(property="customerName",column="customer_name")
 	})
-	List<Product> findAll();
+	List<Product> findAll(@Param("f") ProductFrm f);
 	
-	@Select("Select * from product where id=#{id} and status='1'")
+	@Select("Select * from product where id=#{id} and status='1' AND start_date <= CURRENT_TIMESTAMP and end_date >= CURRENT_TIMESTAMP")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),
@@ -33,12 +38,25 @@ public interface ProductRepository {
 	})
 	Product findOne(@Param("id") long  id);
 	
+	@SelectProvider(type = ProductSQLBuilder.class, method = "find")
+	List<Map<String, Object>> findMap(@Param("f") ProductFrm frm);
+	
 	@Insert("INSERT INTO product ("
 			+ "	name, type, start_date, end_date, customer_name, remark"
 			+ ") VALUES ("
 			+ "	#{f.name}, #{f.type}, #{f.startDate}, #{f.endDate}, #{f.customerName}, #{f.remark}"
 			+ ");")
 	boolean save(@Param("f") ProductFrm frm);
+	
+	@Insert("<script>insert into product ("
+			+ " name, type, start_date, end_date, customer_name, remark"
+			+ ") VALUES "
+			+ " <foreach collection='lst' item='f' separator=','>("
+			+ "	#{f.name}, #{f.type}, #{f.startDate}, #{f.endDate}, #{f.customerName}, #{f.remark}"
+			+ " )"
+			+ "</foreach></script>")
+	boolean saveLst(@Param("lst") List<ProductFrm>  lst);
+	
 	
 	@Update("UPDATE product SET"
 			+ "	name=#{f.name}, "
@@ -53,7 +71,7 @@ public interface ProductRepository {
 	@Delete("DELETE FROM product WHERE id=#{id}")
 	boolean delete(@Param("id") long id);
 	
-	@Select("Select type,id from product where  status='1' GROUP BY type")
+	@Select("Select type,id from product where  status='1' AND start_date <= CURRENT_TIMESTAMP and end_date >= CURRENT_TIMESTAMP  GROUP BY type")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),
