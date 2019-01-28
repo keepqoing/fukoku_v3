@@ -186,7 +186,7 @@ $(function () {
 
     // Get All Machines
     lines.getAllMachines = function (process_name, selObject) {
-        console.log("Process name = " + process_name);
+
         $.ajax({
             url: "/v3/api/fukoku/machine/by_process/" + process_name,
             type: 'GET',
@@ -216,7 +216,7 @@ $(function () {
                         for (i = 0; i < machine_Array.length; i++) {
                             // console.log("Machine Array [" + i + "] = " + machine_Array[i]);
                             var option = document.createElement("option");
-                            option.value = machine_Array[i][0]; // store machine ID
+                            option.value = machine_Array[i][1]; // store machine ID
                             option.text = machine_Array[i][1]; // machine name
                             sel.appendChild(option);
                         }
@@ -240,42 +240,6 @@ $(function () {
 
     // lines.getAllMachines("1차V홈높이최대");
 
-
-    // Find Machine by ID
-    lines.findMachine = function (machine_id) {
-
-        $.ajax({
-            url: "/v3/api/fukoku/machine/" + machine_id,
-            type: 'GET',
-            dataType: 'JSON',
-
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("Content-Type", "application/json");
-            },
-            success: function (response) {
-
-                if (response.code == 200) {
-
-                        machine_Array[0] = [];
-                        machine_Array[0][0] = response.data.id;
-                        machine_Array[0][1] = response.data.name;
-                        console.log(machine_Array[0][1]);
-
-
-
-                } else{
-
-
-                }
-
-            },
-            error: function (data, status, err) {
-                console.log("error: " + data + " status: " + status + " err:" + err);
-                return arr;
-            }
-        });
-    };
 
 
 
@@ -549,6 +513,7 @@ function addNewProduct(lineName){
         // cell.className = "tdProduct" + lineName;
         cell.className = "tdProduct" ;
         cell.setAttribute("data-id",lineName);
+        cell.id = "tdProduct" + lineName + "_" + countClick;
         var rowspan = parseInt($('#td'+lineName).attr('rowSpan'));
         $('#td'+lineName).attr('rowSpan', (rowspan + 1));
 
@@ -558,6 +523,7 @@ function addNewProduct(lineName){
         // td.className = "tdProduct" + lineName;
         td.className = "tdProduct";
         td.setAttribute("data-id",lineName);
+
         var tr = document.getElementById("tr" + lineName + "_"+ countClick);
         tr.appendChild(td);
 
@@ -1170,7 +1136,7 @@ function createSelectBox(lineName, rowNum, txtID, process_Array, prefixSel, clas
         var option = document.createElement("option");
         // option.value = process_Array[i];
         // option.text = process_Array[i];
-        option.value = process_Array[i][0]; // store Process ID
+        option.value = process_Array[i][1]; // store Process ID
         option.text = process_Array[i][1]; // show Process name
         sel.appendChild(option);
     }
@@ -1257,10 +1223,6 @@ function addLinkSubItem(lineName, rowNum, txtValue){
 
     var outerDiv = document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue);
     outerDiv.appendChild(div);
-
-
-
-
 }
 
 // This function is used to create div for link sub step item
@@ -1481,8 +1443,8 @@ var json_data = {
     "REF_PROCESS_CHAIN_ID": 1,
     "PROCESS_MACHINE_ID":1,
     "PROCESS_MACHINE_SEQ":1,
-    "REF_PROCESS_ID": 1,
-    "REF_MACHINE_ID": 1,
+    "REF_PROCESS": 1,
+    "REF_MACHINE": 1,
     "REF_PROCESS_CHAIN_ELEMENT": 1,
     "NEXT_SEQUENCE": [1]
 
@@ -1617,8 +1579,8 @@ var data = [{
         "PROCESS_MACHINE" : [{
             "ID" : 1,
             "SEQ" : 1,
-            "REF_PROCESS_ID" : 1,
-            "REF_MACHINE_ID" : 1,
+            "REF_PROCESS" : "",
+            "REF_MACHINE" : "",
             "REF_PROCESS_CHAIN_ELEMENT" : 1,
             "NEXT_SEQUENCE" : ""
         }]
@@ -1659,8 +1621,8 @@ function DBInsertion(){
                 var PROCESS_MACHINE = {
                     "ID" : 0,
                     "SEQ" : $(subProcess).find(".txtSeq").val(),
-                    "REF_PROCESS_ID" : $(subProcess).find(".mod_select").val(),
-                    "REF_MACHINE_ID" : $(subProcess).find(".machine_select").val(),
+                    "REF_PROCESS" : $(subProcess).find(".mod_select").val(),
+                    "REF_MACHINE" : $(subProcess).find(".machine_select").val(),
                     "REF_PROCESS_CHAIN_ELEMENT" : 0
                 };
 
@@ -1768,6 +1730,14 @@ function DBInsertion(){
 
 $("#btnTest").click(function () {
 
+    var theader = document.getElementById("tableHeader");
+    theader.innerHTML = "";
+
+    var tbody = document.getElementById("processTable");
+    tbody.innerHTML = "";
+
+    resetCountClick();
+
     lines.getProcessModelData();
 
 });
@@ -1775,13 +1745,13 @@ $("#btnTest").click(function () {
 
 // get Data from DB
 function loadDataToTable(result){
-
+    console.log(result);
     for(var i = 0; i < result.length; i++){
         createOneLine(result[i].REF_LINE);
         addNewProduct(result[i].REF_LINE);
         var subResult = result[i].PROCESS_CHAIN_ELEMENT;
         for(var j = 0; j < subResult.length; j++ ){
-            createStepAfterMainProcessFromDB(result[i].REF_LINE, subResult[j].STAGE, (i + 1), result[i], subResult[j]);
+            createStepAfterMainProcessFromDB(result[i].REF_LINE, subResult[j].STAGE, result[i].SEQ, result[i], subResult[j]);
         }
 
     }
@@ -1833,7 +1803,7 @@ function createOneLine(lineName){
 }
 
 function createStepAfterMainProcessFromDB(lineName, stage, rowNum, result, subResult) {
-console.log(("stage = " + stage));
+
     if (isExisted("headerStep_" + stage)) {
         // console.log("This Step header is already existed.");
     } else {
@@ -1849,11 +1819,12 @@ console.log(("stage = " + stage));
     }
 
     // Row
+
     var row = document.getElementById("tr" + lineName + "_" + rowNum);
 
 
     // if no sub step or blank
-    if(result.PROCESS_CHAIN_ELEMENT == null) {
+    if(subResult.NAME == null) {
         var blank_td = document.createElement("td");
         blank_td.setAttribute("data-id", (stage));
         blank_td.setAttribute("class", "mainProcess");
@@ -1906,8 +1877,9 @@ console.log(("stage = " + stage));
         // td.setAttribute("class","mainProcess");
 
         row.appendChild(td);
-
-        createSubStepItemFromDB(lineName, rowNum, stage, td, subResult);
+        if(subResult.PROCESS_MACHINE != null) {
+            createSubStepItemFromDB(lineName, rowNum, stage, td, subResult);
+        }
     }
 }
 
@@ -1928,15 +1900,15 @@ function createSubStepItemFromDB(lineName, rowNum, stage, td, subResult){
 
         // Select for process select box
         // var arrProcess = ["공정","1차V홈높이",	"1차V홈높이최대",	"1차V홈높이최소",	"1차드릴수",	"1차불균형량",	"1차압입하중",	"2차압입하중",	"3차압입하중"];
-        var selProcess = createSelectBoxFromDB(lineName, stage, i + 1, process_Array, "subProcess", "mod_select", pmResult.REF_PROCESS_ID);
+        var selProcess = createSelectBoxFromDB(lineName, stage, i + 1, process_Array, "subProcess", "mod_select", pmResult.REF_PROCESS);
 
 
         // Select for process select box
         // var arrMachine = ["설비","1차압입하중-압입기 1","2차압입하중-압입기 2","3차압입하중-압입기 3"];
 
 
-        lines.findMachine(pmResult.REF_MACHINE_ID);
-        var selMachine = createSelectBoxFromDB(lineName, stage, i + 1, machine_Array, "subMachine", "machine_select", pmResult.REF_MACHINE_ID);
+        lines.findMachine(pmResult.REF_MACHINE);
+        var selMachine = createSelectBoxFromDB(lineName, stage, i + 1, machine_Array, "subMachine", "machine_select", pmResult.REF_MACHINE);
 
         // Minus button
         var buttMinus = createSubStepMinusButtonFromDB(lineName, rowNum, i + 1);
@@ -1954,6 +1926,19 @@ function createSubStepItemFromDB(lineName, rowNum, stage, td, subResult){
 
         // td.className = "tdProcess";
         td.appendChild(div);
+
+
+        // link div
+        var nextSeq = pmResult.NEXT_SEQUENCE;
+        console.log(nextSeq)
+        if(nextSeq != null) {
+            console.log(nextSeq);
+            var linkArr = nextSeq.split(",");
+            for (var k = 0; k < linkArr.length; k++) {
+                addLinkSubItemFromDB(lineName,  rowNum , k + 1, linkArr[k]);
+            }
+        }
+
     }
 
 }
@@ -2013,7 +1998,7 @@ function createSelectBoxFromDB(lineName, rowNum, stage, process_Array, prefixSel
         var option = document.createElement("option");
         // option.value = process_Array[i];
         // option.text = process_Array[i];
-        option.value = process_Array[i][0]; // store Process ID
+        option.value = process_Array[i][1]; // store Process name
         option.text = process_Array[i][1]; // show Process name
 
         if( option.value == selectedID){
@@ -2037,4 +2022,24 @@ function createSubStepMinusButtonFromDB(lineName, rowNum, stage){
     buttMinus.setAttribute('onclick', "removeSubStepItem('" + lineName + "', " + rowNum + ", " + stage + ")");
 
     return buttMinus;
+}
+
+// This function is used to create a link text of each sub step item
+function addLinkSubItemFromDB(lineName, rowNum, txtValue, itemValue){
+
+
+    // Link Textbox
+    var linkTxt = createTextLink(lineName, rowNum, txtValue, itemValue);
+    linkTxt.value = itemValue;
+
+    // Link Minus Button
+    var linkButton = createMinusLinkButton(lineName, rowNum, txtValue, itemValue);
+
+    // Link Div
+    var div = createLinkDivSubStep(lineName, rowNum, txtValue, itemValue);
+    div.appendChild(linkTxt);
+    div.appendChild(linkButton);
+
+    var outerDiv = document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue);
+    outerDiv.appendChild(div);
 }

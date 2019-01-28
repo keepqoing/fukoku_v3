@@ -8,10 +8,10 @@ public class ProcessMachineModelFrm {
 	private long  id;
 	@JsonProperty("SEQ")
 	private int  seq;
-	@JsonProperty("REF_PROCESS_ID")
-	private long refProcessId;
-	@JsonProperty("REF_MACHINE_ID")
-	private long refMachineId;
+	@JsonProperty("REF_PROCESS")
+	private String refProcess;
+	@JsonProperty("REF_MACHINE")
+	private String refMachine;
 	@JsonProperty("REF_PROCESS_CHAIN_ELEMENT")
 	private long refProcessChainElement;
 	@JsonProperty("NEXT_SEQUENCE")
@@ -20,11 +20,11 @@ public class ProcessMachineModelFrm {
 	public ProcessMachineModelFrm() {
 	}
 
-	public ProcessMachineModelFrm(long id, int seq, long refProcessId, long refMachineId, long refProcessChainElement, String next_sequence) {
+	public ProcessMachineModelFrm(long id, int seq, String refProcess, String refMachine, long refProcessChainElement, String next_sequence) {
 		this.id = id;
 		this.seq = seq;
-		this.refProcessId = refProcessId;
-		this.refMachineId = refMachineId;
+		this.refProcess = refProcess;
+		this.refMachine = refMachine;
 		this.refProcessChainElement = refProcessChainElement;
 		this.next_sequence = next_sequence;
 	}
@@ -45,20 +45,20 @@ public class ProcessMachineModelFrm {
 		this.seq = seq;
 	}
 
-	public long getRefProcessId() {
-		return refProcessId;
+	public String getRefProcess() {
+		return refProcess;
 	}
 
-	public void setRefProcessId(long refProcessId) {
-		this.refProcessId = refProcessId;
+	public void setRefProcess(String refProcess) {
+		this.refProcess = refProcess;
 	}
 
-	public long getRefMachineId() {
-		return refMachineId;
+	public String getRefMachine() {
+		return refMachine;
 	}
 
-	public void setRefMachineId(long refMachineId) {
-		this.refMachineId = refMachineId;
+	public void setRefMachine(String refMachine) {
+		this.refMachine = refMachine;
 	}
 
 	public long getRefProcessChainElement() {

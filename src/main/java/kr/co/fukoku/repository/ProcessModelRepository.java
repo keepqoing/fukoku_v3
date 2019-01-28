@@ -40,11 +40,11 @@ public interface ProcessModelRepository {
 
     // Insert into process_machine table
     @Insert("INSERT INTO process_machine ("
-            + " seq, ref_process_id, ref_machine_id, ref_process_chain_element, next_sequence"
+            + " seq, ref_process, ref_machine, ref_process_chain_element, next_sequence"
             + ") VALUES ("
             + "	#{f.seq}, "
-            + " #{f.refProcessId}, "
-            + " #{f.refMachineId}, "
+            + " #{f.refProcess}, "
+            + " #{f.refMachine}, "
             + " #{f.refProcessChainElement}, "
             + " #{f.next_sequence}"
             + ");")
@@ -67,13 +67,18 @@ public interface ProcessModelRepository {
     // 3 - Select all rows from process_chain table
     @Select("SELECT * FROM process_machine WHERE ref_process_chain_element = #{pceID}")
     @Results(value={
-            @Result(property="refProcessId",column="ref_process_id"),
-            @Result(property="refMachineId",column="ref_machine_id"),
-            @Result(property="refProcessChainElement",column="ref_process_chain_element")
+            @Result(property="refProcess",column="ref_process"),
+            @Result(property="refMachine",column="ref_machine"),
+            @Result(property="refProcessChainElement",column="ref_process_chain_element"),
+            @Result(property="next_sequence",column="next_sequence")
 
     })
     List<ProcessMachineModelFrm> findAllProcessMachines(@Param("pceID") long pceID);
 
+
+    // Truncate Process Model
+    @Select("CALL proc_truncate_process_model();")
+    int truncateProcessModel();
 
 
 

@@ -24,6 +24,13 @@ public class ProcessModelController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Map<String,Object>> save(@RequestBody List<ProcessModel> frm)  {
         Map<String, Object> map = new HashMap<String, Object>();
+
+        int truncateSucess = repository.truncateProcessModel();
+        if(truncateSucess != 1){
+            map.put("code", 500);
+            map.put("message", "Error! " );
+        }
+
         try {
             for(ProcessModel processModel: frm){
                 ProcessModel pro = processModel;
