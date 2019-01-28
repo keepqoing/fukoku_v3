@@ -19,6 +19,17 @@ public class ProcessVarFrm {
 	@JsonProperty("item_type")
 	private String itemType;
 	
+	@JsonProperty("order_by")
+	private String orderBy;
+	
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
+	
+	public String getOrderBy() {
+		return orderBy;
+	}
+	
 	public ProcessVarFrm(String name) {
 		super();
 		this.name = name;

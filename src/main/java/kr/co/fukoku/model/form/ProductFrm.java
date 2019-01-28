@@ -21,7 +21,16 @@ public class ProductFrm {
 	@JsonProperty("status")
 	private String status;
 	
+	@JsonProperty("order_by")
+	private String orderBy;
 	
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
+	
+	public String getOrderBy() {
+		return orderBy;
+	}
 	
 	public ProductFrm(String name) {
 		super();

@@ -37,6 +37,17 @@ public class MachineFrm {
 	@JsonProperty("station")
 	private String station;
 	
+	@JsonProperty("order_by")
+	private String orderBy;
+	
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
+	
+	public String getOrderBy() {
+		return orderBy;
+	}
+	
 	public MachineFrm(String name) {
 		super();
 		this.name = name;
