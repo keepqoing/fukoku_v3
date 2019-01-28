@@ -3,7 +3,7 @@ $(function () {
 
 
     var lineArr = []; // for Line
-    var factoryArr = [];
+
     var productArr = []; // for product
     var processArr = []; // for process
     var machineArr = []; // for machine
@@ -42,13 +42,58 @@ $(function () {
                     if (response.data.length > 0) {
 
                         var sel = document.getElementById("selFactory");
+                        var option = document.createElement("option");
+                        option.value = "0"; // store Process name
+                        option.text = "공장"; // show Process name
+                        sel.appendChild(option);
+
                         for(i = 0; i < response.data.length; i++){
                             var option = document.createElement("option");
-                            option.value = response.data[i].name; // store Process name
+                            option.value = response.data[i].id; // store Process name
                             option.text = response.data[i].name; // show Process name
 
-
                             sel.appendChild(option);
+                        }
+                        //
+                        // console.log(lineArr);
+
+
+                    }
+                } else{
+                    // console.log("Why?");
+                }
+
+            },
+            error: function (data, status, err) {
+                // console.log("error: " + data + " status: " + status + " err:" + err);
+            }
+        });
+    };
+    lines.getAllFactories();
+
+
+    // Get all line name from new database by Factory ID
+    // =========================== LINE ======================================
+    lines.getAllLinesByFactory = function (fid) {
+
+        $.ajax({
+            url: "/v3/api/fukoku/line/factory/" +  fid,
+            type: 'GET',
+            dataType: 'JSON',
+
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (response) {
+                if (response.code == 200) {
+
+                    if (response.data.length > 0) {
+                        lineArr = [];
+                        // console.log(response.data);
+                        for(i = 0; i < response.data.length; i++){
+                            var arr = [response.data[i].id, response.data[i].name];
+                            lineArr.push(arr);
                         }
                         //
                         // console.log(lineArr);
@@ -66,7 +111,12 @@ $(function () {
         });
     };
 
-    lines.getAllFactories();
+
+    $(document).on('change','select.selFactory',function(){
+        console.log($("#"+this.id + " option:selected").text());
+        lines.getAllLinesByFactory($("#"+this.id + " option:selected").val());
+
+    });
 
 
     // Get all line name from new database
@@ -108,11 +158,12 @@ $(function () {
         });
     };
 
-    lines.getAllLines();
+    // lines.getAllLines();
 
     // Create check box based on the data from database
     lines.createLineCheckBox = function(){
         var divLine = document.getElementById("lineCheckboxes");
+        divLine.innerHTML = "";
         // console.log("Length = " + lineArr.length);
 
         for(i=0; i< lineArr.length; i++){
