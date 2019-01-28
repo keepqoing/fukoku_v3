@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+<head>
+    <title>공정설계</title>
+    <style>
+        table {
+            font-size: 12pt;
+            display: block;
+            overflow-x: auto;
+
+        }
+
+        .table-head {
+            background-color: #3c8dbc;
+            color: white;
+        }
+
+        table thead th {
+            text-align: center;
+
+        }
+
+        table tbody tr {
+            text-align: center;
+        }
+        .btn-group .btn+.btn, .btn-group .btn+.btn-group, .btn-group .btn-group+.btn, .btn-group .btn-group+.btn-group {
+            margin-left: 10px;
+            width:150px;
+        }
+
+        .btn-group>.btn:first-child {
+            width: 150px;
+        }
+
+        .table td, .table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+
+        }
+
+        td, th{
+            text-align: center;
+            /*vertical-align: middle!important;*/
+
+        }
+
+        .mytd {
+            min-width: 300px!important;
+        }
+        .myth {
+            min-width: 300px!important;
+        }
+        .line-label{
+            font-size: 17px;
+            display: inline-block;
+            padding-right: 10px;
+            text-indent: -2px;
+            /*font-weight: bold;*/
+        }
+        .select_line{
+            width: 18px;
+            height: 18px;
+        }
+    </style>
+
+    <script src="../../static/admin/sweet_alert/sweetalert.min-new.js"></script>
+
+
+    <!-- Sweet Alert -->
+    <!--<link rel="stylesheet" href="../../static/admin/sweet_alert/sweetalert.css">-->
+    <!--<script src="../../static/admin/sweet_alert/sweetalert.min.js"></script>-->
+
+
+    <!--<script src="../../static/admin/sweet_alert/sweetalert.min-new.js"></script>-->
+    <!--<script src="../../static/admin/sweet_alert/sweetalert-dev.js"></script>-->
+
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <h1>
+            공정설계
+        </h1>
+
+    </section>
+    <section class="content">
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 col-xs-12" id="lineCheckboxes">
+
+                                <!--<label class="line-label"><input class="select_line" name="m_option" type="checkbox" value="IB" checked> IB</label>-->
+                                <!--<label class="line-label"><input class="select_line" name="m_option" type="checkbox" value="HA"> HA</label>-->
+                                <!--<label class="line-label"><input class="select_line" name="m_option" type="checkbox" value="HB"> HB</label>-->
+                                <!--<label class="line-label"><input class="select_line" name="m_option" type="checkbox" value="HC"> HC</label>-->
+                                <!--<label class="line-label"><input class="select_line" name="m_option" type="checkbox" value="HD"> HD</label>-->
+                                <!--<label class="line-label"><input class="select_line" name="m_option" type="checkbox" value="PD"> PD</label>-->
+                                <!--<label class="line-label"><input class="select_line" name="m_option" type="checkbox" onchange="checkAllLines(this)" value="0"/> 모든</label>-->
+
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <button class="btn btn-primary" id="btnSearchLine" type="button">검색</button>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <button class="btn btn-success" id="btnSaveAll" type="button" ><span class="fa fa-save"></span> 저장</button>
+                                    <button class="btn btn-success" id="btnTest" type="button" ><span class="fa fa-save"></span> Test</button>
+                                </div>
+                            </div>
+                            <input type="text" id="txtTempMainProcess" style="display:none;"/>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12  table-responsive">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                        <table class="table" id="mainTable">
+                                            <thead class="thead-inverse table-head" id="tableHeader">
+                                            <!--<tr id="firstHeader">-->
+                                                <!--<th>라인</th>-->
+                                            <!--</tr>-->
+                                            </thead>
+                                            <tbody id="processTable">
+                                            <!--<tr id="firstRow">-->
+                                                <!--<td id="lineName">IB <br/>-->
+                                                    <!--<button type="button" class="btn btn-primary" onclick="addColumn()">제품추가<br>-->
+                                                        <!--(체인)</button>-->
+                                                <!--</td>-->
+                                            <!--</tr>-->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <script>
+        var datas = [];
+        var product_Array = [];
+        var process_Array = [];
+        var machine_Array = [];
+
+        var changeProcess = "";
+        var lines = {};
+
+    </script>
+
+    <script src="/static/admin/javascript_v3/model.js"></script>
+
+</div>
+<th:block layout:fragment="script">
+
+</th:block>
+
+</body>
+</html>

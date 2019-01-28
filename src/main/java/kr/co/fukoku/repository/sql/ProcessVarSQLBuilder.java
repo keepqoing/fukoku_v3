@@ -2,10 +2,11 @@ package kr.co.fukoku.repository.sql;
 
 import kr.co.fukoku.model.form.LineFrm;
 import kr.co.fukoku.model.form.ProcessVarFrm;
+import org.apache.ibatis.annotations.Param;
 
 public class ProcessVarSQLBuilder {
 
-	public static String find(ProcessVarFrm f) {
+	public static String find(@Param("f") ProcessVarFrm f) {
 		
 		 StringBuffer buffer = new StringBuffer();
 	        buffer.append(

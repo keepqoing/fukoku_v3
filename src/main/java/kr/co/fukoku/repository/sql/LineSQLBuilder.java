@@ -1,10 +1,11 @@
 package kr.co.fukoku.repository.sql;
 
 import kr.co.fukoku.model.form.LineFrm;
+import org.apache.ibatis.annotations.Param;
 
 public class LineSQLBuilder {
 
-	public static String find(LineFrm f) {
+	public static String find(@Param("f") LineFrm f) {
 		
 		 StringBuffer buffer = new StringBuffer();
 	        buffer.append(

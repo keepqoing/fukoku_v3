@@ -198,4 +198,25 @@ public class MachineRestController {
 		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 	}
 
+	// Chomrern as of 2019-01-14
+	@RequestMapping(value="/by_process/{process_name}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String,Object>> findAllByProcess(@PathVariable("process_name") String process_name)  {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			List<Machine> data = repository.findAllByProcess(process_name);
+			if(data.size() > 0 ) {
+				map.put("data", data);
+				map.put("code", 200);
+			}else {
+				map.put("code", 404);
+				map.put("message", "Data not found!");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			map.put("code", 500);
+			map.put("message", "Error! " + e.getMessage());
+		}
+		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+	}
+
 }

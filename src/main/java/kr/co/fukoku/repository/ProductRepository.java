@@ -78,5 +78,13 @@ public interface ProductRepository {
 			@Result(property="customerName",column="customer_name")
 	})
 	List<Product> findAllDistinct();
-	
+
+	// Chomrern - as of 2019-01-28
+	@Select("SELECT * FROM product WHERE status='1'")
+	@Results(value={
+			@Result(property="startDate",column="start_date"),
+			@Result(property="endDate",column="end_date"),
+			@Result(property="customerName",column="customer_name")
+	})
+	List<Product> findAllProducts();
 }

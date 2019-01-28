@@ -65,5 +65,8 @@ public interface ProcessRepository {
 	
 	@Delete("DELETE FROM process WHERE id=#{id}")
 	boolean delete(@Param("id") long id);
-	
+
+	// Chomrern as of 2019-01-28
+	@Select("Select * from process where status='1'")
+	List<kr.co.fukoku.model.Process> findAllProcesses();
 }

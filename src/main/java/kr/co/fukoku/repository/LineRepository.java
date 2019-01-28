@@ -96,5 +96,21 @@ public interface LineRepository {
 	
 	@Delete("DELETE FROM line WHERE id=#{id}")
 	boolean delete(@Param("id") long id);
+
+
+	//	Chomrern as of 2019-01-28
+	@Select("SELECT * FROM line WHERE status='1' ORDER BY seq ")
+	@Results(value={
+			@Result(property="startDate",column="start_date"),
+			@Result(property="endDate",column="end_date"),
+			@Result(property="layoutName",column="layout_name"),
+			@Result(property="factory", column="ref_factory_id",
+					one = @One(select  = "kr.co.fukoku.repository.FactoryRepository.findOne")
+			),
+			@Result(property="product", column="ref_product_id",
+					one = @One(select  = "kr.co.fukoku.repository.ProductRepository.findOne")
+			)
+	})
+	List<Line> findAllLines();
 	
 }

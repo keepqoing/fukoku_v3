@@ -2,10 +2,11 @@ package kr.co.fukoku.repository.sql;
 
 import kr.co.fukoku.model.form.MachineFrm;
 import kr.co.fukoku.model.form.ProcessVarFrm;
+import org.apache.ibatis.annotations.Param;
 
 public class MachineSQLBuilder {
 
-	public static String find(MachineFrm f) {
+	public static String find(@Param("f") MachineFrm f) {
 		
 		 StringBuffer buffer = new StringBuffer();
 	        buffer.append(

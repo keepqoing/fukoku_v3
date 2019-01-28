@@ -118,5 +118,23 @@ public interface MachineRepository {
 	
 	@Delete("DELETE FROM machine WHERE id=#{id}")
 	boolean delete(@Param("id") long id);
+
+
+	// Chomrern as of 2019-01-14
+	@Select("SELECT m.*\n" +
+			"FROM process p INNER JOIN machine m\n" +
+			"ON p.id = m.ref_process_id\n" +
+			"WHERE p.name = #{process_name} and m.status = '1'")
+	@Results(value={
+			@Result(property="importDate",column="import_date"),
+			@Result(property="facilityStaff",column="facility_staff"),
+			@Result(property="facilityContactPerson",column="facility_contact_person"),
+			@Result(property="plcType",column="plc_type"),
+			@Result(property="plcCommunicationDevice", column="plc_communication_device"),
+			@Result(property="process", column="ref_process_id",
+					one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findOne")
+			)
+	})
+	List<Machine> findAllByProcess(@Param("process_name") String process_name);
 	
 }

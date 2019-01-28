@@ -1,10 +1,11 @@
 package kr.co.fukoku.repository.sql;
 
 import kr.co.fukoku.model.form.ProductFrm;
+import org.apache.ibatis.annotations.Param;
 
 public class ProductSQLBuilder {
 
-	public static String find(ProductFrm f) {
+	public static String find(@Param("f") ProductFrm f) {
 		
 		 StringBuffer buffer = new StringBuffer();
 	        buffer.append(

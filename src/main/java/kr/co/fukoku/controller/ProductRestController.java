@@ -201,6 +201,27 @@ public class ProductRestController {
 		
 		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 	}
+
+	// Chomrern - as of 2019-01-28
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<Map<String,Object>> findAllProducts()  {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			List<Product> data = repository.findAllProducts();
+			if(data.size() > 0 ) {
+				map.put("data", data);
+				map.put("code", 200);
+			}else {
+				map.put("code", 404);
+				map.put("message", "Data not found!");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			map.put("code", 500);
+			map.put("message", "Error! " + e.getMessage());
+		}
+		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+	}
 	
 	
 }

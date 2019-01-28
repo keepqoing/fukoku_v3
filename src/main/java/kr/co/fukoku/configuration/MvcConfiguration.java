@@ -34,7 +34,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/process-machine").setViewName("/admin/process-machine");
 
 		registry.addViewController("/admin/department").setViewName("/admin/department");
-
+		registry.addViewController("/admin/model").setViewName("/admin/model");
 	}
 
 	@Override
