@@ -82,13 +82,13 @@
 								<table  class="table table-bordered table-striped" id="dtTable">
                                     <thead class="table-head">
                                     <tr>
-                                        <th>순번</th>
-                                        <th>라인명</th> <!-- name -->
-                                        <th>공장명</th> <!-- ref factory -->
+                                        <th>순번 <i class="fa fa-fw fa-sort" ng-click="btOrder('seq')" style="cursor: pointer;"></i></th>
+                                        <th>라인명 <i class="fa fa-fw fa-sort" ng-click="btOrder('name')" style="cursor: pointer;"></i></th> <!-- name -->
+                                        <th>공장명 </th> <!-- ref factory -->
                                          <th>생산제품유형</th> <!-- product type -->
                                         <th>라인설계도면</th> <!-- layout name -->
-                                        <th>가동시작일</th> <!-- start date -->
-                                        <th>가동종료일</th> <!-- end date -->
+                                        <th>가동시작일 <i class="fa fa-fw fa-sort" ng-click="btOrder('start_date')" style="cursor: pointer;"></i></th> <!-- start date -->
+                                        <th>가동종료일 <i class="fa fa-fw fa-sort" ng-click="btOrder('end_date')" style="cursor: pointer;"></i></th> <!-- end date -->
                                         <th>설명</th>
                                         <th>수정</th>
                                     </tr>

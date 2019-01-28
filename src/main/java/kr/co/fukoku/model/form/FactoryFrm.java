@@ -23,6 +23,16 @@ public class FactoryFrm {
 	@JsonProperty("status")
 	private String status;
 	
+	@JsonProperty("order_by")
+	private String orderBy;
+	
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
+	
+	public String getOrderBy() {
+		return orderBy;
+	}
 	
 	public FactoryFrm() {
 		super();
@@ -132,7 +142,6 @@ public class FactoryFrm {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
 	
 	
 	

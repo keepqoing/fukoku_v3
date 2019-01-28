@@ -7,11 +7,17 @@ public class FactorySQLBuilder {
 
 	public static String find(@Param("f") FactoryFrm f) {
 		
+		if(f.getOrderBy() != null ) {
+			System.out.print("getOrderBy ==========> " + f.getOrderBy());
+		}else {
+			f.setOrderBy(" order by seq  asc ");
+		}
+		
 		 StringBuffer buffer = new StringBuffer();
 	        buffer.append(
 	        		"select * from factory where status='1' and \r\n" + 
 	        		"		start_date <= CURRENT_TIMESTAMP and end_date >= CURRENT_TIMESTAMP and\r\n" + 
-	        		"		name like  '%"+  f.getName().trim() +"%'   order by id asc;"
+	        		"		name like  '%"+  f.getName().trim() +"%'   "+f.getOrderBy()+";"
 	        		);
 	        System.out.print(buffer.toString());
 	    return buffer.toString();

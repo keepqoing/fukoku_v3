@@ -12,7 +12,10 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.action;
 	$scope.processes;
 	$scope.dtTable;
-	
+	$scope.sorting = "asc";
+	$scope.data = {
+			"name" : "",
+	};
 	/***
 	 * Function()
 	 */
@@ -72,15 +75,12 @@ app.controller('MainCtrl', function($scope, $http) {
         });
     }
 	
-	$scope.findAll = function(data){
-		var data = {
-				"name" : data,
-		};
+	$scope.findAll = function(){
         var post = $http({
             method: "POST",
             url: "/v3/api/fukoku/machine/find",
             dataType: 'json',
-            data : JSON.stringify(data),
+            data : JSON.stringify($scope.data),
             headers: { "Content-Type": "application/json" }
         });
         post.success(function (response, status) {
@@ -158,7 +158,7 @@ app.controller('MainCtrl', function($scope, $http) {
         post.success(function (response, status) {
             if(response.code == 200){
             	$scope.message = response.message;
-            	$scope.findAll("");
+            	$scope.findAll($scope.data);
             	$("#modalFrm").modal('hide');
             	swal({position: 'top-end',type: 'success',title: 'Data has been saved',showConfirmButton: false,timer: 1500})
            
@@ -194,7 +194,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	            }else{
 	            	swal({position: 'top-end',type: 'error',title: 'Data has been deleted',showConfirmButton: false,timer: 1500})
 	            }
-	            $scope.findAll("");
+	            $scope.findAll($scope.data);
 	        });
 	        post.error(function (data, status) {
 	            console.log(data);
@@ -209,7 +209,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	 * Onload()
 	 *******************************************************************************/
 	
-	$scope.findAll("");
+	$scope.findAll($scope.data);
 	
 	
 	
@@ -254,8 +254,8 @@ app.controller('MainCtrl', function($scope, $http) {
 	}
 
 	$scope.btSearch = function(){
-		//alert($("#txtSearch").val());
-		$scope.findAll($("#txtSearch").val());
+		$scope.data["name"] = $("#txtSearch").val();
+		$scope.findAll($scope.data);
 	}
 	
 	$scope.btExport = function(){
@@ -288,7 +288,7 @@ app.controller('MainCtrl', function($scope, $http) {
     	    contentType: false,
     	    cache: false,
     	    success: function () {
-    	    	$scope.findAll("");
+    	    	$scope.findAll($scope.data);
     	    	swal({position: 'top-end',type: 'success',title: 'Data has been imported.',showConfirmButton: false,timer: 1500})
     	    },
     	    error: function () {
@@ -298,7 +298,18 @@ app.controller('MainCtrl', function($scope, $http) {
 	    
 	});
 	
-	
+	$scope.btOrder = function(col){
+		
+		if($scope.sorting == "asc"){
+			$scope.sorting = "desc";
+		}else{
+			$scope.sorting = "asc";
+		}
+		var orderBy = " order by "+ col +" "+$scope.sorting;
+		$scope.data["order_by"] = orderBy;
+		console.log($scope.data);
+		$scope.findAll($scope.data);
+	};
 	
 	
 	

@@ -18,6 +18,18 @@ public class ProcessMachineFrm {
 	private long refProcessChainElementId;
 	@JsonProperty("next_sequence")
 	private String nextSequence;
+	
+	@JsonProperty("order_by")
+	private String orderBy;
+	
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
+	
+	public String getOrderBy() {
+		return orderBy;
+	}
+	
 	public long getId() {
 		return id;
 	}
