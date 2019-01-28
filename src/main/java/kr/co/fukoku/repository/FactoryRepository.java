@@ -78,5 +78,9 @@ public interface FactoryRepository {
 	
 	@Delete("DELETE FROM factory WHERE id=#{id}")
 	boolean delete(@Param("id") long id);
+
+
+	@Select("SELECT * FROM factory ORDER BY seq;")
+	List<Factory> findAllFactories();
 	
 }

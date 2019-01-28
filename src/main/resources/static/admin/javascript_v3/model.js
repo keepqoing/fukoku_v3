@@ -3,6 +3,7 @@ $(function () {
 
 
     var lineArr = []; // for Line
+    var factoryArr = [];
     var productArr = []; // for product
     var processArr = []; // for process
     var machineArr = []; // for machine
@@ -20,6 +21,54 @@ $(function () {
 // ============== Server Side ============================================
 
 //TODO: SERVER SIDE REQUEST
+
+    // Get factory name
+// Get all Factory name from new database
+    // =========================== Factories ======================================
+    lines.getAllFactories = function () {
+
+        $.ajax({
+            url: "/v3/api/fukoku/factory",
+            type: 'GET',
+            dataType: 'JSON',
+
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (response) {
+                if (response.code == 200) {
+
+                    if (response.data.length > 0) {
+
+                        var sel = document.getElementById("selFactory");
+                        for(i = 0; i < response.data.length; i++){
+                            var option = document.createElement("option");
+                            option.value = response.data[i].name; // store Process name
+                            option.text = response.data[i].name; // show Process name
+
+
+                            sel.appendChild(option);
+                        }
+                        //
+                        // console.log(lineArr);
+
+                        lines.createLineCheckBox();
+                    }
+                } else{
+                    // console.log("Why?");
+                }
+
+            },
+            error: function (data, status, err) {
+                // console.log("error: " + data + " status: " + status + " err:" + err);
+            }
+        });
+    };
+
+    lines.getAllFactories();
+
+
     // Get all line name from new database
     // =========================== LINE ======================================
     lines.getAllLines = function () {
@@ -730,6 +779,18 @@ function createStepForProduct(lineName, rowNum, btnObject){
 }
 // This function is used to create step after entering the main process title
 function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
+
+
+    // Get the row Id which the user wants to move the TD
+    var rowID = $(btnObject).parent().parent().attr("id");
+
+    // check the desired TD is available or not.
+    var newTd = $("#" + rowID + " > " + "td[data-id='" + txtValue + "']" )[0];
+    if(newTd != undefined && newTd.innerHTML != ""){
+       displayDialog(txtValue, "있었어요!" );
+       return;
+    }
+
 
     // create a textbox to store step value for each line and each product
     if (isExisted("txtStep" + lineName + "_" + rowNum)) {
