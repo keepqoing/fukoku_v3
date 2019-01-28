@@ -1907,7 +1907,7 @@ function createSubStepItemFromDB(lineName, rowNum, stage, td, subResult){
         // var arrMachine = ["설비","1차압입하중-압입기 1","2차압입하중-압입기 2","3차압입하중-압입기 3"];
 
 
-        lines.findMachine(pmResult.REF_MACHINE);
+
         var selMachine = createSelectBoxFromDB(lineName, stage, i + 1, machine_Array, "subMachine", "machine_select", pmResult.REF_MACHINE);
 
         // Minus button
@@ -1989,6 +1989,17 @@ function createSelectBoxFromDB(lineName, rowNum, stage, process_Array, prefixSel
     sel.width = "auto";
     if(prefixSel == "subProcess") {
         sel.setAttribute('onchange', 'lines.processChange(this)');
+    }else{
+        var option = document.createElement("option");
+        // option.value = process_Array[i];
+        // option.text = process_Array[i];
+        option.value = selectedID; // store Process name
+        option.text = selectedID; // show Process name
+
+        if( option.value == selectedID){
+            option.setAttribute("selected", "selected");
+        }
+        sel.appendChild(option);
     }
 
 
