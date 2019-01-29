@@ -1,9 +1,5 @@
 $(function () {
-
-
-
     var lineArr = []; // for Line
-
     var productArr = []; // for product
     var processArr = []; // for process
     var machineArr = []; // for machine
@@ -17,30 +13,24 @@ $(function () {
         }
     });
 
-
 // ============== Server Side ============================================
 
-//TODO: SERVER SIDE REQUEST
-
+    //TODO: SERVER SIDE REQUEST
     // Get factory name
-// Get all Factory name from new database
+    // Get all Factory name from new database
     // =========================== Factories ======================================
     lines.getAllFactories = function () {
-
         $.ajax({
             url: "/v3/api/fukoku/factory",
             type: 'GET',
             dataType: 'JSON',
-
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function (response) {
                 if (response.code == 200) {
-
                     if (response.data.length > 0) {
-
                         var sel = document.getElementById("selFactory");
                         var option = document.createElement("option");
                         option.value = "0"; // store Process name
@@ -49,33 +39,24 @@ $(function () {
 
                         for(i = 0; i < response.data.length; i++){
                             var option = document.createElement("option");
-                            option.value = response.data[i].id; // store Process name
-                            option.text = response.data[i].name; // show Process name
-
+                            option.value = response.data[i].id; // store factory id
+                            option.text = response.data[i].name; // show factory name
                             sel.appendChild(option);
                         }
-                        //
-                        // console.log(lineArr);
-
-
                     }
-                } else{
-                    // console.log("Why?");
                 }
-
             },
             error: function (data, status, err) {
-                // console.log("error: " + data + " status: " + status + " err:" + err);
+                console.log("error: " + data + " status: " + status + " err:" + err);
             }
         });
     };
+    // First load, call this function
     lines.getAllFactories();
-
 
     // Get all line name from new database by Factory ID
     // =========================== LINE ======================================
     lines.getAllLinesByFactory = function (fid) {
-
         $.ajax({
             url: "/v3/api/fukoku/line/factory/" +  fid,
             type: 'GET',
@@ -87,96 +68,37 @@ $(function () {
             },
             success: function (response) {
                 if (response.code == 200) {
-
                     if (response.data.length > 0) {
                         lineArr = [];
-                        // console.log(response.data);
                         for(i = 0; i < response.data.length; i++){
                             var arr = [response.data[i].id, response.data[i].name];
                             lineArr.push(arr);
                         }
-                        //
-                        // console.log(lineArr);
-
                         lines.createLineCheckBox();
                     }
-                } else{
-                    // console.log("Why?");
                 }
-
             },
             error: function (data, status, err) {
-                // console.log("error: " + data + " status: " + status + " err:" + err);
+                console.log("error: " + data + " status: " + status + " err:" + err);
             }
         });
     };
 
 
+    // When the factory select box is changed, so we need to query the lines
     $(document).on('change','select.selFactory',function(){
         console.log($("#"+this.id + " option:selected").text());
         lines.getAllLinesByFactory($("#"+this.id + " option:selected").val());
-
     });
-
-
-    // Get all line name from new database
-    // =========================== LINE ======================================
-    lines.getAllLines = function () {
-
-        $.ajax({
-            url: "/v3/api/fukoku/line",
-            type: 'GET',
-            dataType: 'JSON',
-
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("Content-Type", "application/json");
-            },
-            success: function (response) {
-                if (response.code == 200) {
-
-                    if (response.data.length > 0) {
-
-                        // console.log(response.data);
-                        for(i = 0; i < response.data.length; i++){
-                            var arr = [response.data[i].id, response.data[i].name];
-                            lineArr.push(arr);
-                        }
-                        //
-                        // console.log(lineArr);
-
-                        lines.createLineCheckBox();
-                    }
-                } else{
-                    // console.log("Why?");
-                }
-
-            },
-            error: function (data, status, err) {
-                // console.log("error: " + data + " status: " + status + " err:" + err);
-            }
-        });
-    };
-
-    // lines.getAllLines();
 
     // Create check box based on the data from database
     lines.createLineCheckBox = function(){
         var divLine = document.getElementById("lineCheckboxes");
         divLine.innerHTML = "";
-        // console.log("Length = " + lineArr.length);
 
         for(i=0; i< lineArr.length; i++){
             divLine.appendChild(lines.createCheckBox(lineArr[i][0], lineArr[i][1]));
         }
-
-        // if ( lineArr.length > 0) {
-        //     var labelCheckAll = lines.createCheckBox("All");
-        //     labelCheckAll.setAttribute("onchange", "checkAllLines(this)");
-        //
-        //     divLine.appendChild(labelCheckAll);
-        // }
-
     }
 
     lines.createCheckBox = function(lineId, lineName){
@@ -193,124 +115,87 @@ $(function () {
         label.appendChild(option);
 
         return label;
-
     }
 
 
     // ============= Product ===================================
     lines.getAllProducts = function () {
-
         $.ajax({
             url: "/v3/api/fukoku/product",
             type: 'GET',
             dataType: 'JSON',
-
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function (response) {
                 if (response.code == 200) {
-
                     if (response.data.length > 0) {
-
-                        // console.log(response.data);
                         for(i = 0; i < response.data.length; i++){
                             var arr = [response.data[i].id, response.data[i].name];
                             productArr[i] = arr;
                         }
-                        //
-                        // console.log(productArr);
                         product_Array = productArr;
-                        // lines.createLineCheckBox();
                     }
-                } else{
-                    // console.log("Why?");
                 }
-
             },
             error: function (data, status, err) {
                 console.log("error: " + data + " status: " + status + " err:" + err);
             }
         });
     };
-
+    // call this function to get all products
     lines.getAllProducts();
 
     // ================== Process ======================================
-
     // Get All Processes
     lines.getAllProcesses = function () {
-
         $.ajax({
             url: "/v3/api/fukoku/process",
             type: 'GET',
             dataType: 'JSON',
-
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function (response) {
                 if (response.code == 200) {
-
                     if (response.data.length > 0) {
-
-                        // console.log(response.data);
                         for(i = 0; i < response.data.length; i++){
                             var arr = [response.data[i].id, response.data[i].name];
                             processArr[i] = arr;
-
-                            // processArr[i] = response.data[i].name;
                         }
-                        //
-                        // console.log(processArr);
                         process_Array = processArr;
-                        // lines.createLineCheckBox();
                     }
-                } else{
-                    // console.log("Why?");
                 }
-
             },
             error: function (data, status, err) {
                 console.log("error: " + data + " status: " + status + " err:" + err);
             }
         });
     };
-
+    // call to get all the process --- MUST CHECK AGAIN
     lines.getAllProcesses();
 
-
     // ================== Machine ======================================
-
     // Get All Machines
     lines.getAllMachines = function (process_name, selObject) {
-
         $.ajax({
             url: "/v3/api/fukoku/machine/by_process/" + process_name,
             type: 'GET',
             dataType: 'JSON',
-
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function (response) {
                 if (response.code == 200) {
-
                     if (response.data.length > 0) {
-
-                        // console.log(response.data);
                         for(i = 0; i < response.data.length; i++){
                             machineArr[i] = [response.data[i].id, response.data[i].name];
                         }
-                        //
-                        // console.log(machineArr);
                         machine_Array = machineArr;
 
-
-                        //------------------------
                         var sel = document.getElementById((selObject.id).replace("Process","Machine"));
                         $("#"+(selObject.id).replace("Process","Machine")).find("option").remove();
                         for (i = 0; i < machine_Array.length; i++) {
@@ -320,17 +205,10 @@ $(function () {
                             option.text = machine_Array[i][1]; // machine name
                             sel.appendChild(option);
                         }
-
-                        //-------------------------
-
-
-                        // lines.createLineCheckBox();
                     }
                 } else{
-                    // console.log("No machine is matched with the process");
                     $("#"+(selObject.id).replace("Process","Machine")).find("option").remove();
                 }
-
             },
             error: function (data, status, err) {
                 console.log("error: " + data + " status: " + status + " err:" + err);
@@ -338,27 +216,13 @@ $(function () {
         });
     };
 
-    // lines.getAllMachines("1차V홈높이최대");
-
-
-
-
-
-    /*
-    $(document).on('change','select.mod_select',function(){
-        console.log($("#"+this.id + " option:selected").text());
-        lines.getAllMachines($("#"+this.id + " option:selected").text(), this);
-
-    });
-    */
+    // This function is called when the selectbox of process has been changed --- MUCH CHECK AGAIN
     lines.processChange = function(selObj){
-
         lines.getAllMachines($("#"+selObj.id + " option:selected").text(), selObj);
     }
 
-    /// insert data
+    /// insert all the process model to DATABASE
     lines.insertData = function () {
-
         console.log("DATAs==> ",datas);
         $.ajax({
             url: "/v3/api/fukoku/process_model",
@@ -369,13 +233,12 @@ $(function () {
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             data : JSON.stringify(datas),
-            success: function (response) {
-
-            }
+            success: function (response) {}
         });
     };
 
 
+    // This function reads all the process model from the database
     lines.getProcessModelData = function () {
         $.ajax({
             url: "/v3/api/fukoku/process_model",
@@ -388,7 +251,6 @@ $(function () {
             success: function (response) {
                 if(response.code == 200){
                     if(response.data.length > 0){
-                        // console.log(response.data);
                         loadDataToTable(response.data);
                     }
                 } else{
@@ -400,12 +262,7 @@ $(function () {
             }
         });
     };
-
-
-
-
-}); // Ajax block
-
+}); // END Ajax block
 // =============== END Server Side ======================================
 
 // 1 - Variable to store counting LineButton is clicked
@@ -415,7 +272,6 @@ var _countClickLineHB = 0;
 var _countClickLineHC = 0;
 var _countClickLineHD = 0;
 var _countClickLinePD = 0;
-
 
 // ========== 0. Helping Functions ====================================================================
 // Checkbox for filtering lines
@@ -430,7 +286,6 @@ function checkAllLines(ele) {
         }
     } else {
         for (var i = 0; i < checkboxes.length; i++) {
-            // onsole.log("Class name = " + checkboxes[i].className);
             if ((checkboxes[i].type == 'checkbox') && (checkboxes[i].className == 'select_line')) {
                 checkboxes[i].checked = false;
             }
@@ -450,7 +305,6 @@ function getCheckBoxValues(){
     }else{
         m_option = m_option.slice(0,-1);
     }
-    // console.log("line list:  " + m_option);
 
     if(m_option=="0"){
         swal({
@@ -471,11 +325,11 @@ function getCheckBoxValues(){
 
                 return;
             });
-
     }else {
         createLine(m_option);
     }
 }
+
 // When the search line button is clicked
 $("#btnSearchLine").click(function () {
     getCheckBoxValues();
@@ -519,13 +373,10 @@ function upCountClick(lineName){
         return _countClickLinePD;
     }
 }
-
-
 // ========= End 0.- Helping Functions ================================================
 
 // === Step 1 - create Line
 function createLine(arrLine){
-
     var index = arrLine.indexOf("0");
     if (index !== -1)
         arrLine = arrLine.slice(0, -2);
@@ -540,10 +391,7 @@ function createLine(arrLine){
     tbody.innerHTML = "";
     arrLine = arrLine.split(",");
     for(i=0; i < arrLine.length; i++){
-        // console.log("arr["+i+"] = " + arrLine[i]);
         var tr = document.createElement("tr");
-        // tr.id = "tr" + arrLine[i] + "_1";
-
         tr.id = "tr" + arrLine[i] + "_1";
         tr.className = "tr" + arrLine[i];
         var td = document.createElement("td");
@@ -553,7 +401,6 @@ function createLine(arrLine){
 
         var span = document.createElement("span");
         span.setAttribute("id", "span" + arrLine[i]);
-        // span.setAttribute("class", "span" + arrLine[i]);
         span.setAttribute("class", "span" + "LineName" );
         span.innerText = arrLine[i];
 
@@ -568,8 +415,6 @@ function createLine(arrLine){
     }
 }
 
-
-
 // Create line button after clicking on 검색​ button
 function createLineButton(lineName){
     var btn = document.createElement("button");
@@ -581,23 +426,18 @@ function createLineButton(lineName){
     return btn;
 }
 
-
 //========== Step 2 - Create Adding Product Button
 function addNewProduct(lineName){
     var countClick = upCountClick(lineName);
-    // console.log("lineName = "+lineName + " - " + countClick );
 
     // Create a new Column Header
-    if(isExisted("productHeader")){
-        // console.log("This header is already existed.");
-    }else {
+    if(!isExisted("productHeader")){
         var theader = document.getElementById("tableHeader");
         var th = document.createElement("th");
         th.innerText = "제품";
         th.id = "productHeader";
         theader.appendChild(th);
     }
-
 
     if(countClick > 1){
         // var cell = addProductFamily();
@@ -618,7 +458,6 @@ function addNewProduct(lineName){
         $('#td'+lineName).attr('rowSpan', (rowspan + 1));
 
     }else {
-
         var td = createProductTd(lineName, countClick);
         // td.className = "tdProduct" + lineName;
         td.className = "tdProduct";
@@ -626,7 +465,6 @@ function addNewProduct(lineName){
 
         var tr = document.getElementById("tr" + lineName + "_"+ countClick);
         tr.appendChild(td);
-
     }
 }
 
@@ -653,11 +491,7 @@ function createProductTd(lineName, countClick){
     var btnId = "btnProduct" + lineName + "_" + countClick;
     // var btnProduct = createProductButton(btnClassName, btnId);
 
-
     var btnProduct = createProductButton(btnClassName, btnId, lineName, countClick);
-
-    // increase stepCountClick + 1
-    //stepCountClick += 1;
 
     // Minus button
     var buttMinus = document.createElement('button'); // create a button
@@ -666,7 +500,6 @@ function createProductTd(lineName, countClick){
     buttMinus.setAttribute('class',"add-house btn btn-danger btn-xs fa fa-trash");
     buttMinus.setAttribute('style','float:left; margin-right:5px;');
     buttMinus.setAttribute("onclick","removeRow('" + lineName + "', " + countClick + ", this)");
-
 
     // Merge all controls to td
     td.appendChild(buttMinus);
@@ -714,7 +547,6 @@ function isExisted(id){
 }
 
 
-
 // This function is for creating product list with dropdown
 function createProductList(lineName, countClick){
     // select box
@@ -722,8 +554,6 @@ function createProductList(lineName, countClick){
     sel.setAttribute('style','margin-bottom:5px; margin-right:5px; width:150px;height:34px; float:left;');
     sel.id = "selProduct" + lineName + "_" + countClick; // selProductIB_1
     sel.className = "selProduct"; // className = selProduct. This will be useful when we insert into DB
-
-
 
     // array to store value
     // var array = ["CM5E", "DS7E", "GAMMA", "H4MK", "JX6E", "SEG-3PK", "SP", "T/SHARK", "THETA/GDI", "THETA-??(VVL)", "THETA-GDI(YF)", "THETA-HEV", "THETA-개선(VVL)", "TIGER SHARK", "Unknown", "X100"];
@@ -739,13 +569,8 @@ function createProductList(lineName, countClick){
     return sel;
 }
 
-
-
-
 // This function is for creating radio button in product cell
 function createProductRadioButton(rdoName,  rdoValue){
-
-
     var label = document.createElement("label");
     var radio = document.createElement("input");
     radio.type = "radio";
@@ -754,38 +579,28 @@ function createProductRadioButton(rdoName,  rdoValue){
     if(rdoValue == "1"){
         radio.setAttribute("checked","checked");
     }
-
     radio.value = rdoValue;
-
     label.appendChild(radio);
     label.appendChild(document.createTextNode(rdoValue == "1"?"Active":"Non Active"));
     label.setAttribute("style","float:left; margin-left: 5px; margin-right: 5px;")
     return label;
-
 }
 
 // This function is for creating button in product cell to add process step
 function createProductButton(btnClassName, btnId, lineName, countClick){
     var btnName = "공정 단계 추가";
-
     var butt = document.createElement('input'); // create a button
     butt.setAttribute('type','button'); // set attributes ...
     butt.setAttribute('id',btnId);
     butt.setAttribute('class',"btn btn-primary "+btnClassName);
     butt.setAttribute('value',btnName);
-
     butt.setAttribute('onclick', "createStepForProduct('" + lineName + "',"+ countClick + ", this)");
     return butt;
-
 }
 
 // function to store the arrayLineName
 function createLineGlobalArray(arrayName, countClick, inputValue){
-
-    if(isExisted("lineArray" + arrayName + "_" + countClick)){
-
-
-    }else {
+    if(!isExisted("lineArray" + arrayName + "_" + countClick)){
         var txtBox = document.createElement("input");
         txtBox.setAttribute("id", "lineArray" + arrayName + "_" + countClick);
         txtBox.value = inputValue;
@@ -796,9 +611,7 @@ function createLineGlobalArray(arrayName, countClick, inputValue){
 
 // == Step 4 -- Create Step of each product
 function createStepForProduct(lineName, rowNum, btnObject){
-
     var txtValue = "";
-
     swal({
             title: "공정단계",
             // text: "공정이름이 뭐예요?",
@@ -810,18 +623,15 @@ function createStepForProduct(lineName, rowNum, btnObject){
             confirmButtonText: '저장',
             confirmButtonColor: "#00a65a",
             cancelButtonText: "취소"
-
         },
         function(inputValue){
             if (inputValue === false || inputValue === "" ) {
                 swal.showInputError("텍스트를 입력하십시오!");
                 return false
             }else {
-
                 // swal("Nice!", "You wrote: " + inputValue, "success");
                 txtValue = inputValue;
                 createLineGlobalArray(lineName, rowNum, inputValue);
-
 
                 createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject);
                 return true;
@@ -830,7 +640,6 @@ function createStepForProduct(lineName, rowNum, btnObject){
 }
 // This function is used to create step after entering the main process title
 function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
-
 
     // Get the row Id which the user wants to move the TD
     var rowID = $(btnObject).parent().parent().attr("id");
@@ -841,7 +650,6 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
        displayDialog(txtValue, "있었어요!" );
        return;
     }
-
 
     // create a textbox to store step value for each line and each product
     if (isExisted("txtStep" + lineName + "_" + rowNum)) {
@@ -857,15 +665,11 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
         // console.log("Txt value of " + txt.id + "= " + txt.value);
     }
 
-
     var txt = document.getElementById("txtStep" + lineName + "_" + rowNum);
     // Create a new Column Header for Each Step
 
-
     for (let i = 1; i <= txtValue; i++) {
-        if (isExisted("headerStep_" + i)) {
-            // console.log("This Step header is already existed.");
-        } else {
+        if (!isExisted("headerStep_" + i)){
             var theader = document.getElementById("tableHeader");
             var th = document.createElement("th");
             th.innerText = "공정단계" + i;
@@ -877,33 +681,23 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
             theader.appendChild(th);
         }
     }
-
     // Row
     // var row = document.getElementById("tr" + lineName + "_" + rowNum);
     var row = $(btnObject).parent().parent()[0];
 
-
     var size = parseInt(document.getElementById("lineArray" + lineName + "_" + rowNum).value);
-    // console.log("size = " + size);
-
-
-    // console.log("txtValue = " + txtValue);
 
     let i = 0;
     let rId = row.id.split("_");
 
-    // console.log("rId = "+ rId);
-
     var nextTd = $(btnObject).parent().closest("td").next();
 
     for(i; i < txtValue; i++) {
-
         // check if the next td is empty. If so, create blank td for it
         if(nextTd[0] == undefined) {
             var blank_td = document.createElement("td");
             blank_td.setAttribute("data-id",(i+1));
             blank_td.setAttribute("class","mainProcess");
-            // blank_td.addClass("mainProcess");
             row.appendChild(blank_td);
         }
 
@@ -928,10 +722,8 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
             // var buttPlus = mainPlusButton(lineName, rowNum, txt);
             var buttPlus = mainPlusButton(lineName, rowNum, txtValue);
 
-
             // Move button
             var buttMove = mainMoveButton(lineName, rowNum, txtValue);
-
 
             // Minus button
             // var buttMinus = mainMinusButton(lineName, rowNum, txt);
@@ -943,11 +735,10 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
             var txtMain = document.createElement("input");
             txtMain.type = "text";
             txtMain.setAttribute("style", "margin-left: 5px; margin-right: 5px");
-            // txtMain.id = "txtMainTitle" + lineName + "_" + rowNum + "_s_" + txt.value; // spanMainTitleIB_1_s_1
             txtMain.id = "txtMainTitle" + lineName + "_" + rowNum + "_s_" + txtValue; // spanMainTitleIB_1_s_1
             txtMain.className = "txtMainTitle";
             txtMain.placeholder = "공정명을 입력하세요";
-            txtMain.size = "15"
+            txtMain.size = "15";
             // txtMain.value = txtValue;
 
             // Column
@@ -970,11 +761,9 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
             //  assign the td to the td based on the stage number that the user has inputted.
             nextTd[0].innerHTML = td.innerHTML;
         }
-
         // move to next td by assigning the next td
         nextTd = nextTd.next();
     }
-
 }
 
 
@@ -1006,7 +795,6 @@ function removeStage(btnObj){
             confirmButtonText: '저장',
             confirmButtonColor: "#00a65a",
             cancelButtonText: "취소"
-
         },
         function(isConfirm){
             if (isConfirm ) {
@@ -1018,10 +806,7 @@ function removeStage(btnObj){
                 return false;
             }
         });
-
-
 }
-
 
 // == This function is used to move all element in td to the other stage after completing pop-up value
 function moveTd(lineName, rowNum, stageNum, btnObj){
@@ -1039,14 +824,12 @@ function moveTd(lineName, rowNum, stageNum, btnObj){
             confirmButtonText: '저장',
             confirmButtonColor: "#00a65a",
             cancelButtonText: "취소"
-
         },
         function(inputValue){
             if (inputValue === false || inputValue === "" ) {
                 swal.showInputError("텍스트를 입력하십시오!");
-                return false
+                return false;
             }else {
-
                 // swal("Nice!", "You wrote: " + inputValue, "success");
                 newStage = inputValue;
 
@@ -1069,6 +852,7 @@ function startMovingTd(lineName, rowNum, currentStage, newStage, btnObj){
     // $("#trHC_1 > td[data-id='1']")[0] -- Format to find the td by data-id
     var newTd = $("#" + rowID + " > " + "td[data-id='" + newStage + "']" )[0];
 
+
     if(newTd == undefined){
         displayDialog(newStage, "없었어요!" );
 
@@ -1079,7 +863,6 @@ function startMovingTd(lineName, rowNum, currentStage, newStage, btnObj){
         oldTd.html("");
         return true;
     }else{
-
         displayDialog(newStage, "있었어요!" );
     }
 }
@@ -1094,7 +877,6 @@ function displayDialog(newStage, txtStatus){
                 animation: "slide-from-top",
                 confirmButtonText: '네 알겠어요',
                 confirmButtonColor: "#00a65a"
-
             },
             function(isConfirm){
                 if (isConfirm === true) {
@@ -1135,9 +917,6 @@ function mainPlusButton(lineName, rowNum, txt){
     buttPlus.setAttribute('class',"add-house btn btn-success btn-xs");
     buttPlus.setAttribute('style','float:right');
     buttPlus.setAttribute('onclick', "createSubStepItem('" + lineName + "', " + rowNum + "," + txt + ", this)" );
-    // var spn = document.createElement('span');
-    // spn.setAttribute('class','fa fa-plus');
-    // buttPlus.appendChild(spn);
 
     return buttPlus;
 }
@@ -1158,11 +937,8 @@ function mainMinusButton(lineName, rowNum, txt){
 // This function is used to create main step selectbox
 function mainStepSelectBox(lineName, rowNum, txt, txtValue){
     // select box
-
-
     var sel = document.createElement('select');
     sel.setAttribute("id","processTitle" + lineName + "_" + rowNum + "_s_" + txt.value); // processTitleIB_1_s_1
-
 
     var varStepLabel = "";
     var option = document.createElement("option");
@@ -1173,8 +949,6 @@ function mainStepSelectBox(lineName, rowNum, txt, txtValue){
 
     return sel;
 }
-
-
 
 // -- Step 6 - Add Sub Step of Each main step
 function createSubStepItem(lineName, rowNum, tValue, btnObj){
@@ -1205,7 +979,6 @@ function createSubStepItem(lineName, rowNum, tValue, btnObj){
     // var arrProcess = ["공정","1차V홈높이",	"1차V홈높이최대",	"1차V홈높이최소",	"1차드릴수",	"1차불균형량",	"1차압입하중",	"2차압입하중",	"3차압입하중"];
     var selProcess = createSelectBox(lineName, rowNum, txt, process_Array, "subProcess", "mod_select");
 
-
     // Select for process select box
     // var arrMachine = ["설비","1차압입하중-압입기 1","2차압입하중-압입기 2","3차압입하중-압입기 3"];
     var selMachine = createSelectBox(lineName, rowNum, txt, machine_Array, "subMachine", "machine_select");
@@ -1223,11 +996,8 @@ function createSubStepItem(lineName, rowNum, tValue, btnObj){
 
     var td = $(btnObj).parent().parent()[0];
 
-
     // td.className = "tdProcess";
     td.appendChild(div);
-
-
 }
 
 // This function is used to create process select box
@@ -1240,14 +1010,20 @@ function createSelectBox(lineName, rowNum, txtID, process_Array, prefixSel, clas
     sel.width = "auto";
     if(prefixSel == "subProcess") {
         sel.setAttribute('onchange', 'lines.processChange(this)');
+        var option = document.createElement("option");
+        option.value = 0; // store Process ID
+        option.text = "공정"; // show Process name
+        sel.appendChild(option);
+    }else{
+        var option = document.createElement("option");
+        option.value = 0; // store Process ID
+        option.text = "설비"; // show Process name
+        sel.appendChild(option);
     }
-
 
     //Create and append the options
     for (var i = 0; i < process_Array.length; i++) {
         var option = document.createElement("option");
-        // option.value = process_Array[i];
-        // option.text = process_Array[i];
         option.value = process_Array[i][1]; // store Process ID
         option.text = process_Array[i][1]; // show Process name
         sel.appendChild(option);
@@ -1274,7 +1050,6 @@ function createSubStepTextBox(lineName, rowNum, txtId){
     return txt;
 }
 
-
 // -- Creating plus button for Sub Step Item
 function createSubStepPlusButton(lineName, rowNum, txtId){
     var buttPlus = document.createElement('button'); // create a button
@@ -1291,7 +1066,6 @@ function createSubStepPlusButton(lineName, rowNum, txtId){
 
     return buttPlus;
 }
-
 
 // This function is used to create Sub Step Minus Button
 function createSubStepMinusButton(lineName, rowNum, txtId){
@@ -1380,14 +1154,12 @@ function removeLinkSubStepItem(lineName, rowNum, txtValue, txtLink){
     }
 }
 
-
 // Remove Sub Step Item
 function removeSubStepItem(lineName, rowNum, txtValue){
     var z = "";
     z = confirm("삭제하시겠습니까?");
     if( z == true){
         document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue).remove();
-
     }
 }
 // "removeProcessTd('" + lineName + "', " + rowNum + ", " + txt.value  + ")");
@@ -1414,10 +1186,7 @@ function removeRow(lineName, rowNum, btnObject){
         var td = $('#td'+lineName);
         $('#td'+lineName).attr('rowSpan', (rowspan - 1));
 
-
-
         //$("<td/>").insertBefore($("#btnMinusProductHC_1").parent().parent().next().children().first());
-
         var btnClassName = $(btnObject).parent().parent().attr("class");
         var btnRowId = $(btnObject).parent().parent().attr("id");
 
@@ -1427,7 +1196,6 @@ function removeRow(lineName, rowNum, btnObject){
 
         if($("."+btnClassName)[0].id == btnRowId && rowspan != 1){
             $(td).insertBefore($("#btnMinusProduct"+lineName+"_"+rowNum).parent().parent().next().children().first());
-
         }
 
         document.getElementById("tr" + lineName + "_" + rowNum ).remove();
@@ -1444,237 +1212,12 @@ function checkIfNoMoreRow(){
     }
 }
 
-
-
-
-
-
-function getAllInputs(tdId){
-    var td = document.getElementById(tdId);
-    let inputs = td.getElementsByTagName('input');
-
-    for (let input of inputs){
-        console.log("input id [" + input.id + "] = " + input.value);
-    }
-}
-
-// ============= END INSERT INTO DATABASE =====================================
-
-
-// Get the first table TD
-function getValueFromFirstTd(){
-    var array = [];
-
-    jQuery('table tr').each(function () {
-        var $row = $(this);
-        var $firstCell = $row.find('td:first span');
-        array.push($firstCell.text());
-    });
-
-    console.table(array);
-
-}
-
-// Get the second table TD by select box
-function getValueFromSelectBoxByClassName(class_name){
-    var array = [];
-    let selects = document.getElementsByClassName(class_name);
-    for (let select of selects){
-        array.push(select.value);
-    }
-    return array;
-}
-
-// Get the second table TD by radio button
-function getValueFromSecondTdByRadioButton(){
-    var array = [];
-    // let selects = document.getElementsByTagName('radio');
-    $(':radio').each(function(){
-        if( $(this).is(":checked") ) {
-            array.push($(this).val());
-        }
-    });
-    console.table(array);
-}
-
-
-
-// Get the third table TD by Main Title Textbox
-function getValueFromSecondTdBySelectBox(){
-    var array = [];
-    let mainTxt = document.getElementsByClassName('txtMainTitle');
-    for (let txt of mainTxt){
-        array.push(txt.value);
-    }
-    console.table(array);
-}
-
-function getTextBoxByClassName(class_name){
-    var array = [];
-
-    let txtSeq = document.getElementsByClassName(class_name);
-    for (let txt of txtSeq){
-        array.push(txt.value);
-    }
-    console.table(array);
-}
-
-// ============= Main method to insert data
-var array_ha = [];
-var array_hb = [];
-var array_hc = [];
-var array_hd = [];
-var array_pd = [];
-var array_ib = [];
-function insertData(){
-
-
-    var arrSelProduct = getValueFromSelectBoxByClassName("selProduct");
-    for(let sel of arrSelProduct){
-        var line = sel.id.substr(10,2);
-        if(line = "HA"){
-            array_ha.push()
-        }
-    }
-
-
-}
-
-
-// JSON object
-var json_data = {
-    "PROCESS_CHAIN_ID": 1,
-    "PROCESS_CHAIN_SEQ" : 1,
-    "PROCESS_CHAIN_NAME": 0,
-    "REF_LINE" : "",
-    "REF_PRODUCT": "",
-    "STATUS": "",
-    "PROCESS_CHAIN_ELEMENT_ID": 1,
-    "STAGE": 1,
-    "PROCESS_CHAIN_ELEMENT_NAME": "",
-    "REF_PROCESS_CHAIN_ID": 1,
-    "PROCESS_MACHINE_ID":1,
-    "PROCESS_MACHINE_SEQ":1,
-    "REF_PROCESS": 1,
-    "REF_MACHINE": 1,
-    "REF_PROCESS_CHAIN_ELEMENT": 1,
-    "NEXT_SEQUENCE": [1]
-
-}
-
-
-
-function readTableData(){
-    var TableData = "";
-    $('#processTable tr').each(function(row, tr){
-        TableData = TableData
-            + $(tr).find('td:eq(0)').text() + ' '  // Task No.
-            + $(tr).find('td:eq(1)').text() + ' '  // Date
-            + $(tr).find('td:eq(2)').text() + ' '  // Description
-            + $(tr).find('td:eq(3)').text() + ' '  // Task
-            + '\n';
-    });
-
-    console.table(TableData);
-}
-
-
-
 // ============= INSERT INTO DATABASE =========================================
 $("#btnSaveAll").click(function () {
-    // var tdStep1 = document.getElementsByTagName("td")[3];
-    // console.log(tdStep1);
-    //
-    // getAllInputs("tdPD_1_s_1");
-
-    // var arr = getValueFromSelectBoxByClassName("selProduct");
-    // console.log(arr.length);
-    // test2();
     DBInsertion();
-    // lines.getProcessModelData();
-
 });
 
-
-var myLineArray = [];
-function getAllCells(){
-    var array = [];
-
-    var tbl = document.getElementById("processTable");
-    if(tbl != null){{
-        for(var i = 0; i < tbl.rows.length; i++){
-            for(var j = 0; j < tbl.rows[i].cells.length; j++){
-                if(tbl.rows[i].cells[j] != null) {
-
-                    array.push(tbl.rows[i].cells[j].innerHTML);
-                }
-            }
-        }
-    }}
-
-    console.table(array);
-}
-
-function loopRow(){
-    var array = [];
-
-    var tbl = document.getElementById("processTable");
-    if(tbl != null){
-        if( tbl.rows[0].cells.length > 2){
-            var process_chain_id = tbl.rows[0].cells[0].span.contentText();
-        }
-
-        console.log(process_chain_id);
-        // for(var i = 0; i < tbl.rows.length; i++){
-        //     console.log(tbl.rows[0].cells.length)
-        // }
-    }
-
-    console.table(array);
-}
-
-function test(){
-    var tbody = document.getElementById("processTable");
-    var first_tr = tbody.firstChild;
-    var first_td = first_tr.firstChild;
-    var first_span = first_td.firstChild;
-
-    console.log(first_span);
-}
-
-function test2(){
-    var table = $('#processTable');
-    var rowIds = [];
-    var cells = [];
-    var spans = [];
-    var selectProducts  = [];
-    $('tr', table).each(function() {
-        rowIds.push($(this).attr('id'));
-        $('td', $(this)).each(function() {
-            // TD
-            cells.push($(this).html());
-            // Span
-            $('span', $(this)).each(function() {
-                spans.push($(this).html());
-            });
-
-            // Select Product
-            $('.selProduct', $(this)).each(function(){
-                selectProducts.push($(this).val());
-            });
-
-
-
-        });
-    });
-
-    console.table(selectProducts);
-}
-
-
 //======= Start inserting to Database
-
-
 // STANDARD FORMAT
 var data = [{
     "ID" : 1,
@@ -1701,7 +1244,6 @@ var data = [{
 
 
 function DBInsertion(){
-
     datas = [];
     $('#processTable tr').each(function(row, tr){
         var data = {};
@@ -1710,8 +1252,6 @@ function DBInsertion(){
         data["NAME"] = $(this).find(".tdProduct").attr("data-id") + "_" + $(this).find("td .selProduct").val();
         data["REF_LINE"] = $(this).find(".tdProduct").attr("data-id");
         data["REF_PRODUCT"] = $(this).find("td .selProduct").val();
-
-
 
         $(':radio', $(this).find("td.tdProduct")).each(function(){
             if($(this).is(":checked")){
@@ -1749,96 +1289,12 @@ function DBInsertion(){
             PROCESS_CHAIN_ELEMENTS.push(PROCESS_CHAIN_ELEMENT);
         });
         data["PROCESS_CHAIN_ELEMENT"] = PROCESS_CHAIN_ELEMENTS;
-
         //
         datas.push(data);
-
     });
-
     console.log(datas);
     lines.insertData();
-
-
 }
-/*
-function DBInsertion(){
-    var datas = [];
-
-    $('#processTable tr').each(function(row, tr){
-        var data = {};
-        data["NAME"] = $(this).find("td .spanLineName").text();
-        data["REF_LINE"] = $(this).find("td .spanLineName").text();
-        var children = [];
-        $.each($(this).find("td.mainProcess"), function(keyProcess, process){
-            console.log(process);
-            var child = {
-                "PROCESS_NAME": $(process).find(".txtMainTitle").val()
-            };
-            var PROCESS_MACHINES = [];
-            $.each($(process).find("div.subProcess"), function(keySubProcess, subProcess){
-                var PROCESS_MACHINE = {
-                    "SEQ" : $(subProcess).find(".txtSeq").val(),
-                    "PROCESS" : $(subProcess).find(".mod_select").val(),
-                    "MACHINE" : $(subProcess).find(".machine_select").val()
-                };
-
-                var NEXT_STAGES = [];
-                $.each($(subProcess).find(".linkTxtClass"), function(keyLinkText, linkText){
-                   var NEXT_STAGE = {
-                       "STAGE": $(linkText).val()
-                   };
-                   NEXT_STAGES.push(NEXT_STAGE);
-                });
-                PROCESS_MACHINE["NEXT_STAGES"] = NEXT_STAGES;
-
-
-                PROCESS_MACHINES.push(PROCESS_MACHINE);
-            });
-            child["PROCESS_MACHINES"] = PROCESS_MACHINES;
-            children.push(child);
-        });
-        data["CHILDREN"] = children;
-
-        //
-        datas.push(data);
-        console.log(data);
-    });
-
-    console.log(datas);
-
-
-}
-*/
-
-/*
- console.log(tr);
-       $(tr).children("td").each(function(column, td){
-          // console.log(td);
-           // 1. Stores REF_LINE
-           $('span .spanLineName', $(td)).each(function() {
-               // console.log($(this).html());
-               if($(this).html() != ""){
-                   ref_line = $(this).html();
-               }
-           });
-
-           // 2. Stores REF_PRODUCT
-           // 3. Stores NAME
-           $('select .selProduct', $(td)).each(function() {
-               ref_product = $(this).val();
-           });
-
-           // 3. Stores STATUS
-           $(':radio', $(td)).each(function(){
-               if($(this).is(":checked")){
-                   status = $(this).val();
-               }
-           });
-
-           // 4.
- */
-// JavaScript Code
-
 
 $("#btnTest").click(function () {
 
@@ -1855,7 +1311,7 @@ $("#btnTest").click(function () {
 });
 
 
-// get Data from DB
+// ============= get Data from DB ===============
 function loadDataToTable(result){
     console.log(result);
     for(var i = 0; i < result.length; i++){
@@ -1865,9 +1321,7 @@ function loadDataToTable(result){
         for(var j = 0; j < subResult.length; j++ ){
             createStepAfterMainProcessFromDB(result[i].REF_LINE, subResult[j].STAGE, result[i].SEQ, result[i], subResult[j]);
         }
-
     }
-
 }
 
 
@@ -1876,19 +1330,17 @@ function createOneLine(lineName){
 
     if(!isExisted("lineHeader")) {
         var theader = document.getElementById("tableHeader");
-        // theader.innerHTML = "";
+
         var th = document.createElement("th");
         th.innerText = "라인";
         th.id = "lineHeader";
         theader.appendChild(th);
     }
 
-
     if(!isExisted("tr"+lineName+"_1")) {
         var tbody = document.getElementById("processTable");
-        // tbody.innerHTML = "";
+
         var tr = document.createElement("tr");
-        // tr.id = "tr" + arrLine[i] + "_1";
 
         tr.id = "tr" + lineName + "_1";
         tr.className = "tr" + lineName;
@@ -1916,9 +1368,7 @@ function createOneLine(lineName){
 
 function createStepAfterMainProcessFromDB(lineName, stage, rowNum, result, subResult) {
 
-    if (isExisted("headerStep_" + stage)) {
-        // console.log("This Step header is already existed.");
-    } else {
+    if (!isExisted("headerStep_" + stage)) {
         var theader = document.getElementById("tableHeader");
         var th = document.createElement("th");
         th.innerText = "공정단계" + stage;
@@ -1931,16 +1381,14 @@ function createStepAfterMainProcessFromDB(lineName, stage, rowNum, result, subRe
     }
 
     // Row
-
     var row = document.getElementById("tr" + lineName + "_" + rowNum);
-
 
     // if no sub step or blank
     if(subResult.NAME == null) {
         var blank_td = document.createElement("td");
         blank_td.setAttribute("data-id", (stage));
         blank_td.setAttribute("class", "mainProcess");
-        // blank_td.addClass("mainProcess");
+
         row.appendChild(blank_td);
     } else{
         var divColor = document.createElement("div");
@@ -1964,12 +1412,10 @@ function createStepAfterMainProcessFromDB(lineName, stage, rowNum, result, subRe
         txtMain.type = "text";
         txtMain.value = subResult.NAME;
         txtMain.setAttribute("style", "margin-left: 5px; margin-right: 5px");
-        // txtMain.id = "txtMainTitle" + lineName + "_" + rowNum + "_s_" + txt.value; // spanMainTitleIB_1_s_1
         txtMain.id = "txtMainTitle" + lineName + "_" + rowNum + "_s_" + stage; // spanMainTitleIB_1_s_1
         txtMain.className = "txtMainTitle";
         txtMain.placeholder = "공정명을 입력하세요";
-        txtMain.size = "15"
-        // txtMain.value = txtValue;
+        txtMain.size = "15";
 
         // Column
         var td = document.createElement("td");
@@ -1995,7 +1441,6 @@ function createStepAfterMainProcessFromDB(lineName, stage, rowNum, result, subRe
     }
 }
 
-
 // -- Step 6 - Add Sub Step of Each main step
 function createSubStepItemFromDB(lineName, rowNum, stage, td, subResult){
 
@@ -2014,11 +1459,8 @@ function createSubStepItemFromDB(lineName, rowNum, stage, td, subResult){
         // var arrProcess = ["공정","1차V홈높이",	"1차V홈높이최대",	"1차V홈높이최소",	"1차드릴수",	"1차불균형량",	"1차압입하중",	"2차압입하중",	"3차압입하중"];
         var selProcess = createSelectBoxFromDB(lineName, stage, i + 1, process_Array, "subProcess", "mod_select", pmResult.REF_PROCESS);
 
-
         // Select for process select box
         // var arrMachine = ["설비","1차압입하중-압입기 1","2차압입하중-압입기 2","3차압입하중-압입기 3"];
-
-
 
         var selMachine = createSelectBoxFromDB(lineName, stage, i + 1, machine_Array, "subMachine", "machine_select", pmResult.REF_MACHINE);
 
@@ -2035,26 +1477,19 @@ function createSubStepItemFromDB(lineName, rowNum, stage, td, subResult){
 
         // var td = $(btnObj).parent().parent()[0];
 
-
         // td.className = "tdProcess";
         td.appendChild(div);
 
-
         // link div
         var nextSeq = pmResult.NEXT_SEQUENCE;
-        console.log(nextSeq)
         if(nextSeq != null) {
-            console.log(nextSeq);
             var linkArr = nextSeq.split(",");
             for (var k = 0; k < linkArr.length; k++) {
                 addLinkSubItemFromDB(lineName,  rowNum , k + 1, linkArr[k]);
             }
         }
-
     }
-
 }
-
 
 // -- Creating Textbox for Sub Step Item
 function createSubStepTextBoxFromDB(lineName, rowNum, stage, txtValue){
@@ -2064,7 +1499,6 @@ function createSubStepTextBoxFromDB(lineName, rowNum, stage, txtValue){
     txt.setAttribute("class", "txtSeq");
     txt.setAttribute('style','float:left; margin-left: 5px; margin-top:5px; width:30px; height:34px;');
     txt.value = txtValue;
-
     return txt;
 }
 
@@ -2103,8 +1537,6 @@ function createSelectBoxFromDB(lineName, rowNum, stage, process_Array, prefixSel
         sel.setAttribute('onchange', 'lines.processChange(this)');
     }else{
         var option = document.createElement("option");
-        // option.value = process_Array[i];
-        // option.text = process_Array[i];
         option.value = selectedID; // store Process name
         option.text = selectedID; // show Process name
 
@@ -2114,13 +1546,9 @@ function createSelectBoxFromDB(lineName, rowNum, stage, process_Array, prefixSel
         sel.appendChild(option);
     }
 
-
     //Create and append the options
     for (var i = 0; i < process_Array.length; i++) {
-
         var option = document.createElement("option");
-        // option.value = process_Array[i];
-        // option.text = process_Array[i];
         option.value = process_Array[i][1]; // store Process name
         option.text = process_Array[i][1]; // show Process name
 
@@ -2129,8 +1557,6 @@ function createSelectBoxFromDB(lineName, rowNum, stage, process_Array, prefixSel
         }
         sel.appendChild(option);
     }
-
-
     return sel;
 }
 
@@ -2149,7 +1575,6 @@ function createSubStepMinusButtonFromDB(lineName, rowNum, stage){
 
 // This function is used to create a link text of each sub step item
 function addLinkSubItemFromDB(lineName, rowNum, txtValue, itemValue){
-
 
     // Link Textbox
     var linkTxt = createTextLink(lineName, rowNum, txtValue, itemValue);
