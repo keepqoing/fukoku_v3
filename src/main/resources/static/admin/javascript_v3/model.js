@@ -1580,8 +1580,7 @@ function createSubStepMinusButtonFromDB(lineName, rowNum, stage){
 
 // This function is used to create a link text of each sub step item
 function addLinkSubItemFromDB(lineName, rowNum, txtValue, itemValue, numSubDiv, numberProcess){
-    console.log("row Num = " + rowNum);
-    console.log("txtValue = " + txtValue);
+
     // Link Textbox
     if(itemValue != null && itemValue != "") {
         var linkTxt = createTextLink(lineName, rowNum, numSubDiv, itemValue);
