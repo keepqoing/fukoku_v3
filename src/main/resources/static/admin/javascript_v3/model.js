@@ -737,6 +737,7 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
             txtMain.setAttribute("style", "margin-left: 5px; margin-right: 5px");
             txtMain.id = "txtMainTitle" + lineName + "_" + rowNum + "_s_" + txtValue; // spanMainTitleIB_1_s_1
             txtMain.className = "txtMainTitle";
+            txtMain.setAttribute("required", "required");
             txtMain.placeholder = "공정명을 입력하세요";
             txtMain.size = "15";
             // txtMain.value = txtValue;
@@ -1591,3 +1592,22 @@ function addLinkSubItemFromDB(lineName, rowNum, txtValue, itemValue){
     var outerDiv = document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue);
     outerDiv.appendChild(div);
 }
+
+
+// Update value attribute when input controls change
+$(document).on('change','input',function(){
+    $("#"+this.id).attr("value",$("#"+this.id).val());
+});
+
+
+// set selected = selected when the option is chosen
+$(document).on('change','select',function(){
+    var value = $("#"+this.id).val();
+    $('option', $(this)).each(function(){
+        if($(this).val() == value){
+            $(this).attr("selected", "selected");
+        }
+    });
+});
+
+
