@@ -38,7 +38,7 @@ public interface LineRepository {
 	@SelectProvider(type = LineSQLBuilder.class, method = "find")
 	List<Map<String, Object>> findMap(@Param("f") LineFrm frm);
 	
-	@Select("Select * from line where id=#{id} and status='1' AND start_date <= CURRENT_TIMESTAMP and end_date >= CURRENT_TIMESTAMP ")
+	@Select("Select * from line where id=#{id} and status='1' ")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),

@@ -14,7 +14,9 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.sorting = "asc";
 	$scope.data = {
 			"name" : "",
+			"status":""
 	};
+	$scope.status="All";
 	
 	/***
 	 * Function()
@@ -208,6 +210,13 @@ app.controller('MainCtrl', function($scope, $http) {
 	
 	$scope.btSearch = function(){
 		$scope.data["name"] = $("#txtSearch").val();
+		$scope.findAll($scope.data);
+	}
+	
+	$scope.btSearchActive = function(){
+		// alert($scope.status);
+		$scope.data["name"] = $("#txtSearch").val();
+		$scope.data["status"] = $scope.status;
 		$scope.findAll($scope.data);
 	}
 	

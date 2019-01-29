@@ -17,6 +17,11 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.data = {
 			"name" : "",
 	};
+	$scope.data = {
+			"name" : "",
+			"status" : "",
+	};
+	$scope.status="All";
 	
 	/***
 	 * Function()
@@ -58,6 +63,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.findAllFactory = function(data){
 		var data = {
 				"name" : data,
+				"status" : "",
 		};
         var post = $http({
             method: "POST",
@@ -276,6 +282,13 @@ app.controller('MainCtrl', function($scope, $http) {
 		$scope.data["name"] = $("#txtSearch").val();
 		$scope.findAll($scope.data);
 	}
+	
+	$scope.btSearchActive = function(){
+		// alert($scope.status);
+		$scope.data["name"] = $("#txtSearch").val();
+		$scope.data["status"] = $scope.status;
+		$scope.findAll($scope.data);
+	}
 
 	
 	$scope.btExport = function(){
@@ -318,7 +331,18 @@ app.controller('MainCtrl', function($scope, $http) {
 	    
 	});
 
-	
+	function dynamicSort(property) {
+	    var sortOrder = 1;
+	    if(property[0] === "-") {
+	        sortOrder = -1;
+	        property = property.substr(1);
+	    }
+	    return function (a,b) {
+	        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+	        return result * sortOrder;
+	    }
+	}
+	    
 	$scope.btOrder = function(col){
 		
 		if($scope.sorting == "asc"){
@@ -326,10 +350,15 @@ app.controller('MainCtrl', function($scope, $http) {
 		}else{
 			$scope.sorting = "asc";
 		}
+		
 		var orderBy = " order by "+ col +" "+$scope.sorting;
 		$scope.data["order_by"] = orderBy;
 		console.log($scope.data);
 		$scope.findAll($scope.data);
+		
+		
+		
+
 	};
 	
 	

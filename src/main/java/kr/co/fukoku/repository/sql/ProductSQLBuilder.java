@@ -13,10 +13,17 @@ public class ProductSQLBuilder {
 			f.setOrderBy(" order by id asc ");
 		}
 		
+		String status  = "";
+		if(f.getStatus().equalsIgnoreCase("1")) {
+			status = "	start_date <= CURRENT_TIMESTAMP and end_date >= CURRENT_TIMESTAMP and ";
+		}else if(f.getStatus().equalsIgnoreCase("0")) {
+			status = "	end_date < CURRENT_TIMESTAMP and ";
+		}
+		
 		 StringBuffer buffer = new StringBuffer();
 	        buffer.append(
-	        		"select * from product where status='1' and \r\n" + 
-	        		"		start_date <= CURRENT_TIMESTAMP and end_date >= CURRENT_TIMESTAMP and\r\n" + 
+	        		"select * from product where status='1' and " + 
+	        				status +
 	        		"		name like  '%"+  f.getName().trim() +"%'   "+f.getOrderBy()+";"
 	        		);
 	        System.out.print(buffer.toString());

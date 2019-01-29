@@ -179,8 +179,8 @@ public class ProcessMachineRestController {
 		for(int i=0;i<jsonArr.length();i++) {
 			ProcessMachineFrm  f = new ProcessMachineFrm();
 			f.setSeq( Long.parseLong((String) jsonArr.getJSONObject(i).get("seq")))  ;
-			f.setRefProcessId( Long.parseLong((String) jsonArr.getJSONObject(i).get("ref_process_id"))  );
-			f.setRefMachineId( Long.parseLong((String) jsonArr.getJSONObject(i).get("ref_machine_id"))  );
+			f.setRefProcessId( (String) jsonArr.getJSONObject(i).get("ref_process_id")  );
+			f.setRefMachineId( (String) jsonArr.getJSONObject(i).get("ref_machine_id")  );
 			f.setRefProcessChainElementId( Long.parseLong((String)jsonArr.getJSONObject(i).get("ref_process_chain_element"))  );
 			f.setNextSequence( (String) jsonArr.getJSONObject(i).get("next_sequence")  );
 			
