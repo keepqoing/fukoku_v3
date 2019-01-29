@@ -29,12 +29,9 @@ public interface ProcessMachineRepository {
 	@SelectProvider(type = ProcessMachineSQLBuilder.class, method = "find")
 	@Results(value={
 			@Result(property="nextSequence", column="next_sequence" ),
-			@Result(property="process", column="ref_process_id",
-				one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findOne")
-		    ),
-			@Result(property="machine", column="ref_machine_id",
-				one = @One(select  = "kr.co.fukoku.repository.MachineRepository.findOne")
-	    )
+			@Result(property="process.name", column="ref_process"),//,one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findOne")),
+			@Result(property="machine.name", column="ref_machine")//,one = @One(select  = "kr.co.fukoku.repository.MachineRepository.findOne")
+	    
 	})
 	List<ProcessMachine> findAll(ProcessMachineFrm f);
 	
@@ -44,17 +41,13 @@ public interface ProcessMachineRepository {
 	@Select("Select * from process_machine where id=#{id}")
 	@Results(value={
 			@Result(property="nextSequence", column="next_sequence" ),
-			@Result(property="process", column="ref_process_id",
-				one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findOne")
-		    ),
-			@Result(property="machine", column="ref_machine_id",
-				one = @One(select  = "kr.co.fukoku.repository.MachineRepository.findOne")
-	    )
+			@Result(property="process.name", column="ref_process"),//,one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findOne")),
+			@Result(property="machine.name", column="ref_machine"),//,one = @One(select  = "kr.co.fukoku.repository.MachineRepository.findOne")
 	})
 	ProcessMachine findOne(@Param("id") long  id);
 	
 	@Insert("INSERT INTO process_machine ("
-			+ " seq,ref_process_id,ref_machine_id,next_sequence "
+			+ " seq,ref_process,ref_machine,next_sequence "
 			+ ") VALUES ("
 			+ "	#{f.seq}, "
 			+ " #{f.refProcessId}, "
@@ -64,7 +57,7 @@ public interface ProcessMachineRepository {
 	boolean save(@Param("f") ProcessMachineFrm frm);
 	
 	@Insert("<script>insert into process_machine ("
-			+ " seq,  ref_process_id,ref_machine_id,next_sequence"
+			+ " seq,  ref_process,ref_machine,next_sequence"
 			+ ") VALUES "
 			+ " <foreach collection='lst' item='f' separator=','>("
 			+ "	#{f.seq}, "
@@ -77,8 +70,8 @@ public interface ProcessMachineRepository {
 	
 	@Update("UPDATE process_machine SET"
 			+ "	seq=#{f.seq}, "
-			+ " ref_process_id=#{f.refProcessId},"
-			+ " ref_machine_id=#{f.refMachineId},"
+			+ " ref_process=#{f.refProcessId},"
+			+ " ref_machine=#{f.refMachineId},"
 			+ " next_sequence= #{f.nextSequence}"
 			+ "	WHERE id=#{f.id}")
 	boolean update(@Param("f") ProcessMachineFrm frm);

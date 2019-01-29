@@ -56,10 +56,20 @@
                     <div class="box-body">
                         <div class="row">
                             
-                            <div class="col-xl-10 col-lg-10 col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-xl-8 col-lg-8 col-md-6 col-sm-6 col-xs-12">
                                     <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">제품추가</button>
                                     <form id="fileUploadForm"  class="btn btn-info btn-file">Import <input type="file" id="btImport" name="file" (change)="btImport()"> </form>
                                     <button type="button" id="btExport" class="btn btn-info" ng-click="btExport()">Export</button>
+                                </div>
+                                
+                                <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                	<div class="form-group">
+                                    	<select class="form-control" id="selectActive" ng-model="status" ng-change="btSearchActive()">
+                                    		<option value="All" selected>All</option>
+                                    		<option value="1">Active</option>
+                                    		<option value="0">Expired</option>
+                                    	</select>
+                                	</div>
                                 </div>
                                 
                                 <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
@@ -86,8 +96,8 @@
                                         <th>제품유형 <i class="fa fa-fw fa-sort" ng-click="btOrder('type')" style="cursor: pointer;"></i></th>
                                         <th>납품시작일 <i class="fa fa-fw fa-sort" ng-click="btOrder('start_date')" style="cursor: pointer;"></i></th>
                                         <th>납품종료일 <i class="fa fa-fw fa-sort" ng-click="btOrder('end_date')" style="cursor: pointer;"></i></th>
-                                        <th>고객사</th>
-                                        <th>설명</th>
+                                        <th>고객사 <i class="fa fa-fw fa-sort" ng-click="btOrder('customer_name')" style="cursor: pointer;"></i></th>
+                                        <th>설명 <i class="fa fa-fw fa-sort" ng-click="btOrder('remark')" style="cursor: pointer;"></i></th>
                                         <th>수정</th>
                                     </tr>
                                     </thead>

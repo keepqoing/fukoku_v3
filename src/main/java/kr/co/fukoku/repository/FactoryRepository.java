@@ -32,7 +32,7 @@ public interface FactoryRepository {
 	List<Map<String, Object>> findMap(@Param("f") FactoryFrm frm);
 	
 	@Select("select * from factory where status='1' and \n" +
-			"start_date <= CURRENT_TIMESTAMP and end_date >= CURRENT_TIMESTAMP and \n" +
+	//		"start_date <= CURRENT_TIMESTAMP and end_date >= CURRENT_TIMESTAMP and \n" +
 			"id =#{id} order by id asc;")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),

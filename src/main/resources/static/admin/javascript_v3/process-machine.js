@@ -134,11 +134,12 @@ app.controller('MainCtrl', function($scope, $http) {
             if(response.code == 200){
             	console.log(response);
             	$scope.id = response.data.id;
-            	$("#txtName").val(response.data.name);
-            	$("#selectOptProcess").val(response.data.process.id);
-            	$("#selectOptMachine").val(response.data.machine.id);
             	$("#txtSeq").val(response.data.seq);
-            	$("#txtNextSequence").val(response.data.nextSequence);
+            	$("#txtNextSequence").val(response.data.next_sequence);
+            	//$("#txtName").val(response.data.name);
+            	$("#selectOptProcess").val(response.data.process.name.trim());
+            	$("#selectOptMachine").val(response.data.machine.name.trim());
+            	
             }else{
             	$scope.message = response.message;
             }
@@ -207,16 +208,21 @@ app.controller('MainCtrl', function($scope, $http) {
 		$("#modalFrm").modal('show');
 	};
 	
+	
+	
 	$scope.btEdit = function(id){
 		console.log(id);
 		$scope.action = "update";
-		$('#frm').trigger("reset");
+		$('#frm').trigger("reset"); 
 		$scope.findProcesses();
 		$scope.findMachines();
-		$scope.findOne(id);
+		setTimeout(() => {
+			 $scope.findOne(id)
+		}, 200);
 		$("#btSave").hide();
 		$("#btUpdate").show();
 		$("#modalFrm").modal('show');
+		
 	}
 	
 	$scope.onSubmitFrm = function(){

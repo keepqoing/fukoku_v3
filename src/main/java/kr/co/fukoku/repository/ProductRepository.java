@@ -30,7 +30,7 @@ public interface ProductRepository {
 	})
 	List<Product> findAll(@Param("f") ProductFrm f);
 	
-	@Select("Select * from product where id=#{id} and status='1' AND start_date <= CURRENT_TIMESTAMP and end_date >= CURRENT_TIMESTAMP")
+	@Select("Select * from product where id=#{id} and status='1' ")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),
