@@ -87,7 +87,7 @@ $(function () {
 
     // When the factory select box is changed, so we need to query the lines
     $(document).on('change','select.selFactory',function(){
-        console.log($("#"+this.id + " option:selected").text());
+        // console.log($("#"+this.id + " option:selected").text());
         lines.getAllLinesByFactory($("#"+this.id + " option:selected").val());
     });
 
@@ -385,6 +385,7 @@ function createLine(arrLine){
     theader.innerHTML = "";
     var th = document.createElement("th");
     th.innerText = "라인";
+    th.className = "lineHeader";
     theader.appendChild(th);
 
     var tbody = document.getElementById("processTable");
@@ -1312,7 +1313,7 @@ $("#btnTest").click(function () {
 });
 
 
-// ============= get Data from DB ===============
+// ======================= START READING DATA FROM DATABASE ================================================
 function loadDataToTable(result){
     console.log(result);
     for(var i = 0; i < result.length; i++){
@@ -1325,10 +1326,10 @@ function loadDataToTable(result){
     }
 }
 
-
+var numberProcess = 0;
 // 1.1 - Read Data and Create One line for once
 function createOneLine(lineName){
-
+    numberProcess = 0;
     if(!isExisted("lineHeader")) {
         var theader = document.getElementById("tableHeader");
 
@@ -1442,6 +1443,7 @@ function createStepAfterMainProcessFromDB(lineName, stage, rowNum, result, subRe
     }
 }
 
+
 // -- Step 6 - Add Sub Step of Each main step
 function createSubStepItemFromDB(lineName, rowNum, stage, td, subResult){
 
@@ -1454,7 +1456,8 @@ function createSubStepItemFromDB(lineName, rowNum, stage, td, subResult){
         var buttPlus = createSubStepPlusButtonFromDB(lineName, rowNum, i + 1);
 
         // Div for one sub step
-        var div = createDivSubStepFromDB(lineName, rowNum, i + 1);
+        numberProcess += 1; // count number of process
+        var div = createDivSubStepFromDB(lineName, rowNum, numberProcess);
 
         // Select for process select box
         // var arrProcess = ["공정","1차V홈높이",	"1차V홈높이최대",	"1차V홈높이최소",	"1차드릴수",	"1차불균형량",	"1차압입하중",	"2차압입하중",	"3차압입하중"];
@@ -1482,13 +1485,14 @@ function createSubStepItemFromDB(lineName, rowNum, stage, td, subResult){
         td.appendChild(div);
 
         // link div
-        var nextSeq = pmResult.NEXT_SEQUENCE;
-        if(nextSeq != null) {
-            var linkArr = nextSeq.split(",");
-            for (var k = 0; k < linkArr.length; k++) {
-                addLinkSubItemFromDB(lineName,  rowNum , k + 1, linkArr[k]);
-            }
-        }
+       var nextSeq = pmResult.NEXT_SEQUENCE;
+       if (nextSeq != null) {
+           var linkArr = nextSeq.split(",");
+           for (var k = 0; k < linkArr.length; k++) {
+               addLinkSubItemFromDB(lineName, rowNum, k + 1, linkArr[k], i + 1, numberProcess);
+           }
+       }
+
     }
 }
 
@@ -1575,23 +1579,31 @@ function createSubStepMinusButtonFromDB(lineName, rowNum, stage){
 }
 
 // This function is used to create a link text of each sub step item
-function addLinkSubItemFromDB(lineName, rowNum, txtValue, itemValue){
-
+function addLinkSubItemFromDB(lineName, rowNum, txtValue, itemValue, numSubDiv, numberProcess){
+    console.log("row Num = " + rowNum);
+    console.log("txtValue = " + txtValue);
     // Link Textbox
-    var linkTxt = createTextLink(lineName, rowNum, txtValue, itemValue);
-    linkTxt.value = itemValue;
+    if(itemValue != null && itemValue != "") {
+        var linkTxt = createTextLink(lineName, rowNum, numSubDiv, itemValue);
+        linkTxt.value = itemValue;
 
-    // Link Minus Button
-    var linkButton = createMinusLinkButton(lineName, rowNum, txtValue, itemValue);
 
-    // Link Div
-    var div = createLinkDivSubStep(lineName, rowNum, txtValue, itemValue);
-    div.appendChild(linkTxt);
-    div.appendChild(linkButton);
+        // Link Minus Button
+        var linkButton = createMinusLinkButton(lineName, rowNum, numSubDiv, itemValue);
 
-    var outerDiv = document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue);
-    outerDiv.appendChild(div);
+        // Link Div
+        var div = createLinkDivSubStep(lineName, rowNum, numSubDiv, txtValue);
+        div.appendChild(linkTxt);
+        div.appendChild(linkButton);
+
+
+        var outerDiv = document.getElementById("div" + lineName + "_" + txtValue + "_" + numberProcess);
+        console.log("div" + lineName + "_" + txtValue + "_" + numSubDiv);
+        outerDiv.appendChild(div);
+    }
 }
+
+// ================== END READING FROM DATABASE ==============================================
 
 
 // Update value attribute when input controls change
