@@ -1491,10 +1491,14 @@ function createSubStepItemFromDB(lineName, rowNum, stage, td, subResult){
         // link div
         var nextSeq = pmResult.NEXT_SEQUENCE;
         if (nextSeq != null) {
+
             var linkArr = nextSeq.split(",");
+
             for (var k = 0; k < linkArr.length; k++) {
                 var d = addLinkSubItemFromDB(lineName, rowNum, k + 1, linkArr[k], i + 1, numberProcess);
-                div.appendChild(d);
+                if(linkArr != "") {
+                    div.appendChild(d);
+                }
             }
         }
         // var td = document.getElementById("td" + lineName + "_" + rowNum + "_s_" + tValue);
