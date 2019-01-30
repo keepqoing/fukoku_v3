@@ -33,13 +33,13 @@ $(function () {
                     if (response.data.length > 0) {
                         var sel = document.getElementById("selFactory");
                         var option = document.createElement("option");
-                        option.value = "0"; // store Process name
+                        option.setAttribute("value","0"); // store Process name
                         option.text = "공장"; // show Process name
                         sel.appendChild(option);
 
                         for(i = 0; i < response.data.length; i++){
                             var option = document.createElement("option");
-                            option.value = response.data[i].id; // store factory id
+                            option.setAttribute("value", response.data[i].id); // store factory id
                             option.text = response.data[i].name; // show factory name
                             sel.appendChild(option);
                         }
@@ -201,7 +201,7 @@ $(function () {
                         for (i = 0; i < machine_Array.length; i++) {
                             // console.log("Machine Array [" + i + "] = " + machine_Array[i]);
                             var option = document.createElement("option");
-                            option.value = machine_Array[i][1]; // store machine ID
+                            option.setAttribute("value", machine_Array[i][1]); // store machine ID
                             option.text = machine_Array[i][1]; // machine name
                             sel.appendChild(option);
                         }
@@ -566,7 +566,7 @@ function createProductList(lineName, countClick){
     for (var i = 0; i < product_Array.length; i++) {
         var option = document.createElement("option");
         // option.value = product_Array[i][0];
-        option.value = product_Array[i][1];
+        option.setAttribute("value", product_Array[i][1]);
         option.text = product_Array[i][1];
         sel.appendChild(option);
     }
@@ -583,7 +583,7 @@ function createProductRadioButton(rdoName,  rdoValue, checked){
     if(checked){
         radio.setAttribute("checked","checked");
     }
-    radio.value = rdoValue;
+    radio.setAttribute("value",rdoValue);
     label.appendChild(radio);
     label.appendChild(document.createTextNode(rdoValue == "1"?"Active":"Non Active"));
     label.setAttribute("style","float:left; margin-left: 5px; margin-right: 5px;")
@@ -607,7 +607,7 @@ function createLineGlobalArray(arrayName, countClick, inputValue){
     if(!isExisted("lineArray" + arrayName + "_" + countClick)){
         var txtBox = document.createElement("input");
         txtBox.setAttribute("id", "lineArray" + arrayName + "_" + countClick);
-        txtBox.value = inputValue;
+        txtBox.setAttribute("value", inputValue);
         txtBox.setAttribute("style", "display:none");
         txtBox.setAttribute("class","hiddenTextBox");
         document.body.appendChild(txtBox);
@@ -659,12 +659,12 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
     // create a textbox to store step value for each line and each product
     if (isExisted("txtStep" + lineName + "_" + rowNum)) {
         var txt = document.getElementById("txtStep" + lineName + "_" + rowNum);
-        txt.value = parseInt(txt.value) + 1;
+        txt.setAttribute("value",  parseInt(txt.value) + 1);
         txt.setAttribute("class","hiddenTextBox");
         // console.log("Txt value of " + txt.id + "= " + txt.value);
     } else {
         var txt = document.createElement("input");
-        txt.value = 1;
+        txt.setAttribute("value", 1);
         txt.id = "txtStep" + lineName + "_" + rowNum;
         txt.setAttribute("style", "display:none;");
         txt.setAttribute("class","hiddenTextBox");
@@ -950,7 +950,7 @@ function mainStepSelectBox(lineName, rowNum, txt, txtValue){
 
     var varStepLabel = "";
     var option = document.createElement("option");
-    option.value = txtValue;
+    option.setAttribute("value", txtValue);
     option.text = txtValue;
     option.setAttribute("id","optionProcessTitle" + lineName + "_" + rowNum + "_s_" + txt.value);
     sel.appendChild(option);
@@ -963,12 +963,12 @@ function createSubStepItem(lineName, rowNum, tValue, btnObj){
     // create a textbox to store SUB step value for each STEP OF EACH LINE
     if(isExisted("txtSubStep" + lineName + "_" + rowNum)){  // txtSubStepIB_1
         var txt = document.getElementById("txtSubStep" + lineName + "_" + rowNum);
-        txt.value = parseInt(txt.value) + 1;
+        txt.setAttribute("value", parseInt(txt.value) + 1);
         txt.setAttribute("class","hiddenTextBox");
         // console.log("Sub Txt value of " + txt.id + "= " + txt.value);
     }else{
         var txt = document.createElement("input");
-        txt.value = 1;
+        txt.setAttribute("value", 1);
         txt.id = "txtSubStep" + lineName + "_" + rowNum;
         txt.setAttribute("class","hiddenTextBox");
         txt.setAttribute("style","display:none;");
@@ -1021,12 +1021,12 @@ function createSelectBox(lineName, rowNum, txtID, process_Array, prefixSel, clas
     if(prefixSel == "subProcess") {
         sel.setAttribute('onchange', 'lines.processChange(this)');
         var option = document.createElement("option");
-        option.value = 0; // store Process ID
+        option.setAttribute("value", 0); // store Process ID
         option.text = "공정"; // show Process name
         sel.appendChild(option);
     }else{
         var option = document.createElement("option");
-        option.value = 0; // store Process ID
+        option.setAttribute("value", 0); // store Process ID
         option.text = "설비"; // show Process name
         sel.appendChild(option);
     }
@@ -1034,7 +1034,7 @@ function createSelectBox(lineName, rowNum, txtID, process_Array, prefixSel, clas
     //Create and append the options
     for (var i = 0; i < process_Array.length; i++) {
         var option = document.createElement("option");
-        option.value = process_Array[i][1]; // store Process ID
+        option.setAttribute("value", process_Array[i][1]); // store Process ID
         option.text = process_Array[i][1]; // show Process name
         sel.appendChild(option);
     }
@@ -1095,12 +1095,12 @@ function addLinkSubItem(lineName, rowNum, txtValue){
     // create a textbox to store Link SUB step value for each Sub Step
     if(isExisted("txtLink" + lineName + "_" + rowNum + "_s_" + txtValue)){  // txtLinkIB_1_s_1
         var txt = document.getElementById("txtLink" + lineName + "_" + rowNum + "_s_" + txtValue);
-        txt.value = parseInt(txt.value) + 1;
+        txt.setAttribute("value", parseInt(txt.value) + 1);
         txt.setAttribute("class","hiddenTextBox");
         // console.log("Link Sub Txt value of " + txt.id + "= " + txt.value);
     }else{
         var txt = document.createElement("input");
-        txt.value = 1;
+        txt.setAttribute("value", 1);
         txt.id = "txtLink" + lineName + "_" + rowNum + "_s_" + txtValue;
         txt.setAttribute("style","display:none;");
         txt.setAttribute("class","hiddenTextBox");
@@ -1417,7 +1417,8 @@ function createStepAfterMainProcessFromDB(lineName, stage, rowNum, result, subRe
 
         var txtMain = document.createElement("input");
         txtMain.type = "text";
-        txtMain.value = subResult.NAME;
+        // txtMain.value = subResult.NAME;
+        txtMain.setAttribute("value", subResult.NAME);
         txtMain.setAttribute("style", "margin-left: 5px; margin-right: 5px");
         txtMain.id = "txtMainTitle" + lineName + "_" + rowNum + "_s_" + stage; // spanMainTitleIB_1_s_1
         txtMain.className = "txtMainTitle";
@@ -1511,7 +1512,7 @@ function createSubStepTextBoxFromDB(lineName, rowNum, stage, txtValue){
     txt.setAttribute('id','subTextBox'+lineName+"_"+rowNum+"_s_"+stage);  // subTextBoxIB_1_s_1
     txt.setAttribute("class", "txtSeq");
     txt.setAttribute('style','float:left; margin-left: 5px; margin-top:5px; width:30px; height:34px;');
-    txt.value = txtValue;
+    txt.setAttribute("value", txtValue);
     return txt;
 }
 
@@ -1550,7 +1551,7 @@ function createSelectBoxFromDB(lineName, rowNum, stage, process_Array, prefixSel
         sel.setAttribute('onchange', 'lines.processChange(this)');
     }else{
         var option = document.createElement("option");
-        option.value = selectedID; // store Process name
+        option.setAttribute("value", selectedID); // store Process name
         option.text = selectedID; // show Process name
 
         if( option.value == selectedID){
@@ -1562,7 +1563,7 @@ function createSelectBoxFromDB(lineName, rowNum, stage, process_Array, prefixSel
     //Create and append the options
     for (var i = 0; i < process_Array.length; i++) {
         var option = document.createElement("option");
-        option.value = process_Array[i][1]; // store Process name
+        option.setAttribute("value", process_Array[i][1]); // store Process name
         option.text = process_Array[i][1]; // show Process name
 
         if( option.value == selectedID){
@@ -1592,7 +1593,7 @@ function addLinkSubItemFromDB(lineName, rowNum, txtValue, itemValue, numSubDiv, 
     // Link Textbox
     if(itemValue != null && itemValue != "") {
         var linkTxt = createTextLink(lineName, rowNum, numSubDiv, txtValue);
-        linkTxt.value = itemValue;
+        linkTxt.setAttribute("value", itemValue);
 
 
         // Link Minus Button
@@ -1765,7 +1766,7 @@ function createProductListFromDB(lineName, countClick, productValue, statusValue
     for (var i = 0; i < product_Array.length; i++) {
         var option = document.createElement("option");
         // option.value = product_Array[i][0];
-        option.value = product_Array[i][1];
+        option.setAttribute("value", product_Array[i][1]);
         option.text = product_Array[i][1];
 
         if( option.value == productValue){
