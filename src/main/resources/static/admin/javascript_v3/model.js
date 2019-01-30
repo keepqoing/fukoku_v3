@@ -1122,7 +1122,7 @@ function addLinkSubItem(lineName, rowNum, txtValue, btnObject){
     div.appendChild(linkButton);
 
     // var outerDiv = document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue);
-    var outerDiv = $(btnObject).parent().parent()[0];
+    var outerDiv = $(btnObject).parent()[0];
 
     outerDiv.appendChild(div);
 }
