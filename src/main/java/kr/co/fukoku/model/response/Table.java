@@ -24,7 +24,60 @@ public class Table {
 	
 	
 	
-	
+	public static final String TS_EFN_GETDATA[] = {
+			"TranNo",
+			"Plantcode",
+			"EFNCode",
+			"GetDT",
+			"ProdDate",
+			"ProdNo",
+			"ProdGroup",
+			"TElePower",
+			"ElePower",
+			"IntPower",
+			"TAP_POS",
+			"PFPer",
+			"EPI_A",
+			"EPI_B",
+			"EPI_C",
+			"ABHA_A",
+			"ABHA_B",
+			"ABHA_C",
+			"TrTemp",
+			"Electrod_A",
+			"Electrod_B",
+			"Electrod_C",
+			"Impedance_A",
+			"Impedance_B",
+			"Impedance_C",
+			"1Ampere_A",
+			"1Ampere_B",
+			"1Ampere_C",
+			"1Voltage_A",
+			"1Voltage_B",
+			"1Voltage_C",
+			"2Ampere_A",
+			"2Ampere_B",
+			"2Ampere_C",
+			"2Voltage_A",
+			"2Voltage_B",
+			"2Voltage_C",
+			"3PhasePF_A",
+			"3PhasePF_B",
+			"3PhasePF_C",
+			"RMeter_A",
+			"RMeter_B",
+			"RMeter_C",
+			"XMeter_A",
+			"XMeter_B",
+			"XMeter_C",
+			"ExhaustGasTemp",
+			"TapTemp",
+			"CoolantQty",
+			"IFDT",
+			"comment"
+			
+	};
 	
 	
 	
