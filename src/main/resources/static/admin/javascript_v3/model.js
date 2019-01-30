@@ -979,8 +979,7 @@ function createSubStepItem(lineName, rowNum, tValue, btnObj){
     // Textbox
     var textBox = createSubStepTextBox(lineName, rowNum, txt);
 
-    // Plus button
-    var buttPlus = createSubStepPlusButton(lineName, rowNum, txt);
+
 
     // Div for one sub step
     var div = createDivSubStep(lineName, rowNum, txt);
@@ -995,6 +994,9 @@ function createSubStepItem(lineName, rowNum, tValue, btnObj){
 
     // Minus button
     var buttMinus = createSubStepMinusButton(lineName, rowNum, txt);
+
+    // Plus button
+    var buttPlus = createSubStepPlusButton(lineName, rowNum, txt);
 
     div.appendChild(buttMinus);
     div.appendChild(textBox);
@@ -1068,7 +1070,7 @@ function createSubStepPlusButton(lineName, rowNum, txtId){
     buttPlus.innerText = "연결추가";
     buttPlus.setAttribute('class',"add-house btn btn-success btn-xs");
     buttPlus.setAttribute('style','float:left; margin-left:5px; margin-top:5px;');
-    buttPlus.setAttribute('onclick', "addLinkSubItem('"+ lineName + "', " + rowNum + ", " + txtId.value + ") " );
+    buttPlus.setAttribute('onclick', "addLinkSubItem('"+ lineName + "', " + rowNum + ", " + txtId.value + ", this) " );
     //addLinkSubItem(lineName, rowNum, txtId, txtLink)
     // var spn = document.createElement('span');
     // spn.setAttribute('class','fa fa-plus');
@@ -1091,7 +1093,7 @@ function createSubStepMinusButton(lineName, rowNum, txtId){
 }
 
 // This function is used to create a link text of each sub step item
-function addLinkSubItem(lineName, rowNum, txtValue){
+function addLinkSubItem(lineName, rowNum, txtValue, btnObject){
     // create a textbox to store Link SUB step value for each Sub Step
     if(isExisted("txtLink" + lineName + "_" + rowNum + "_s_" + txtValue)){  // txtLinkIB_1_s_1
         var txt = document.getElementById("txtLink" + lineName + "_" + rowNum + "_s_" + txtValue);
@@ -1119,7 +1121,9 @@ function addLinkSubItem(lineName, rowNum, txtValue){
     div.appendChild(linkTxt);
     div.appendChild(linkButton);
 
-    var outerDiv = document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue);
+    // var outerDiv = document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue);
+    var outerDiv = $(btnObject).parent().parent()[0];
+
     outerDiv.appendChild(div);
 }
 
