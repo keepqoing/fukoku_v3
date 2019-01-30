@@ -83,4 +83,7 @@ public interface FactoryRepository {
 	@Select("SELECT * FROM factory ORDER BY seq;")
 	List<Factory> findAllFactories();
 	
+	@Select("SELECT * FROM TS_EFN_GETDATA WHERE GetDT BETWEEN  '2018-12-01 00:00:00.000' AND '2018-12-07 00:00:00.000' order by GetDT ASC")
+	List<Map<String, Object>> findMapSimpac();
+	
 }
