@@ -251,13 +251,16 @@ $(function () {
             success: function (response) {
                 if(response.code == 200){
                     if(response.data.length > 0){
+
                         loadDataToTable(response.data);
                     }
                 } else{
+
                     console.log("Data cannot be read");
                 }
             },
             error: function(data, status, err){
+
                 console.log("error: " + data + " status: " + status + " err:" + err);
             }
         });
@@ -295,8 +298,8 @@ function checkAllLines(ele) {
 
 // Get values from the checkboxes which are checked
 function getCheckBoxValues(){
-    m_option = "";
-    checkPaginationMain = true;
+    var m_option = "";
+
     $.each($("input[name='m_option']:checked"), function(){
         m_option += $(this).val()+",";
     });
@@ -483,9 +486,9 @@ function createProductTd(lineName, countClick){
     // call product radio buttons
     var rdoName = "radio" + lineName + "_" + countClick;
     // active button
-    var rdoActive = createProductRadioButton(rdoName, "1");
+    var rdoActive = createProductRadioButton(rdoName, "1", true);
     // non active button
-    var rdoNonActive = createProductRadioButton(rdoName, "0");
+    var rdoNonActive = createProductRadioButton(rdoName, "0", false);
 
     // call product button function
     var btnClassName = "btnProduct" + lineName;
@@ -525,8 +528,8 @@ function addRowAfter(rowId, lineName, countClick){
     // refElement.parentNode.insertBefore(newRow, refElement.nextSibling );
     // //$("<td/>").insertBefore($("#btnMinusProductHC_1").parent().parent().next().children().first());
     if(refElement == null){
-        console.log("null neng");
-        console.log("last id = " + $(".tr"+lineName).last().attr("id"));
+        // console.log("null neng");
+        // console.log("last id = " + $(".tr"+lineName).last().attr("id"));
         var refEle = document.getElementById($(".tr"+lineName).last().attr("id"));
 
 
@@ -571,13 +574,13 @@ function createProductList(lineName, countClick){
 }
 
 // This function is for creating radio button in product cell
-function createProductRadioButton(rdoName,  rdoValue){
+function createProductRadioButton(rdoName,  rdoValue, checked){
     var label = document.createElement("label");
     var radio = document.createElement("input");
     radio.type = "radio";
     radio.name = rdoName;
     // radio.checked = (rdoValue == "1")?  true:false;
-    if(rdoValue == "1"){
+    if(checked){
         radio.setAttribute("checked","checked");
     }
     radio.value = rdoValue;
@@ -606,6 +609,7 @@ function createLineGlobalArray(arrayName, countClick, inputValue){
         txtBox.setAttribute("id", "lineArray" + arrayName + "_" + countClick);
         txtBox.value = inputValue;
         txtBox.setAttribute("style", "display:none");
+        txtBox.setAttribute("class","hiddenTextBox");
         document.body.appendChild(txtBox);
     }
 }
@@ -656,12 +660,14 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
     if (isExisted("txtStep" + lineName + "_" + rowNum)) {
         var txt = document.getElementById("txtStep" + lineName + "_" + rowNum);
         txt.value = parseInt(txt.value) + 1;
+        txt.setAttribute("class","hiddenTextBox");
         // console.log("Txt value of " + txt.id + "= " + txt.value);
     } else {
         var txt = document.createElement("input");
         txt.value = 1;
         txt.id = "txtStep" + lineName + "_" + rowNum;
         txt.setAttribute("style", "display:none;");
+        txt.setAttribute("class","hiddenTextBox");
         document.body.appendChild(txt);
         // console.log("Txt value of " + txt.id + "= " + txt.value);
     }
@@ -860,7 +866,7 @@ function startMovingTd(lineName, rowNum, currentStage, newStage, btnObj){
 
     }else if(newTd.innerHTML == ""){
         // console.log("Not existed");
-        console.table(oldTd);
+        // console.table(oldTd);
         newTd.innerHTML = oldTd.html();
         oldTd.html("");
         return true;
@@ -958,11 +964,13 @@ function createSubStepItem(lineName, rowNum, tValue, btnObj){
     if(isExisted("txtSubStep" + lineName + "_" + rowNum)){  // txtSubStepIB_1
         var txt = document.getElementById("txtSubStep" + lineName + "_" + rowNum);
         txt.value = parseInt(txt.value) + 1;
+        txt.setAttribute("class","hiddenTextBox");
         // console.log("Sub Txt value of " + txt.id + "= " + txt.value);
     }else{
         var txt = document.createElement("input");
         txt.value = 1;
         txt.id = "txtSubStep" + lineName + "_" + rowNum;
+        txt.setAttribute("class","hiddenTextBox");
         txt.setAttribute("style","display:none;");
         document.body.appendChild(txt);
         // console.log("Sub Txt value of " + txt.id + "= " + txt.value);
@@ -1088,12 +1096,14 @@ function addLinkSubItem(lineName, rowNum, txtValue){
     if(isExisted("txtLink" + lineName + "_" + rowNum + "_s_" + txtValue)){  // txtLinkIB_1_s_1
         var txt = document.getElementById("txtLink" + lineName + "_" + rowNum + "_s_" + txtValue);
         txt.value = parseInt(txt.value) + 1;
+        txt.setAttribute("class","hiddenTextBox");
         // console.log("Link Sub Txt value of " + txt.id + "= " + txt.value);
     }else{
         var txt = document.createElement("input");
         txt.value = 1;
         txt.id = "txtLink" + lineName + "_" + rowNum + "_s_" + txtValue;
         txt.setAttribute("style","display:none;");
+        txt.setAttribute("class","hiddenTextBox");
         document.body.appendChild(txt);
         // console.log("Link Sub Txt value of " + txt.id + "= " + txt.value);
     }
@@ -1216,7 +1226,8 @@ function checkIfNoMoreRow(){
 
 // ============= INSERT INTO DATABASE =========================================
 $("#btnSaveAll").click(function () {
-    DBInsertion();
+
+        DBInsertion();
 });
 
 //======= Start inserting to Database
@@ -1300,13 +1311,8 @@ function DBInsertion(){
 
 $("#btnTest").click(function () {
 
-    var theader = document.getElementById("tableHeader");
-    theader.innerHTML = "";
 
-    var tbody = document.getElementById("processTable");
-    tbody.innerHTML = "";
-
-    resetCountClick();
+    removeHiddenControls("hiddenTextBox");
 
     lines.getProcessModelData();
 
@@ -1318,7 +1324,7 @@ function loadDataToTable(result){
     console.log(result);
     for(var i = 0; i < result.length; i++){
         createOneLine(result[i].REF_LINE);
-        addNewProduct(result[i].REF_LINE);
+        addNewProductFromDB(result[i].REF_LINE, result[i].REF_PRODUCT, result[i].STATUS);
         var subResult = result[i].PROCESS_CHAIN_ELEMENT;
         for(var j = 0; j < subResult.length; j++ ){
             createStepAfterMainProcessFromDB(result[i].REF_LINE, subResult[j].STAGE, result[i].SEQ, result[i], subResult[j]);
@@ -1390,7 +1396,6 @@ function createStepAfterMainProcessFromDB(lineName, stage, rowNum, result, subRe
         var blank_td = document.createElement("td");
         blank_td.setAttribute("data-id", (stage));
         blank_td.setAttribute("class", "mainProcess");
-
         row.appendChild(blank_td);
     } else{
         var divColor = document.createElement("div");
@@ -1434,7 +1439,7 @@ function createStepAfterMainProcessFromDB(lineName, stage, rowNum, result, subRe
         divColor.appendChild(buttMove);
         td.appendChild(divColor);
         td.setAttribute("data-id", stage);
-        // td.setAttribute("class","mainProcess");
+        td.setAttribute("class","mainProcess");
 
         row.appendChild(td);
         if(subResult.PROCESS_MACHINE != null) {
@@ -1477,6 +1482,16 @@ function createSubStepItemFromDB(lineName, rowNum, stage, td, subResult){
         div.appendChild(selMachine);
         div.appendChild(buttPlus);
         div.setAttribute("class", "subProcess");
+
+        // link div
+        var nextSeq = pmResult.NEXT_SEQUENCE;
+        if (nextSeq != null) {
+            var linkArr = nextSeq.split(",");
+            for (var k = 0; k < linkArr.length; k++) {
+                var d = addLinkSubItemFromDB(lineName, rowNum, k + 1, linkArr[k], i + 1, numberProcess);
+                div.appendChild(d);
+            }
+        }
         // var td = document.getElementById("td" + lineName + "_" + rowNum + "_s_" + tValue);
 
         // var td = $(btnObj).parent().parent()[0];
@@ -1484,14 +1499,7 @@ function createSubStepItemFromDB(lineName, rowNum, stage, td, subResult){
         // td.className = "tdProcess";
         td.appendChild(div);
 
-        // link div
-       var nextSeq = pmResult.NEXT_SEQUENCE;
-       if (nextSeq != null) {
-           var linkArr = nextSeq.split(",");
-           for (var k = 0; k < linkArr.length; k++) {
-               addLinkSubItemFromDB(lineName, rowNum, k + 1, linkArr[k], i + 1, numberProcess);
-           }
-       }
+
 
     }
 }
@@ -1583,12 +1591,12 @@ function addLinkSubItemFromDB(lineName, rowNum, txtValue, itemValue, numSubDiv, 
 
     // Link Textbox
     if(itemValue != null && itemValue != "") {
-        var linkTxt = createTextLink(lineName, rowNum, numSubDiv, itemValue);
+        var linkTxt = createTextLink(lineName, rowNum, numSubDiv, txtValue);
         linkTxt.value = itemValue;
 
 
         // Link Minus Button
-        var linkButton = createMinusLinkButton(lineName, rowNum, numSubDiv, itemValue);
+        var linkButton = createMinusLinkButton(lineName, rowNum, numSubDiv, txtValue);
 
         // Link Div
         var div = createLinkDivSubStep(lineName, rowNum, numSubDiv, txtValue);
@@ -1596,9 +1604,12 @@ function addLinkSubItemFromDB(lineName, rowNum, txtValue, itemValue, numSubDiv, 
         div.appendChild(linkButton);
 
 
-        var outerDiv = document.getElementById("div" + lineName + "_" + txtValue + "_" + numberProcess);
-        console.log("div" + lineName + "_" + txtValue + "_" + numSubDiv);
-        outerDiv.appendChild(div);
+        return div;
+
+        // Important Div to cover the linkItem
+        // var outerDiv = document.getElementById("div" + lineName + "_" + txtValue + "_" + numberProcess);
+        // console.log("div" + lineName + "_" + txtValue + "_" + numSubDiv);
+        // outerDiv.appendChild(div);
     }
 }
 
@@ -1620,5 +1631,149 @@ $(document).on('change','select',function(){
         }
     });
 });
+
+// Check if the user enters the txtMainTitle or not because this field is vital for getting the link textbox
+function checkValidation(){
+    $('input[class="txtMainTitle"]').each(function() {
+        if ($.trim($(this).val()) == '') {
+            alert('Please fill out all required fields.');
+            return false;
+        }
+        else {
+            // alert('Everything has a value.');
+            return true;
+        }
+    });
+}
+
+// function is used to delete all the helping textbox that we created and hid
+function removeHiddenControls(class_name) {
+
+    resetCountClick();
+    var theader = document.getElementById("tableHeader");
+    theader.innerHTML = "";
+
+    var tbody = document.getElementById("processTable");
+    tbody.innerHTML = "";
+
+    let txtSeq = document.getElementsByClassName(class_name);
+    for (let txt of txtSeq){
+        console.log(txt);
+        txt.remove();
+    }
+}
+
+//========== Step 2 - Create Adding Product Button
+function addNewProductFromDB(lineName, productValue, statusValue){
+    var countClick = upCountClick(lineName);
+
+    // Create a new Column Header
+    if(!isExisted("productHeader")){
+        var theader = document.getElementById("tableHeader");
+        var th = document.createElement("th");
+        th.innerText = "제품";
+        th.id = "productHeader";
+        theader.appendChild(th);
+    }
+
+    if(countClick > 1){
+        // var cell = addProductFamily();
+        var row = addRowAfter("tr"+lineName + "_" + (countClick-1), lineName, (countClick-1));
+        row.insertCell(0);
+        // console.log("row ======= " + row.id);
+
+        var cell = row.cells[0];
+        var td = createProductTdFromDB(lineName, countClick, productValue, statusValue);
+        td.setAttribute("style","border:none;");
+        // cell.appendChild(td); -- We don't need to add sub TD to current TD
+        cell.innerHTML = td.innerHTML; // we can overwrite the content of the new TD to current TD
+        // cell.className = "tdProduct" + lineName;
+        cell.className = "tdProduct" ;
+        cell.setAttribute("data-id",lineName);
+        cell.id = "tdProduct" + lineName + "_" + countClick;
+        var rowspan = parseInt($('#td'+lineName).attr('rowSpan'));
+        $('#td'+lineName).attr('rowSpan', (rowspan + 1));
+
+    }else {
+        var td = createProductTdFromDB(lineName, countClick, productValue, statusValue);
+        // td.className = "tdProduct" + lineName;
+        td.className = "tdProduct";
+        td.setAttribute("data-id",lineName);
+
+        var tr = document.getElementById("tr" + lineName + "_"+ countClick);
+        tr.appendChild(td);
+    }
+}
+
+// This function is used to create td for one product
+function createProductTdFromDB(lineName, countClick, productValue, statusValue){
+    // Create a new row
+    var td = document.createElement("td");
+    td.className = "tdProduct" + lineName;
+    td.id = "tdProduct" + lineName + "_" + countClick;
+    var _br = document.createElement("br");
+    _br.setAttribute("style","clear:both");
+    // call selectBox Function
+    var sel = createProductListFromDB(lineName, countClick, productValue, statusValue);
+
+    // call product radio buttons
+    var rdoName = "radio" + lineName + "_" + countClick;
+    // active button
+    var rdoActive = createProductRadioButton(rdoName, "1", statusValue=="1"?true:false);
+
+    // non active button
+    var rdoNonActive = createProductRadioButton(rdoName, "0", statusValue=="0"?true:false);
+
+    // call product button function
+    var btnClassName = "btnProduct" + lineName;
+    var btnId = "btnProduct" + lineName + "_" + countClick;
+    // var btnProduct = createProductButton(btnClassName, btnId);
+
+    var btnProduct = createProductButton(btnClassName, btnId, lineName, countClick);
+
+    // Minus button
+    var buttMinus = document.createElement('button'); // create a button
+    buttMinus.setAttribute('type','button'); // set attributes ...
+    buttMinus.setAttribute('id','btnMinusProduct' + lineName + "_" + countClick);
+    buttMinus.setAttribute('class',"add-house btn btn-danger btn-xs fa fa-trash");
+    buttMinus.setAttribute('style','float:left; margin-right:5px;');
+    buttMinus.setAttribute("onclick","removeRow('" + lineName + "', " + countClick + ", this)");
+
+    // Merge all controls to td
+    td.appendChild(buttMinus);
+    td.appendChild(sel); // selectBox
+    td.appendChild(btnProduct);
+    td.appendChild(_br);
+    td.appendChild(rdoActive); // active radio button
+    td.appendChild(rdoNonActive); // non active radio button
+
+    return td;
+}
+
+// This function is for creating product list with dropdown
+function createProductListFromDB(lineName, countClick, productValue, statusValue){
+    // select box
+    var sel = document.createElement('select');
+    sel.setAttribute('style','margin-bottom:5px; margin-right:5px; width:150px;height:34px; float:left;');
+    sel.id = "selProduct" + lineName + "_" + countClick; // selProductIB_1
+    sel.className = "selProduct"; // className = selProduct. This will be useful when we insert into DB
+
+    // array to store value
+    // var array = ["CM5E", "DS7E", "GAMMA", "H4MK", "JX6E", "SEG-3PK", "SP", "T/SHARK", "THETA/GDI", "THETA-??(VVL)", "THETA-GDI(YF)", "THETA-HEV", "THETA-개선(VVL)", "TIGER SHARK", "Unknown", "X100"];
+    // option of select box
+    //Create and append the options
+    for (var i = 0; i < product_Array.length; i++) {
+        var option = document.createElement("option");
+        // option.value = product_Array[i][0];
+        option.value = product_Array[i][1];
+        option.text = product_Array[i][1];
+
+        if( option.value == productValue){
+            option.setAttribute("selected", "selected");
+        }
+        sel.appendChild(option);
+    }
+    return sel;
+}
 
 
