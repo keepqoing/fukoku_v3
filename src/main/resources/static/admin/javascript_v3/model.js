@@ -1771,6 +1771,7 @@ function createProductListFromDB(lineName, countClick, productValue, statusValue
 
         if( option.value == productValue){
             option.setAttribute("selected", "selected");
+
         }
         sel.appendChild(option);
     }
