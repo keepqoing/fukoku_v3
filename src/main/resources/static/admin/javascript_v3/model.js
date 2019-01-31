@@ -89,6 +89,7 @@ $(function () {
     $(document).on('change','select.selFactory',function(){
         // console.log($("#"+this.id + " option:selected").text());
         lines.getAllLinesByFactory($("#"+this.id + " option:selected").val());
+        $( "#btnTest" ).trigger( "click" );
     });
 
     // Create check box based on the data from database
@@ -265,6 +266,39 @@ $(function () {
             }
         });
     };
+
+
+    // Get Process Model by Checking the Line Checkboxes
+    // This function reads all the process model from the database
+    lines.getProcessModelDataByLine = function (strLines) {
+        $.ajax({
+            url: "/v3/api/fukoku/process_model/lines/" + strLines,
+            type: 'GET',
+            dataType: 'JSON',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (response) {
+                if(response.code == 200){
+                    if(response.data.length > 0){
+
+                        loadDataToTable(response.data);
+                    }
+                } else{
+
+                    console.log("Data cannot be read");
+                }
+            },
+            error: function(data, status, err){
+
+                console.log("error: " + data + " status: " + status + " err:" + err);
+            }
+        });
+    };
+
+
+
 }); // END Ajax block
 // =============== END Server Side ======================================
 
@@ -384,39 +418,53 @@ function createLine(arrLine){
     if (index !== -1)
         arrLine = arrLine.slice(0, -2);
 
-    var theader = document.getElementById("tableHeader");
-    theader.innerHTML = "";
-    var th = document.createElement("th");
-    th.innerText = "라인";
-    th.className = "lineHeader";
-    theader.appendChild(th);
 
-    var tbody = document.getElementById("processTable");
-    tbody.innerHTML = "";
-    arrLine = arrLine.split(",");
-    for(i=0; i < arrLine.length; i++){
-        var tr = document.createElement("tr");
-        tr.id = "tr" + arrLine[i] + "_1";
-        tr.className = "tr" + arrLine[i];
-        var td = document.createElement("td");
-        td.id = "td" + arrLine[i];
-        td.className = "td" + arrLine[i];
-        td.setAttribute("rowspan","1");
+    if(!isExisted("lineHeader")) {
+        var theader = document.getElementById("tableHeader");
 
-        var span = document.createElement("span");
-        span.setAttribute("id", "span" + arrLine[i]);
-        span.setAttribute("class", "span" + "LineName" );
-        span.innerText = arrLine[i];
-
-        td.appendChild(span);
-        var _br = document.createElement("br");
-        td.appendChild(_br);
-        var btn = createLineButton(arrLine[i]);
-
-        td.appendChild(btn);
-        tr.appendChild(td);
-        tbody.appendChild(tr);
+        var th = document.createElement("th");
+        th.innerText = "라인";
+        th.id = "lineHeader";
+        theader.appendChild(th);
     }
+
+
+    // var theader = document.getElementById("tableHeader");
+    // theader.innerHTML = "";
+    // var th = document.createElement("th");
+    // th.innerText = "라인";
+    // th.className = "lineHeader";
+    // theader.appendChild(th);
+
+        var tbody = document.getElementById("processTable");
+        // tbody.innerHTML = "";
+        arrLine = arrLine.split(",");
+        for(i=0; i < arrLine.length; i++){
+            if(!isExisted("tr"+arrLine[i]+"_1")) {
+                var tr = document.createElement("tr");
+                tr.id = "tr" + arrLine[i] + "_1";
+                tr.className = "tr" + arrLine[i];
+                var td = document.createElement("td");
+                td.id = "td" + arrLine[i];
+                td.className = "td" + arrLine[i];
+                td.setAttribute("rowspan", "1");
+
+                var span = document.createElement("span");
+                span.setAttribute("id", "span" + arrLine[i]);
+                span.setAttribute("class", "span" + "LineName");
+                span.innerText = arrLine[i];
+
+                td.appendChild(span);
+                var _br = document.createElement("br");
+                td.appendChild(_br);
+                var btn = createLineButton(arrLine[i]);
+
+                td.appendChild(btn);
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+            }
+        }
+
 }
 
 // Create line button after clicking on 검색​ button
@@ -508,11 +556,14 @@ function createProductTd(lineName, countClick){
     // Merge all controls to td
     td.appendChild(buttMinus);
     td.appendChild(sel); // selectBox
-    td.appendChild(btnProduct);
+
     td.appendChild(_br);
     td.appendChild(rdoActive); // active radio button
     td.appendChild(rdoNonActive); // non active radio button
-
+    var _br = document.createElement("br");
+    _br.setAttribute("style","clear:both");
+    td.appendChild(_br);
+    td.appendChild(btnProduct);
     return td;
 }
 
@@ -555,7 +606,7 @@ function isExisted(id){
 function createProductList(lineName, countClick){
     // select box
     var sel = document.createElement('select');
-    sel.setAttribute('style','margin-bottom:5px; margin-right:5px; width:150px;height:34px; float:left;');
+    sel.setAttribute('style','margin-bottom:5px; width:110px;height:34px; float:left;');
     sel.id = "selProduct" + lineName + "_" + countClick; // selProductIB_1
     sel.className = "selProduct"; // className = selProduct. This will be useful when we insert into DB
 
@@ -595,6 +646,7 @@ function createProductButton(btnClassName, btnId, lineName, countClick){
     var btnName = "공정 단계 추가";
     var butt = document.createElement('input'); // create a button
     butt.setAttribute('type','button'); // set attributes ...
+    butt.setAttribute("style","float:left; width:137px");
     butt.setAttribute('id',btnId);
     butt.setAttribute('class',"btn btn-primary "+btnClassName);
     butt.setAttribute('value',btnName);
@@ -1087,7 +1139,7 @@ function createSubStepMinusButton(lineName, rowNum, txtId){
     buttMinus.setAttribute('id','subMinus' + lineName + "_" + rowNum + "_s_" + txtId.value);  // subMinusIB_1_s_1
     buttMinus.setAttribute('class',"add-house btn btn-danger  btn-xs fa fa-trash");
     buttMinus.setAttribute('style','float:left;  margin-left:5px; margin-top:5px;');
-    buttMinus.setAttribute('onclick', "removeSubStepItem('" + lineName + "', " + rowNum + ", " + txtId.value + ")");
+    buttMinus.setAttribute('onclick', "removeSubStepItem('" + lineName + "', " + rowNum + ", " + txtId.value + ", this)");
 
     return buttMinus;
 }
@@ -1155,27 +1207,28 @@ function createMinusLinkButton(lineName, rowNum, txtValue, txtLink){
     buttMinus.setAttribute('id','linkMinus'  + lineName + "_" + rowNum + "_s_" + txtValue + "_" + txtLink);  // linkMinusIB_1_s_1_1
     buttMinus.setAttribute('class',"add-house btn btn-danger  btn-xs fa fa-trash");
     buttMinus.setAttribute('style','float:right;  margin-left:5px; margin-top:5px;');
-    buttMinus.setAttribute('onclick', "removeLinkSubStepItem('" + lineName + "', " + rowNum + ", " + txtValue + ", " + txtLink + ")");
+    buttMinus.setAttribute('onclick', "removeLinkSubStepItem('" + lineName + "', " + rowNum + ", " + txtValue + ", " + txtLink + ", this)");
 
     return buttMinus;
 }
 
 // Remove Link Sub Step Item
-function removeLinkSubStepItem(lineName, rowNum, txtValue, txtLink){
+function removeLinkSubStepItem(lineName, rowNum, txtValue, txtLink, btnObject){
     var z = "";
     z = confirm("삭제하시겠습니까?");
     if( z == true){
-        document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue + "_" + txtLink).remove();
-
+        // document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue + "_" + txtLink).remove();
+        $(btnObject).parent().remove();
     }
 }
 
 // Remove Sub Step Item
-function removeSubStepItem(lineName, rowNum, txtValue){
+function removeSubStepItem(lineName, rowNum, txtValue, btnObject){
     var z = "";
     z = confirm("삭제하시겠습니까?");
     if( z == true){
-        document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue).remove();
+        // document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue).remove();
+        $(btnObject).parent().remove();
     }
 }
 // "removeProcessTd('" + lineName + "', " + rowNum + ", " + txt.value  + ")");
@@ -1375,7 +1428,10 @@ function createOneLine(lineName){
         td.appendChild(btn);
         tr.appendChild(td);
         tbody.appendChild(tr);
+
+
     }
+    checkLineBox(lineName);
 }
 
 function createStepAfterMainProcessFromDB(lineName, stage, rowNum, result, subResult) {
@@ -1589,7 +1645,7 @@ function createSubStepMinusButtonFromDB(lineName, rowNum, stage){
     buttMinus.setAttribute('id','subMinus' + lineName + "_" + rowNum + "_s_" + stage);  // subMinusIB_1_s_1
     buttMinus.setAttribute('class',"add-house btn btn-danger  btn-xs fa fa-trash");
     buttMinus.setAttribute('style','float:left;  margin-left:5px; margin-top:5px;');
-    buttMinus.setAttribute('onclick', "removeSubStepItem('" + lineName + "', " + rowNum + ", " + stage + ")");
+    buttMinus.setAttribute('onclick', "removeSubStepItem('" + lineName + "', " + rowNum + ", " + stage + ", this)");
 
     return buttMinus;
 }
@@ -1750,10 +1806,14 @@ function createProductTdFromDB(lineName, countClick, productValue, statusValue){
     // Merge all controls to td
     td.appendChild(buttMinus);
     td.appendChild(sel); // selectBox
-    td.appendChild(btnProduct);
+
     td.appendChild(_br);
     td.appendChild(rdoActive); // active radio button
     td.appendChild(rdoNonActive); // non active radio button
+    var _br = document.createElement("br");
+    _br.setAttribute("style","clear:both");
+    td.appendChild(_br);
+    td.appendChild(btnProduct);
 
     return td;
 }
@@ -1762,7 +1822,7 @@ function createProductTdFromDB(lineName, countClick, productValue, statusValue){
 function createProductListFromDB(lineName, countClick, productValue, statusValue){
     // select box
     var sel = document.createElement('select');
-    sel.setAttribute('style','margin-bottom:5px; margin-right:5px; width:150px;height:34px; float:left;');
+    sel.setAttribute('style','margin-bottom:5px; width:110px; height:34px; float:left;');
     sel.id = "selProduct" + lineName + "_" + countClick; // selProductIB_1
     sel.className = "selProduct"; // className = selProduct. This will be useful when we insert into DB
 
@@ -1785,4 +1845,26 @@ function createProductListFromDB(lineName, countClick, productValue, statusValue
     return sel;
 }
 
+function checkLineBox(lineName){
+    $('input[class="select_line"]').each(function() {
+        console.log("value ", $(this).val());
+        console.log("lineName ", lineName.trim());
+        if ($.trim($(this).val()) == lineName.trim()) {
+            $(this).prop('checked', true);
+        }
+    });
+}
 
+
+
+// set selected = selected when the option is chosen
+$(document).on('change','input:checkbox',function(){
+    if($(this).is(":checked"))
+    {
+        getCheckBoxValues();
+
+    }else{
+        $("tr.tr"+$(this).val()).remove();
+    }
+
+});
