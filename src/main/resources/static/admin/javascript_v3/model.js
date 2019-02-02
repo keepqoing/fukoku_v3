@@ -90,6 +90,7 @@ $(function () {
         // console.log($("#"+this.id + " option:selected").text());
         lines.getAllLinesByFactory($("#"+this.id + " option:selected").val());
         $( "#btnTest" ).trigger( "click" );
+
     });
 
     // Create check box based on the data from database
@@ -181,6 +182,7 @@ $(function () {
     // ================== Machine ======================================
     // Get All Machines
     lines.getAllMachines = function (process_name, selObject) {
+        var sel = $(selObject).closest("select").next()[0];
         $.ajax({
             url: "/v3/api/fukoku/machine/by_process/" + process_name,
             type: 'GET',
@@ -197,10 +199,9 @@ $(function () {
                         }
                         machine_Array = machineArr;
 
-                        var sel = document.getElementById((selObject.id).replace("Process","Machine"));
-                        $("#"+(selObject.id).replace("Process","Machine")).find("option").remove();
+
+                        $(sel).find("option").remove();
                         for (i = 0; i < machine_Array.length; i++) {
-                            // console.log("Machine Array [" + i + "] = " + machine_Array[i]);
                             var option = document.createElement("option");
                             option.setAttribute("value", machine_Array[i][1]); // store machine ID
                             option.text = machine_Array[i][1]; // machine name
@@ -208,7 +209,7 @@ $(function () {
                         }
                     }
                 } else{
-                    $("#"+(selObject.id).replace("Process","Machine")).find("option").remove();
+                    $(sel).find("option").remove();
                 }
             },
             error: function (data, status, err) {
@@ -219,7 +220,7 @@ $(function () {
 
     // This function is called when the selectbox of process has been changed --- MUCH CHECK AGAIN
     lines.processChange = function(selObj){
-        lines.getAllMachines($("#"+selObj.id + " option:selected").text(), selObj);
+        lines.getAllMachines($(selObj).val(), selObj);
     }
 
     /// insert all the process model to DATABASE
@@ -234,7 +235,9 @@ $(function () {
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             data : JSON.stringify(datas),
-            success: function (response) {}
+            success: function (response) {
+                swal("데이터가 성공적으로 저장되었습니다!");
+            }
         });
     };
 
@@ -252,16 +255,13 @@ $(function () {
             success: function (response) {
                 if(response.code == 200){
                     if(response.data.length > 0){
-
                         loadDataToTable(response.data);
                     }
                 } else{
-
                     console.log("Data cannot be read");
                 }
             },
             error: function(data, status, err){
-
                 console.log("error: " + data + " status: " + status + " err:" + err);
             }
         });
@@ -282,16 +282,13 @@ $(function () {
             success: function (response) {
                 if(response.code == 200){
                     if(response.data.length > 0){
-
                         loadDataToTable(response.data);
                     }
                 } else{
-
                     console.log("Data cannot be read");
                 }
             },
             error: function(data, status, err){
-
                 console.log("error: " + data + " status: " + status + " err:" + err);
             }
         });
@@ -302,15 +299,309 @@ $(function () {
 }); // END Ajax block
 // =============== END Server Side ======================================
 
-// 1 - Variable to store counting LineButton is clicked
-var _countClickLineIB = 0;
-var _countClickLineHA = 0;
-var _countClickLineHB = 0;
-var _countClickLineHC = 0;
-var _countClickLineHD = 0;
-var _countClickLinePD = 0;
+// When the search line button is clicked
+$("#btnSearchLine").click(function () {
+    getCheckBoxValues();
+});
 
-// ========== 0. Helping Functions ====================================================================
+
+// === Step 1 - create Line
+function createLine(arrLine){
+    var index = arrLine.indexOf("0");
+    if (index !== -1)
+        arrLine = arrLine.slice(0, -2);
+
+
+    if(!isExisted("lineHeader")) {
+        var theader = document.getElementById("tableHeader");
+
+        var th = document.createElement("th");
+        th.innerText = "라인";
+        th.id = "lineHeader";
+
+        theader.appendChild(th);
+    }
+    var tbody = document.getElementById("processTable");
+
+    arrLine = arrLine.split(",");
+    for(i=0; i < arrLine.length; i++){
+        if(!isExisted("tr"+arrLine[i]+"_1")) {
+            var tr = document.createElement("tr");
+            tr.id = "tr" + arrLine[i] + "_1";
+            tr.className = "tr" + arrLine[i];
+            var td = document.createElement("td");
+            td.id = "td" + arrLine[i];
+            td.className = "td" + arrLine[i];
+            td.setAttribute("rowspan", "1");
+
+            var span = document.createElement("span");
+            span.setAttribute("id", "span" + arrLine[i]);
+            span.setAttribute("class", "span" + "LineName");
+            span.innerText = arrLine[i];
+
+            td.appendChild(span);
+            var _br = document.createElement("br");
+            td.appendChild(_br);
+            var btn = createLineButton(arrLine[i]);
+
+            td.appendChild(btn);
+
+            tr.appendChild(td);
+
+            tbody.appendChild(tr);
+        }
+    }
+
+}
+
+// Create line button after clicking on 검색​ button
+function createLineButton(lineName){
+    var btn = document.createElement("button");
+    btn.setAttribute("type","button");
+    btn.setAttribute("class","btn btn-primary");
+    btn.innerText = "공정흐름"+ "\n" + "추가";
+    btn.setAttribute("id","btnLine_" + lineName);
+    btn.setAttribute("onclick","newProduct_2_1('"+lineName+"', this)");
+    btn.setAttribute("style","font-size:11px;");
+    return btn;
+}
+
+//========== Step 2 - Create Adding Product Button
+// Step 2.1 -- Create Product Td
+function newProduct_2_1(lineName, btnObj){
+
+    // Create a new Column Header
+    if(!isExisted("productHeader")){
+        var theader = document.getElementById("tableHeader");
+        var th = document.createElement("th");
+        th.innerText = "제품";
+        th.id = "productHeader";
+        theader.appendChild(th);
+    }
+
+    // get final class name of current tr which obtains the clicked button
+    var finalClassName = $(btnObj).parent().parent().attr("class");
+    // count the class name of current tr which obtains the clicked button
+    var countClassName = $("."+finalClassName).length;
+    // select the last tr with the class name that we selected above
+    var refElement = $("tr"+"."+finalClassName+":last")[0];
+
+    // New Process Product
+    var div = newProduct_2_2(lineName, countClassName);
+
+    var newTd = $("tr" + " > " + "td[data-id='" + lineName + "']" )[0];
+
+    if(newTd == undefined) {
+        // Add default product
+
+        var td = document.createElement("td");
+        td.appendChild(div);
+        td.setAttribute("data-id", lineName);
+        td.className = "tdProduct";
+        var tr = $(btnObj).parent().parent()[0];
+        tr.appendChild(td);
+    }
+
+    if(countClassName >= 1  && newTd != undefined){
+        console.log("Wow");
+        // var cell = addProductFamily();
+        var row = addRowAfter(btnObj);
+        row.insertCell(0);
+
+        var cell = row.cells[0];
+        cell.className = "tdProduct" ;
+        cell.setAttribute("data-id",lineName);
+        cell.id = "tdProduct" + lineName + "_" + countClassName;
+        cell.appendChild(div);
+        var rowspan = parseInt($('#td'+lineName).attr('rowSpan'));
+        $('#td'+lineName).attr('rowSpan', (rowspan + 1));
+    }
+}
+
+// -- Step 2-2. Create Div to store elements of New Process Product
+// This function is used to create div for default process product
+function newProduct_2_2(lineName, countClassName){
+    // Create a new row
+    var div = document.createElement("div");
+    div.className = "divProduct";
+    div.id = "divProduct" + lineName + "_" + countClassName;
+
+
+    // Create Remove Product Button
+    var btnRemoveProcessProduct = newProduct_2_3_addProductBtn("공정흐름삭제","btnRemoveProcessProduct", "danger", "newProduct_2_9_removeRow");
+
+    // Create Process Product Button
+    var btnProcessProduct = newProduct_2_3_addProductBtn("제품추가","btnProcessProduct", "success", "newProduct_2_8_productSet");
+
+    // Create Add Step Button
+    var btnAddStep = newProduct_2_3_addProductBtn("공정단계추가","btnAddStep", "primary", "newProduct_2_10_addStep");
+
+    div.appendChild(btnRemoveProcessProduct);
+    div.appendChild(btnProcessProduct);
+    div.appendChild(btnAddStep);
+
+    return div;
+}
+
+
+// -- Step 2-3. Create new button for adding new product when there are the same process items
+function newProduct_2_3_addProductBtn(btnName, btnClassName, btnType,  nextCalledFunction){
+
+    var butt = document.createElement('input'); // create a button
+    butt.setAttribute('type','button'); // set attributes ...
+    butt.setAttribute("style","float:left; width:68px; font-size:11px; margin-top:5px; margin-bottom:5px; margin-right:5px; padding:0px;");
+
+    butt.setAttribute('class',"btn btn-" + btnType + " " + btnClassName);
+    butt.setAttribute('value',btnName);
+    butt.setAttribute('onclick', nextCalledFunction + "(this)");
+    return butt;
+}
+
+// -- Step 2-4. Create div to store all the new product controls
+function newProduct_2_4_productControls(){
+    var div = document.createElement("div");
+
+    // var btnRemoveProduct = newProduct_2_3_addProductBtn(btnName="")
+}
+
+// -- Step 2-5. Create remove product item
+function newProduct_2_5_removeProductBtn(){
+    // Minus button
+    var buttMinus = document.createElement('button'); // create a button
+    buttMinus.setAttribute('type','button'); // set attributes ...
+    buttMinus.setAttribute('class',"add-house btn btn-danger btn-xs fa fa-trash");
+    buttMinus.setAttribute('style','float:left; margin-right:5px;');
+    buttMinus.setAttribute("onclick","removeProduct(this)");
+
+    return buttMinus;
+}
+
+// -- Step 2-6. Create Product Select Item List
+function newProduct_2_6_productSelList(){
+    // select box
+    var sel = document.createElement('select');
+    sel.setAttribute('style','margin-bottom:5px; width:110px;height:34px; float:left;');
+    sel.className = "selProduct"; // className = selProduct. This will be useful when we insert into DB
+
+    // Append options to select box
+    for (var i = 0; i < product_Array.length; i++) {
+        var option = document.createElement("option");
+        option.setAttribute("value", product_Array[i][1]);
+        option.text = product_Array[i][1];
+        sel.appendChild(option);
+    }
+    return sel;
+}
+
+// -- Step 2-7. Create radio button for new product
+function newProduct_2_7_radioBtn(rdoName, rdoValue, checked){
+    var label = document.createElement("label");
+    var radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = rdoName;
+    // radio.checked = (rdoValue == "1")?  true:false;
+    if(checked){
+        radio.setAttribute("checked","checked");
+    }
+    radio.setAttribute("value",rdoValue);
+    label.appendChild(radio);
+    label.appendChild(document.createTextNode(rdoValue == "1"?"Active":"Inactive"));
+    label.setAttribute("style","float:left; margin-left: 5px; margin-right: 5px;")
+    return label;
+}
+
+// -- Step 2-8. Start create one set of product
+function newProduct_2_8_productSet(btnObj){
+    var divParent = $(btnObj).parent()[0];
+    var rndNum = Math.floor(Math.random()*1000);
+
+    var div = document.createElement("div");
+    div.className = "subDivProduct";
+    div.setAttribute("style","clear:both");
+
+    var _br = document.createElement("br");
+    _br.setAttribute("style", "clear:both");
+
+    var btnRemoveProduct = newProduct_2_5_removeProductBtn();
+
+    var sel = newProduct_2_6_productSelList();
+
+    var rdoName = "radio" + rndNum;
+    var rdoActive = newProduct_2_7_radioBtn(rdoName, "1", true);
+    var rdoInActive = newProduct_2_7_radioBtn(rdoName, "0", false);
+
+    div.appendChild(btnRemoveProduct);
+    div.appendChild(sel);
+    div.appendChild(_br);
+    div.appendChild(rdoActive);
+    div.appendChild(rdoInActive);
+
+    divParent.appendChild(div);
+}
+
+// -- Step 2-9. Remove the whole row of Process Product
+function newProduct_2_9_removeRow(btnObj){
+    var z = "";
+    z = confirm("삭제하시겠습니까?");
+    if( z == true){
+
+        lineName = $(btnObj).parent().parent().attr("data-id");
+        console.log(lineName);
+
+        var rowspan = parseInt($("#td"+lineName).attr("rowSpan"));
+        // test
+        var td = $('#td'+lineName);
+        $('#td'+lineName).attr('rowSpan', (rowspan - 1));
+
+        //$("<td/>").insertBefore($("#btnMinusProductHC_1").parent().parent().next().children().first());
+        var btnClassName = $(btnObj).parent().parent().parent().attr("class");
+        var btnRowId = $(btnObj).parent().parent().parent().attr("id");
+
+        console.log("class[0] = " + $("."+btnClassName)[0].id);
+
+        console.log("row id = " + btnRowId);
+
+        if($("."+btnClassName)[0].id == btnRowId && rowspan != 1){
+            $(td).insertBefore($(btnObj).parent().parent().parent().next().children().first());
+        }
+
+        $(btnObj).parent().parent().parent().first().remove();
+
+        checkIfNoMoreRow();
+    }
+}
+
+// Create a new step
+function newProduct_2_10_addStep(btnObj){
+    var txtValue = "";
+    swal({
+            title: "공정단계",
+            // text: "공정이름이 뭐예요?",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: true,
+            animation: "slide-from-top",
+            inputPlaceholder: "공정단계 (보기: 1)",
+            confirmButtonText: '저장',
+            confirmButtonColor: "#00a65a",
+            cancelButtonText: "취소"
+        },
+        function(inputValue){
+            if (inputValue === false || inputValue === "" ) {
+                swal.showInputError("텍스트를 입력하십시오!");
+                return false
+            }else {
+
+                txtValue = inputValue;
+
+                createStepAfterMainProcess(txtValue, btnObj);
+                return true;
+            }
+        });
+}
+
+//====================== START: Helping Functions ===================================================
+
 // Checkbox for filtering lines
 function checkAllLines(ele) {
     var checkboxes = document.getElementsByTagName('input');
@@ -367,229 +658,8 @@ function getCheckBoxValues(){
     }
 }
 
-// When the search line button is clicked
-$("#btnSearchLine").click(function () {
-    getCheckBoxValues();
-    resetCountClick();
-});
-
-// This function is used to reset all countClick
-function resetCountClick(){
-    _countClickLineIB = 0;
-    _countClickLineHA = 0;
-    _countClickLineHB = 0;
-    _countClickLineHC = 0;
-    _countClickLineHD = 0;
-    _countClickLinePD = 0;
-}
-
-// function up count click
-function upCountClick(lineName){
-    if(lineName == "IB") {
-        _countClickLineIB += 1;
-        return _countClickLineIB;
-    }
-    else if(lineName == "HA") {
-        _countClickLineHA += 1;
-        return _countClickLineHA;
-    }
-    else if(lineName == "HB") {
-        _countClickLineHB += 1;
-        return _countClickLineHB;
-    }
-    else if(lineName == "HC") {
-        _countClickLineHC += 1;
-        return _countClickLineHC;
-    }
-    else if(lineName == "HD") {
-        _countClickLineHD += 1;
-        return _countClickLineHD;
-    }
-    else if(lineName == "PD") {
-        _countClickLinePD += 1;
-        return _countClickLinePD;
-    }
-}
-// ========= End 0.- Helping Functions ================================================
-
-// === Step 1 - create Line
-function createLine(arrLine){
-    var index = arrLine.indexOf("0");
-    if (index !== -1)
-        arrLine = arrLine.slice(0, -2);
 
 
-    if(!isExisted("lineHeader")) {
-        var theader = document.getElementById("tableHeader");
-
-        var th = document.createElement("th");
-        th.innerText = "라인";
-        th.id = "lineHeader";
-        theader.appendChild(th);
-    }
-
-
-    // var theader = document.getElementById("tableHeader");
-    // theader.innerHTML = "";
-    // var th = document.createElement("th");
-    // th.innerText = "라인";
-    // th.className = "lineHeader";
-    // theader.appendChild(th);
-
-        var tbody = document.getElementById("processTable");
-        // tbody.innerHTML = "";
-        arrLine = arrLine.split(",");
-        for(i=0; i < arrLine.length; i++){
-            if(!isExisted("tr"+arrLine[i]+"_1")) {
-                var tr = document.createElement("tr");
-                tr.id = "tr" + arrLine[i] + "_1";
-                tr.className = "tr" + arrLine[i];
-                var td = document.createElement("td");
-                td.id = "td" + arrLine[i];
-                td.className = "td" + arrLine[i];
-                td.setAttribute("rowspan", "1");
-
-                var span = document.createElement("span");
-                span.setAttribute("id", "span" + arrLine[i]);
-                span.setAttribute("class", "span" + "LineName");
-                span.innerText = arrLine[i];
-
-                td.appendChild(span);
-                var _br = document.createElement("br");
-                td.appendChild(_br);
-                var btn = createLineButton(arrLine[i]);
-
-                td.appendChild(btn);
-                tr.appendChild(td);
-                tbody.appendChild(tr);
-            }
-        }
-
-}
-
-// Create line button after clicking on 검색​ button
-function createLineButton(lineName){
-    var btn = document.createElement("button");
-    btn.setAttribute("type","button");
-    btn.setAttribute("class","btn btn-primary");
-    btn.innerText = "제품추가" + "\n" + "(체인)";
-    btn.setAttribute("id","btnLine_" + lineName);
-    btn.setAttribute("onclick","addNewProduct('"+lineName+"')");
-    return btn;
-}
-
-//========== Step 2 - Create Adding Product Button
-function addNewProduct(lineName){
-    var countClick = upCountClick(lineName);
-
-    // Create a new Column Header
-    if(!isExisted("productHeader")){
-        var theader = document.getElementById("tableHeader");
-        var th = document.createElement("th");
-        th.innerText = "제품";
-        th.id = "productHeader";
-        theader.appendChild(th);
-    }
-
-    if(countClick > 1){
-        // var cell = addProductFamily();
-        var row = addRowAfter("tr"+lineName + "_" + (countClick-1), lineName, (countClick-1));
-        row.insertCell(0);
-        // console.log("row ======= " + row.id);
-
-        var cell = row.cells[0];
-        var td = createProductTd(lineName, countClick);
-        td.setAttribute("style","border:none;");
-        // cell.appendChild(td); -- We don't need to add sub TD to current TD
-        cell.innerHTML = td.innerHTML; // we can overwrite the content of the new TD to current TD
-        // cell.className = "tdProduct" + lineName;
-        cell.className = "tdProduct" ;
-        cell.setAttribute("data-id",lineName);
-        cell.id = "tdProduct" + lineName + "_" + countClick;
-        var rowspan = parseInt($('#td'+lineName).attr('rowSpan'));
-        $('#td'+lineName).attr('rowSpan', (rowspan + 1));
-
-    }else {
-        var td = createProductTd(lineName, countClick);
-        // td.className = "tdProduct" + lineName;
-        td.className = "tdProduct";
-        td.setAttribute("data-id",lineName);
-
-        var tr = document.getElementById("tr" + lineName + "_"+ countClick);
-        tr.appendChild(td);
-    }
-}
-
-// This function is used to create td for one product
-function createProductTd(lineName, countClick){
-    // Create a new row
-    var td = document.createElement("td");
-    td.className = "tdProduct" + lineName;
-    td.id = "tdProduct" + lineName + "_" + countClick;
-    var _br = document.createElement("br");
-    _br.setAttribute("style","clear:both");
-    // call selectBox Function
-    var sel = createProductList(lineName, countClick);
-
-    // call product radio buttons
-    var rdoName = "radio" + lineName + "_" + countClick;
-    // active button
-    var rdoActive = createProductRadioButton(rdoName, "1", true);
-    // non active button
-    var rdoNonActive = createProductRadioButton(rdoName, "0", false);
-
-    // call product button function
-    var btnClassName = "btnProduct" + lineName;
-    var btnId = "btnProduct" + lineName + "_" + countClick;
-    // var btnProduct = createProductButton(btnClassName, btnId);
-
-    var btnProduct = createProductButton(btnClassName, btnId, lineName, countClick);
-
-    // Minus button
-    var buttMinus = document.createElement('button'); // create a button
-    buttMinus.setAttribute('type','button'); // set attributes ...
-    buttMinus.setAttribute('id','btnMinusProduct' + lineName + "_" + countClick);
-    buttMinus.setAttribute('class',"add-house btn btn-danger btn-xs fa fa-trash");
-    buttMinus.setAttribute('style','float:left; margin-right:5px;');
-    buttMinus.setAttribute("onclick","removeRow('" + lineName + "', " + countClick + ", this)");
-
-    // Merge all controls to td
-    td.appendChild(buttMinus);
-    td.appendChild(sel); // selectBox
-
-    td.appendChild(_br);
-    td.appendChild(rdoActive); // active radio button
-    td.appendChild(rdoNonActive); // non active radio button
-    var _br = document.createElement("br");
-    _br.setAttribute("style","clear:both");
-    td.appendChild(_br);
-    td.appendChild(btnProduct);
-    return td;
-}
-
-
-function addRowAfter(rowId, lineName, countClick){
-    // console.log("rowId = " + rowId);
-    var refElement = document.getElementById(rowId);
-
-    var newRow= document.createElement('tr');
-    newRow.id = "tr" + lineName + "_" + (countClick + 1);
-    newRow.className = "tr" + lineName;
-
-    // refElement.parentNode.insertBefore(newRow, refElement.nextSibling );
-    // //$("<td/>").insertBefore($("#btnMinusProductHC_1").parent().parent().next().children().first());
-    if(refElement == null){
-        // console.log("null neng");
-        // console.log("last id = " + $(".tr"+lineName).last().attr("id"));
-        var refEle = document.getElementById($(".tr"+lineName).last().attr("id"));
-
-
-        refEle.parentNode.insertBefore(newRow, refEle.nextSibling);
-    }else {
-        refElement.parentNode.insertBefore(newRow, refElement.nextSibling);
-    }
-    return newRow;
-}
 
 // This function is used to know whether the html element is existed
 function isExisted(id){
@@ -601,131 +671,57 @@ function isExisted(id){
     }
 }
 
+function addRowAfter(btnObj){
+    // get final class name of current tr which obtains the clicked button
+    var finalClassName = $(btnObj).parent().parent().attr("class");
+    // count the class name of current tr which obtains the clicked button
+    var countClassName = $("."+finalClassName).length;
 
-// This function is for creating product list with dropdown
-function createProductList(lineName, countClick){
-    // select box
-    var sel = document.createElement('select');
-    sel.setAttribute('style','margin-bottom:5px; width:110px;height:34px; float:left;');
-    sel.id = "selProduct" + lineName + "_" + countClick; // selProductIB_1
-    sel.className = "selProduct"; // className = selProduct. This will be useful when we insert into DB
+    // select the last tr with the class name that we selected above
+    var refElement = $("tr"+"."+finalClassName+":last")[0];
 
-    // array to store value
-    // var array = ["CM5E", "DS7E", "GAMMA", "H4MK", "JX6E", "SEG-3PK", "SP", "T/SHARK", "THETA/GDI", "THETA-??(VVL)", "THETA-GDI(YF)", "THETA-HEV", "THETA-개선(VVL)", "TIGER SHARK", "Unknown", "X100"];
-    // option of select box
-    //Create and append the options
-    for (var i = 0; i < product_Array.length; i++) {
-        var option = document.createElement("option");
-        // option.value = product_Array[i][0];
-        option.setAttribute("value", product_Array[i][1]);
-        option.text = product_Array[i][1];
-        sel.appendChild(option);
+    var newRow= document.createElement('tr');
+    newRow.id = finalClassName+ "_" + (countClassName + 1); // plus one because of new element
+    newRow.className = finalClassName;
+
+    refElement.parentNode.insertBefore(newRow, refElement.nextSibling);
+    return newRow;
+}
+
+// Remove Product
+function removeProduct(btnObj){
+    var z = "";
+    z = confirm("삭제하시겠습니까?");
+    if( z == true){
+        // document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue + "_" + txtLink).remove();
+        $(btnObj).parent().remove();
     }
-    return sel;
+
 }
 
-// This function is for creating radio button in product cell
-function createProductRadioButton(rdoName,  rdoValue, checked){
-    var label = document.createElement("label");
-    var radio = document.createElement("input");
-    radio.type = "radio";
-    radio.name = rdoName;
-    // radio.checked = (rdoValue == "1")?  true:false;
-    if(checked){
-        radio.setAttribute("checked","checked");
-    }
-    radio.setAttribute("value",rdoValue);
-    label.appendChild(radio);
-    label.appendChild(document.createTextNode(rdoValue == "1"?"Active":"Non Active"));
-    label.setAttribute("style","float:left; margin-left: 5px; margin-right: 5px;")
-    return label;
-}
-
-// This function is for creating button in product cell to add process step
-function createProductButton(btnClassName, btnId, lineName, countClick){
-    var btnName = "공정 단계 추가";
-    var butt = document.createElement('input'); // create a button
-    butt.setAttribute('type','button'); // set attributes ...
-    butt.setAttribute("style","float:left; width:137px");
-    butt.setAttribute('id',btnId);
-    butt.setAttribute('class',"btn btn-primary "+btnClassName);
-    butt.setAttribute('value',btnName);
-    butt.setAttribute('onclick', "createStepForProduct('" + lineName + "',"+ countClick + ", this)");
-    return butt;
-}
-
-// function to store the arrayLineName
-function createLineGlobalArray(arrayName, countClick, inputValue){
-    if(!isExisted("lineArray" + arrayName + "_" + countClick)){
-        var txtBox = document.createElement("input");
-        txtBox.setAttribute("id", "lineArray" + arrayName + "_" + countClick);
-        txtBox.setAttribute("value", inputValue);
-        txtBox.setAttribute("style", "display:none");
-        txtBox.setAttribute("class","hiddenTextBox");
-        document.body.appendChild(txtBox);
+// function checks if there is no more row left
+function checkIfNoMoreRow(){
+    var theader = document.getElementById("tableHeader");
+    if($('#processTable tr').length == 0){
+        theader.innerHTML = "";
     }
 }
 
-// == Step 4 -- Create Step of each product
-function createStepForProduct(lineName, rowNum, btnObject){
-    var txtValue = "";
-    swal({
-            title: "공정단계",
-            // text: "공정이름이 뭐예요?",
-            type: "input",
-            showCancelButton: true,
-            closeOnConfirm: true,
-            animation: "slide-from-top",
-            inputPlaceholder: "공정단계 (보기: 1)",
-            confirmButtonText: '저장',
-            confirmButtonColor: "#00a65a",
-            cancelButtonText: "취소"
-        },
-        function(inputValue){
-            if (inputValue === false || inputValue === "" ) {
-                swal.showInputError("텍스트를 입력하십시오!");
-                return false
-            }else {
-                // swal("Nice!", "You wrote: " + inputValue, "success");
-                txtValue = inputValue;
-                createLineGlobalArray(lineName, rowNum, inputValue);
-
-                createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject);
-                return true;
-            }
-        });
-}
 // This function is used to create step after entering the main process title
-function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
+function createStepAfterMainProcess(txtValue, btnObj) {
 
     // Get the row Id which the user wants to move the TD
-    var rowID = $(btnObject).parent().parent().attr("id");
+    var rowID = $(btnObj).parent().parent().parent().attr("id");
+    var lineName = $(btnObj).parent().parent().attr("data-id");
 
     // check the desired TD is available or not.
     var newTd = $("#" + rowID + " > " + "td[data-id='" + txtValue + "']" )[0];
     if(newTd != undefined && newTd.innerHTML != ""){
-       displayDialog(txtValue, "있었어요!" );
-       return;
+        displayDialog(txtValue, "있었어요!" );
+        return;
     }
 
-    // create a textbox to store step value for each line and each product
-    if (isExisted("txtStep" + lineName + "_" + rowNum)) {
-        var txt = document.getElementById("txtStep" + lineName + "_" + rowNum);
-        txt.setAttribute("value",  parseInt(txt.value) + 1);
-        txt.setAttribute("class","hiddenTextBox");
-        // console.log("Txt value of " + txt.id + "= " + txt.value);
-    } else {
-        var txt = document.createElement("input");
-        txt.setAttribute("value", 1);
-        txt.id = "txtStep" + lineName + "_" + rowNum;
-        txt.setAttribute("style", "display:none;");
-        txt.setAttribute("class","hiddenTextBox");
-        document.body.appendChild(txt);
-        // console.log("Txt value of " + txt.id + "= " + txt.value);
-    }
 
-    var txt = document.getElementById("txtStep" + lineName + "_" + rowNum);
-    // Create a new Column Header for Each Step
 
     for (let i = 1; i <= txtValue; i++) {
         if (!isExisted("headerStep_" + i)){
@@ -734,6 +730,7 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
             th.innerText = "공정단계" + i;
             th.id = "headerStep_" + i;
             th.setAttribute("data-id", i);
+            th.setAttribute("style","width:237px;");
 
             var btn = buttonDeleteStepHeader(lineName, th.getAttribute("data-id"));
             th.appendChild(btn);
@@ -741,15 +738,12 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
         }
     }
     // Row
-    // var row = document.getElementById("tr" + lineName + "_" + rowNum);
-    var row = $(btnObject).parent().parent()[0];
+    var row = $(btnObj).parent().parent().parent()[0];
 
-    var size = parseInt(document.getElementById("lineArray" + lineName + "_" + rowNum).value);
 
     let i = 0;
-    let rId = row.id.split("_");
 
-    var nextTd = $(btnObject).parent().closest("td").next();
+    var nextTd = $(btnObj).parent().parent().closest("td").next();
 
     for(i; i < txtValue; i++) {
         // check if the next td is empty. If so, create blank td for it
@@ -757,6 +751,7 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
             var blank_td = document.createElement("td");
             blank_td.setAttribute("data-id",(i+1));
             blank_td.setAttribute("class","mainProcess");
+            blank_td.setAttribute("style", "width:970px");
             row.appendChild(blank_td);
         }
 
@@ -765,7 +760,7 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
     }
 
     // reset the next element of current button because last time the next elements are null
-    var nextTd = $(btnObject).parent().closest("td").next();
+    var nextTd = $(btnObj).parent().parent().closest("td").next();
     // reset i = 1 in order to compare if the user want to insert into which column
     // we need to use loop again because it is not working when we use only one loop. I have no idea.
     i = 1;
@@ -779,35 +774,21 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
 
             // Plus button
             // var buttPlus = mainPlusButton(lineName, rowNum, txt);
-            var buttPlus = mainPlusButton(lineName, rowNum, txtValue);
+            var buttPlus = mainPlusButton(lineName);
 
             // Move button
-            var buttMove = mainMoveButton(lineName, rowNum, txtValue);
+            var buttMove = mainMoveButton(lineName);
 
             // Minus button
             // var buttMinus = mainMinusButton(lineName, rowNum, txt);
-            var buttMinus = mainMinusButton(lineName, rowNum, txtValue);
+            var buttMinus = mainMinusButton(lineName);
 
-            // Select Box
-            // var sel = mainStepSelectBox(lineName, rowNum, txt, txtValue);
-
-            var txtMain = document.createElement("input");
-            txtMain.type = "text";
-            txtMain.setAttribute("style", "margin-left: 5px; margin-right: 5px");
-            txtMain.id = "txtMainTitle" + lineName + "_" + rowNum + "_s_" + txtValue; // spanMainTitleIB_1_s_1
-            txtMain.className = "txtMainTitle";
-            txtMain.setAttribute("required", "required");
-            txtMain.placeholder = "공정명을 입력하세요";
-            txtMain.size = "15";
-            // txtMain.value = txtValue;
+            var txtMain = mainTextBox();
 
             // Column
             var td = document.createElement("td");
-            // td.id = "td" + lineName + "_" + rowNum + "_s_" + txt.value; // tdIB_1_s_1
-            td.id = "td" + lineName + "_" + rowNum + "_s_" + txtValue; // tdIB_1_s_1
 
             divColor.appendChild(buttMinus);
-            // td.appendChild(sel);
             divColor.appendChild(txtMain);
             divColor.appendChild(buttPlus);
             var _br = document.createElement("br");
@@ -826,6 +807,64 @@ function createStepAfterMainProcess(lineName, rowNum, txtValue, btnObject) {
     }
 }
 
+// This function is used to create main plus button
+function mainPlusButton(lineName){
+    // Plus button
+    var buttPlus = document.createElement('button'); // create a button
+    buttPlus.setAttribute('type','button'); // set attributes ...
+    // buttPlus.setAttribute('id','mainPlus' + lineName + '_' + rowNum + '_s_' + txt); // mainPlusIB_1_s_1
+    buttPlus.setAttribute("value", "설비추가");
+    buttPlus.innerText =  "설비"+"\n"+"추가";
+    buttPlus.setAttribute('class',"add-house btn btn-success btn-xs");
+    buttPlus.setAttribute('style','float:right');
+    buttPlus.setAttribute('onclick', "createSubStepItem(this)" );
+
+    return buttPlus;
+}
+
+// This function is used to craete main Minus button
+function mainMinusButton(lineName){
+    // Minus button
+    var buttMinus = document.createElement('button'); // create a button
+    buttMinus.setAttribute('type','button'); // set attributes ...
+    // buttMinus.setAttribute('id','mainMinus' + lineName + '_' + rowNum + '_s_' + txt); // mainMinusIB_1_s_1
+    buttMinus.setAttribute('class',"add-house btn btn-danger btn-xs fa fa-trash");
+    buttMinus.setAttribute('style','float:left');
+    buttMinus.setAttribute('onclick', "removeProcessTd(this)");
+
+    return buttMinus;
+}
+
+
+// This function is used to create main plus button
+function mainMoveButton(lineName){
+    // Plus button
+    var buttPlus = document.createElement('button'); // create a button
+    buttPlus.setAttribute('type','button'); // set attributes ...
+    // buttPlus.setAttribute('id','mainMove' + lineName + '_' + rowNum + '_s_' + txtNum); // mainPlusIB_1_s_1
+    buttPlus.setAttribute("value", "단계이동");
+    buttPlus.innerText =  "단계이동";
+    buttPlus.setAttribute('class',"add-house btn btn-primary btn-xs");
+    buttPlus.setAttribute('style','clear:both; font-size:11px;');
+    buttPlus.setAttribute('onclick', "moveTd(this)" );
+    var spn = document.createElement('span');
+    spn.setAttribute('class','glyphicon glyphicon-transfer');
+    buttPlus.appendChild(spn);
+
+    return buttPlus;
+}
+
+function mainTextBox(){
+    var txtMain = document.createElement("input");
+    txtMain.type = "text";
+    txtMain.setAttribute("style", "margin-left: 5px; margin-right: 5px");
+    txtMain.className = "txtMainTitle";
+    txtMain.setAttribute("required", "required");
+    txtMain.placeholder = "공정명을 입력하세요";
+    txtMain.size = "15";
+
+    return txtMain;
+}
 
 // function is used to delete step header
 // This function is used to craete main Minus button
@@ -833,7 +872,7 @@ function buttonDeleteStepHeader(lineName, dataID){
     // Minus button
     var buttMinus = document.createElement('button'); // create a button
     buttMinus.setAttribute('type','button'); // set attributes ...
-    buttMinus.setAttribute('id','deleteHeader' + lineName + '_' + dataID); // mainMinusIB_1_s_1
+    // buttMinus.setAttribute('id','deleteHeader' + lineName + '_' + dataID); // mainMinusIB_1_s_1
     buttMinus.setAttribute('data-id', dataID);
     buttMinus.setAttribute('class',"add-house btn btn-danger btn-xs fa fa-trash");
     buttMinus.setAttribute('style','float:left');
@@ -868,8 +907,29 @@ function removeStage(btnObj){
         });
 }
 
+function displayDialog(newStage, txtStatus){
+    setTimeout(function(){
+        swal({
+                title: "단계이동 안 되요!",
+                text: "공정단계" + newStage + " " + txtStatus,
+                type: "warning",
+                closeOnConfirm: true,
+                animation: "slide-from-top",
+                confirmButtonText: '네 알겠어요',
+                confirmButtonColor: "#00a65a"
+            },
+            function(isConfirm){
+                if (isConfirm === true) {
+                    return true;
+                }else {
+                    return false;
+                }
+            });
+    }, 300);
+}
+
 // == This function is used to move all element in td to the other stage after completing pop-up value
-function moveTd(lineName, rowNum, stageNum, btnObj){
+function moveTd(btnObj){
 
     var txtValue = "";
 
@@ -893,14 +953,14 @@ function moveTd(lineName, rowNum, stageNum, btnObj){
                 // swal("Nice!", "You wrote: " + inputValue, "success");
                 newStage = inputValue;
 
-                startMovingTd(lineName, rowNum, stageNum , newStage, btnObj);
+                startMovingTd(newStage, btnObj);
                 return true;
             }
         });
 }
 
 // This function is used to move TD after confirmation
-function startMovingTd(lineName, rowNum, currentStage, newStage, btnObj){
+function startMovingTd(newStage, btnObj){
 
     // Get the row Id which the user wants to move the TD
     var rowID = $(btnObj).parent().parent().parent().attr("id");
@@ -927,128 +987,40 @@ function startMovingTd(lineName, rowNum, currentStage, newStage, btnObj){
     }
 }
 
-function displayDialog(newStage, txtStatus){
-    setTimeout(function(){
-        swal({
-                title: "단계이동 안 되요!",
-                text: "공정단계" + newStage + " " + txtStatus,
-                type: "warning",
-                closeOnConfirm: true,
-                animation: "slide-from-top",
-                confirmButtonText: '네 알겠어요',
-                confirmButtonColor: "#00a65a"
-            },
-            function(isConfirm){
-                if (isConfirm === true) {
-                    return true;
-                }else {
-                    return false;
-                }
-            });
-    }, 300);
+// Remove Main Td Item
+function removeProcessTd(btnObj){
+    var z = "";
+    z = confirm("삭제하시겠습니까?");
+    if( z == true){
+        // document.getElementById("td" + lineName + "_" + rowNum + "_s_" + txtValue).remove();
+        var td = $(btnObj).parent().parent()[0];
+        td.innerHTML = "";
+    }
 }
 
-// This function is used to create main plus button
-function mainMoveButton(lineName, rowNum, txtNum){
-    // Plus button
-    var buttPlus = document.createElement('button'); // create a button
-    buttPlus.setAttribute('type','button'); // set attributes ...
-    buttPlus.setAttribute('id','mainMove' + lineName + '_' + rowNum + '_s_' + txtNum); // mainPlusIB_1_s_1
-    buttPlus.setAttribute("value", "단계이동");
-    buttPlus.innerText =  "단계이동";
-    buttPlus.setAttribute('class',"add-house btn btn-primary btn-xs");
-    buttPlus.setAttribute('style','clear:both');
-    buttPlus.setAttribute('onclick', "moveTd('" + lineName + "', " + rowNum + "," + txtNum + ", this)" );
-    var spn = document.createElement('span');
-    spn.setAttribute('class','glyphicon glyphicon-transfer');
-    buttPlus.appendChild(spn);
-
-    return buttPlus;
-}
-
-// This function is used to create main plus button
-function mainPlusButton(lineName, rowNum, txt){
-    // Plus button
-    var buttPlus = document.createElement('button'); // create a button
-    buttPlus.setAttribute('type','button'); // set attributes ...
-    buttPlus.setAttribute('id','mainPlus' + lineName + '_' + rowNum + '_s_' + txt); // mainPlusIB_1_s_1
-    buttPlus.setAttribute("value", "설비추가");
-    buttPlus.innerText =  "설비추가";
-    buttPlus.setAttribute('class',"add-house btn btn-success btn-xs");
-    buttPlus.setAttribute('style','float:right');
-    buttPlus.setAttribute('onclick', "createSubStepItem('" + lineName + "', " + rowNum + "," + txt + ", this)" );
-
-    return buttPlus;
-}
-
-// This function is used to craete main Minus button
-function mainMinusButton(lineName, rowNum, txt){
-    // Minus button
-    var buttMinus = document.createElement('button'); // create a button
-    buttMinus.setAttribute('type','button'); // set attributes ...
-    buttMinus.setAttribute('id','mainMinus' + lineName + '_' + rowNum + '_s_' + txt); // mainMinusIB_1_s_1
-    buttMinus.setAttribute('class',"add-house btn btn-danger btn-xs fa fa-trash");
-    buttMinus.setAttribute('style','float:left');
-    buttMinus.setAttribute('onclick', "removeProcessTd('" + lineName + "', " + rowNum + ", " + txt  + ", this)");
-
-    return buttMinus;
-}
-
-// This function is used to create main step selectbox
-function mainStepSelectBox(lineName, rowNum, txt, txtValue){
-    // select box
-    var sel = document.createElement('select');
-    sel.setAttribute("id","processTitle" + lineName + "_" + rowNum + "_s_" + txt.value); // processTitleIB_1_s_1
-
-    var varStepLabel = "";
-    var option = document.createElement("option");
-    option.setAttribute("value", txtValue);
-    option.text = txtValue;
-    option.setAttribute("id","optionProcessTitle" + lineName + "_" + rowNum + "_s_" + txt.value);
-    sel.appendChild(option);
-
-    return sel;
-}
 
 // -- Step 6 - Add Sub Step of Each main step
-function createSubStepItem(lineName, rowNum, tValue, btnObj){
-    // create a textbox to store SUB step value for each STEP OF EACH LINE
-    if(isExisted("txtSubStep" + lineName + "_" + rowNum)){  // txtSubStepIB_1
-        var txt = document.getElementById("txtSubStep" + lineName + "_" + rowNum);
-        txt.setAttribute("value", parseInt(txt.value) + 1);
-        txt.setAttribute("class","hiddenTextBox");
-        // console.log("Sub Txt value of " + txt.id + "= " + txt.value);
-    }else{
-        var txt = document.createElement("input");
-        txt.setAttribute("value", 1);
-        txt.id = "txtSubStep" + lineName + "_" + rowNum;
-        txt.setAttribute("class","hiddenTextBox");
-        txt.setAttribute("style","display:none;");
-        document.body.appendChild(txt);
-        // console.log("Sub Txt value of " + txt.id + "= " + txt.value);
-    }
+function createSubStepItem(btnObj){
 
     // Textbox
-    var textBox = createSubStepTextBox(lineName, rowNum, txt);
-
-
+    var textBox = createSubStepTextBox();
 
     // Div for one sub step
-    var div = createDivSubStep(lineName, rowNum, txt);
+    var div = createDivSubStep();
 
     // Select for process select box
     // var arrProcess = ["공정","1차V홈높이",	"1차V홈높이최대",	"1차V홈높이최소",	"1차드릴수",	"1차불균형량",	"1차압입하중",	"2차압입하중",	"3차압입하중"];
-    var selProcess = createSelectBox(lineName, rowNum, txt, process_Array, "subProcess", "mod_select");
+    var selProcess = createSelectBox(process_Array, "subProcess", "mod_select");
 
     // Select for process select box
     // var arrMachine = ["설비","1차압입하중-압입기 1","2차압입하중-압입기 2","3차압입하중-압입기 3"];
-    var selMachine = createSelectBox(lineName, rowNum, txt, machine_Array, "subMachine", "machine_select");
+    var selMachine = createSelectBox(machine_Array, "subMachine", "machine_select");
 
     // Minus button
-    var buttMinus = createSubStepMinusButton(lineName, rowNum, txt);
+    var buttMinus = createSubStepMinusButton();
 
     // Plus button
-    var buttPlus = createSubStepPlusButton(lineName, rowNum, txt);
+    var buttPlus = createSubStepPlusButton();
 
     div.appendChild(buttMinus);
     div.appendChild(textBox);
@@ -1064,25 +1036,49 @@ function createSubStepItem(lineName, rowNum, tValue, btnObj){
     td.appendChild(div);
 }
 
+// -- Creating Textbox for Sub Step Item
+function createSubStepTextBox(){
+    var txt = document.createElement('input'); // create a button
+    txt.setAttribute('type','text'); // set attributes ...
+    // txt.setAttribute('id','subTextBox'+lineName+"_"+rowNum+"_s_"+txtId.value);  // subTextBoxIB_1_s_1
+    txt.setAttribute("class", "txtSeq");
+    txt.setAttribute('style','float:left; margin-left: 5px; margin-top:5px; width:20px; height:34px;');
+
+    return txt;
+}
+
+// This function is used to div element to wrap up the sub step
+function createDivSubStep(){
+    var div = document.createElement("div");
+    // div.setAttribute("id","div" + lineName + "_" + rowNum + "_" + txt.value);
+    div.setAttribute("style","clear:both");
+    return div;
+}
+
 // This function is used to create process select box
-function createSelectBox(lineName, rowNum, txtID, process_Array, prefixSel, className){
+function createSelectBox(process_Array, prefixSel, className){
     // select box for process
     var sel = document.createElement('select');
-    sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:50px;height:34px;');
-    sel.setAttribute('id', prefixSel + lineName + "_" + rowNum + "_s_" + txtID.value); // subProcessIB_1_s_1
+
+
+    // sel.setAttribute('id', prefixSel + lineName + "_" + rowNum + "_s_" + txtID.value); // subProcessIB_1_s_1
     sel.setAttribute('class',className);
-    sel.width = "auto";
+
     if(prefixSel == "subProcess") {
         sel.setAttribute('onchange', 'lines.processChange(this)');
         var option = document.createElement("option");
         option.setAttribute("value", 0); // store Process ID
         option.text = "공정"; // show Process name
         sel.appendChild(option);
+        sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:55px;height:34px;');
+        sel.width = "auto";
     }else{
         var option = document.createElement("option");
         option.setAttribute("value", 0); // store Process ID
         option.text = "설비"; // show Process name
         sel.appendChild(option);
+        sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:70px;height:34px;');
+        sel.width = "auto";
     }
 
     //Create and append the options
@@ -1095,105 +1091,56 @@ function createSelectBox(lineName, rowNum, txtID, process_Array, prefixSel, clas
     return sel;
 }
 
-// This function is used to div element to wrap up the sub step
-function createDivSubStep(lineName, rowNum, txt){
-    var div = document.createElement("div");
-    div.setAttribute("id","div" + lineName + "_" + rowNum + "_" + txt.value);
-    div.setAttribute("style","clear:both");
-    return div;
-}
-
-// -- Creating Textbox for Sub Step Item
-function createSubStepTextBox(lineName, rowNum, txtId){
-    var txt = document.createElement('input'); // create a button
-    txt.setAttribute('type','text'); // set attributes ...
-    txt.setAttribute('id','subTextBox'+lineName+"_"+rowNum+"_s_"+txtId.value);  // subTextBoxIB_1_s_1
-    txt.setAttribute("class", "txtSeq");
-    txt.setAttribute('style','float:left; margin-left: 5px; margin-top:5px; width:30px; height:34px;');
-
-    return txt;
-}
-
-// -- Creating plus button for Sub Step Item
-function createSubStepPlusButton(lineName, rowNum, txtId){
-    var buttPlus = document.createElement('button'); // create a button
-    buttPlus.setAttribute('type','button'); // set attributes ...
-    buttPlus.setAttribute('id','subPlus'+lineName+"_"+rowNum+"_s_"+txtId.value);  // subPlusIB_1_s_1
-    buttPlus.innerText = "연결추가";
-    buttPlus.setAttribute('class',"add-house btn btn-success btn-xs");
-    buttPlus.setAttribute('style','float:left; margin-left:5px; margin-top:5px;');
-    buttPlus.setAttribute('onclick', "addLinkSubItem('"+ lineName + "', " + rowNum + ", " + txtId.value + ", this) " );
-    //addLinkSubItem(lineName, rowNum, txtId, txtLink)
-    // var spn = document.createElement('span');
-    // spn.setAttribute('class','fa fa-plus');
-    // buttPlus.appendChild(spn);
-
-    return buttPlus;
-}
-
 // This function is used to create Sub Step Minus Button
-function createSubStepMinusButton(lineName, rowNum, txtId){
+function createSubStepMinusButton(){
 
     var buttMinus = document.createElement('button'); // create a button
     buttMinus.setAttribute('type','button'); // set attributes ...
-    buttMinus.setAttribute('id','subMinus' + lineName + "_" + rowNum + "_s_" + txtId.value);  // subMinusIB_1_s_1
+    // buttMinus.setAttribute('id','subMinus' + lineName + "_" + rowNum + "_s_" + txtId.value);  // subMinusIB_1_s_1
     buttMinus.setAttribute('class',"add-house btn btn-danger  btn-xs fa fa-trash");
     buttMinus.setAttribute('style','float:left;  margin-left:5px; margin-top:5px;');
-    buttMinus.setAttribute('onclick', "removeSubStepItem('" + lineName + "', " + rowNum + ", " + txtId.value + ", this)");
+    buttMinus.setAttribute('onclick', "removeSubStepItem(this)");
 
     return buttMinus;
 }
 
+// -- Creating plus button for Sub Step Item
+function createSubStepPlusButton(){
+    var buttPlus = document.createElement('button'); // create a button
+    buttPlus.setAttribute('type','button'); // set attributes ...
+    // buttPlus.setAttribute('id','subPlus'+lineName+"_"+rowNum+"_s_"+txtId.value);  // subPlusIB_1_s_1
+    buttPlus.innerText = "연결"+"\n" + "추가";
+    buttPlus.setAttribute('class',"add-house btn btn-success btn-xs");
+    buttPlus.setAttribute('style','float:left; margin-left:5px; margin-top:5px;');
+    buttPlus.setAttribute('onclick', "addLinkSubItem(this) " );
+
+    return buttPlus;
+}
+
 // This function is used to create a link text of each sub step item
-function addLinkSubItem(lineName, rowNum, txtValue, btnObject){
-    // create a textbox to store Link SUB step value for each Sub Step
-    if(isExisted("txtLink" + lineName + "_" + rowNum + "_s_" + txtValue)){  // txtLinkIB_1_s_1
-        var txt = document.getElementById("txtLink" + lineName + "_" + rowNum + "_s_" + txtValue);
-        txt.setAttribute("value", parseInt(txt.value) + 1);
-        txt.setAttribute("class","hiddenTextBox");
-        // console.log("Link Sub Txt value of " + txt.id + "= " + txt.value);
-    }else{
-        var txt = document.createElement("input");
-        txt.setAttribute("value", 1);
-        txt.id = "txtLink" + lineName + "_" + rowNum + "_s_" + txtValue;
-        txt.setAttribute("style","display:none;");
-        txt.setAttribute("class","hiddenTextBox");
-        document.body.appendChild(txt);
-        // console.log("Link Sub Txt value of " + txt.id + "= " + txt.value);
-    }
+function addLinkSubItem(btnObject){
 
     // Link Textbox
-    var linkTxt = createTextLink(lineName, rowNum, txtValue, txt.value);
+    var linkTxt = createTextLink();
 
     // Link Minus Button
-    var linkButton = createMinusLinkButton(lineName, rowNum, txtValue, txt.value);
+    var linkButton = createMinusLinkButton();
 
     // Link Div
-    var div = createLinkDivSubStep(lineName, rowNum, txtValue, txt.value);
+    var div = createLinkDivSubStep();
     div.appendChild(linkTxt);
     div.appendChild(linkButton);
 
-    // var outerDiv = document.getElementById("div" + lineName + "_" + rowNum + "_" + txtValue);
     var outerDiv = $(btnObject).parent()[0];
-
     outerDiv.appendChild(div);
 }
 
-// This function is used to create div for link sub step item
-function createLinkDivSubStep(lineName, rowNum, txtValue, txtLink){
-    var div = document.createElement("div");
-    div.setAttribute("id","div" + lineName + "_" + rowNum + "_" + txtValue + "_" + txtLink); // divIB_1_1_1
-    div.setAttribute("style","clear:both;");
-    return div;
-}
-
-
 // This function is used to create a textbok of link for each sub stem item
-function createTextLink(lineName, rowNum, txtValue, txtLink){
+function createTextLink(){
     // text box
     var txt = document.createElement('input');
     txt.setAttribute('type','text');
-    txt.setAttribute('id', 'link'  + lineName + "_" + rowNum + "_s_" + txtValue + "_" + txtLink); // linkIB_1_s_1_1
+    // txt.setAttribute('id', 'link'  + lineName + "_" + rowNum + "_s_" + txtValue + "_" + txtLink); // linkIB_1_s_1_1
     txt.setAttribute("class","linkTxtClass");
     txt.setAttribute('style','float:right; margin-left: 5px; margin-top:5px; width:30px; height:34px;');
 
@@ -1201,19 +1148,27 @@ function createTextLink(lineName, rowNum, txtValue, txtLink){
 }
 
 // This function is used to create a sub link minus button for each sub step item
-function createMinusLinkButton(lineName, rowNum, txtValue, txtLink){
+function createMinusLinkButton(){
     var buttMinus = document.createElement('button'); // create a button
     buttMinus.setAttribute('type','button'); // set attributes ...
-    buttMinus.setAttribute('id','linkMinus'  + lineName + "_" + rowNum + "_s_" + txtValue + "_" + txtLink);  // linkMinusIB_1_s_1_1
+    // buttMinus.setAttribute('id','linkMinus'  + lineName + "_" + rowNum + "_s_" + txtValue + "_" + txtLink);  // linkMinusIB_1_s_1_1
     buttMinus.setAttribute('class',"add-house btn btn-danger  btn-xs fa fa-trash");
     buttMinus.setAttribute('style','float:right;  margin-left:5px; margin-top:5px;');
-    buttMinus.setAttribute('onclick', "removeLinkSubStepItem('" + lineName + "', " + rowNum + ", " + txtValue + ", " + txtLink + ", this)");
+    buttMinus.setAttribute('onclick', "removeLinkSubStepItem(this)");
 
     return buttMinus;
 }
 
+// This function is used to create div for link sub step item
+function createLinkDivSubStep(){
+    var div = document.createElement("div");
+    // div.setAttribute("id","div" + lineName + "_" + rowNum + "_" + txtValue + "_" + txtLink); // divIB_1_1_1
+    div.setAttribute("style","clear:both;");
+    return div;
+}
+
 // Remove Link Sub Step Item
-function removeLinkSubStepItem(lineName, rowNum, txtValue, txtLink, btnObject){
+function removeLinkSubStepItem(btnObject){
     var z = "";
     z = confirm("삭제하시겠습니까?");
     if( z == true){
@@ -1223,7 +1178,7 @@ function removeLinkSubStepItem(lineName, rowNum, txtValue, txtLink, btnObject){
 }
 
 // Remove Sub Step Item
-function removeSubStepItem(lineName, rowNum, txtValue, btnObject){
+function removeSubStepItem(btnObject){
     var z = "";
     z = confirm("삭제하시겠습니까?");
     if( z == true){
@@ -1231,60 +1186,79 @@ function removeSubStepItem(lineName, rowNum, txtValue, btnObject){
         $(btnObject).parent().remove();
     }
 }
-// "removeProcessTd('" + lineName + "', " + rowNum + ", " + txt.value  + ")");
-// Remove Main Td Item
-function removeProcessTd(lineName, rowNum, txtValue, btnObj){
-    var z = "";
-    z = confirm("삭제하시겠습니까?");
-    if( z == true){
-        // document.getElementById("td" + lineName + "_" + rowNum + "_s_" + txtValue).remove();
-        var td = $(btnObj).parent().parent()[0];
-        td.innerHTML = "";
-    }
+
+// Update value attribute when input controls change
+$(document).on('change','input',function(){
+    $(this).attr("value",$(this).val());
+});
+
+// set selected = selected when the option is chosen
+$(document).on('change','select',function(){
+    var value = $(this).val();
+    $('option', $(this)).each(function(){
+        if($(this).val() == value){
+            $(this).attr("selected", "selected");
+        }
+    });
+});
+
+
+// Check if the user enters the txtMainTitle or not because this field is vital for getting the link textbox
+function checkValidation(){
+    $('input[class="txtMainTitle"]').each(function() {
+        if ($.trim($(this).val()) == '') {
+            alert('Please fill out all required fields.');
+            return false;
+        }
+        else {
+            // alert('Everything has a value.');
+            return true;
+        }
+    });
 }
 
-// This function is used to remove row when clicks on minusProduct
-function removeRow(lineName, rowNum, btnObject){
-    console.log("rowNum = " +  rowNum);
-
-    var z = "";
-    z = confirm("삭제하시겠습니까?");
-    if( z == true){
-        var rowspan = parseInt($("#td"+lineName).attr("rowSpan"));
-        // test
-        var td = $('#td'+lineName);
-        $('#td'+lineName).attr('rowSpan', (rowspan - 1));
-
-        //$("<td/>").insertBefore($("#btnMinusProductHC_1").parent().parent().next().children().first());
-        var btnClassName = $(btnObject).parent().parent().attr("class");
-        var btnRowId = $(btnObject).parent().parent().attr("id");
-
-        console.log("class[0] = " + $("."+btnClassName)[0].id);
-
-        console.log("row id = " + btnRowId);
-
-        if($("."+btnClassName)[0].id == btnRowId && rowspan != 1){
-            $(td).insertBefore($("#btnMinusProduct"+lineName+"_"+rowNum).parent().parent().next().children().first());
+function checkLineBox(lineName){
+    $('input[class="select_line"]').each(function() {
+        // console.log("value ", $(this).val());
+        // console.log("lineName ", lineName.trim());
+        if ($.trim($(this).val()) == lineName.trim()) {
+            $(this).prop('checked', true);
         }
+    });
+}
 
-        document.getElementById("tr" + lineName + "_" + rowNum ).remove();
+// set selected = selected when the option is chosen
+$(document).on('change','input:checkbox',function(){
+    if($(this).is(":checked"))
+    {
+        getCheckBoxValues();
 
+    }else{
+        $("tr.tr"+$(this).val()).remove();
         checkIfNoMoreRow();
     }
-}
 
-// function checks if there is no more row left
-function checkIfNoMoreRow(){
-    var theader = document.getElementById("tableHeader");
-    if($('#processTable tr').length == 0){
-        theader.innerHTML = "";
+});
+
+function isChecked(){
+    var array = [];
+    let options = document.getElementsByClassName("select_line");
+    for (let option of options){
+        array.push(option.value);
+        // if(option.checked){
+            // console.log("Yes - ", option.value);
+        // }
     }
+    // console.log(array);
 }
+//====================== END: Helping Functions ===================================================
 
+
+// ===================== START: SAVE TO DATABASE =========================================================
 // ============= INSERT INTO DATABASE =========================================
 $("#btnSaveAll").click(function () {
 
-        DBInsertion();
+    DBInsertion();
 });
 
 //======= Start inserting to Database
@@ -1294,8 +1268,13 @@ var data = [{
     "SEQ" : 1,
     "NAME" : "PD_CM5E",
     "REF_LINE" : "PD",
-    "REF_PRODUCT" : "CM5E",
-    "STATUS" : "1",
+    "PROCESS_PRODUCT" : [{
+        "ID" : 0,
+        "REF_PRODUCT" : "A",
+        "REF_PROCESS_CHAIN_ID" : 0,
+        "STATUS" : "1"
+        }],
+
     "PROCESS_CHAIN_ELEMENT" : [{
         "ID" : 1,
         "STAGE" : 1,
@@ -1318,16 +1297,31 @@ function DBInsertion(){
     $('#processTable tr').each(function(row, tr){
         var data = {};
         // data["ID"] = 1;
-        data["SEQ"] = $(this).find(".tdProduct").attr("id").split("_")[1];
-        data["NAME"] = $(this).find(".tdProduct").attr("data-id") + "_" + $(this).find("td .selProduct").val();
+        data["SEQ"] = $(this).attr("id").split("_")[1];
+        data["NAME"] = $(this).find(".tdProduct").attr("data-id") + "_" + $(this).attr("id").split("_")[1];
         data["REF_LINE"] = $(this).find(".tdProduct").attr("data-id");
-        data["REF_PRODUCT"] = $(this).find("td .selProduct").val();
 
-        $(':radio', $(this).find("td.tdProduct")).each(function(){
-            if($(this).is(":checked")){
-                data["STATUS"] = $(this).val();
-            }
+
+        // PROCESS PRODUCT
+        var PROCESS_PRODUCTS = [];
+        $.each($(this).find("div.subDivProduct"), function(keyProcessProduct, processProduct) {
+            var PROCESS_PRODUCT = {
+                "ID" : 0,
+                "REF_PRODUCT" : $(processProduct).find(".selProduct").val(),
+                "REF_PROCESS_CHAIN_ID" : 0
+            };
+            $(':radio', $(processProduct)).each(function(){
+                if($(this).is(":checked")){
+                    PROCESS_PRODUCT["STATUS"] = $(this).val();
+                }
+            });
+
+            PROCESS_PRODUCTS.push(PROCESS_PRODUCT);
         });
+
+        //=========================================
+
+
 
         var PROCESS_CHAIN_ELEMENTS = [];
         $.each($(this).find("td.mainProcess"), function(keyProcess, process){
@@ -1358,6 +1352,8 @@ function DBInsertion(){
             PROCESS_CHAIN_ELEMENT["PROCESS_MACHINE"] = PROCESS_MACHINES;
             PROCESS_CHAIN_ELEMENTS.push(PROCESS_CHAIN_ELEMENT);
         });
+
+        data["PROCESS_PRODUCT"] = PROCESS_PRODUCTS;
         data["PROCESS_CHAIN_ELEMENT"] = PROCESS_CHAIN_ELEMENTS;
         //
         datas.push(data);
@@ -1375,30 +1371,58 @@ $("#btnTest").click(function () {
 
 });
 
+// function is used to delete all the helping textbox that we created and hid
+function removeHiddenControls(class_name) {
+
+    // resetCountClick();
+    var theader = document.getElementById("tableHeader");
+    theader.innerHTML = "";
+
+    var tbody = document.getElementById("processTable");
+    tbody.innerHTML = "";
+
+    let txtSeq = document.getElementsByClassName(class_name);
+    for (let txt of txtSeq){
+        console.log(txt);
+        txt.remove();
+    }
+}
+
 
 // ======================= START READING DATA FROM DATABASE ================================================
 function loadDataToTable(result){
     console.log(result);
     for(var i = 0; i < result.length; i++){
-        createOneLine(result[i].REF_LINE);
-        addNewProductFromDB(result[i].REF_LINE, result[i].REF_PRODUCT, result[i].STATUS);
-        var subResult = result[i].PROCESS_CHAIN_ELEMENT;
-        for(var j = 0; j < subResult.length; j++ ){
-            createStepAfterMainProcessFromDB(result[i].REF_LINE, subResult[j].STAGE, result[i].SEQ, result[i], subResult[j]);
+        var btnObj = createOneLine(result[i].REF_LINE);
+
+        console.log("Line = " + result[i].REF_LINE);
+
+        // Process Product
+        var processProducts = result[i].PROCESS_PRODUCT;
+
+        if(processProducts != null){
+            newProduct_2_1_FromDB(result[i].REF_LINE, processProducts,  result[i], btnObj);
         }
+
+
+
     }
+    isChecked();
 }
 
 var numberProcess = 0;
 // 1.1 - Read Data and Create One line for once
 function createOneLine(lineName){
     numberProcess = 0;
+
+
     if(!isExisted("lineHeader")) {
         var theader = document.getElementById("tableHeader");
 
         var th = document.createElement("th");
         th.innerText = "라인";
         th.id = "lineHeader";
+        th.setAttribute("style","width:100px");
         theader.appendChild(th);
     }
 
@@ -1423,18 +1447,159 @@ function createOneLine(lineName){
         td.appendChild(span);
         var _br = document.createElement("br");
         td.appendChild(_br);
-        var btn = createLineButton(lineName);
-
+        btn = createLineButton(lineName);
         td.appendChild(btn);
         tr.appendChild(td);
         tbody.appendChild(tr);
-
-
     }
     checkLineBox(lineName);
+    return btn;
 }
 
-function createStepAfterMainProcessFromDB(lineName, stage, rowNum, result, subResult) {
+// Step 2.1 -- Create Product Td From Database
+function newProduct_2_1_FromDB(lineName, processProducts, result, btnObj){
+
+    // Create a new Column Header
+    if(!isExisted("productHeader")){
+        var theader = document.getElementById("tableHeader");
+        var th = document.createElement("th");
+        th.innerText = "제품";
+        th.id = "productHeader";
+        theader.appendChild(th);
+    }
+
+    // get final class name of current tr which obtains the clicked button
+    var finalClassName = $(btnObj).parent().parent().attr("class");
+    // count the class name of current tr which obtains the clicked button
+    var countClassName = $("."+finalClassName).length;
+    // select the last tr with the class name that we selected above
+    var refElement = $("tr"+"."+finalClassName+":last")[0];
+
+    // New Process Product
+    var div = newProduct_2_2(lineName, countClassName);
+
+    var newTd = $("tr" + " > " + "td[data-id='" + lineName + "']" )[0];
+
+    if(newTd == undefined) {
+        // Add default product
+
+        var td = document.createElement("td");
+        td.appendChild(div);
+        td.setAttribute("data-id", lineName);
+        td.className = "tdProduct";
+        var tr = $(btnObj).parent().parent()[0];
+        tr.appendChild(td);
+    }
+
+    if(countClassName >= 1  && newTd != undefined){
+        console.log("Wow");
+        // var cell = addProductFamily();
+        var row = addRowAfter(btnObj);
+        row.insertCell(0);
+
+        var cell = row.cells[0];
+        cell.className = "tdProduct" ;
+        cell.setAttribute("data-id",lineName);
+        cell.id = "tdProduct" + lineName + "_" + countClassName;
+        cell.appendChild(div);
+        var rowspan = parseInt($('#td'+lineName).attr('rowSpan'));
+        $('#td'+lineName).attr('rowSpan', (rowspan + 1));
+    }
+
+    for(var m=0; m < processProducts.length; m++) {
+        if (processProducts[m].REF_PRODUCT != null) {
+            newProduct_2_8_productSet_FromDB(div, processProducts[m].REF_PRODUCT, processProducts[m].STATUS);
+        }
+    }
+
+    var subResult = result.PROCESS_CHAIN_ELEMENT;
+    for(var j = 0; j < subResult.length; j++ ){
+        createStepAfterMainProcessFromDB(lineName, subResult[j].STAGE, div, subResult[j])
+    }
+
+
+}
+
+
+// -- Step 2-2. Create Div to store elements of New Process Product
+// This function is used to create div for default process product
+function newProduct_2_2_FromDB(lineName, countClassName,Product, Status){
+    // Create a new row
+    var div = document.createElement("div");
+    div.className = "divProduct";
+    div.id = "divProduct" + lineName + "_" + countClassName;
+
+
+    // Create Remove Product Button
+    var btnRemoveProcessProduct = newProduct_2_3_addProductBtn("공정흐름삭제","btnRemoveProcessProduct", "danger", "newProduct_2_9_removeRow");
+
+    // Create Process Product Button
+    var btnProcessProduct = newProduct_2_3_addProductBtn("제품추가","btnProcessProduct", "success", "newProduct_2_8_productSet");
+
+    // Create Add Step Button
+    var btnAddStep = newProduct_2_3_addProductBtn("공정단계추가","btnAddStep", "primary", "newProduct_2_10_addStep");
+
+    div.appendChild(btnRemoveProcessProduct);
+    div.appendChild(btnProcessProduct);
+    div.appendChild(btnAddStep);
+
+    return div;
+}
+
+// -- Step 2-8. Start create one set of product
+function newProduct_2_8_productSet_FromDB(div, Product, Status){
+    var divParent = div;
+    var rndNum = Math.floor(Math.random()*1000);
+
+    var div = document.createElement("div");
+    div.className = "subDivProduct";
+    div.setAttribute("style","clear:both");
+
+    var _br = document.createElement("br");
+    _br.setAttribute("style", "clear:both");
+
+    var btnRemoveProduct = newProduct_2_5_removeProductBtn();
+
+    var sel = newProduct_2_6_productSelList_FromDB(Product);
+
+
+    var rdoName = "radio" + rndNum;
+    var rdoActive = newProduct_2_7_radioBtn(rdoName, "1", Status == "1"? true : false);
+    var rdoInActive = newProduct_2_7_radioBtn(rdoName, "0", Status == "0"? true : false);
+
+    div.appendChild(btnRemoveProduct);
+    div.appendChild(sel);
+    div.appendChild(_br);
+    div.appendChild(rdoActive);
+    div.appendChild(rdoInActive);
+
+    divParent.appendChild(div);
+}
+// -- Step 2-6. Create Product Select Item List
+function newProduct_2_6_productSelList_FromDB(value){
+    // select box
+    var sel = document.createElement('select');
+    sel.setAttribute('style','margin-bottom:5px; width:110px;height:34px; float:left;');
+    sel.className = "selProduct"; // className = selProduct. This will be useful when we insert into DB
+
+
+    // Append options to select box
+    for (var i = 0; i < product_Array.length; i++) {
+        var option = document.createElement("option");
+        option.setAttribute("value", product_Array[i][1]);
+        option.text = product_Array[i][1];
+
+        if( option.value == value){
+            option.setAttribute("selected", "selected");
+        }
+
+        sel.appendChild(option);
+    }
+    return sel;
+}
+
+// This function is used to create step after entering the main process title
+function createStepAfterMainProcessFromDB(lineName, stage, div, subResult) {
 
     if (!isExisted("headerStep_" + stage)) {
         var theader = document.getElementById("tableHeader");
@@ -1449,49 +1614,40 @@ function createStepAfterMainProcessFromDB(lineName, stage, rowNum, result, subRe
     }
 
     // Row
-    var row = document.getElementById("tr" + lineName + "_" + rowNum);
+    var row = $(div).parent().parent()[0];
 
     // if no sub step or blank
     if(subResult.NAME == null) {
         var blank_td = document.createElement("td");
         blank_td.setAttribute("data-id", (stage));
         blank_td.setAttribute("class", "mainProcess");
+        blank_td.setAttribute("style", "width:970px");
         row.appendChild(blank_td);
-    } else{
+    }else{
         var divColor = document.createElement("div");
         divColor.setAttribute("style", "background-color: #B7C9EF; padding: 3px;");
 
         // Plus button
         // var buttPlus = mainPlusButton(lineName, rowNum, txt);
-        var buttPlus = mainPlusButton(lineName, rowNum, stage); // mainPlusIB_1_s_1
+        var buttPlus = mainPlusButton(lineName); // mainPlusIB_1_s_1
 
         // Move button
-        var buttMove = mainMoveButton(lineName, rowNum, stage);
+        var buttMove = mainMoveButton(lineName);
 
         // Minus button
         // var buttMinus = mainMinusButton(lineName, rowNum, txt);
-        var buttMinus = mainMinusButton(lineName, rowNum, stage);
+        var buttMinus = mainMinusButton(lineName);
 
         // Select Box
         // var sel = mainStepSelectBox(lineName, rowNum, txt, txtValue);
 
-        var txtMain = document.createElement("input");
-        txtMain.type = "text";
-        // txtMain.value = subResult.NAME;
+        var txtMain = mainTextBox();
         txtMain.setAttribute("value", subResult.NAME);
-        txtMain.setAttribute("style", "margin-left: 5px; margin-right: 5px");
-        txtMain.id = "txtMainTitle" + lineName + "_" + rowNum + "_s_" + stage; // spanMainTitleIB_1_s_1
-        txtMain.className = "txtMainTitle";
-        txtMain.placeholder = "공정명을 입력하세요";
-        txtMain.size = "15";
 
         // Column
         var td = document.createElement("td");
-        // td.id = "td" + lineName + "_" + rowNum + "_s_" + txt.value; // tdIB_1_s_1
-        td.id = "td" + lineName + "_" + rowNum + "_s_" + stage; // tdIB_1_s_1
 
         divColor.appendChild(buttMinus);
-        // td.appendChild(sel);
         divColor.appendChild(txtMain);
         divColor.appendChild(buttPlus);
         var _br = document.createElement("br");
@@ -1501,370 +1657,123 @@ function createStepAfterMainProcessFromDB(lineName, stage, rowNum, result, subRe
         td.appendChild(divColor);
         td.setAttribute("data-id", stage);
         td.setAttribute("class","mainProcess");
+        // td.setAttribute("style", "width:970px");
 
         row.appendChild(td);
         if(subResult.PROCESS_MACHINE != null) {
-            createSubStepItemFromDB(lineName, rowNum, stage, td, subResult);
-        }
-    }
-}
-
-
-// -- Step 6 - Add Sub Step of Each main step
-function createSubStepItemFromDB(lineName, rowNum, stage, td, subResult){
-
-    for(var i=0; i < subResult.PROCESS_MACHINE.length; i++) {
-        var pmResult = subResult.PROCESS_MACHINE[i];
-        // Textbox
-        var textBox = createSubStepTextBoxFromDB(lineName, stage, i + 1, pmResult.SEQ); // subTextBoxIB_1_s_1
-
-        // Plus button
-        var buttPlus = createSubStepPlusButtonFromDB(lineName, rowNum, i + 1);
-
-        // Div for one sub step
-        numberProcess += 1; // count number of process
-        var div = createDivSubStepFromDB(lineName, rowNum, numberProcess);
-
-        // Select for process select box
-        // var arrProcess = ["공정","1차V홈높이",	"1차V홈높이최대",	"1차V홈높이최소",	"1차드릴수",	"1차불균형량",	"1차압입하중",	"2차압입하중",	"3차압입하중"];
-        var selProcess = createSelectBoxFromDB(lineName, stage, i + 1, process_Array, "subProcess", "mod_select", pmResult.REF_PROCESS);
-
-        // Select for process select box
-        // var arrMachine = ["설비","1차압입하중-압입기 1","2차압입하중-압입기 2","3차압입하중-압입기 3"];
-
-        var selMachine = createSelectBoxFromDB(lineName, stage, i + 1, machine_Array, "subMachine", "machine_select", pmResult.REF_MACHINE);
-
-        // Minus button
-        var buttMinus = createSubStepMinusButtonFromDB(lineName, rowNum, i + 1);
-
-        div.appendChild(buttMinus);
-        div.appendChild(textBox);
-        div.appendChild(selProcess);
-        div.appendChild(selMachine);
-        div.appendChild(buttPlus);
-        div.setAttribute("class", "subProcess");
-
-        // link div
-        var nextSeq = pmResult.NEXT_SEQUENCE;
-        if (nextSeq != null) {
-
-            var linkArr = nextSeq.split(",");
-            for (var k = 0; k < linkArr.length; k++) {
-                var d = addLinkSubItemFromDB(lineName, rowNum, k + 1, linkArr[k], i + 1, numberProcess);
-                if(linkArr != "") {
-                    div.appendChild(d);
-                }
+            for(var k=0; k < subResult.PROCESS_MACHINE.length; k++) {
+                createSubStepItemFromDB(buttPlus, subResult.PROCESS_MACHINE[k]);
             }
         }
-        // var td = document.getElementById("td" + lineName + "_" + rowNum + "_s_" + tValue);
-
-        // var td = $(btnObj).parent().parent()[0];
-
-        // td.className = "tdProcess";
-        td.appendChild(div);
-
-
-
     }
 }
 
-// -- Creating Textbox for Sub Step Item
-function createSubStepTextBoxFromDB(lineName, rowNum, stage, txtValue){
-    var txt = document.createElement('input'); // create a button
-    txt.setAttribute('type','text'); // set attributes ...
-    txt.setAttribute('id','subTextBox'+lineName+"_"+rowNum+"_s_"+stage);  // subTextBoxIB_1_s_1
-    txt.setAttribute("class", "txtSeq");
-    txt.setAttribute('style','float:left; margin-left: 5px; margin-top:5px; width:30px; height:34px;');
-    txt.setAttribute("value", txtValue);
-    return txt;
+// -- Step 6 - Add Sub Step of Each main step
+function createSubStepItemFromDB(btnObj, subResult){
+
+    // Textbox
+    var textBox = createSubStepTextBox();
+    textBox.setAttribute("value", subResult.SEQ);
+    // Div for one sub step
+    var div = createDivSubStep();
+
+    // Select for process select box
+    // var arrProcess = ["공정","1차V홈높이",	"1차V홈높이최대",	"1차V홈높이최소",	"1차드릴수",	"1차불균형량",	"1차압입하중",	"2차압입하중",	"3차압입하중"];
+    var selProcess = createSelectBoxFromDB(process_Array, "subProcess", "mod_select", subResult.REF_PROCESS);
+
+    // Select for process select box
+    // var arrMachine = ["설비","1차압입하중-압입기 1","2차압입하중-압입기 2","3차압입하중-압입기 3"];
+    var selMachine = createSelectBoxFromDB(machine_Array, "subMachine", "machine_select", subResult.REF_MACHINE);
+    console.log("Machine = " + subResult.REF_MACHINE);
+
+    // Minus button
+    var buttMinus = createSubStepMinusButton();
+
+    // Plus button
+    var buttPlus = createSubStepPlusButton();
+
+    div.appendChild(buttMinus);
+    div.appendChild(textBox);
+    div.appendChild(selProcess);
+    div.appendChild(selMachine);
+    div.appendChild(buttPlus);
+    div.setAttribute("class","subProcess");
+    // var td = document.getElementById("td" + lineName + "_" + rowNum + "_s_" + tValue);
+
+    var td = $(btnObj).parent().parent()[0];
+
+
+    // link div
+    var nextSeq = subResult.NEXT_SEQUENCE;
+    if (nextSeq != null) {
+
+        var linkArr = nextSeq.split(",");
+        for (var z = 0; z < linkArr.length; z++) {
+            addLinkSubItemFromDB(buttPlus, linkArr[z]);
+        }
+    }
+
+    // td.className = "tdProcess";
+    td.appendChild(div);
 }
-
-// -- Creating plus button for Sub Step Item
-function createSubStepPlusButtonFromDB(lineName, rowNum, stage){
-    var buttPlus = document.createElement('button'); // create a button
-    buttPlus.setAttribute('type','button'); // set attributes ...
-    buttPlus.setAttribute('id','subPlus'+lineName+"_"+rowNum+"_s_"+stage);  // subPlusIB_1_s_1
-    buttPlus.innerText = "연결추가";
-    buttPlus.setAttribute('class',"add-house btn btn-success btn-xs");
-    buttPlus.setAttribute('style','float:left; margin-left:5px; margin-top:5px;');
-    buttPlus.setAttribute('onclick', "addLinkSubItem('"+ lineName + "', " + rowNum + ", " + stage + ") " );
-
-    return buttPlus;
-}
-
-// This function is used to div element to wrap up the sub step
-function createDivSubStepFromDB(lineName, rowNum, stage){
-    var div = document.createElement("div");
-    div.setAttribute("id","div" + lineName + "_" + rowNum + "_" + stage);
-    div.setAttribute("style","clear:both");
-    return div;
-}
-
 
 // This function is used to create process select box
-function createSelectBoxFromDB(lineName, rowNum, stage, process_Array, prefixSel, className, selectedID){
+function createSelectBoxFromDB(process_Array, prefixSel, className, selectedValue){
     // select box for process
     var sel = document.createElement('select');
-    sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:50px;height:34px;');
-    sel.setAttribute('id', prefixSel + lineName + "_" + rowNum + "_s_" + stage); // subProcessIB_1_s_1
+
     sel.setAttribute('class',className);
 
-    sel.width = "auto";
     if(prefixSel == "subProcess") {
         sel.setAttribute('onchange', 'lines.processChange(this)');
+        var option = document.createElement("option");
+        option.setAttribute("value", 0); // store Process ID
+        option.text = "공정"; // show Process name
+        sel.appendChild(option);
+        sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:55px;height:34px;');
+        sel.width = "auto";
     }else{
         var option = document.createElement("option");
-        option.setAttribute("value", selectedID); // store Process name
-        option.text = selectedID; // show Process name
-
-        if( option.value == selectedID){
-            option.setAttribute("selected", "selected");
-        }
+        option.setAttribute("value", selectedValue); // store Process ID
+        option.text = selectedValue; // show Process name
         sel.appendChild(option);
+        sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:70px;height:34px;');
+        sel.width = "auto";
     }
 
     //Create and append the options
     for (var i = 0; i < process_Array.length; i++) {
         var option = document.createElement("option");
-        option.setAttribute("value", process_Array[i][1]); // store Process name
+        option.setAttribute("value", process_Array[i][1]); // store Process ID
         option.text = process_Array[i][1]; // show Process name
 
-        if( option.value == selectedID){
+        if( option.value == selectedValue){
             option.setAttribute("selected", "selected");
         }
+
         sel.appendChild(option);
     }
     return sel;
-}
-
-// This function is used to create Sub Step Minus Button
-function createSubStepMinusButtonFromDB(lineName, rowNum, stage){
-
-    var buttMinus = document.createElement('button'); // create a button
-    buttMinus.setAttribute('type','button'); // set attributes ...
-    buttMinus.setAttribute('id','subMinus' + lineName + "_" + rowNum + "_s_" + stage);  // subMinusIB_1_s_1
-    buttMinus.setAttribute('class',"add-house btn btn-danger  btn-xs fa fa-trash");
-    buttMinus.setAttribute('style','float:left;  margin-left:5px; margin-top:5px;');
-    buttMinus.setAttribute('onclick', "removeSubStepItem('" + lineName + "', " + rowNum + ", " + stage + ", this)");
-
-    return buttMinus;
 }
 
 // This function is used to create a link text of each sub step item
-function addLinkSubItemFromDB(lineName, rowNum, txtValue, itemValue, numSubDiv, numberProcess){
+function addLinkSubItemFromDB(btnObject, linkValue){
 
     // Link Textbox
-    if(itemValue != null && itemValue != "") {
-        var linkTxt = createTextLink(lineName, rowNum, numSubDiv, txtValue);
-        linkTxt.setAttribute("value", itemValue);
+    var linkTxt = createTextLink();
+    linkTxt.setAttribute("value", linkValue);
 
+    // Link Minus Button
+    var linkButton = createMinusLinkButton();
 
-        // Link Minus Button
-        var linkButton = createMinusLinkButton(lineName, rowNum, numSubDiv, txtValue);
+    // Link Div
+    var div = createLinkDivSubStep();
+    div.appendChild(linkTxt);
+    div.appendChild(linkButton);
 
-        // Link Div
-        var div = createLinkDivSubStep(lineName, rowNum, numSubDiv, txtValue);
-        div.appendChild(linkTxt);
-        div.appendChild(linkButton);
-
-
-        return div;
-
-        // Important Div to cover the linkItem
-        // var outerDiv = document.getElementById("div" + lineName + "_" + txtValue + "_" + numberProcess);
-        // console.log("div" + lineName + "_" + txtValue + "_" + numSubDiv);
-        // outerDiv.appendChild(div);
-    }
-}
-
-// ================== END READING FROM DATABASE ==============================================
-
-
-// Update value attribute when input controls change
-$(document).on('change','input',function(){
-    $("#"+this.id).attr("value",$("#"+this.id).val());
-});
-
-
-// set selected = selected when the option is chosen
-$(document).on('change','select',function(){
-    var value = $("#"+this.id).val();
-    $('option', $(this)).each(function(){
-        if($(this).val() == value){
-            $(this).attr("selected", "selected");
-        }
-    });
-});
-
-// Check if the user enters the txtMainTitle or not because this field is vital for getting the link textbox
-function checkValidation(){
-    $('input[class="txtMainTitle"]').each(function() {
-        if ($.trim($(this).val()) == '') {
-            alert('Please fill out all required fields.');
-            return false;
-        }
-        else {
-            // alert('Everything has a value.');
-            return true;
-        }
-    });
-}
-
-// function is used to delete all the helping textbox that we created and hid
-function removeHiddenControls(class_name) {
-
-    resetCountClick();
-    var theader = document.getElementById("tableHeader");
-    theader.innerHTML = "";
-
-    var tbody = document.getElementById("processTable");
-    tbody.innerHTML = "";
-
-    let txtSeq = document.getElementsByClassName(class_name);
-    for (let txt of txtSeq){
-        console.log(txt);
-        txt.remove();
-    }
-}
-
-//========== Step 2 - Create Adding Product Button
-function addNewProductFromDB(lineName, productValue, statusValue){
-    var countClick = upCountClick(lineName);
-
-    // Create a new Column Header
-    if(!isExisted("productHeader")){
-        var theader = document.getElementById("tableHeader");
-        var th = document.createElement("th");
-        th.innerText = "제품";
-        th.id = "productHeader";
-        theader.appendChild(th);
-    }
-
-    if(countClick > 1){
-        // var cell = addProductFamily();
-        var row = addRowAfter("tr"+lineName + "_" + (countClick-1), lineName, (countClick-1));
-        row.insertCell(0);
-        // console.log("row ======= " + row.id);
-
-        var cell = row.cells[0];
-        var td = createProductTdFromDB(lineName, countClick, productValue, statusValue);
-        td.setAttribute("style","border:none;");
-        // cell.appendChild(td); -- We don't need to add sub TD to current TD
-        cell.innerHTML = td.innerHTML; // we can overwrite the content of the new TD to current TD
-        // cell.className = "tdProduct" + lineName;
-        cell.className = "tdProduct" ;
-        cell.setAttribute("data-id",lineName);
-        cell.id = "tdProduct" + lineName + "_" + countClick;
-        var rowspan = parseInt($('#td'+lineName).attr('rowSpan'));
-        $('#td'+lineName).attr('rowSpan', (rowspan + 1));
-
-    }else {
-        var td = createProductTdFromDB(lineName, countClick, productValue, statusValue);
-        // td.className = "tdProduct" + lineName;
-        td.className = "tdProduct";
-        td.setAttribute("data-id",lineName);
-
-        var tr = document.getElementById("tr" + lineName + "_"+ countClick);
-        tr.appendChild(td);
-    }
-}
-
-// This function is used to create td for one product
-function createProductTdFromDB(lineName, countClick, productValue, statusValue){
-    // Create a new row
-    var td = document.createElement("td");
-    td.className = "tdProduct" + lineName;
-    td.id = "tdProduct" + lineName + "_" + countClick;
-    var _br = document.createElement("br");
-    _br.setAttribute("style","clear:both");
-    // call selectBox Function
-    var sel = createProductListFromDB(lineName, countClick, productValue, statusValue);
-
-    // call product radio buttons
-    var rdoName = "radio" + lineName + "_" + countClick;
-    // active button
-    var rdoActive = createProductRadioButton(rdoName, "1", statusValue=="1"?true:false);
-
-    // non active button
-    var rdoNonActive = createProductRadioButton(rdoName, "0", statusValue=="0"?true:false);
-
-    // call product button function
-    var btnClassName = "btnProduct" + lineName;
-    var btnId = "btnProduct" + lineName + "_" + countClick;
-    // var btnProduct = createProductButton(btnClassName, btnId);
-
-    var btnProduct = createProductButton(btnClassName, btnId, lineName, countClick);
-
-    // Minus button
-    var buttMinus = document.createElement('button'); // create a button
-    buttMinus.setAttribute('type','button'); // set attributes ...
-    buttMinus.setAttribute('id','btnMinusProduct' + lineName + "_" + countClick);
-    buttMinus.setAttribute('class',"add-house btn btn-danger btn-xs fa fa-trash");
-    buttMinus.setAttribute('style','float:left; margin-right:5px;');
-    buttMinus.setAttribute("onclick","removeRow('" + lineName + "', " + countClick + ", this)");
-
-    // Merge all controls to td
-    td.appendChild(buttMinus);
-    td.appendChild(sel); // selectBox
-
-    td.appendChild(_br);
-    td.appendChild(rdoActive); // active radio button
-    td.appendChild(rdoNonActive); // non active radio button
-    var _br = document.createElement("br");
-    _br.setAttribute("style","clear:both");
-    td.appendChild(_br);
-    td.appendChild(btnProduct);
-
-    return td;
-}
-
-// This function is for creating product list with dropdown
-function createProductListFromDB(lineName, countClick, productValue, statusValue){
-    // select box
-    var sel = document.createElement('select');
-    sel.setAttribute('style','margin-bottom:5px; width:110px; height:34px; float:left;');
-    sel.id = "selProduct" + lineName + "_" + countClick; // selProductIB_1
-    sel.className = "selProduct"; // className = selProduct. This will be useful when we insert into DB
-
-    // array to store value
-    // var array = ["CM5E", "DS7E", "GAMMA", "H4MK", "JX6E", "SEG-3PK", "SP", "T/SHARK", "THETA/GDI", "THETA-??(VVL)", "THETA-GDI(YF)", "THETA-HEV", "THETA-개선(VVL)", "TIGER SHARK", "Unknown", "X100"];
-    // option of select box
-    //Create and append the options
-    for (var i = 0; i < product_Array.length; i++) {
-        var option = document.createElement("option");
-        // option.value = product_Array[i][0];
-        option.setAttribute("value", product_Array[i][1]);
-        option.text = product_Array[i][1];
-
-        if( option.value == productValue){
-            option.setAttribute("selected", "selected");
-
-        }
-        sel.appendChild(option);
-    }
-    return sel;
-}
-
-function checkLineBox(lineName){
-    $('input[class="select_line"]').each(function() {
-        console.log("value ", $(this).val());
-        console.log("lineName ", lineName.trim());
-        if ($.trim($(this).val()) == lineName.trim()) {
-            $(this).prop('checked', true);
-        }
-    });
+    var outerDiv = $(btnObject).parent()[0];
+    outerDiv.appendChild(div);
 }
 
 
-
-// set selected = selected when the option is chosen
-$(document).on('change','input:checkbox',function(){
-    if($(this).is(":checked"))
-    {
-        getCheckBoxValues();
-
-    }else{
-        $("tr.tr"+$(this).val()).remove();
-    }
-
-});
+// ===================== END: READ FROM DATABASE =====================================================
