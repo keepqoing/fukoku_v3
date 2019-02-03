@@ -1709,7 +1709,10 @@ function createSubStepItemFromDB(btnObj, subResult){
 
         var linkArr = nextSeq.split(",");
         for (var z = 0; z < linkArr.length; z++) {
-            addLinkSubItemFromDB(buttPlus, linkArr[z]);
+            if(linkArr[z] != "") {
+                console.log("arr = "+linkArr[z]);
+                addLinkSubItemFromDB(buttPlus, linkArr[z]);
+            }
         }
     }
 
