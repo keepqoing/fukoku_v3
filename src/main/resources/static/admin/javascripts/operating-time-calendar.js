@@ -14,11 +14,15 @@ $(function () {
     });
 
     function getAllLineName(callback){
+    	var data = {
+				"name" : "",
+				"status" : "",
+		};
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
-            type: 'GET',
-            dataType: 'JSON',
-            data:{},
+            url: "/v3/api/fukoku/factory/find",
+            type: 'POST',
+            dataType: 'json',
+            data : JSON.stringify(data),
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
@@ -169,7 +173,7 @@ $(function () {
     }
 
     calendarPage.getAllCalendarsByMonthAndLine = function (callback) {
-        openLoading();
+        //openLoading();
         $.ajax({
             url: "/v1/api/fukoku/work-time-calendar",
             type: 'GET',
@@ -301,7 +305,7 @@ $(function () {
                         }*/
                     }
                 }
-                closeLoading();
+                //closeLoading();
                 if (callback) {
                     callback(data);
                 }

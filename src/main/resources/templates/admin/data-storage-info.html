@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="admin/layout" ng-app="fukoku">
+
+<head>
+
+<title>data-storage-info</title>
+
+<link rel="stylesheet"
+	th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}" />
+<script
+	th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
+<script th:src="@{/static/admin/angular/bower_components/d3/d3.min.js}"
+	charset="utf-8"></script>
+<script
+	th:src="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.js}"></script>
+<script
+	th:src="@{/static/admin/angular/bower_components/angular-nvd3/dist/angular-nvd3.js}"></script>
+<script
+	src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-sanitize.js"></script>
+
+<style>
+.btn-file {
+	position: relative;
+	overflow: hidden;
+}
+
+.btn-file input[type=file] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	min-width: 100%;
+	min-height: 100%;
+	font-size: 100px;
+	text-align: right;
+	filter: alpha(opacity = 0);
+	opacity: 0;
+	outline: none;
+	background: white;
+	cursor: inherit;
+	display: block;
+}
+</style>
+
+</head>
+<body ng-controller="MainCtrl">
+
+	<div layout:fragment="content">
+
+		<section class="content-header">
+			<h1>data-storage-info</h1>
+		</section>
+
+		<section class="content">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="box box-primary">
+						<div class="box-body">
+						
+						<div class="row">
+                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                	<div class="form-group">
+                                    	<select class="form-control" id="selectActive">
+                                    		<option value="0">MariaDB</option>
+                                    		<option value="1">Hadoop</option>
+                                    	</select>
+                                	</div>
+                                </div>
+                        </div>
+                         <br/>
+                         
+
+							<div class="row">
+
+
+
+								<form role="form" id="mariadb">
+					              <div class="box-body">
+					                <div class="form-group">
+					                  <label for="exampleInputEmail1">IP Address</label>
+					                  <input type="text" class="form-control" id="exampleInputEmail1" >
+					                </div>
+					                <div class="form-group">
+					                  <label for="exampleInputPassword1">Database name</label>
+					                  <input type="text" class="form-control"  >
+					                </div>
+					                <div class="form-group">
+					                  <label for="exampleInputPassword1">Port</label>
+					                  <input type="text" class="form-control"  >
+					                </div>
+					                <div class="form-group">
+					                  <label for="exampleInputPassword1">Username</label>
+					                  <input type="text" class="form-control"  >
+					                </div>
+					                <div class="form-group">
+					                  <label for="exampleInputPassword1">Password</label>
+					                  <input type="password" class="form-control"  >
+					                </div>
+					                
+					              </div>
+					              <!-- /.box-body -->
+					
+					              <div class="box-footer">
+					                <button type="submit" class="btn btn-primary">Connect</button>
+					              </div>
+					            </form>
+					            
+					            
+					            <form role="form" id="hadoop" style="display: none">
+					              <div class="box-body">
+					                <div class="form-group">
+					                  <label for="exampleInputEmail1">IP Address</label>
+					                  <input type="text" class="form-control" id="exampleInputEmail1" >
+					                </div>
+					                
+					                <div class="form-group">
+					                  <label for="exampleInputPassword1">Port</label>
+					                  <input type="text" class="form-control"  >
+					                </div>
+					               
+					                
+					              </div>
+					              <!-- /.box-body -->
+					
+					              <div class="box-footer">
+					                <button type="submit" class="btn btn-primary">Connect</button>
+					              </div>
+					            </form>
+
+
+
+
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Modal -->
+
+
+
+
+
+
+
+
+
+	</div>
+	<th:block layout:fragment="script">
+		<script th:src="@{/static/admin/javascript_v3/factory1.js}"></script>
+		<script>
+			$(document).ready(function() {
+				$(function() {
+					$('#startDate,#endDate').datetimepicker({
+						format : 'YYYY-MM-DD HH:mm:ss',
+						defaultDate : new Date()
+					});
+					
+					$("#selectActive").change(function(){
+						if(	$("#selectActive").val() == 0){
+							$("#mariadb").show();
+							$("#hadoop").hide();
+						}else{
+							$("#hadoop").show();
+							$("#mariadb").hide();
+						}
+					});
+					
+				});
+			});
+		</script>
+	</th:block>
+</body>
+</html>
