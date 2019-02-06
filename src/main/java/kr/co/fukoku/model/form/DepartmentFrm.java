@@ -50,6 +50,11 @@ public class DepartmentFrm {
 
 	
 
+	public DepartmentFrm(String name) {
+		super();
+		this.name = name;
+	}
+
 	public long getParent() {
 		return parent;
 	}

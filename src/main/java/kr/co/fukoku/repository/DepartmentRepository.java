@@ -1,29 +1,28 @@
 package kr.co.fukoku.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
-import org.apache.ibatis.annotations.One;
 
 import kr.co.fukoku.model.Department;
-import kr.co.fukoku.model.Factory;
-import kr.co.fukoku.model.Product;
 import kr.co.fukoku.model.form.DepartmentFrm;
-import kr.co.fukoku.model.form.FactoryFrm;
-import kr.co.fukoku.model.form.ProductFrm;
+import kr.co.fukoku.repository.sql.DepartmentSQLBuilder;
 
 @Repository
 public interface DepartmentRepository {
 
-	@Select("Select * from department where status='1'")
-	List<Department> findAll();
+	@SelectProvider(type = DepartmentSQLBuilder.class, method = "find")
+	List<Department> findAll(@Param("f") DepartmentFrm frm);
+	
+	@SelectProvider(type = DepartmentSQLBuilder.class, method = "find")
+	List<Map<String, Object>> findMap(@Param("f") DepartmentFrm frm);
 	
 	@Select("Select * from department where id=#{id} and status='1'")
 	Department findOne(@Param("id") long  id);
@@ -38,6 +37,19 @@ public interface DepartmentRepository {
 			+ " #{f.remark}"
 			+ ");")
 	boolean save(@Param("f") DepartmentFrm frm);
+	
+	@Insert("<script>insert into department ("
+			+ " seq, name, code , parent, remark "
+			+ ") VALUES "
+			+ " <foreach collection='lst' item='f' separator=','>("
+			+ "	#{f.seq}, "
+			+ "	#{f.name}, "
+			+ " #{f.code}, "
+			+ " #{f.parent}, "
+			+ " #{f.remark}"
+			+ " )"
+			+ "</foreach></script>")
+	boolean saveLst(@Param("lst") List<DepartmentFrm>  lst);
 	
 	@Update("UPDATE department SET"
 			+ "	seq=#{f.seq}, "

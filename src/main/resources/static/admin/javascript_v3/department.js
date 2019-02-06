@@ -6,15 +6,23 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.departments;
 	$scope.id;
 	$scope.action;
-	$scope.dtTable = $("#dtTable");
+	//$scope.dtTable = $("#dtTable");
+	$scope.data = {
+			"name" : ""
+	};
+	$scope.sorting = "asc";
 	
 	
+	/***
+	 * Function()
+	 */
 	
 	$scope.findAll = function(){
-        var post = $http({
-            method: "GET",
-            url: "/v3/api/fukoku/department",
+		var post = $http({
+            method: "POST",
+            url: "/v3/api/fukoku/department/find",
             dataType: 'json',
+            data : JSON.stringify($scope.data),
             headers: { "Content-Type": "application/json" }
         });
         post.success(function (response, status) {
@@ -87,10 +95,14 @@ app.controller('MainCtrl', function($scope, $http) {
         });
     }
 	
-	angular.element(document).ready(function() {
-		$scope.dtTable.dataTable();
-	});
+//	angular.element(document).ready(function() {
+//		$scope.dtTable.dataTable();
+//	});
 	
+	
+	/*******************************************************************************
+	 * Event()
+	 *******************************************************************************/
 	$scope.btAdd = function(){
 		$scope.action = "add";
 		$('#frm').trigger("reset");
@@ -115,14 +127,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		}else{
 			$scope.save("PUT");
 		}
-		
 	}
-	
-	
-	
-	
-	
-	
 	
 	$scope.btDelete = function(id){
 		swal({  title: "Department" ,   
@@ -149,16 +154,76 @@ app.controller('MainCtrl', function($scope, $http) {
 	        });
 	        post.error(function (data, status) {
 	            console.log(data);
-	        });
-		
-				
+	        });	
 		});		
 	}
+	
+	$scope.btSearch = function(){
+		$scope.data["name"] = $("#txtSearch").val();
+		$scope.findAll($scope.data);
+	}
+	
+	$scope.btExport = function(){
+		$http({
+		    url: '/v3/api/fukoku/department/download',
+		    method: "GET",
+		    headers: {
+		       'Content-type': 'application/json'
+		    },
+		    responseType: 'arraybuffer'
+		}).success(function (data, status, headers, config) {
+			 var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+			 var objectUrl = URL.createObjectURL(blob);
+			 window.open(objectUrl);
+			 
 
+		    
+		}).error(function (data, status, headers, config) {
+		    //upload failed
+		});
+	}
+	
+	$('#btImport').change(function() {
+	    $.ajax({
+    	    url: "/v3/api/fukoku/department/import",
+    	    type: "POST",
+    	    data: new FormData($("#fileUploadForm")[0]),
+    	    enctype: 'multipart/form-data',
+    	    processData: false,
+    	    contentType: false,
+    	    cache: false,
+    	    success: function () {
+    	    	$scope.findAll($scope.data);
+    	    	swal({position: 'top-end',type: 'success',title: 'Data has been imported.',showConfirmButton: false,timer: 1500})
+    	    },
+    	    error: function () {
+    	    	swal({position: 'top-end',type: 'error',title: 'Data has been imported.',showConfirmButton: false,timer: 1500})
+    	    }
+    	});
+	    
+	});
 	
 	
 	
-	$scope.findAll();
+	$scope.btOrder = function(col){
+		
+		if($scope.sorting == "asc"){
+			$scope.sorting = "desc";
+		}else{
+			$scope.sorting = "asc";
+		}
+		var orderBy = " order by "+ col +" "+$scope.sorting;
+		$scope.data["order_by"] = orderBy;
+		console.log($scope.data);
+		$scope.findAll($scope.data);
+	};
+	
+	
+	/*******************************************************************************
+	 * Onload()
+	 *******************************************************************************/
+	$scope.findAll($scope.data);
+	
 	
 	
 });
