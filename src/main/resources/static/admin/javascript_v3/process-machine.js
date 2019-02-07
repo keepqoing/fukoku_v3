@@ -320,6 +320,10 @@ $scope.btOrder = function(col){
 		$scope.findAll($scope.data);
 	};
 	
+	$scope.btSearch = function(){
+		$scope.data["name"] = $("#txtSearch").val();
+		$scope.findAll($scope.data);
+	}
 	
 	
 });

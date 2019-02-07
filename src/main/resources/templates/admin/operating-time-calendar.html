@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+
+<head>
+
+    <title>작업계획</title>
+    <link href='/static/admin/style/fullcalendar.css' rel='stylesheet' />
+    <link href='/static/admin/style/fullcalendar.print.css' rel='stylesheet' media='print' />
+
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css">-->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.print.css">-->
+
+    <style>
+        table {
+            font-size: 12pt;
+        }
+
+        table .head {
+            background-color: #3c8dbc;
+            color: white;
+        }
+
+        table thead th {
+            text-align: center;
+        }
+
+        table tbody tr {
+            text-align: center;
+        }
+        body {
+            padding-right: 0 !important;
+            text-align: center;
+            font-size: 14px;
+            font-family: "Helvetica Nueue",Arial,Verdana,sans-serif;
+            background-color: #DDDDDD;
+        }
+
+        #wrap {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        #external-events {
+            float: left;
+            width: 150px;
+            padding: 0 10px;
+            text-align: left;
+        }
+
+        #external-events h4 {
+            font-size: 16px;
+            margin-top: 0;
+            padding-top: 1em;
+        }
+
+        .external-event { /* try to mimick the look of a real event */
+            margin: 10px 0;
+            padding: 2px 4px;
+            background: #3366CC;
+            color: #fff;
+            font-size: .85em;
+            cursor: pointer;
+        }
+
+        #external-events p {
+            margin: 1.5em 0;
+            font-size: 11px;
+            color: #666;
+        }
+
+        #external-events p input {
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        #calendar {
+            /* 		float: right; */
+            margin: 0 auto;
+            width: 100%;
+            background-color: #FFFFFF;
+            border-radius: 6px;
+            box-shadow: 0 1px 2px #C3C3C3;
+        }
+    </style>
+</head>
+<body>
+
+<div layout:fragment="content" style="text-align: left">
+    <section class="content-header">
+        <h1>작업계획</h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="row" style="margin: 10px 0px 0px 5px">
+                        <!--<div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-5">
+                            <button id="btnExcel" class="btn btn-primary" style="width:200px;">Excel</button>
+                        </div>-->
+                        <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-5 pull-right">
+                            <div class="form-group" style="margin-bottom: 0px">
+                                <select id="selectLine" class="form-control">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div id='wrap'>
+                            <div id='calendar'></div>
+                            <div style='clear:both'></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalOperatingTimeCalendar">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="box box-primary modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">작업계획</h4>
+                </div>
+                <form class="form-horizontal" enctype="multipart/form-data">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="selectWorkingTime" class="col-sm-2 control-label">조업시간코드:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="selectWorkingTime">
+                                    <option value="">조업시간코드</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">작업일:</label>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                <div class='input-group date'>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="crossDay" value="Yesterday" style="height: 1.5em;width: 20px;">어제</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="crossDay" value="Today" style="height: 1.5em;width: 20px;">당일</label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectProduct" class="col-sm-2 control-label">품종:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="selectProduct">
+                                    <option value="">품종</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtTotal" class="col-sm-2 control-label">지시수량:</label>
+                            <div class="col-sm-10">
+                                <input type="text" onkeypress="return isNumberKey(event)" class="form-control" id="txtTotal" placeholder="지시수량"/>
+                            </div>
+                        </div>
+                        <div class="form-group" style="text-align: center">
+                            <div class="col-sm-12">
+                                <button type="button" class="btn btn-success btn-flat" id="btnNewRecord" style="width:200px;">추가</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <table class="table">
+                                    <thead class="thead-inverse head">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>작업일</th>
+                                        <th>조업시간코드</th>
+                                        <th>품종</th>
+                                        <th>지시수량</th>
+                                        <th>수정</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="MULTI_RECORD">
+                                    <tr role="row" class="odd" style="text-align:center;font-weight:bold;">
+                                        <td colspan="6">콘텐츠 없음</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary pull-right btn-flat" id="btnSave">저장</button>
+                        <button type="button" class="btn btn-primary pull-right btn-flat" id="btnSaveUpdate"
+                                style="display:none;">저장
+                        </button>
+                        <button type="button" class="btn btn-danger pull-right btn-flat" id="btnDelete" style="margin-right: 5px">삭제</button>
+                    </div><!-- /.box-footer -->
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src='/static/admin/javascripts/libraries/jquery-ui.custom.min.js'></script>
+    <script src='/static/admin/javascripts/libraries/fullcalendar.js'></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>-->
+    <script type="text/javascript" src="/static/admin/javascripts/operating-time-calendar.js"></script>
+</div>
+<th:block layout:fragment="script">
+
+</th:block>
+</body>
+</html>

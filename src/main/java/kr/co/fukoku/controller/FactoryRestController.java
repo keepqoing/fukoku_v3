@@ -162,22 +162,6 @@ public class FactoryRestController {
 	                .body(new InputStreamResource(in));
     }
 	
-	@GetMapping(value = "/simpac")
-    public ResponseEntity<InputStreamResource> excelCustomersReportSimpac() throws IOException {
-		List<Map<String, Object>>  f =(List<Map<String, Object>> ) repository.findMapSimpac();
-		
-		
-		ByteArrayInputStream in = ExcelGeneratorDynamic.customersToExcel(f,Table.TS_EFN_GETDATA);
-		// return IOUtils.toByteArray(in);
-		
-		HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=WEEK1.xlsx");
-		
-		 return ResponseEntity
-	                .ok()
-	                .headers(headers)
-	                .body(new InputStreamResource(in));
-    }
 	
 	@PostMapping(value = "/import")
 	public ResponseEntity<Map<String,Object>> handleFileUpload( @RequestParam("file") MultipartFile uploadfile) throws IOException, JSONException {
@@ -203,11 +187,26 @@ public class FactoryRestController {
     		map.put("code", 404);
     		map.put("message", "Data(s) has not been inserted!");
     	}
-		
-		
 		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 	}
 
+	
+	@GetMapping(value = "/simpac")
+    public ResponseEntity<InputStreamResource> excelCustomersReportSimpac() throws IOException {
+		List<Map<String, Object>>  f =(List<Map<String, Object>> ) repository.findMapSimpac();
+		
+		
+		ByteArrayInputStream in = ExcelGeneratorDynamic.customersToExcel(f,Table.TS_EFN_GETDATA);
+		// return IOUtils.toByteArray(in);
+		
+		HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=WEEK1.xlsx");
+		
+		 return ResponseEntity
+	                .ok()
+	                .headers(headers)
+	                .body(new InputStreamResource(in));
+    }
 
 	//	Chomrern as of 2019-01-28
 	@RequestMapping(method = RequestMethod.GET)
