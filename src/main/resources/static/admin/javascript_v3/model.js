@@ -286,6 +286,7 @@ $(function () {
                     }
                 } else{
                     console.log("Data cannot be read");
+
                 }
             },
             error: function(data, status, err){
@@ -403,7 +404,7 @@ function newProduct_2_1(lineName, btnObj){
     }
 
     if(countClassName >= 1  && newTd != undefined){
-        console.log("Wow");
+        // console.log("Wow");
         // var cell = addProductFamily();
         var row = addRowAfter(btnObj);
         row.insertCell(0);
@@ -1231,8 +1232,7 @@ function checkLineBox(lineName){
 $(document).on('change','input:checkbox',function(){
     if($(this).is(":checked"))
     {
-        getCheckBoxValues();
-
+        isChecked();
     }else{
         $("tr.tr"+$(this).val()).remove();
         checkIfNoMoreRow();
@@ -1244,11 +1244,18 @@ function isChecked(){
     var array = [];
     let options = document.getElementsByClassName("select_line");
     for (let option of options){
-        array.push(option.value);
-        // if(option.checked){
-            // console.log("Yes - ", option.value);
-        // }
+        if($(option).is(":checked")) {
+            array.push(option.value);
+        }
     }
+
+    if(array.length > 0){
+        console.log(array.join());
+        lines.getProcessModelDataByLine(array.join());
+    }
+    if(array.join().indexOf());
+
+
     // console.log(array);
 }
 //====================== END: Helping Functions ===================================================
@@ -1393,21 +1400,20 @@ function removeHiddenControls(class_name) {
 function loadDataToTable(result){
     console.log(result);
     for(var i = 0; i < result.length; i++){
-        var btnObj = createOneLine(result[i].REF_LINE);
+        if(getLineName().indexOf(result[i].REF_LINE) == -1) {
+            var btnObj = createOneLine(result[i].REF_LINE);
 
-        console.log("Line = " + result[i].REF_LINE);
+            // console.log("Line = " + result[i].REF_LINE);
 
-        // Process Product
-        var processProducts = result[i].PROCESS_PRODUCT;
+            // Process Product
+            var processProducts = result[i].PROCESS_PRODUCT;
 
-        if(processProducts != null){
-            newProduct_2_1_FromDB(result[i].REF_LINE, processProducts,  result[i], btnObj);
+            if (processProducts != null) {
+                newProduct_2_1_FromDB(result[i].REF_LINE, processProducts, result[i], btnObj);
+            }
         }
-
-
-
     }
-    isChecked();
+    // isChecked();
 }
 
 var numberProcess = 0;
@@ -1684,7 +1690,7 @@ function createSubStepItemFromDB(btnObj, subResult){
     // Select for process select box
     // var arrMachine = ["설비","1차압입하중-압입기 1","2차압입하중-압입기 2","3차압입하중-압입기 3"];
     var selMachine = createSelectBoxFromDB(machine_Array, "subMachine", "machine_select", subResult.REF_MACHINE);
-    console.log("Machine = " + subResult.REF_MACHINE);
+    // console.log("Machine = " + subResult.REF_MACHINE);
 
     // Minus button
     var buttMinus = createSubStepMinusButton();
@@ -1710,7 +1716,7 @@ function createSubStepItemFromDB(btnObj, subResult){
         var linkArr = nextSeq.split(",");
         for (var z = 0; z < linkArr.length; z++) {
             if(linkArr[z] != "") {
-                console.log("arr = "+linkArr[z]);
+                // console.log("arr = "+linkArr[z]);
                 addLinkSubItemFromDB(buttPlus, linkArr[z]);
             }
         }
@@ -1778,5 +1784,13 @@ function addLinkSubItemFromDB(btnObject, linkValue){
     outerDiv.appendChild(div);
 }
 
-
+// function to get existed lineName in the table
+function getLineName(){
+    var array = [];
+    var lineNames = document.getElementsByClassName("spanLineName");
+    for(let ln of lineNames){
+        array.push(ln.innerText);
+    }
+    return array;
+}
 // ===================== END: READ FROM DATABASE =====================================================
