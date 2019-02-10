@@ -23,15 +23,19 @@ public class ProcessModelController {
     public ResponseEntity<Map<String,Object>> save(@RequestBody List<ProcessModel> frm)  {
         Map<String, Object> map = new HashMap<String, Object>();
 
-        int truncateSucess = repository.truncateProcessModel();
-        if(truncateSucess != 1){
-            map.put("code", 500);
-            map.put("message", "Error! " );
-        }
+
 
         try {
             for(ProcessModel processModel: frm){
                 ProcessModel pro = processModel;
+
+                // TRUNCATE FIRST
+                int truncateSucess = repository.truncateProcessModel(pro.getRef_line());
+                if(truncateSucess != 1){
+                    map.put("code", 500);
+                    map.put("message", "Error! " );
+                }
+
                 long i = (repository.save(pro)) ;
                 System.out.println("I = " + i);
                 if(i>0){
@@ -190,6 +194,25 @@ public class ProcessModelController {
             }else {
                 map.put("code", 404);
                 map.put("message", "Data not found!");
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+            map.put("code", 500);
+            map.put("message", "Error! " + e.getMessage());
+        }
+        return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/remove/{lines}",method = RequestMethod.DELETE)
+    public ResponseEntity<Map<String,Object>> delete(@PathVariable("lines") String lines)  {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            if(repository.truncateProcessModel(lines)==1) {
+                map.put("message", "Data has been deleted!");
+                map.put("code", 200);
+            }else {
+                map.put("code", 404);
+                map.put("message", "Data has not been deleted!");
             }
         }catch(Exception e) {
             e.printStackTrace();
