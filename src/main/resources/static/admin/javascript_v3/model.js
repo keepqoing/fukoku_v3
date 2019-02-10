@@ -1,5 +1,6 @@
 $(function () {
     var lineArr = []; // for Line
+
     var productArr = []; // for product
     var processArr = []; // for process
     var machineArr = []; // for machine
@@ -93,6 +94,14 @@ $(function () {
 
     });
 
+
+    $(document).on('change','select.selProduct',function(){
+        // console.log($("#"+this.id + " option:selected").text());
+        checkProductDuplicated(this);
+
+    });
+
+
     // Create check box based on the data from database
     lines.createLineCheckBox = function(){
         var divLine = document.getElementById("lineCheckboxes");
@@ -100,6 +109,16 @@ $(function () {
 
         for(i=0; i< lineArr.length; i++){
             divLine.appendChild(lines.createCheckBox(lineArr[i][0], lineArr[i][1]));
+        }
+
+        // console.log(lineFromDB.length);
+        for(var i=0; i < lineFromDB.length; i++){
+            // console.log(lineFromDB[i]);
+            var chk = document.getElementById("chk"+lineFromDB[i]);
+            if(chk != null) {
+                chk.checked = true;
+                isChecked();
+            }
         }
     }
 
@@ -113,7 +132,7 @@ $(function () {
         option.setAttribute("name", "m_option");
         option.setAttribute("type", "checkbox");
         option.setAttribute("value", lineName );
-
+        option.setAttribute("id", "chk"+lineName);
         label.appendChild(option);
 
         return label;
@@ -291,7 +310,7 @@ $(function () {
                     }
                 } else{
                     console.log("Data cannot be read");
-
+                    $("#btnSearchLine").trigger("click");
                 }
             },
             error: function(data, status, err){
@@ -300,7 +319,60 @@ $(function () {
         });
     };
 
+    // This function reads all LINES in process model
+    lines.getLineInProcessModel = function () {
 
+        $.ajax({
+            url: "/v3/api/fukoku/process_model/lines",
+            type: 'GET',
+            dataType: 'JSON',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (response) {
+                if(response.code == 200){
+
+                    if(response.data.length > 0){
+
+                        for(var i=0; i<response.data.length; i++){
+                            lineFromDB.push(response.data[i].name);
+                        }
+                    }
+                } else{
+                    console.log("Data cannot be read");
+
+                }
+
+            },
+            error: function(data, status, err){
+                console.log("error: " + data + " status: " + status + " err:" + err);
+            }
+        });
+
+    };
+    lines.getLineInProcessModel();
+
+
+    // Remove Data
+    lines.deleteProcessModelByLine = function (p_line) {
+        $.ajax({
+            url: "/v3/api/fukoku/process_model/remove/" +  p_line,
+            type: 'DELETE',
+            dataType: 'JSON',
+
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (response) {
+
+            },
+            error: function (data, status, err) {
+                console.log("error: " + data + " status: " + status + " err:" + err);
+            }
+        });
+    };
 
 }); // END Ajax block
 // =============== END Server Side ======================================
@@ -552,7 +624,7 @@ function newProduct_2_9_removeRow(btnObj){
     if( z == true){
 
         lineName = $(btnObj).parent().parent().attr("data-id");
-        console.log(lineName);
+        // console.log(lineName);
 
         var rowspan = parseInt($("#td"+lineName).attr("rowSpan"));
         // test
@@ -563,15 +635,21 @@ function newProduct_2_9_removeRow(btnObj){
         var btnClassName = $(btnObj).parent().parent().parent().attr("class");
         var btnRowId = $(btnObj).parent().parent().parent().attr("id");
 
-        console.log("class[0] = " + $("."+btnClassName)[0].id);
+        // console.log("class[0] = " + $("."+btnClassName)[0].id);
 
-        console.log("row id = " + btnRowId);
+        // console.log("row id = " + btnRowId);
 
         if($("."+btnClassName)[0].id == btnRowId && rowspan != 1){
             $(td).insertBefore($(btnObj).parent().parent().parent().next().children().first());
         }
 
         $(btnObj).parent().parent().parent().first().remove();
+
+
+        lines.deleteProcessModelByLine(lineName);
+
+        // uncheck the deleted line
+        document.getElementById("chk"+lineName).checked = false;
 
         checkIfNoMoreRow();
     }
@@ -1240,7 +1318,8 @@ function checkLineBox(lineName){
 $(document).on('change','input:checkbox',function(){
     if($(this).is(":checked"))
     {
-        isChecked();
+        // isChecked();
+        lines.getProcessModelDataByLine($(this).val());
     }else{
         $("tr.tr"+$(this).val()).remove();
         checkIfNoMoreRow();
@@ -1249,19 +1328,22 @@ $(document).on('change','input:checkbox',function(){
 });
 
 function isChecked(){
+
     var array = [];
     let options = document.getElementsByClassName("select_line");
     for (let option of options){
         if($(option).is(":checked")) {
-            array.push(option.value);
+            // array.push(option.value);
+            // console.log(option.value);
+            lines.getProcessModelDataByLine(option.value);
         }
     }
 
-    if(array.length > 0){
-        console.log(array.join());
-        lines.getProcessModelDataByLine(array.join());
-    }
-    if(array.join().indexOf());
+
+    // if(array.length > 0){
+    //     lines.getProcessModelDataByLine(array.join());
+    // }
+
 
 
     // console.log(array);
@@ -1310,6 +1392,12 @@ var data = [{
 function DBInsertion(){
     datas = [];
     $('#processTable tr').each(function(row, tr){
+        console.log("product = " + $(this).find(".tdProduct").attr("data-id"));
+        if($(this).find(".tdProduct").attr("data-id") == null ||
+            $(this).find(".tdProduct").attr("data-id") == "" ||
+            $(this).find(".tdProduct").attr("data-id") == undefined ){
+            return;
+        }
         var data = {};
         // data["ID"] = 1;
         data["SEQ"] = $(this).attr("id").split("_")[1];
@@ -1320,6 +1408,7 @@ function DBInsertion(){
         // PROCESS PRODUCT
         var PROCESS_PRODUCTS = [];
         $.each($(this).find("div.subDivProduct"), function(keyProcessProduct, processProduct) {
+
             var PROCESS_PRODUCT = {
                 "ID" : 0,
                 "REF_PRODUCT" : $(processProduct).find(".selProduct").val(),
@@ -1381,8 +1470,10 @@ $("#btnTest").click(function () {
 
 
     removeHiddenControls("hiddenTextBox");
+    lines.getLineInProcessModel();
 
-    lines.getProcessModelData();
+
+
 
 });
 
@@ -1818,5 +1909,44 @@ function mainTextBoxFromDB(value){
     txtMain.className = "txtMainTitle";
 
     return txtMain;
+}
+
+
+function checkProductDuplicated(btnObj){
+    var ele = $(btnObj).parent().parent().find(".selProduct");
+    // var duplicate = false;
+    // for(var i = 0; i<ele.length; i++){
+    //     for(var j = i + 1; j < ele.length; j++){
+    //         console.log("ele[" + i + "] = " + ele[i].val());
+    //         console.log("ele[" + j + "] =: " + ele[j].val());
+    //         if(ele[i].val() == ele[j].val())
+    //             duplicate = true;
+    //     }
+    // }
+
+    // for(let p of ele){
+    //     console.log(p.val());
+    // }
+    // if(duplicate){
+    //     console.log("duplicate");
+    // }else{
+    //     console.log("okay");
+    // }
+    var array = [];
+    var count = $(btnObj).parent().parent().find(".selProduct").length;
+    $.each($(btnObj).parent().parent().find(".selProduct"), function(keyProcess, process) {
+        array.push($(process).val());
+
+    });
+
+    array = $.unique(array);
+    console.log("array = " + array.length);
+    console.log("count = " + count);
+    if(array.length != count){
+        swal("복제!");
+    }else{
+        console.log("okay");
+    }
+
 }
 // ===================== END: READ FROM DATABASE =====================================================

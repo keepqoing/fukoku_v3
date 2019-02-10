@@ -94,8 +94,8 @@ public interface ProcessModelRepository {
 
 
     // Truncate Process Model
-    @Select("CALL proc_truncate_process_model();")
-    int truncateProcessModel();
+    @Select("CALL proc_truncate_process_model_new(#{p_lines});")
+    int truncateProcessModel(@Param("p_lines") String p_lines);
 
 
     // ============== Helping Functions

@@ -2752,4 +2752,25 @@ FIND_ALL_PD("SELECT \n" +
         }
     }
 
+    // Alarm Statistics
+    public enum AlarmStatisticsSQL {
+
+        COUNT("CALL proc_alarm_count(?,?,?,?);"),
+        COUNT_NUMNBER_BY_FACTORY("CALL proc_counting_factory(?,?);"),
+        COUNT_NUMBER_BY_LINE("CALL proc_counting_line(?,?,?);"),
+        COUNT_NUMBER_BY_MACHINE("CALL proc_counting_machine(?,?,?);"),
+        FIND_ALL("CALL proc_alarm_statistics(?,?,?,?,?,?);");
+
+
+        private String value;
+
+        AlarmStatisticsSQL(String value) {
+            this.value = value;
+        }
+
+        public String toString() {
+            return this.value;
+        }
+    }
+
 }
