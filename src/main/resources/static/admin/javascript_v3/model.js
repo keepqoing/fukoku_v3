@@ -182,7 +182,8 @@ $(function () {
     // ================== Machine ======================================
     // Get All Machines
     lines.getAllMachines = function (process_name, selObject) {
-        var sel = $(selObject).closest("select").next()[0];
+        // var sel = $(selObject).closest("select").next()[0];
+
         $.ajax({
             url: "/v3/api/fukoku/machine/by_process/" + process_name,
             type: 'GET',
@@ -199,17 +200,21 @@ $(function () {
                         }
                         machine_Array = machineArr;
 
-
-                        $(sel).find("option").remove();
-                        for (i = 0; i < machine_Array.length; i++) {
-                            var option = document.createElement("option");
-                            option.setAttribute("value", machine_Array[i][1]); // store machine ID
-                            option.text = machine_Array[i][1]; // machine name
-                            sel.appendChild(option);
-                        }
+                        $.each($(selObject).parent().parent().find(".subProcess .machine_select"), function(keySubProcess, subProcess) {
+                            $(subProcess).find("option").remove();
+                            for (i = 0; i < machine_Array.length; i++) {
+                                var option = document.createElement("option");
+                                option.setAttribute("value", machine_Array[i][1]); // store machine ID
+                                option.text = machine_Array[i][1]; // machine name
+                                $(subProcess).append(option);
+                            }
+                        });
                     }
                 } else{
-                    $(sel).find("option").remove();
+                    $.each($(selObject).parent().parent().find(".subProcess .machine_select"), function(keySubProcess, subProcess) {
+                        $(subProcess).find("option").remove();
+
+                    });
                 }
             },
             error: function (data, status, err) {
@@ -286,6 +291,7 @@ $(function () {
                     }
                 } else{
                     console.log("Data cannot be read");
+
                 }
             },
             error: function(data, status, err){
@@ -403,7 +409,7 @@ function newProduct_2_1(lineName, btnObj){
     }
 
     if(countClassName >= 1  && newTd != undefined){
-        console.log("Wow");
+        // console.log("Wow");
         // var cell = addProductFamily();
         var row = addRowAfter(btnObj);
         row.insertCell(0);
@@ -480,7 +486,7 @@ function newProduct_2_5_removeProductBtn(){
 function newProduct_2_6_productSelList(){
     // select box
     var sel = document.createElement('select');
-    sel.setAttribute('style','margin-bottom:5px; width:110px;height:34px; float:left;');
+    sel.setAttribute('style','margin-bottom:5px; width:110px;height:24px; float:left;');
     sel.className = "selProduct"; // className = selProduct. This will be useful when we insert into DB
 
     // Append options to select box
@@ -855,13 +861,17 @@ function mainMoveButton(lineName){
 }
 
 function mainTextBox(){
-    var txtMain = document.createElement("input");
-    txtMain.type = "text";
-    txtMain.setAttribute("style", "margin-left: 5px; margin-right: 5px");
+    // var txtMain = document.createElement("input");
+    // txtMain.type = "text";
+    // txtMain.setAttribute("style", "margin-left: 5px; margin-right: 5px");
+    // txtMain.className = "txtMainTitle";
+    // txtMain.setAttribute("required", "required");
+    // txtMain.placeholder = "공정명을 입력하세요";
+    // txtMain.size = "15";
+
+    var txtMain = createSelectBox(process_Array, "subProcess", "mod_select");
+    txtMain.setAttribute("style", "margin-left: 5px; margin-right: 5px; width:100px;height:24px; ");
     txtMain.className = "txtMainTitle";
-    txtMain.setAttribute("required", "required");
-    txtMain.placeholder = "공정명을 입력하세요";
-    txtMain.size = "15";
 
     return txtMain;
 }
@@ -1010,7 +1020,7 @@ function createSubStepItem(btnObj){
 
     // Select for process select box
     // var arrProcess = ["공정","1차V홈높이",	"1차V홈높이최대",	"1차V홈높이최소",	"1차드릴수",	"1차불균형량",	"1차압입하중",	"2차압입하중",	"3차압입하중"];
-    var selProcess = createSelectBox(process_Array, "subProcess", "mod_select");
+    // var selProcess = createSelectBox(process_Array, "subProcess", "mod_select");
 
     // Select for process select box
     // var arrMachine = ["설비","1차압입하중-압입기 1","2차압입하중-압입기 2","3차압입하중-압입기 3"];
@@ -1024,7 +1034,7 @@ function createSubStepItem(btnObj){
 
     div.appendChild(buttMinus);
     div.appendChild(textBox);
-    div.appendChild(selProcess);
+    // div.appendChild(selProcess);
     div.appendChild(selMachine);
     div.appendChild(buttPlus);
     div.setAttribute("class","subProcess");
@@ -1042,7 +1052,7 @@ function createSubStepTextBox(){
     txt.setAttribute('type','text'); // set attributes ...
     // txt.setAttribute('id','subTextBox'+lineName+"_"+rowNum+"_s_"+txtId.value);  // subTextBoxIB_1_s_1
     txt.setAttribute("class", "txtSeq");
-    txt.setAttribute('style','float:left; margin-left: 5px; margin-top:5px; width:20px; height:34px;');
+    txt.setAttribute('style','float:left; margin-left: 5px; margin-top:5px; width:20px; height:24px;');
 
     return txt;
 }
@@ -1070,14 +1080,13 @@ function createSelectBox(process_Array, prefixSel, className){
         option.setAttribute("value", 0); // store Process ID
         option.text = "공정"; // show Process name
         sel.appendChild(option);
-        sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:55px;height:34px;');
         sel.width = "auto";
     }else{
         var option = document.createElement("option");
         option.setAttribute("value", 0); // store Process ID
         option.text = "설비"; // show Process name
         sel.appendChild(option);
-        sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:70px;height:34px;');
+        sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:105px;height:24px;');
         sel.width = "auto";
     }
 
@@ -1142,7 +1151,7 @@ function createTextLink(){
     txt.setAttribute('type','text');
     // txt.setAttribute('id', 'link'  + lineName + "_" + rowNum + "_s_" + txtValue + "_" + txtLink); // linkIB_1_s_1_1
     txt.setAttribute("class","linkTxtClass");
-    txt.setAttribute('style','float:right; margin-left: 5px; margin-top:5px; width:30px; height:34px;');
+    txt.setAttribute('style','float:right; margin-left: 5px; margin-top:5px; width:30px; height:24px;');
 
     return txt;
 }
@@ -1231,8 +1240,7 @@ function checkLineBox(lineName){
 $(document).on('change','input:checkbox',function(){
     if($(this).is(":checked"))
     {
-        getCheckBoxValues();
-
+        isChecked();
     }else{
         $("tr.tr"+$(this).val()).remove();
         checkIfNoMoreRow();
@@ -1244,11 +1252,18 @@ function isChecked(){
     var array = [];
     let options = document.getElementsByClassName("select_line");
     for (let option of options){
-        array.push(option.value);
-        // if(option.checked){
-            // console.log("Yes - ", option.value);
-        // }
+        if($(option).is(":checked")) {
+            array.push(option.value);
+        }
     }
+
+    if(array.length > 0){
+        console.log(array.join());
+        lines.getProcessModelDataByLine(array.join());
+    }
+    if(array.join().indexOf());
+
+
     // console.log(array);
 }
 //====================== END: Helping Functions ===================================================
@@ -1283,7 +1298,7 @@ var data = [{
         "PROCESS_MACHINE" : [{
             "ID" : 1,
             "SEQ" : 1,
-            "REF_PROCESS" : "",
+            // "REF_PROCESS" : "",
             "REF_MACHINE" : "",
             "REF_PROCESS_CHAIN_ELEMENT" : 1,
             "NEXT_SEQUENCE" : ""
@@ -1337,7 +1352,7 @@ function DBInsertion(){
                 var PROCESS_MACHINE = {
                     "ID" : 0,
                     "SEQ" : $(subProcess).find(".txtSeq").val(),
-                    "REF_PROCESS" : $(subProcess).find(".mod_select").val(),
+                    // "REF_PROCESS" : $(subProcess).find(".mod_select").val(),
                     "REF_MACHINE" : $(subProcess).find(".machine_select").val(),
                     "REF_PROCESS_CHAIN_ELEMENT" : 0
                 };
@@ -1393,21 +1408,20 @@ function removeHiddenControls(class_name) {
 function loadDataToTable(result){
     console.log(result);
     for(var i = 0; i < result.length; i++){
-        var btnObj = createOneLine(result[i].REF_LINE);
+        if(getLineName().indexOf(result[i].REF_LINE) == -1) {
+            var btnObj = createOneLine(result[i].REF_LINE);
 
-        console.log("Line = " + result[i].REF_LINE);
+            // console.log("Line = " + result[i].REF_LINE);
 
-        // Process Product
-        var processProducts = result[i].PROCESS_PRODUCT;
+            // Process Product
+            var processProducts = result[i].PROCESS_PRODUCT;
 
-        if(processProducts != null){
-            newProduct_2_1_FromDB(result[i].REF_LINE, processProducts,  result[i], btnObj);
+            if (processProducts != null) {
+                newProduct_2_1_FromDB(result[i].REF_LINE, processProducts, result[i], btnObj);
+            }
         }
-
-
-
     }
-    isChecked();
+    // isChecked();
 }
 
 var numberProcess = 0;
@@ -1579,7 +1593,7 @@ function newProduct_2_8_productSet_FromDB(div, Product, Status){
 function newProduct_2_6_productSelList_FromDB(value){
     // select box
     var sel = document.createElement('select');
-    sel.setAttribute('style','margin-bottom:5px; width:110px;height:34px; float:left;');
+    sel.setAttribute('style','margin-bottom:5px; width:110px;height:24px; float:left;');
     sel.className = "selProduct"; // className = selProduct. This will be useful when we insert into DB
 
 
@@ -1641,8 +1655,10 @@ function createStepAfterMainProcessFromDB(lineName, stage, div, subResult) {
         // Select Box
         // var sel = mainStepSelectBox(lineName, rowNum, txt, txtValue);
 
-        var txtMain = mainTextBox();
-        txtMain.setAttribute("value", subResult.NAME);
+        var txtMain = mainTextBoxFromDB(subResult.NAME);
+
+
+        // txtMain.setAttribute("value", subResult.NAME);
 
         // Column
         var td = document.createElement("td");
@@ -1679,12 +1695,12 @@ function createSubStepItemFromDB(btnObj, subResult){
 
     // Select for process select box
     // var arrProcess = ["공정","1차V홈높이",	"1차V홈높이최대",	"1차V홈높이최소",	"1차드릴수",	"1차불균형량",	"1차압입하중",	"2차압입하중",	"3차압입하중"];
-    var selProcess = createSelectBoxFromDB(process_Array, "subProcess", "mod_select", subResult.REF_PROCESS);
+    // var selProcess = createSelectBoxFromDB(process_Array, "subProcess", "mod_select", subResult.REF_PROCESS);
 
     // Select for process select box
     // var arrMachine = ["설비","1차압입하중-압입기 1","2차압입하중-압입기 2","3차압입하중-압입기 3"];
     var selMachine = createSelectBoxFromDB(machine_Array, "subMachine", "machine_select", subResult.REF_MACHINE);
-    console.log("Machine = " + subResult.REF_MACHINE);
+    // console.log("Machine = " + subResult.REF_MACHINE);
 
     // Minus button
     var buttMinus = createSubStepMinusButton();
@@ -1694,7 +1710,7 @@ function createSubStepItemFromDB(btnObj, subResult){
 
     div.appendChild(buttMinus);
     div.appendChild(textBox);
-    div.appendChild(selProcess);
+    // div.appendChild(selProcess);
     div.appendChild(selMachine);
     div.appendChild(buttPlus);
     div.setAttribute("class","subProcess");
@@ -1710,7 +1726,7 @@ function createSubStepItemFromDB(btnObj, subResult){
         var linkArr = nextSeq.split(",");
         for (var z = 0; z < linkArr.length; z++) {
             if(linkArr[z] != "") {
-                console.log("arr = "+linkArr[z]);
+                // console.log("arr = "+linkArr[z]);
                 addLinkSubItemFromDB(buttPlus, linkArr[z]);
             }
         }
@@ -1733,14 +1749,14 @@ function createSelectBoxFromDB(process_Array, prefixSel, className, selectedValu
         option.setAttribute("value", 0); // store Process ID
         option.text = "공정"; // show Process name
         sel.appendChild(option);
-        sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:55px;height:34px;');
+        sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:55px;height:24px;');
         sel.width = "auto";
     }else{
         var option = document.createElement("option");
         option.setAttribute("value", selectedValue); // store Process ID
         option.text = selectedValue; // show Process name
         sel.appendChild(option);
-        sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:70px;height:34px;');
+        sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:105px;height:24px;');
         sel.width = "auto";
     }
 
@@ -1778,5 +1794,29 @@ function addLinkSubItemFromDB(btnObject, linkValue){
     outerDiv.appendChild(div);
 }
 
+// function to get existed lineName in the table
+function getLineName(){
+    var array = [];
+    var lineNames = document.getElementsByClassName("spanLineName");
+    for(let ln of lineNames){
+        array.push(ln.innerText);
+    }
+    return array;
+}
 
+function mainTextBoxFromDB(value){
+    // var txtMain = document.createElement("input");
+    // txtMain.type = "text";
+    // txtMain.setAttribute("style", "margin-left: 5px; margin-right: 5px");
+    // txtMain.className = "txtMainTitle";
+    // txtMain.setAttribute("required", "required");
+    // txtMain.placeholder = "공정명을 입력하세요";
+    // txtMain.size = "15";
+
+    var txtMain = createSelectBoxFromDB(process_Array, "subProcess", "mod_select", value);
+    txtMain.setAttribute("style", "margin-left: 5px; margin-right: 5px; width:100px;height:24px; ");
+    txtMain.className = "txtMainTitle";
+
+    return txtMain;
+}
 // ===================== END: READ FROM DATABASE =====================================================

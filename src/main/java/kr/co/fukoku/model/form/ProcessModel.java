@@ -39,23 +39,20 @@ public class ProcessModel {
     private String name;
     @JsonProperty("REF_LINE")
     private String ref_line;
-    @JsonProperty("REF_PRODUCT")
-    private String ref_product;
-    @JsonProperty("STATUS")
-    private String status;
+    @JsonProperty("PROCESS_PRODUCT")
+    private List<ProcessProductFrm> process_product;
     @JsonProperty("PROCESS_CHAIN_ELEMENT")
     private List<ProcessChainElementModelFrm> process_chain_element;
 
     public ProcessModel() {
     }
 
-    public ProcessModel(long id, int seq, String name, String ref_line, String ref_product, String status, List<ProcessChainElementModelFrm> process_chain_element) {
+    public ProcessModel(long id, int seq, String name, String ref_line, List<ProcessProductFrm> process_product, List<ProcessChainElementModelFrm> process_chain_element) {
         this.id = id;
         this.seq = seq;
         this.name = name;
         this.ref_line = ref_line;
-        this.ref_product = ref_product;
-        this.status = status;
+        this.process_product = process_product;
         this.process_chain_element = process_chain_element;
     }
 
@@ -91,20 +88,12 @@ public class ProcessModel {
         this.ref_line = ref_line;
     }
 
-    public String getRef_product() {
-        return ref_product;
+    public List<ProcessProductFrm> getProcess_product() {
+        return process_product;
     }
 
-    public void setRef_product(String ref_product) {
-        this.ref_product = ref_product;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setProcess_product(List<ProcessProductFrm> process_product) {
+        this.process_product = process_product;
     }
 
     public List<ProcessChainElementModelFrm> getProcess_chain_element() {
