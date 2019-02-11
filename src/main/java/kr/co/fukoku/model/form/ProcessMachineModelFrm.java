@@ -2,6 +2,8 @@ package kr.co.fukoku.model.form;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class ProcessMachineModelFrm {
 
 	@JsonProperty("ID")
@@ -16,6 +18,8 @@ public class ProcessMachineModelFrm {
 	private long refProcessChainElement;
 	@JsonProperty("NEXT_SEQUENCE")
 	private String next_sequence;
+	@JsonProperty("PRODUCT_PROCESS_VAR")
+	private List<ProductProcessVarFrm> productProcessVarFrm;
 
 	public ProcessMachineModelFrm() {
 	}
@@ -27,6 +31,16 @@ public class ProcessMachineModelFrm {
 		this.refMachine = refMachine;
 		this.refProcessChainElement = refProcessChainElement;
 		this.next_sequence = next_sequence;
+	}
+
+	public ProcessMachineModelFrm(long id, int seq, String refProcess, String refMachine, long refProcessChainElement, String next_sequence, List<ProductProcessVarFrm> productProcessVarFrm) {
+		this.id = id;
+		this.seq = seq;
+		this.refProcess = refProcess;
+		this.refMachine = refMachine;
+		this.refProcessChainElement = refProcessChainElement;
+		this.next_sequence = next_sequence;
+		this.productProcessVarFrm = productProcessVarFrm;
 	}
 
 	public long getId() {
@@ -75,5 +89,13 @@ public class ProcessMachineModelFrm {
 
 	public void setNext_sequence(String next_sequence) {
 		this.next_sequence = next_sequence;
+	}
+
+	public List<ProductProcessVarFrm> getProductProcessVarFrm() {
+		return productProcessVarFrm;
+	}
+
+	public void setProductProcessVarFrm(List<ProductProcessVarFrm> productProcessVarFrm) {
+		this.productProcessVarFrm = productProcessVarFrm;
 	}
 }
