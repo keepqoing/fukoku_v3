@@ -17,25 +17,12 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-sanitize.js"></script>
     
     <style>
-        .btn-file {
-        position: relative;
-        overflow: hidden;
-    }
-    .btn-file input[type=file] {
-        position: absolute;
-        top: 0;
-        right: 0;
-        min-width: 100%;
-        min-height: 100%;
-        font-size: 100px;
-        text-align: right;
-        filter: alpha(opacity=0);
-        opacity: 0;
-        outline: none;
-        background: white;
-        cursor: inherit;
-        display: block;
-    }
+       btn-group-xs > .btn, .btn-xs {
+		    padding: 0px 0px;
+		    font-size: 10px;
+		    line-height: 1.5;
+		    border-radius: 3px;
+		}
     </style>
     
 </head>
@@ -55,56 +42,51 @@
                 <div class="box box-primary">
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-xl-10 col-lg-10 col-md-6 col-sm-6 col-xs-12">
+                            	<!-- <div class="col-xl-10 col-lg-10 col-md-6 col-sm-6 col-xs-12">
                                     <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">공정설비추가</button>
                                     <form id="fileUploadForm"  class="btn btn-info btn-file">Import <input type="file" id="btImport" name="file" (change)="btImport()"> </form>
                                     <button type="button" id="btExport" class="btn btn-info" ng-click="btExport()">Export</button>
-                                </div>
-                                
-                                <!-- <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
-                                     <div class="box-tools">
-						                <div class="input-group input-group-sm" style="min-width: 150px;">
-						                  <input type="text" name="table_search" class="form-control pull-right" id="txtSearch" placeholder="검색">
-						
-						                  <div class="input-group-btn">
-						                    <button type="button" class="btn btn-default" ng-click="btSearch()"><i class="fa fa-search"></i></button>
-						                  </div>
-						                </div>
-						              </div>
                                 </div> -->
                         </div>
                          <br/>
+                         
+                         
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                                <table  class="table table-bordered table-striped" id="dtTable">
-                                    <thead class="table-head">
+                                <table  class="table table-bordered" id="dtTable">
+                                    <thead class="table-head bg-primary">
                                     <tr>
-                                        <!-- <th>#</th> -->
-                                        <th>순번 <i class="fa fa-fw fa-sort" ng-click="btOrder('seq')" style="cursor: pointer;"></i></th>
-                                        <th>공정명 <i class="fa fa-fw fa-sort" ng-click="btOrder('ref_process')" style="cursor: pointer;"></i></th>
-                                        <th>설비명 <i class="fa fa-fw fa-sort" ng-click="btOrder('ref_machine')" style="cursor: pointer;"></i></th>
-                                        <!-- <th>process_chain_element</th> -->
-                                        <th>next_sequence <i class="fa fa-fw fa-sort" ng-click="btOrder('next_sequence')" style="cursor: pointer;"></i></th>
-                                        <th>수정</th>
+                                        <th>라인</th>
+                                        <th>제품</th>
+                                        <th ng-repeat="i in range(1,maxStage)">제품 {{i}}</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-	                                    <tr  ng-repeat="f in processMachines">
-	                                    	<!-- <td>{{f.id}}</td> -->
-	                                    	<td>{{f.seq}}</td>
-	                                    	<td>{{f.process.name}}</td>
-	                                    	<td>{{f.machine.name}}</td>
-	                                    	<!-- <td>ref_process_chain_element</td> -->
-	                                    	<td>{{f.next_sequence}}</td>
-	                                    	<td style="width:100px">
-	                                    			<button data-f-id="{{f.id}}" ng-click="btEdit(f.id)" style="width:30px;" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i></button>
-	                                    			<button data-f-id="{{f.id}}" ng-click="btDelete(f.id)" style="width:30px" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i></button>
-	                                     	</td>
+                                    <tbody ng-repeat="f in processMachines.data">
+	                                    <tr  >
+	                                    	<td><h4><b>{{f.NAME}}</b></h4></td>
+	                                    	<td>
+	                                    		
+	                                    		<div ng-repeat="p in f.PROCESS_PRODUCT"><b>{{p.REF_PRODUCT}}</b></div>
+	                                    	</td>
+	                                    	<td ng-repeat="e in f.PROCESS_CHAIN_ELEMENT">
+	                                    		<h5><span><b>{{e.NAME}}</b></span></h5>
+	                                    		<div ng-repeat="m in e.PROCESS_MACHINE"> 
+	                                    			<span  class="label label-success">{{m.REF_MACHINE}}</span> <button type="button" class="btn btn-success btn-xs "><i class="fa fa-fw fa-plus-square"></i> </button>
+	                                    			<ul ng-repeat="pvar in m.PROCESS_VAR" >
+										                <li>
+										                  	<button type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button> <span class="label label-info"><b>{{pvar.NAME}}</b></span> 
+										                </li>
+										              </ul>
+	                                    		</div>
+	                                    		
+	                                    	</td>
 	                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        
+                        
 
                         
                     </div>
