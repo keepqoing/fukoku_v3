@@ -285,6 +285,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		console.log("pm",$scope.processMachines);
 		
 		
+		
 		angular.forEach($scope.processMachines.data, function(value, key) {
 				console.log(value.PROCESS_CHAIN_ELEMENT.length);
 				if( value.PROCESS_CHAIN_ELEMENT.length > $scope.maxStage){
