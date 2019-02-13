@@ -58,23 +58,42 @@
                                     <tr>
                                         <th>라인</th>
                                         <th>제품</th>
-                                        <th ng-repeat="i in range(1,maxStage)">제품 {{i}}</th>
+                                        <th ng-repeat="i in range(1,maxStage)">공정 {{i}}</th>
                                     </tr>
                                     </thead>
-                                    <tbody ng-repeat="f in processMachines.data">
-	                                    <tr  >
-	                                    	<td><h4><b>{{f.NAME}}</b></h4></td>
+                                    <tbody>
+	                                    <tr ng-repeat="f in processMachines.data">
 	                                    	<td>
+	                                    			<span><h4><b>{{f.NAME}}</b></h4></span>
+	                                    			<div class="form-group">
+	                                    					<label style="font-size: 13px;"><input type="radio" name="{{f.NAME}}" id="{{f.NAME}}" value="{{f.NAME}}" checked="checked"> All</label>
+	                                    					<label style="font-size: 13px;"><input type="radio" name="{{f.NAME}}" id="{{f.NAME}}" value="{{f.NAME}}"> Active</label>
+	                                    					<label style="font-size: 13px;"><input type="radio" name="{{f.NAME}}" id="{{f.NAME}}" value="{{f.NAME}}"> Inactive</label>
+	                                    			</div>
 	                                    		
-	                                    		<div ng-repeat="p in f.PROCESS_PRODUCT"><b>{{p.REF_PRODUCT}}</b></div>
+	                                    	</td>
+	                                    	<td>
+	                                    		<div ng-repeat="p in f.PROCESS_PRODUCT">
+	                                    			<b class="label label-primary" style="font-size:14px">{{p.REF_PRODUCT}}</b>
+	                                    			<div class="form-group">
+	                                    					<label style="font-size: 13px;"><input type="radio" name="{{f.NAME}}" id="{{f.NAME}}" value="{{f.NAME}}" checked="checked"> All</label>
+	                                    					<label style="font-size: 13px;"><input type="radio" name="{{f.NAME}}" id="{{f.NAME}}" value="{{f.NAME}}"> Active</label>
+	                                    					<label style="font-size: 13px;"><input type="radio" name="{{f.NAME}}" id="{{f.NAME}}" value="{{f.NAME}}"> Inactive</label>
+	                                    			</div>
+	                                    		</div>
+	                                    		
 	                                    	</td>
 	                                    	<td ng-repeat="e in f.PROCESS_CHAIN_ELEMENT">
 	                                    		<h5><span><b>{{e.NAME}}</b></span></h5>
 	                                    		<div ng-repeat="m in e.PROCESS_MACHINE"> 
-	                                    			<span  class="label label-success">{{m.REF_MACHINE}}</span> <button type="button" class="btn btn-success btn-xs "><i class="fa fa-fw fa-plus-square"></i> </button>
+	                                    			<span  class="label label-success">{{m.REF_MACHINE}}</span> <button type="button" class="btn btn-success btn-xs" ng-click="btAdd()"><i class="fa fa-fw fa-plus-square"></i> </button>
 	                                    			<ul ng-repeat="pvar in m.PROCESS_VAR" >
 										                <li>
-										                  	<button type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button> <span class="label label-info"><b>{{pvar.NAME}}</b></span> 
+										                	
+										                  	<button ng-click="btUpdate()" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
+										                  	<button type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
+										                  	 <span class="label label-info"><b>{{pvar.NAME}}</b></span> 
+										                  	 <span><b>{{pvar.LSL}} ~ {{pvar.USL}}</b></span> 
 										                </li>
 										              </ul>
 	                                    		</div>

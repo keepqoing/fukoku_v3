@@ -74,9 +74,9 @@ app.controller('MainCtrl', function($scope, $http) {
 				              "REF_PROCESS_CHAIN_ELEMENT": 12,
 				              "NEXT_SEQUENCE": "2",
 				              "PRODUCT_PROCESS_VAR": [
-				            	  {"NAME" : "TEST_1"},
-				            	  {"NAME" : "TEST_2"},
-				            	  {"NAME" : "TEST_3"},
+				            	  {"NAME" : "TEST_1", "LSL":0,"USL":100},
+				            	  {"NAME" : "TEST_2", "LSL":0,"USL":100},
+				            	  {"NAME" : "TEST_3", "LSL":0,"USL":100},
 				              ]
 				            },
 				            {
@@ -87,9 +87,9 @@ app.controller('MainCtrl', function($scope, $http) {
 				              "REF_PROCESS_CHAIN_ELEMENT": 12,
 				              "NEXT_SEQUENCE": "3",
 				              "PROCESS_VAR": [
-				            	  {"NAME" : "TEST_1"},
-				            	  {"NAME" : "TEST_2"},
-				            	  {"NAME" : "TEST_3"},
+				            	  {"NAME" : "TEST_1", "LSL":0,"USL":100},
+				            	  {"NAME" : "TEST_2", "LSL":0,"USL":100},
+				            	  {"NAME" : "TEST_3", "LSL":0,"USL":100},
 				              ]
 				            },
 				            {
@@ -254,9 +254,9 @@ app.controller('MainCtrl', function($scope, $http) {
 				              "REF_PROCESS_CHAIN_ELEMENT": 21,
 				              "NEXT_SEQUENCE": "6",
 				              "PROCESS_VAR": [
-					            	  {"NAME" : "TEST_1"},
-					            	  {"NAME" : "TEST_2"},
-					            	  {"NAME" : "TEST_3"},
+					            	  {"NAME" : "TEST_1", "LSL":0,"USL":100},
+					            	  {"NAME" : "TEST_2", "LSL":0,"USL":100},
+					            	  {"NAME" : "TEST_3", "LSL":0,"USL":100},
 					          ]  
 				            }
 				          ]
@@ -297,6 +297,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	
 	
 	
+	
 	/*******************************************************************************
 	 * Onload()
 	 *******************************************************************************/
@@ -307,7 +308,22 @@ app.controller('MainCtrl', function($scope, $http) {
 	/*******************************************************************************
 	 * Event()
 	 *******************************************************************************/
-	
+	 $scope.btAdd = function(){
+			$scope.action = "add";
+			$('#frm').trigger("reset");
+			$("#btUpdate").hide();
+			$("#btSave").show();
+			$("#modalFrm").modal('show');
+		};
+		
+		
+		 $scope.btUpdate = function(){
+				$scope.action = "add";
+				$('#frm').trigger("reset");
+				$("#btSave").hide();
+				$("#btUpdate").show();
+				$("#modalFrm").modal('show');
+			};
 	
 	
 	
