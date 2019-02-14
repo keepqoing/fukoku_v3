@@ -4,6 +4,7 @@ $(function () {
     var productArr = []; // for product
     var processArr = []; // for process
     var machineArr = []; // for machine
+    var machineSpecificArr = []; // for machine
 
     var _ctx = ($("meta[name='ctx']").attr("content") === undefined) ? "" : $("meta[name='ctx']").attr("content");
 
@@ -44,6 +45,7 @@ $(function () {
                             option.text = response.data[i].name; // show factory name
                             sel.appendChild(option);
                         }
+                        $("#selFactory").prop("selectedIndex",1).change();
                     }
                 }
             },
@@ -76,6 +78,8 @@ $(function () {
                             lineArr.push(arr);
                         }
                         lines.createLineCheckBox();
+
+
                     }
                 }
             },
@@ -213,6 +217,8 @@ $(function () {
             },
             success: function (response) {
                 if (response.code == 200) {
+                    machine_Array = [];
+                    machineArr = [];
                     if (response.data.length > 0) {
                         for(i = 0; i < response.data.length; i++){
                             machineArr[i] = [response.data[i].id, response.data[i].name];
@@ -241,6 +247,56 @@ $(function () {
             }
         });
     };
+
+
+    // =============== -- GET SPECIFIC MACHINE =================================
+    // Get All Machines
+    lines.getSpecificMachine = function (process_name, selectedValue, machineObj) {
+        // var sel = $(selObject).closest("select").next()[0];
+
+        $.ajax({
+            url: "/v3/api/fukoku/machine/by_process/" + process_name,
+            type: 'GET',
+            dataType: 'JSON',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (response) {
+                machineSpecificArr = [];
+                if (response.code == 200) {
+                    if (response.data.length > 0) {
+                        console.log("oh : "+ response.data.length);
+                        for(i = 0; i < response.data.length; i++){
+                            machineSpecificArr[i] = response.data[i].name;
+                        }
+
+
+                        // $.each($(selObject).parent().parent().find(".subProcess .machine_select"), function(keySubProcess, subProcess) {
+                            $(machineObj).find("option").remove();
+                            console.log(machineSpecificArr);
+                            for (i = 0; i < machineSpecificArr.length; i++) {
+                                var option = document.createElement("option");
+                                option.setAttribute("value", machineSpecificArr[i]); // store machine ID
+                                option.text = machineSpecificArr[i]; // machine name
+                                if(machineSpecificArr[i] ==  selectedValue){
+                                    option.setAttribute("selected", "selected");
+                                }
+                                $(machineObj).append(option);
+                            }
+                        // });
+                    }
+                } else{
+                    $(machineObj).find("option").remove();
+                }
+            },
+            error: function (data, status, err) {
+                console.log("error: " + data + " status: " + status + " err:" + err);
+            }
+        });
+    };
+
+    // =============== END -- GET SPECIFIC MACHINE =============================
 
     // This function is called when the selectbox of process has been changed --- MUCH CHECK AGAIN
     lines.processChange = function(selObj){
@@ -1747,6 +1803,8 @@ function createStepAfterMainProcessFromDB(lineName, stage, div, subResult) {
         // var sel = mainStepSelectBox(lineName, rowNum, txt, txtValue);
 
         var txtMain = mainTextBoxFromDB(subResult.NAME);
+        // $(txtMain).change();
+
 
 
         // txtMain.setAttribute("value", subResult.NAME);
@@ -1769,14 +1827,14 @@ function createStepAfterMainProcessFromDB(lineName, stage, div, subResult) {
         row.appendChild(td);
         if(subResult.PROCESS_MACHINE != null) {
             for(var k=0; k < subResult.PROCESS_MACHINE.length; k++) {
-                createSubStepItemFromDB(buttPlus, subResult.PROCESS_MACHINE[k]);
+                createSubStepItemFromDB(buttPlus, subResult.PROCESS_MACHINE[k], subResult.NAME, txtMain);
             }
         }
     }
 }
 
 // -- Step 6 - Add Sub Step of Each main step
-function createSubStepItemFromDB(btnObj, subResult){
+function createSubStepItemFromDB(btnObj, subResult, selectedProcess, selObj){
 
     // Textbox
     var textBox = createSubStepTextBox();
@@ -1790,8 +1848,17 @@ function createSubStepItemFromDB(btnObj, subResult){
 
     // Select for process select box
     // var arrMachine = ["설비","1차압입하중-압입기 1","2차압입하중-압입기 2","3차압입하중-압입기 3"];
-    var selMachine = createSelectBoxFromDB(machine_Array, "subMachine", "machine_select", subResult.REF_MACHINE);
-    // console.log("Machine = " + subResult.REF_MACHINE);
+    // var selMachine = createSelectBoxFromDB(machine_Array, "subMachine", "machine_select", subResult.REF_MACHINE);
+
+    // $(selMachine).find("option:contains('" + subResult.REF_MACHINE + "')").prop("selected", true);
+
+    // $(selMachine).val("");
+
+    var selMachine = createSelectedMachine("machine_select");
+    lines.getSpecificMachine(selectedProcess, subResult.REF_MACHINE, selMachine);
+
+
+
 
     // Minus button
     var buttMinus = createSubStepMinusButton();
@@ -1826,6 +1893,20 @@ function createSubStepItemFromDB(btnObj, subResult){
     // td.className = "tdProcess";
     td.appendChild(div);
 }
+
+
+
+// This function is used to create process select box
+function createSelectedMachine(className){
+    // select box for process
+    var sel = document.createElement('select');
+    sel.setAttribute('class',className);
+    sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:105px;height:24px;');
+    return sel;
+}
+
+
+
 
 // This function is used to create process select box
 function createSelectBoxFromDB(process_Array, prefixSel, className, selectedValue){
