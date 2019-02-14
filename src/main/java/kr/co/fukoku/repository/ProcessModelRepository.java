@@ -25,8 +25,8 @@ public interface ProcessModelRepository {
     int getLastID();
 
 
-    // Insert into process_chain_element table and get the last_insert_id for next table's (process_machine) foreign key
-    @Insert("INSERT INTO process_product ("
+    // Insert into process_chain_element table and get the last_insert_id for next table's (process_chain_machine) foreign key
+    @Insert("INSERT INTO process_chain_product ("
             + "	ref_product, ref_process_chain_id, status"
             + ") VALUES ("
             + "	#{f.ref_product}, #{f.ref_process_chain_id}, #{f.status} "
@@ -35,7 +35,7 @@ public interface ProcessModelRepository {
 
 
 
-    // Insert into process_chain_element table and get the last_insert_id for next table's (process_machine) foreign key
+    // Insert into process_chain_element table and get the last_insert_id for next table's (process_chain_machine) foreign key
     @Insert("INSERT INTO process_chain_element ("
             + "	stage, name, ref_process_chain_id"
             + ") VALUES ("
@@ -47,8 +47,8 @@ public interface ProcessModelRepository {
     int getLastPCEID();
 
 
-    // Insert into process_machine table
-    @Insert("INSERT INTO process_machine ("
+    // Insert into process_chain_machine table
+    @Insert("INSERT INTO process_chain_machine ("
             + " seq, ref_process, ref_machine, ref_process_chain_element, next_sequence"
             + ") VALUES ("
             + "	#{f.seq}, "
@@ -71,7 +71,7 @@ public interface ProcessModelRepository {
 
 
     // 1.3 - Select all Process Product
-    @Select("SELECT * FROM process_product WHERE ref_process_chain_id = #{pcID}")
+    @Select("SELECT * FROM process_chain_product WHERE ref_process_chain_id = #{pcID}")
     List<ProcessProductFrm> findAllProcessProducts(@Param("pcID") long pcID);
 
     // 2 - Select all rows from process_chain_element table
@@ -79,7 +79,7 @@ public interface ProcessModelRepository {
     List<ProcessChainElementModelFrm> findAllProcessChainElements(@Param("pcID") long pcID);
 
     // 3 - Select all rows from process_chain table
-    @Select("SELECT * FROM process_machine WHERE ref_process_chain_element = #{pceID}")
+    @Select("SELECT * FROM process_chain_machine WHERE ref_process_chain_element = #{pceID}")
     @Results(value={
             @Result(property="refProcess",column="ref_process"),
             @Result(property="refMachine",column="ref_machine"),
