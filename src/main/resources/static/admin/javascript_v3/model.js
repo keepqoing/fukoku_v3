@@ -1441,7 +1441,7 @@ function DBInsertion(){
                 var PROCESS_MACHINE = {
                     "ID" : 0,
                     "SEQ" : $(subProcess).find(".txtSeq").val(),
-                    // "REF_PROCESS" : $(subProcess).find(".mod_select").val(),
+                    "REF_PROCESS" : $(process).find(".txtMainTitle").val(),
                     "REF_MACHINE" : $(subProcess).find(".machine_select").val(),
                     "REF_PROCESS_CHAIN_ELEMENT" : 0
                 };
