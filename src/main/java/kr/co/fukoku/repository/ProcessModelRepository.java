@@ -1,10 +1,7 @@
 package kr.co.fukoku.repository;
 
 import kr.co.fukoku.model.Line;
-import kr.co.fukoku.model.form.ProcessChainElementModelFrm;
-import kr.co.fukoku.model.form.ProcessMachineModelFrm;
-import kr.co.fukoku.model.form.ProcessModel;
-import kr.co.fukoku.model.form.ProcessProductFrm;
+import kr.co.fukoku.model.form.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -91,6 +88,12 @@ public interface ProcessModelRepository {
 
     })
     List<ProcessMachineModelFrm> findAllProcessMachines(@Param("pceID") long pceID);
+
+
+    // 3 - Select all rows from process_chain table -- for Process Var
+    @Select("SELECT * FROM product_process_var WHERE ref_process_chain_element_id = #{pceID}")
+    List<ProductProcessVarFrm> findAllProductProcessVar(@Param("pceID") String pceID);
+
 
 
     // Truncate Process Model
