@@ -3,6 +3,8 @@ package kr.co.fukoku.repository_sqltem;
 
 import kr.co.fukoku.filters.AlarmStatisticsFilter;
 import kr.co.fukoku.model.AlarmStatistics;
+import kr.co.fukoku.model.Line;
+import kr.co.fukoku.model.Machine;
 import kr.co.fukoku.utils.Counting;
 import kr.co.fukoku.utils.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +26,12 @@ public class AlarmStatisticsRepositoryBody implements AlarmStatisticsRepository 
         pagination.setTotalCount(count(alarmStatisticsFilter));
         RowMapper<AlarmStatistics> rowMapper = (rs, rowNum) -> {
           AlarmStatistics alarmStatistics = new AlarmStatistics();
-          alarmStatistics.setAlarm_name(rs.getString("alarm_name"));
-          alarmStatistics.setAlarm_count(rs.getLong("alarm_count"));
+          alarmStatistics.setAlarmName(rs.getString("alarm_name"));
+          alarmStatistics.setAlarmCount(rs.getLong("alarm_count"));
 
           return alarmStatistics;
         };
-        System.out.println(alarmStatisticsFilter.toString());
+//        System.out.println(alarmStatisticsFilter.toString());
 
         return jdbcTemplate.query(SQLStatement.AlarmStatisticsSQL.FIND_ALL.toString(), new Object[]{
                 "%" + alarmStatisticsFilter.getLine() + "%",
@@ -78,6 +80,28 @@ public class AlarmStatisticsRepositoryBody implements AlarmStatisticsRepository 
             return counting;
         };
         return jdbcTemplate.query(SQLStatement.AlarmStatisticsSQL.COUNT_NUMBER_BY_MACHINE.toString(),
+                new Object[]{line, startYear, endYear}, rowMapper);
+    }
+
+    @Override
+    public List<Line> findAllLinesByFactory(String factoryName, String startYear, String endYear) {
+        RowMapper<Line> rowMapper = (rs, rowNum) -> {
+            Line ln = new Line();
+            ln.setName(rs.getString("name"));
+            return ln;
+        };
+        return jdbcTemplate.query(SQLStatement.AlarmStatisticsSQL.FIND_ALL_LINE.toString(),
+                new Object[]{factoryName, startYear, endYear}, rowMapper);
+    }
+
+    @Override
+    public List<Machine> findAllMachinesByLine(String line, String startYear, String endYear) {
+        RowMapper<Machine> rowMapper = (rs, rowNum) -> {
+            Machine m = new Machine();
+            m.setName(rs.getString("ref_machine"));
+            return m;
+        };
+        return jdbcTemplate.query(SQLStatement.AlarmStatisticsSQL.FIND_ALL_MACHINE.toString(),
                 new Object[]{line, startYear, endYear}, rowMapper);
     }
 

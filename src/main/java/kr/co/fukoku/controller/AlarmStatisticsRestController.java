@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import kr.co.fukoku.filters.AlarmStatisticsFilter;
 import kr.co.fukoku.model.AlarmStatistics;
 
+import kr.co.fukoku.model.Line;
+import kr.co.fukoku.model.Machine;
 import kr.co.fukoku.repository_sqltem.AlarmStatisticsRepositoryBody;
 import kr.co.fukoku.utils.Counting;
 import kr.co.fukoku.utils.Pagination;
@@ -100,6 +102,39 @@ public class AlarmStatisticsRestController {
         }
         return response;
     }
+
+    @RequestMapping(value="/all-machine/{line}/{startTime}/{endTime}", method = RequestMethod.GET)
+    public ResponseList<Machine> getAllMachineByLine(@PathVariable("line") String line,
+                                                          @PathVariable("startTime") String startTime,
+                                                          @PathVariable("endTime") String endTime){
+
+        ResponseList<Machine> response = new ResponseList<>();
+        List<Machine> mList = repository.findAllMachinesByLine(line, startTime, endTime);
+        if (mList.size() != 0) {
+            response.setCode(StatusCode.FOUND);
+            response.setData(mList);
+        } else {
+            response.setCode(StatusCode.NOT_FOUND);
+        }
+        return response;
+    }
+
+    @RequestMapping(value="/all-line/{factoryName}/{startTime}/{endTime}", method = RequestMethod.GET)
+    public ResponseList<Line> getAllLineByFactory(@PathVariable("factoryName") String factoryName,
+                                                       @PathVariable("startTime") String startTime,
+                                                       @PathVariable("endTime") String endTime){
+
+        ResponseList<Line> response = new ResponseList<>();
+        List<Line> lineList = repository.findAllLinesByFactory(factoryName, startTime, endTime);
+        if (lineList.size() != 0) {
+            response.setCode(StatusCode.FOUND);
+            response.setData(lineList);
+        } else {
+            response.setCode(StatusCode.NOT_FOUND);
+        }
+        return response;
+    }
+
 
 
 }

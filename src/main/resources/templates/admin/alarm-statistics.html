@@ -9,9 +9,12 @@
 
     <title>알람통계</title>
     <style type="text/css">
-        table {
-            font-size: 12pt;
-        }
+        /*table {*/
+            /*font-size: 8pt;*/
+            /*display: block;*/
+            /*overflow-x: auto;*/
+
+        /*}*/
 
         .table-head {
             background-color: #3c8dbc;
@@ -25,6 +28,41 @@
         table tbody tr {
             text-align: center;
         }
+
+        #mainTable td, #mainTable th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        td, th{
+            text-align: center;
+            /*vertical-align: middle!important;*/
+        }
+
+        .column-label{
+            font-size: 17px;
+            display: inline-block;
+            padding-right: 10px;
+            text-indent: -2px;
+            /*font-weight: bold;*/
+        }
+        .select_column{
+            width: 18px;
+            height: 18px;
+        }
+
+
+        table .head {
+            background-color: #3c8dbc;
+            color: white;
+        }
+
+        /*.table td  {*/
+            /*min-width: 220px;*/
+        /*}*/
+        /*td:first-child {*/
+            /*min-width: 100px!important;*/
+        /*}*/
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
@@ -34,21 +72,21 @@
                 var d2 = new Date();
 
                 $('#startYear').datetimepicker({
-                    format: 'yyyy',
+                    format: 'YYYY',
                     defaultDate: d1
                 });
-                $("#txtStartYear").val(d1.toISOString());
+                $("#txtStartYear").val(d1.getFullYear());
 
                 $('#endYear').datetimepicker({
-                    format: 'yyyy',
+                    format: 'YYYY',
                     defaultDate: d2
                 });
-                $("#txtEndYear").val(d2.toISOString());
+                $("#txtEndYear").val(d2.getFullYear());
             });
         });
 
     </script>
-    <script src="../../static/admin/sweet_alert/sweetalert.min-new.js"></script>
+
 </head>
 <body>
 
@@ -64,6 +102,34 @@
                 <div class="box box-primary">
                     <div class="box-body">
                         <div class="row">
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                <div class=""form-group>
+                                    <div class='input-group date' id='startYear'>
+                                        <input type='text' class="form-control" id="txtStartYear" placeholder="시작날짜"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                <div class=""form-group>
+                                    <div class='input-group date' id='endYear'>
+                                        <input type='text' class="form-control" id="txtEndYear" placeholder="종료날짜"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 col-xs-12" id="lineCheckboxes">
+                                <label class="column-label"><input class="select_column" name="m_option" type="checkbox" value="show_month" id="show_month" checked> 달보기</label>
+                                <label class="column-label"><input class="select_column" name="m_option" type="checkbox" value="show_product" id="show_product" checked> 제품보기</label>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row">
                             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                 <div id="selectFactoryButtonList">
 
@@ -74,179 +140,122 @@
 
                                 </div>
                             </div>
-                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                                <div class=""form-group>
-                                    <div class='input-group date' id='startYear'>
-                                        <input type='text' class="form-control" id="txtStartYear" placeholder="시작날짜"/>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                                <div class=""form-group>
-                                    <div class='input-group date' id='endYear'>
-                                        <input type='text' class="form-control" id="txtEndYear" placeholder="종료날짜"/>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <br/>
                             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                 <div id="selectMachineButtonList">
 
                                 </div>
                             </div>
                         </div>
-                        <br/>
+
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                                <table class="table">
-                                    <thead class="table-head">
-                                    <tr>
-                                        <th>#</th>
-                                        <th>알람명</th>
-                                        <th>합계</th>
-                                    </tr>
+                                <table class="table" id="mainTable">
+                                    <thead class="thead-inverse table-head" >
+                                        <tr id="tableHeader">
+
+                                        </tr>
+                                        <tr id="tableHeader2">
+
+                                        </tr>
                                     </thead>
-                                    <tbody id="ALARM_STATISTICS">
-                                    <tr role="row" class="odd" style="text-align:center;font-weight:bold;">
-                                        <td colspan="2">콘텐츠 없음</td>
-                                    </tr>
+
+                                    <tbody id="alarmTable">
+
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="box-footer">
-                            <div class="row">
-                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                    <div id="pageMessage">전시 <span id="limitPage"></span> 의 <span id="totalPage"></span>
-                                        페이지 <span id="totalRecords"></span></div>
-                                </div>
-                                <br/>
-                                <br/>
-                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                    <select class="form-control" style="width:100px;" id="PER_PAGE">
-                                        <option value="15">15</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-12">
-                                    <div class="pull-right" id="PAGINATION">
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- box-footer -->
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Modal -->
 
-    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-         id="modalNonMovingState">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-
+    <!-- Model will pop up when the user clicks on the alarm name -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1"   role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalHistory">
+        <div class="modal-dialog modal-lg" style="width:90%;">
+            <div class="modal-content" style="max-height: calc(100vh - 0px);overflow-y: auto;">
                 <div class="box box-primary modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">라인관리</h4>
+                            style="font-weight: bold; font-size: 18pt;"
+                            aria-hidden="true">X</span></button>
+                    <h4 class="modal-title">알람내역</h4>
                 </div>
+                <div class="row"></div>
+                <div class="modal-body">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                        <table class="table">
+                            <thead class="thead-inverse head">
+                            <tr>
+                                <th>#</th>
+                                <th>라인</th>
+                                <th>설비</th>
+                                <th>설비상태</th>
+                                <th>생산날짜</th>
+                                <th>시작날짜</th>
+                                <th>종료날짜</th>
+                                <th>분</th>
+                                <th>알람코드</th>
+                                <th>알람명</th>
+                            </tr>
+                            </thead>
+                            <tbody id="ALARM_HISTORY">
 
-                <form class="form-horizontal" enctype="multipart/form-data">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">라인명:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtName" placeholder="라인명"/>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12 text-left">
+                            <div id="pageMessage">전시 <span id="limitPage"></span> 의 <span id="totalPage"></span> 페이지
+                                <span id="totalRecords"></span></div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                            <select class="form-control" style="width:100px;" id="PER_PAGE">
+                                <option value="15">15</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                            <div class="pull-right" id="PAGINATION">
+
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">공장:</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" id="selectFactory">
-                                    <option value="">공장</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="txtLocation" class="col-sm-2 control-label">위치:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtLocation" placeholder="위치"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="txtProduct" class="col-sm-2 control-label">생산제품:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtProduct" placeholder="생산제품"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">제작날짜</label>
-                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                <div class='input-group date' id='date'>
-                                    <input type='text' class="form-control" id="txtDate" placeholder="제작날짜"/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">설명:</label>
-                            <div class="col-sm-10">
-                                <textarea rows="5" class="form-control" id="txtRemark"></textarea>
-                            </div>
-                        </div>
-                    </div><!-- /.box-body -->
-                    <div class="box-footer">
-                        <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
-                        <button type="button" class="btn btn-primary pull-right btn-flat" id="btnSave">저장</button>
-                        <button type="button" class="btn btn-primary pull-right btn-flat" id="btnSaveUpdate"
-                                style="display:none;">Save
-                        </button>
-                    </div><!-- /.box-footer -->
-                </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-         id="modalMessage" style="z-index: 10000">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="TITLE2">메시지</h4>
-                </div>
-                <div class="modal-body">
-                    <h5 id="MESSAGE1"><strong>이 기록을 삭제 하시겠습니까?</strong></h5>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-red btn-default btn-ripple" data-dismiss="modal">아니</button>
-                    <button type="button" class="btn btn-indigo btn-danger" id="btnOk">승인</button>
-                </div>
-            </div><!--.modal-content-->
-        </div>
-    </div>
+
     <!--<script src="/static/admin/javascripts/libraries/bootstrap-waitingfor.js"></script>-->
     <script src="/static/admin/javascript_v3/alarm-statistics.js"></script>
-    <script id="ALARM_STATISTICS_TEMPLATE" type="text/x-jquery-tmpl">
-        <tr data-id="{{= ID}} "style="text-align:center;">
-            <td>{{= NO}}</td>
-            <td><strong>{{= ALARM_NAME}}</strong></td>
-            <td><strong>{{= ALARM_COUNT}}</strong></td>
-        </tr>
+    <script id="ALARM_HISTORY_TEMPLATE" type="text/x-jquery-tmpl">
+	    <tr data-id="{{= ID}}"style="text-align:center;">
+		    <td>{{= NO}}</td>
+			<td>{{= LINE}}</td>
+			<td>{{= MACHINE}}</td>
+			<td>{{= MSTATE}}</td>
+			<td>{{= WORK_DATE}}</td>
+			<td>{{= START_TIME}}</td>
+			<td>{{= END_TIME}}</td>
+			<td>{{= DURATION}}</td>
+			<td>{{= ALARM_CODE}}</td>
+			<td>{{= ALARM_NAME}}</td>
+
+		</tr>
 
     </script>
+
 </div>
 <th:block layout:fragment="script">
 

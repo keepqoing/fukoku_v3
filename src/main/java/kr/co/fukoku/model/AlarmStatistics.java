@@ -1,34 +1,60 @@
 package kr.co.fukoku.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import kr.co.fukoku.model.form.AlarmProduct;
+
+import java.util.List;
 
 public class AlarmStatistics {
+    @JsonProperty("ALARM_ID")
+    private String alarmId;
     @JsonProperty("ALARM_NAME")
-    private String alarm_name;
+    private String alarmName;
     @JsonProperty("ALARM_COUNT")
-    private long alarm_count;
+    private long alarmCount;
+
+    @JsonProperty("ALARM_PRODUCT")
+    private List<AlarmProduct> alarmProducts;
 
     public AlarmStatistics() {
     }
 
-    public AlarmStatistics(String alarm_name, long alarm_count) {
-        this.alarm_name = alarm_name;
-        this.alarm_count = alarm_count;
+    public AlarmStatistics(String alarmId, String alarmName, long alarmCount, List<AlarmProduct> alarmProducts) {
+        this.alarmId = alarmId;
+        this.alarmName = alarmName;
+        this.alarmCount = alarmCount;
+        this.alarmProducts = alarmProducts;
     }
 
-    public String getAlarm_name() {
-        return alarm_name;
+    public String getAlarmId() {
+        return alarmId;
     }
 
-    public void setAlarm_name(String alarm_name) {
-        this.alarm_name = alarm_name;
+    public void setAlarmId(String alarmId) {
+        this.alarmId = alarmId;
     }
 
-    public long getAlarm_count() {
-        return alarm_count;
+    public String getAlarmName() {
+        return alarmName;
     }
 
-    public void setAlarm_count(long alarm_count) {
-        this.alarm_count = alarm_count;
+    public void setAlarmName(String alarmName) {
+        this.alarmName = alarmName;
+    }
+
+    public long getAlarmCount() {
+        return alarmCount;
+    }
+
+    public void setAlarmCount(long alarmCount) {
+        this.alarmCount = alarmCount;
+    }
+
+    public List<AlarmProduct> getAlarmProducts() {
+        return alarmProducts;
+    }
+
+    public void setAlarmProducts(List<AlarmProduct> alarmProducts) {
+        this.alarmProducts = alarmProducts;
     }
 }
