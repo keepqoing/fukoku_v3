@@ -44,10 +44,6 @@ $(function () {
                             option.text = response.data[i].name; // show factory name
                             sel.appendChild(option);
                         }
-
-                        if(response.data.length > 0){
-                            $(sel).prop("selectedIndex", 1).change();
-                        }
                     }
                 }
             },
@@ -1374,7 +1370,7 @@ var data = [{
         "REF_PRODUCT" : "A",
         "REF_PROCESS_CHAIN_ID" : 0,
         "STATUS" : "1"
-        }],
+    }],
 
     "PROCESS_CHAIN_ELEMENT" : [{
         "ID" : 1,
@@ -1751,7 +1747,7 @@ function createStepAfterMainProcessFromDB(lineName, stage, div, subResult) {
         // var sel = mainStepSelectBox(lineName, rowNum, txt, txtValue);
 
         var txtMain = mainTextBoxFromDB(subResult.NAME);
-        // $(txtMain).change();
+
 
         // txtMain.setAttribute("value", subResult.NAME);
 
@@ -1846,7 +1842,6 @@ function createSelectBoxFromDB(process_Array, prefixSel, className, selectedValu
         sel.appendChild(option);
         sel.setAttribute('style','float:left; margin-top:5px; margin-left:5px; width:55px;height:24px;');
         sel.width = "auto";
-
     }else{
         var option = document.createElement("option");
         option.setAttribute("value", selectedValue); // store Process ID
@@ -1867,7 +1862,6 @@ function createSelectBoxFromDB(process_Array, prefixSel, className, selectedValu
         }
 
         sel.appendChild(option);
-
     }
     return sel;
 }

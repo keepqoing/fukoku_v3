@@ -43,6 +43,9 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/department").setViewName("/admin/department");
 		registry.addViewController("/admin/model").setViewName("/admin/model");
 		registry.addViewController("/admin/alarm-statistics").setViewName("/admin/alarm-statistics");
+
+		registry.addViewController("/admin/break-time").setViewName("/admin/break-time");
+		registry.addViewController("/admin/operating-time").setViewName("/admin/operating-time");
 	}
 
 	@Override
