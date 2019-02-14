@@ -100,10 +100,11 @@
 	                                    			<span  class="label label-success">{{m.REF_MACHINE}}</span> <button type="button" class="btn btn-success btn-xs" ng-click="btAdd()"><i class="fa fa-fw fa-plus-square"></i> </button>
 	                                    			<ul ng-repeat="pvar in m.PROCESS_VAR" >
 										                <li>
+										                <span class="label label-info"><b>{{pvar.NAME}}</b></span> 
+										                  	 
 										                  	<button ng-click="btUpdate()" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
 										                  	<button type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
-										                  	 <span class="label label-info"><b>{{pvar.NAME}}</b></span> 
-										                  	 <span><b>{{pvar.LSL}} ~ {{pvar.USL}}</b></span> 
+										                  	 
 										                </li>
 										              </ul>
 	                                    		</div>
@@ -171,7 +172,7 @@
                      
                         
                         <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">Name:</label>
+                            <label for="txtRemark" class="col-sm-2 control-label">변수이름:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtNextSequence" placeholder="" required/>
                             </div>
@@ -193,7 +194,7 @@
                         
                         
                          <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">Type:</label>
+                            <label for="txtRemark" class="col-sm-2 control-label">변수유형:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtNextSequence" placeholder="" required/>
                             </div>
@@ -211,27 +212,23 @@
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtNextSequence" placeholder="" required/>
                             </div>
-                        </div>
-                        
-                        
-						 
-                        
+                        </div>          
                         <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">Unit Kind:</label>
+                            <label for="txtRemark" class="col-sm-2 control-label">단위:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtNextSequence" placeholder="" required/>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">Transform:</label>
+                            <label for="txtRemark" class="col-sm-2 control-label">변환값:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtNextSequence" placeholder="" required/>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">Remark:</label>
+                            <label for="txtRemark" class="col-sm-2 control-label">설명:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtNextSequence" placeholder="" required/>
                             </div>
