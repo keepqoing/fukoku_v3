@@ -78,5 +78,22 @@ public interface ProcessMachineRepository {
 	
 	@Delete("DELETE FROM process_machine WHERE id=#{id}")
 	boolean delete(@Param("id") long id);
+
+
 	
+	
+	
+	
+	@Insert("<script>insert into process_machine ("
+			+ " ref_machine_id, ref_process_id"
+			+ ") VALUES "
+			+ " <foreach collection='lst' item='f' separator=','>("
+			+ "	#{mId}, "
+			+ " #{f} "
+			+ " )"
+			+ "</foreach></script>")
+	boolean saveLstProcessMachine(@Param("lst") List<Long>  refProcesses , @Param("mId") long refMachine);
+	
+	
+
 }

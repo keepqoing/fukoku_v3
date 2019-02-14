@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.co.fukoku.model.Factory;
 import kr.co.fukoku.model.Line;
 import kr.co.fukoku.model.Machine;
+import kr.co.fukoku.model.ProcessMachine;
 import kr.co.fukoku.model.Product;
 import kr.co.fukoku.model.form.FactoryFrm;
 import kr.co.fukoku.model.form.LineFrm;
@@ -37,6 +38,7 @@ import kr.co.fukoku.model.response.Table;
 import kr.co.fukoku.repository.FactoryRepository;
 import kr.co.fukoku.repository.LineRepository;
 import kr.co.fukoku.repository.MachineRepository;
+import kr.co.fukoku.repository.ProcessMachineRepository;
 import kr.co.fukoku.repository.ProductRepository;
 import kr.co.fukoku.utils.ExcelGeneratorDynamic;
 import kr.co.fukoku.utils.ReadExcelDynamic;
@@ -47,6 +49,9 @@ public class MachineRestController {
 	
 	@Autowired
 	private MachineRepository repository;
+	
+	@Autowired
+	private ProcessMachineRepository proMacRepo;
 	
 	@RequestMapping(value="/find",method = RequestMethod.POST)
     public ResponseEntity<Map<String,Object>> findAll(@RequestBody MachineFrm f)  {
@@ -111,13 +116,18 @@ public class MachineRestController {
     public ResponseEntity<Map<String,Object>> save(@RequestBody MachineFrm frm)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-        	if(repository.save(frm)) {
+        	//if(repository.save(frm)) {
+        		repository.save(frm);
+        		System.out.println(" ====> machine id after instered : "+frm.getId());
+        		
+        		proMacRepo.saveLstProcessMachine(frm.getProcesses(), frm.getId());
+        		
         		map.put("message", "Data has been inserted!");
         		map.put("code", 200);
-        	}else {
-        		map.put("code", 404);
-        		map.put("message", "Data has not been inserted!");
-        	}
+        	//}else {
+        	//	map.put("code", 404);
+        	//	map.put("message", "Data has not been inserted!");
+        	//}
         }catch(Exception e) {
         	e.printStackTrace();
         	map.put("code", 500);

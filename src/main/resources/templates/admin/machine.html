@@ -16,6 +16,11 @@
     <script th:src="@{/static/admin/angular/bower_components/angular-nvd3/dist/angular-nvd3.js}"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-sanitize.js"></script>
     
+<!--      Latest compiled and minified CSS
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+
+		
+     -->
     <style>
         .btn-file {
         position: relative;
@@ -36,6 +41,60 @@
         cursor: inherit;
         display: block;
     }
+    
+    
+	.wrapper {
+	
+ 		position: relative;
+	}
+	.wrapper .selected-items-box {
+	  cursor: pointer;
+	  border: solid 1px #ddd;
+	  padding:10px;
+	  background-color: #333;
+	  color: #ffffff;
+	}
+    
+    .selected-items-box .items-list {
+	  list-style-type: none;
+	  width: 100%;
+	  padding: 0;
+	  margin: 0;
+	}
+		.selected-items-box .items-list li {
+		  display: inline;
+		}
+		
+		.wrapper .list {
+		  display: contents;
+		  height: 200px;
+		  overflow-y: auto;
+		  overflow-x: hidden;
+		  border-left: solid 1px #C7C6C7;
+		  border-right: solid 1px #C7C6C7;
+		  border-bottom: solid 1px #C7C6C7;
+		  z-index: 100;
+		  position: absolute;
+		  width: 100%;
+		}
+		.list .items-list {
+		  list-style-type: none;
+		  width: 100%;
+		  padding: 0;
+		  margin: 0;
+		}
+		.list .items-list li {
+		  margin: 0;
+		  width: 100%;
+		  padding: 0;
+		  border-bottom: solid 1px #C7C6C7;
+		  padding: 5px;
+		  background-color: #fff;
+		}
+    
+    
+    
+    
     </style>
     
 </head>
@@ -71,7 +130,13 @@
 						                  </div>
 						                </div>
 						              </div>
+						              
+						              
+						              
+							      
                                 </div>
+                                
+                                
                         </div>
                          <br/>
                         <div class="row">
@@ -100,7 +165,8 @@
 	                                    <tr  ng-repeat="f in machines">
 	                                    	<!-- <td>{{f.id}}</td> -->
 	                                    	<td>{{f.name}}</td>
-	                                    	<td>{{f.process.name}}</td>
+	                                    	<!-- <td>{{f.process.name}}</td> -->
+	                                    	<td><span style="margin-right:5px" ng-repeat="p in f.lst_process" class="label label-info">{{p.name}}</span></td>
 	                                    	<td>{{f.remark}}</td>
 	                                    	<td>{{f.ip}}</td>
 	                                    	<td>{{f.import_date}}</td>
@@ -129,6 +195,7 @@
             </div>
         </div>
     </section>
+
 
     <!-- Modal -->
 
@@ -160,7 +227,7 @@
                             </div>
                         </div>
                         
-                        <div class="form-group">
+                       <!--  <div class="form-group">
                             <label for="txtName" class="col-sm-2 control-label">공정명:</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="selectOptProcess"  required>
@@ -168,7 +235,46 @@
                                 	<option ng-repeat="o in processes" value="{{o.id}}">{{o.name}}</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
+                        
+                        
+                        <div class="form-group">
+						 	 <label for="txtRemark" class="col-sm-2 control-label"></label>
+						    <div class="col-sm-10">
+						    	<!-- <select class="selectpicker" id="selectOptProcess" multiple data-live-search="true" required>
+						    	<option value="">공정</option>
+						    	<option value="">공정</option>
+						    	<option value="">공정</option>
+						    	<option value="">공정</option>
+						    	<option value="">공정</option>
+                                <option ng-repeat="o in processes" value="{{o.id}}">{{o.name}}</option> 
+								</select> -->
+								
+							
+							   <span ng-repeat="o in processes | filter: getSelectedItems">  <button style="margin-top:5px" type="button" class="btn btn-info" > {{o.name}} </button> </span>
+								
+								<span ><button type="button" style="margin-top:5px" class="btn btn-warning" data-toggle="collapse" data-target="#demo">공정명 <i class="fa fa-fw fa-toggle-down"></i></button></span> 
+								 <div id="demo" class="collapse">
+							        <div class="list">
+							          <ul class="items-list">
+							            <li ng-repeat="o in processes">
+							              <input type="checkbox" name="processCheck" ng-model="o.selected" value="{{o.id}}"/>
+							              <span>{{o.name}}</span>
+							            </li>
+							          </ul>
+							        </div>
+								 </div>
+								
+								
+								
+								
+							      
+							      
+							      
+        
+        
+						    </div>
+						</div>
                         
                         <div class="form-group">
                             <label for="txtRemark" class="col-sm-2 control-label">설명:</label>
@@ -271,7 +377,6 @@
 <th:block layout:fragment="script">
 <script th:src="@{/static/admin/javascript_v3/machine.js}"></script>
 <script>
-		
         $(document).ready(function () {
             $(function () {
                 $('#importDate').datetimepicker({
@@ -281,6 +386,22 @@
             });
         });
     </script>
+<!--     
+    Latest compiled and minified JavaScript
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+				
+				(Optional) Latest compiled and minified JavaScript translation files
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/i18n/defaults-*.min.js"></script>
+					 -->	
+				<script>
+				$( document ).ready(function() {
+					$('.selected-items-box').bind('click', function(e) {
+				        $('.wrapper .list').slideToggle('fast');
+				    });
+				});
+				</script>
+				
+				
 </th:block>
 </body>
 </html>

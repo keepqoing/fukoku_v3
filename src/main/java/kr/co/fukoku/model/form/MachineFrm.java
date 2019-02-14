@@ -1,5 +1,7 @@
 package kr.co.fukoku.model.form;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import kr.co.fukoku.model.Product;
@@ -36,6 +38,17 @@ public class MachineFrm {
 	private String status;
 	@JsonProperty("station")
 	private String station;
+	
+	@JsonProperty("lst_process")
+	private List<Long> processes;
+	
+	public List<Long> getProcesses() {
+		return processes;
+	}
+	
+	public void setProcesses(List<Long> processes) {
+		this.processes = processes;
+	}
 	
 	@JsonProperty("order_by")
 	private String orderBy;

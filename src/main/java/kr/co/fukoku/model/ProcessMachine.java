@@ -1,5 +1,7 @@
 package kr.co.fukoku.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ProcessMachine {
@@ -16,6 +18,10 @@ public class ProcessMachine {
 	private ProcessChainElement processChainElement;
 	@JsonProperty("next_sequence")
 	private String nextSequence;
+	
+	
+	
+	
 	public long getId() {
 		return id;
 	}
@@ -52,6 +58,7 @@ public class ProcessMachine {
 	public void setNextSequence(String nextSequence) {
 		this.nextSequence = nextSequence;
 	}
+	
 	
 	
 	

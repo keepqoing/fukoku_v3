@@ -69,4 +69,14 @@ public interface ProcessRepository {
 	// Chomrern as of 2019-01-28
 	@Select("Select * from process where status='1'")
 	List<kr.co.fukoku.model.Process> findAllProcesses();
+	
+	
+	@Select("select *,pm.id as process_machine_id from process p inner join process_machine pm on p.id = pm.ref_process_id where pm.ref_machine_id=#{id}")
+	@Results(value={
+			@Result(property="id",column="process_machine_id"),
+			@Result(property="despPicture",column="desp_picture"),
+			@Result(property="repVariableName",column="rep_variable_name")
+	})
+	List<kr.co.fukoku.model.Process> findProcessMachine(@Param("id") long  id);
+	
 }

@@ -9,10 +9,13 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 import org.apache.ibatis.annotations.One;
+import org.apache.ibatis.annotations.Many;
+import org.apache.ibatis.annotations.Options;
 
 import kr.co.fukoku.model.Factory;
 import kr.co.fukoku.model.Machine;
@@ -37,6 +40,9 @@ public interface MachineRepository {
 			@Result(property="plcCommunicationDevice", column="plc_communication_device"),
 			@Result(property="process", column="ref_process_id",
 				one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findOne")
+			),
+			@Result(property="processes", column="id",
+				many = @Many(select  = "kr.co.fukoku.repository.ProcessRepository.findProcessMachine")
 			)
 	})
 	List<Machine> findAll(@Param("f") MachineFrm f);
@@ -75,7 +81,8 @@ public interface MachineRepository {
 			+ " #{f.facilityContactPerson},"
 			+ " #{f.station}"
 			+ ");")
-	boolean save(@Param("f") MachineFrm frm);
+	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="f.id", before=false, resultType=long.class)
+	long save(@Param("f") MachineFrm frm);
 	
 	@Insert("<script>insert into machine ("
 			+ " seq, name, ref_process_id,ip ,import_date, code, manufacturer, facility_staff"

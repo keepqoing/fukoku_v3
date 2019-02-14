@@ -1,6 +1,10 @@
 package kr.co.fukoku.model.form;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import kr.co.fukoku.model.Process;
 
 
 
@@ -18,6 +22,7 @@ public class ProcessMachineFrm {
 	private long refProcessChainElementId;
 	@JsonProperty("next_sequence")
 	private String nextSequence;
+	
 	
 	@JsonProperty("order_by")
 	private String orderBy;
@@ -73,11 +78,7 @@ public class ProcessMachineFrm {
 				+ nextSequence + "]";
 	}
 	
-	
-	
-	
-	
-	
+
 	
 	
 	

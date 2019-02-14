@@ -16,6 +16,8 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.data = {
 			"name" : "",
 	};
+	
+	$scope.selectedProcess;
 	/***
 	 * Function()
 	 */
@@ -67,6 +69,14 @@ app.controller('MainCtrl', function($scope, $http) {
             if(response.code == 200){
             	console.log(response.data);
             	$scope.processes = response.data;
+            	
+//            	$("#selectOptProcess").empty(); alert(response.data.length);
+//            	for(i=0;i< response.data.length;i ++){
+//            		console.log(response.data[i].name)
+//            		$("#selectOptProcess").append("<option>"+response.data[i].name+"</option>");
+//            	}
+            	// setTimeout(function(){ $('.selectpicker').selectpicker(); }, 3000);
+            	
             }
             
         });
@@ -131,11 +141,17 @@ app.controller('MainCtrl', function($scope, $http) {
     }
 	
 	$scope.save = function(method){
+		var processes = []
+        $.each($("input[name='processCheck']:checked"), function(){     
+        	processes.push(parseInt($(this).val()));
+        });
+        console.log(processes);
+        
 		var data = {
 				"id" : $scope.id,
 				"seq" : $("#txtSeq").val(),
 				"name" : $("#txtName").val(),
-				"ref_process_id" : $("#selectOptProcess").val(),
+				"ref_process_id" : 2,//$("#selectOptProcess").val(),
 				"ip" : $("#txtIP").val(),
 				"import_date" : $("#importDate").find("input").val(),
 				"code" : $("#txtCode").val(),
@@ -146,6 +162,7 @@ app.controller('MainCtrl', function($scope, $http) {
 				"plc_communication_device" : $("#txtPlcCommunicationDevice").val(),
 				"station" : $("#txtStation").val(),
 				"remark" : $("#txtRemark").val(),
+				"lst_process" : processes
 		}
 		console.log("data", data);
         var post = $http({
@@ -311,6 +328,15 @@ app.controller('MainCtrl', function($scope, $http) {
 		$scope.findAll($scope.data);
 	};
 	
+	
+	
+      
+	
+	 
+	    
+	    $scope.getSelectedItems = function(item){
+	        return item.selected;
+	    };
 	
 	
 });
