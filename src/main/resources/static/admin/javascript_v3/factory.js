@@ -140,12 +140,15 @@ app.controller('MainCtrl', function($scope, $http) {
     }
 	
 	$scope.delete = function(id){
-		swal({  title: "Factory" ,   
-			text: "Are you sure you want to deleted this factory?",   
+		swal({  title: "공장" ,
+			text: "이 공장를 삭제 하시겠습니까?",
 			type: "info",  
 			showCancelButton: true,   
 			closeOnConfirm: false,   
-			showLoaderOnConfirm: true, 
+			showLoaderOnConfirm: true,
+            confirmButtonText: '저장',
+            confirmButtonColor: "#00a65a",
+            cancelButtonText: "취소"
 		}, function(){   
 			var post = $http({
 	            method: "DELETE",
@@ -156,9 +159,9 @@ app.controller('MainCtrl', function($scope, $http) {
 	        post.success(function (response, status) {
 	        	$scope.products = null;
 	            if(response.code == 200){
-	            	swal({position: 'top-end',type: 'success',title: 'Data has been deleted',showConfirmButton: false,timer: 1500})
+	            	swal({position: 'top-end',type: 'success',title: '데이터가 삭제되었습니다.',showConfirmButton: false,timer: 1500})
 	            }else{
-	            	swal({position: 'top-end',type: 'error',title: 'Data has been deleted',showConfirmButton: false,timer: 1500})
+	            	swal({position: 'top-end',type: 'error',title: '데이터가 삭제되지 않았습니다.',showConfirmButton: false,timer: 1500})
 	            }
 	            $scope.findAll($scope.data);
 	        });

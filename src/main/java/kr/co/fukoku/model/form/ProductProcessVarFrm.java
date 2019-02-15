@@ -9,6 +9,9 @@ public class ProductProcessVarFrm {
     @JsonProperty("SEQ")
     private int seq;
 
+    @JsonProperty("REF_PRODUCT_ID")
+    private String ref_product_id;
+
     @JsonProperty("REF_PROCESS_CHAIN_MACHINE_ID")
     private String ref_process_machine_id;
 
@@ -39,9 +42,10 @@ public class ProductProcessVarFrm {
     public ProductProcessVarFrm() {
     }
 
-    public ProductProcessVarFrm(long id, int seq, String ref_process_machine_id, String name, String type, int usl, int lsl, int unitKind, int transform_value, String remark, String status) {
+    public ProductProcessVarFrm(long id, int seq, String ref_product_id, String ref_process_machine_id, String name, String type, int usl, int lsl, int unitKind, int transform_value, String remark, String status) {
         this.id = id;
         this.seq = seq;
+        this.ref_product_id = ref_product_id;
         this.ref_process_machine_id = ref_process_machine_id;
         this.name = name;
         this.type = type;
@@ -67,6 +71,14 @@ public class ProductProcessVarFrm {
 
     public void setSeq(int seq) {
         this.seq = seq;
+    }
+
+    public String getRef_product_id() {
+        return ref_product_id;
+    }
+
+    public void setRef_product_id(String ref_product_id) {
+        this.ref_product_id = ref_product_id;
     }
 
     public String getRef_process_machine_id() {
