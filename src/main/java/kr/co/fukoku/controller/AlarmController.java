@@ -38,6 +38,7 @@ public class AlarmController {
             List<AlarmStatistics> alarmStatistics = repository.findAllAlarm(
                     alarmStatisticsFilter.getStartYear(),
                     alarmStatisticsFilter.getEndYear(),
+                    alarmStatisticsFilter.getFactory(),
                     alarmStatisticsFilter.getLine(),
                     alarmStatisticsFilter.getMachine());
 

@@ -43,8 +43,9 @@ public class AlarmHistoryRepositoryBody implements AlarmHistoryRepository {
 
         return jdbcTemplate.query(SQLStatement.AlarmStatisticsSQL.FIND_ALARM_HISTORY.toString(), new Object[]{
                 "%" + alarmHistoryFilter.getLine() + "%",
-                "%" + alarmHistoryFilter.getAlarmName() + "%",
-                "%" + alarmHistoryFilter.getProductionDate() + "%",
+                 alarmHistoryFilter.getAlarmName() ,
+                alarmHistoryFilter.getStartTime(),
+                alarmHistoryFilter.getEndTime(),
                 pagination.getLimit(),
                 pagination.getOffset()
         }, rowMapper);
@@ -52,7 +53,13 @@ public class AlarmHistoryRepositoryBody implements AlarmHistoryRepository {
 
 
     private Long count(AlarmHistoryFilter alarmHistoryFilter) {
-        return jdbcTemplate.queryForObject(SQLStatement.AlarmStatisticsSQL.COUNT_ALARM_HISTORY.toString(), new Object[]{"%" + alarmHistoryFilter.getLine() + "%", "%" + alarmHistoryFilter.getAlarmName() + "%", "%" + alarmHistoryFilter.getProductionDate() + "%"}, Long.class);
+        return jdbcTemplate.queryForObject(SQLStatement.AlarmStatisticsSQL.
+                COUNT_ALARM_HISTORY.toString(), new Object[]{
+                        "%" + alarmHistoryFilter.getLine() + "%",
+                        alarmHistoryFilter.getAlarmName() ,
+                        alarmHistoryFilter.getStartTime(),
+                        alarmHistoryFilter.getEndTime()
+                }, Long.class);
 
     }
 

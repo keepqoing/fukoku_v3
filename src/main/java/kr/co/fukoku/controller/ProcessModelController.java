@@ -113,7 +113,7 @@ public class ProcessModelController {
                             if(processMachines.size() > 0 ){
                                 // Product Process Var
                                 for(ProcessMachineModelFrm pm : processMachines){
-                                    List<ProductProcessVarFrm> ppf = repository.findAllProductProcessVar(pce.getId()+"");
+                                    List<ProductProcessVarFrm> ppf = repository.findAllProductProcessVar(pm.getId());
                                     if(ppf.size() > 0){
                                         pm.setProductProcessVarFrm(ppf);
                                     }

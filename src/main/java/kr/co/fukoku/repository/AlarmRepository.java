@@ -17,6 +17,7 @@ public interface AlarmRepository {
     @Select("CALL proc_alarm_count_by_month_year(" +
             "#{startYear}, "+
             "#{endYear}, "+
+            "#{factory}, "+
             "#{line}, "+
             "#{machine} "+
             ")")
@@ -27,6 +28,7 @@ public interface AlarmRepository {
     })
     List<AlarmStatistics> findAllAlarm(@Param("startYear") String startYear,
                                        @Param("endYear") String endYear,
+                                       @Param("factory") String factory,
                                        @Param("line") String line,
                                        @Param("machine") String machine
                                        );
@@ -43,7 +45,7 @@ public interface AlarmRepository {
             @Result(property="refProduct",column="ref_product"),
             @Result(property="total",column="total")
     })
-    List<AlarmProduct> findAllAlarmByProduct(@Param("startYear") String startYear,
+    List<AlarmProduct> findAllAlarmByProduct(   @Param("startYear") String startYear,
                                                  @Param("endYear") String endYear,
                                                  @Param("line") String line,
                                                  @Param("machine") String machine,
@@ -63,7 +65,8 @@ public interface AlarmRepository {
             @Result(property="year",column="a_year")
 
     })
-    List<AlarmProductYear> findAllAlarmByProductYear(@Param("startYear") String startYear,
+    List<AlarmProductYear> findAllAlarmByProductYear(
+                                             @Param("startYear") String startYear,
                                              @Param("endYear") String endYear,
                                              @Param("line") String line,
                                              @Param("machine") String machine,

@@ -24,9 +24,11 @@ public class AlarmHistoryRestController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "line", dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "alarmName", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "productionDate", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", defaultValue="1"),
-            @ApiImplicitParam(name = "limit", dataType = "integer", paramType = "query", defaultValue="15")
+            @ApiImplicitParam(name = "startTime", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "endTime", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "limit", dataType = "integer", paramType = "query", defaultValue="15"),
+            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", defaultValue="1")
+
     })
     @RequestMapping(method = RequestMethod.GET)
     public ResponseList<AlarmHistory> getAllAlarmHistories(@ApiIgnore AlarmHistoryFilter alarmHistoryFilter, @ApiIgnore Pagination pagination) {

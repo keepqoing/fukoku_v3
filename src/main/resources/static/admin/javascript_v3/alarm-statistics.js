@@ -260,14 +260,14 @@ $(function () {
         var startYear = $('#txtStartYear').val();
         var endYear = $('#txtEndYear').val();
         alarmStatistics.getAllMachineNameByLineName(lnName, startYear, endYear, function (response) {
-            $("#selectMachineButtonList").append("<button class='btn btn-danger' style='margin-right:5px; margin-bottom: 5px;' id='btnMachine' data-id=''>ALL</button>");
+            $("#selectMachineButtonList").append("<button class='btn btn-primary' style='margin-right:5px; margin-bottom: 5px;' id='btnMachine' data-id=''>ALL</button>");
 
             alarmStatistics.getMachineCounting(lnName, startYear, endYear, function (response1) {
                 var total = 0;
                 $.each(response.DATA, function (key, value) {
                     $.each(response1.DATA, function (key1, value1) {
                         if(value.name == value1.ATTRIBUTE) {
-                            $("#selectMachineButtonList").append("<button class='btn btn-danger' style='margin-right:5px; margin-bottom: 5px;' id='btnMachine' data-id='" + value.name + "'>" + value.name +"("+value1.NUMBER+ ")</button>");
+                            $("#selectMachineButtonList").append("<button class='btn btn-primary' style='margin-right:5px; margin-bottom: 5px;' id='btnMachine' data-id='" + value.name + "'>" + value.name +"("+value1.NUMBER+ ")</button>");
                             total += value1.NUMBER;
                         }
                     });
@@ -320,7 +320,7 @@ $(function () {
     }];
 
     // ================ 5. JSON ========================================================
-    alarmStatistics.getAlarmData = function (startYear, endYear, lineName, machineName) {
+    alarmStatistics.getAlarmData = function (startYear, endYear, factoryName, lineName, machineName) {
         $.ajax({
             url: "/v3/api/fukoku/alarm",
             type: 'GET',
@@ -328,6 +328,7 @@ $(function () {
             data: {
                 "startYear" : startYear,
                 "endYear"   : endYear,
+                "factory"   : factoryName,
                 "line"      : lineName,
                 "machine"   : machineName
             },
@@ -338,6 +339,7 @@ $(function () {
             success: function (response) {
                 if(response.code == 200){
                     if(response.data.length > 0){
+                        resetTableContents();
                         loadDataToTable(response.data);
                     }
                 } else{
@@ -367,6 +369,13 @@ $(function () {
         }
 
         // isChecked();
+    }
+
+    // Reset Table Content
+    function resetTableContents(){
+        document.getElementById("tableHeader").innerHTML = "";
+        document.getElementById("tableHeader2").innerHTML = "";
+        document.getElementById("alarmTable").innerHTML = "";
     }
 
 
@@ -784,22 +793,19 @@ $(function () {
 
 
     // Alarm History
-    alarmStatistics.getAlarmHistory = function (line, alarmName, pDate, page, limit) {
-        console.log("line : " + line);
-        console.log("alarmName : " + alarmName);
-        console.log("pDate : " + pDate);
-        console.log("limit : " + limit);
-        console.log("page : " + page);
+    alarmStatistics.getAlarmHistory = function (line, alarmName, startYear, endYear, limit, page) {
+
         $.ajax({
             url: "/v1/api/fukoku/alarm-history",
             type: 'GET',
             dataType: 'JSON',
             data: {
-                "line"          :   line,
-                "alarmName"       :   alarmName,
-                "productionDate"  :   pDate,
-                "page"          :   page,
-                "limit"         :   limit
+                "line"       :   line,
+                "alarmName"  :   alarmName,
+                "startTime"  :   startYear,
+                "endTime"    :   endYear,
+                "limit"      :   limit,
+                "page"       :   page
             },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -842,7 +848,9 @@ $(function () {
 
     function spanClick(alarmName){
         console.log(alarmName);
-        alarmStatistics.getAlarmHistory("IB",alarmName, "2019", 1, 15);
+        var startYear = $('#txtStartYear').val();
+        var endYear = $('#txtStartYear').val();
+        alarmStatistics.getAlarmHistory(lineName,alarmName, startYear, endYear, 15, 1);
         $('#modalHistory').modal('show');
     }
 

@@ -9,17 +9,20 @@ public class ProductProcessVarFrm {
     @JsonProperty("SEQ")
     private int seq;
 
-    @JsonProperty("REF_PROCESS_VAR_ID")
-    private String ref_process_var_id;
+    @JsonProperty("REF_LINE")
+    private String REF_LINE;
 
-    @JsonProperty("REF_PROUDUCT_ID")
-    private String ref_prouduct_id;
+    @JsonProperty("REF_PRODUCT")
+    private String ref_product;
+
+    @JsonProperty("REF_PROCESS")
+    private String ref_process;
+
+    @JsonProperty("REF_MACHINE")
+    private String ref_machine;
 
     @JsonProperty("REF_PROCESS_MACHINE_ID")
     private String ref_process_machine_id;
-
-    @JsonProperty("REF_PROCESS_CHAIN_ELEMENT_ID")
-    private String ref_process_chain_element_id;
 
     @JsonProperty("NAME")
     private String name;
@@ -48,23 +51,6 @@ public class ProductProcessVarFrm {
     public ProductProcessVarFrm() {
     }
 
-    public ProductProcessVarFrm(long id, int seq, String ref_process_var_id, String ref_prouduct_id, String ref_process_machine_id, String ref_process_chain_element_id, String name, String type, int usl, int lsl, int unitKind, int transform_value, String remark, String status) {
-        this.id = id;
-        this.seq = seq;
-        this.ref_process_var_id = ref_process_var_id;
-        this.ref_prouduct_id = ref_prouduct_id;
-        this.ref_process_machine_id = ref_process_machine_id;
-        this.ref_process_chain_element_id = ref_process_chain_element_id;
-        this.name = name;
-        this.type = type;
-        this.usl = usl;
-        this.lsl = lsl;
-        this.unitKind = unitKind;
-        this.transform_value = transform_value;
-        this.remark = remark;
-        this.status = status;
-    }
-
     public long getId() {
         return id;
     }
@@ -81,20 +67,36 @@ public class ProductProcessVarFrm {
         this.seq = seq;
     }
 
-    public String getRef_process_var_id() {
-        return ref_process_var_id;
+    public String getREF_LINE() {
+        return REF_LINE;
     }
 
-    public void setRef_process_var_id(String ref_process_var_id) {
-        this.ref_process_var_id = ref_process_var_id;
+    public void setREF_LINE(String REF_LINE) {
+        this.REF_LINE = REF_LINE;
     }
 
-    public String getRef_prouduct_id() {
-        return ref_prouduct_id;
+    public String getRef_product() {
+        return ref_product;
     }
 
-    public void setRef_prouduct_id(String ref_prouduct_id) {
-        this.ref_prouduct_id = ref_prouduct_id;
+    public void setRef_product(String ref_product) {
+        this.ref_product = ref_product;
+    }
+
+    public String getRef_process() {
+        return ref_process;
+    }
+
+    public void setRef_process(String ref_process) {
+        this.ref_process = ref_process;
+    }
+
+    public String getRef_machine() {
+        return ref_machine;
+    }
+
+    public void setRef_machine(String ref_machine) {
+        this.ref_machine = ref_machine;
     }
 
     public String getRef_process_machine_id() {
@@ -103,14 +105,6 @@ public class ProductProcessVarFrm {
 
     public void setRef_process_machine_id(String ref_process_machine_id) {
         this.ref_process_machine_id = ref_process_machine_id;
-    }
-
-    public String getRef_process_chain_element_id() {
-        return ref_process_chain_element_id;
-    }
-
-    public void setRef_process_chain_element_id(String ref_process_chain_element_id) {
-        this.ref_process_chain_element_id = ref_process_chain_element_id;
     }
 
     public String getName() {

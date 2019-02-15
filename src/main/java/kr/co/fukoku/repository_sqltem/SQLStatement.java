@@ -2762,8 +2762,8 @@ FIND_ALL_PD("SELECT \n" +
         FIND_ALL("CALL proc_alarm_statistics(?,?,?,?,?,?);"),
         FIND_ALL_MACHINE("CALL proc_get_machine(?,?,?);"),
         FIND_ALL_LINE("CALL proc_line_by_factory(?,?,?);"),
-        FIND_ALARM_HISTORY("SELECT * FROM alarm_histories WHERE ref_line LIKE ? AND alarm_name LIKE ? AND work_date LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
-        COUNT_ALARM_HISTORY("SELECT COUNT(1) FROM alarm_histories WHERE ref_line LIKE ? AND alarm_name LIKE ? AND work_date LIKE ?;");
+        FIND_ALARM_HISTORY("SELECT * FROM alarm_histories WHERE ref_line LIKE ? AND alarm_name = ? AND (LEFT(work_date,4) BETWEEN LEFT(?,4) AND LEFT(?,4)) ORDER BY id DESC LIMIT ? OFFSET ?;"),
+        COUNT_ALARM_HISTORY("SELECT COUNT(1) FROM alarm_histories WHERE ref_line LIKE ? AND alarm_name = ? AND (LEFT(work_date,4) BETWEEN LEFT(?,4) AND LEFT(?,4));");
 
         private String value;
 

@@ -91,8 +91,8 @@ public interface ProcessModelRepository {
 
 
     // 3 - Select all rows from process_chain table -- for Process Var
-    @Select("SELECT * FROM product_process_var WHERE ref_process_chain_element_id = #{pceID}")
-    List<ProductProcessVarFrm> findAllProductProcessVar(@Param("pceID") String pceID);
+    @Select("CALL proc_product_process_var(#{pcmID});")
+    List<ProductProcessVarFrm> findAllProductProcessVar(@Param("pcmID") long pcmID);
 
 
 
