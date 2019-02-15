@@ -92,6 +92,7 @@ public interface ProcessModelRepository {
 
     // 3 - Select all rows from process_chain table -- for Process Var
     @Select("CALL proc_product_process_var(#{pcmID});")
+
     List<ProductProcessVarFrm> findAllProductProcessVar(@Param("pcmID") long pcmID);
 
 

@@ -9,18 +9,6 @@ public class ProductProcessVarFrm {
     @JsonProperty("SEQ")
     private int seq;
 
-    @JsonProperty("REF_LINE")
-    private String REF_LINE;
-
-    @JsonProperty("REF_PRODUCT")
-    private String ref_product;
-
-    @JsonProperty("REF_PROCESS")
-    private String ref_process;
-
-    @JsonProperty("REF_MACHINE")
-    private String ref_machine;
-
     @JsonProperty("REF_PROCESS_MACHINE_ID")
     private String ref_process_machine_id;
 
@@ -51,6 +39,20 @@ public class ProductProcessVarFrm {
     public ProductProcessVarFrm() {
     }
 
+    public ProductProcessVarFrm(long id, int seq, String ref_process_machine_id, String name, String type, int usl, int lsl, int unitKind, int transform_value, String remark, String status) {
+        this.id = id;
+        this.seq = seq;
+        this.ref_process_machine_id = ref_process_machine_id;
+        this.name = name;
+        this.type = type;
+        this.usl = usl;
+        this.lsl = lsl;
+        this.unitKind = unitKind;
+        this.transform_value = transform_value;
+        this.remark = remark;
+        this.status = status;
+    }
+
     public long getId() {
         return id;
     }
@@ -65,38 +67,6 @@ public class ProductProcessVarFrm {
 
     public void setSeq(int seq) {
         this.seq = seq;
-    }
-
-    public String getREF_LINE() {
-        return REF_LINE;
-    }
-
-    public void setREF_LINE(String REF_LINE) {
-        this.REF_LINE = REF_LINE;
-    }
-
-    public String getRef_product() {
-        return ref_product;
-    }
-
-    public void setRef_product(String ref_product) {
-        this.ref_product = ref_product;
-    }
-
-    public String getRef_process() {
-        return ref_process;
-    }
-
-    public void setRef_process(String ref_process) {
-        this.ref_process = ref_process;
-    }
-
-    public String getRef_machine() {
-        return ref_machine;
-    }
-
-    public void setRef_machine(String ref_machine) {
-        this.ref_machine = ref_machine;
     }
 
     public String getRef_process_machine_id() {
