@@ -45,7 +45,22 @@ public interface ProductProcessVarRepository {
 			");")
 	boolean save(@Param("f") ProductProcessVarFrm frm);
 	
-	@Update("UPDATE product_process_var ")
+	@Update("delete from product_process_var where id =#{id} ")
+	boolean delete(@Param("id") long id);
+	
+	@Update("UPDATE product_process_var set"
+			+ "	seq=#{f.seq}, " + 
+			"	ref_process_var_id=#{f.refProcessVarId},," + 
+			"	ref_prouduct_id=#{f.refProuductId}," + 
+			"	ref_process_machine_id=#{f.refProcessMachineId}," + 
+			"	ref_process_chain_element_id=#{f.refProcessChainElementId}," + 
+			"	name=#{f.name}," + 
+			"	type=#{f.type}" + 
+			"	usl=#{f.usl}" +  
+			"	lsl=#{f.lsl}" + 
+			"	unit_kind=#{f.unitKind}" + 
+			"	transform_value=#{f.transformValue}" +  
+			"	remark=#{f.remark} where id=#{f.id}")
 	boolean update(@Param("f") ProductProcessVarFrm frm);
 	
 	

@@ -7,6 +7,8 @@ app.controller('MainCtrl', function($scope, $http) {
 	 */
 	$scope.processMachines;
 	$scope.maxStage=0;
+	$scope.id;
+	$scope.processVars
 	
 	
 	/***
@@ -19,6 +21,31 @@ app.controller('MainCtrl', function($scope, $http) {
 	    for (var i = min; i <= max; i += step) input.push(i);
 	    return input;
 	  };
+	  
+	  
+	  $scope.findProcessVar = function(){
+		  	$scope.data = {
+					"name" : "",
+			};
+	        var post = $http({
+	            method: "POST",
+	            url: "/v3/api/fukoku/process-var/find",
+	            dataType: 'json',
+	            data : JSON.stringify($scope.data),
+	            headers: { "Content-Type": "application/json" }
+	        });
+	        post.success(function (response, status) {
+	        	$scope.processVars = null;
+	            if(response.code == 200){
+	            	$scope.processVars = response.data;
+	            }else{
+	            	$scope.message = response.message;
+	            }
+	        });
+	        post.error(function (data, status) {
+	            console.log(data);
+	        });
+	    }
 	  
 	  
 	$scope.findAll = function(){
@@ -296,22 +323,58 @@ app.controller('MainCtrl', function($scope, $http) {
 		//
     }
 	
-	
+	$scope.save = function(method){
+		var data = {
+				"id" : $scope.id,
+				"seq" : $("#txtSeq").val(),
+				"ref_process_id" : $("#selectOptProcess").val(),
+				"ref_machine_id" : $("#selectOptMachine").val(),
+				"next_sequence" : $("#txtNextSequence").val(),
+		}
+		console.log("data", data);
+        var post = $http({
+            method: method,
+            url: "/v3/api/fukoku/process-machine",
+            dataType: 'json',
+            data : JSON.stringify(data),
+            headers: { "Content-Type": "application/json" }
+        });
+        post.success(function (response, status) {
+            if(response.code == 200){
+            	$scope.message = response.message;
+            	$scope.findAll("");
+            	$("#modalFrm").modal('hide');
+            	swal({position: 'top-end',type: 'success',title: 'Data has been saved',showConfirmButton: false,timer: 1500})
+            }else{
+            	$scope.message = response.message;
+            	swal({position: 'top-end',type: 'error',title: 'Data has not been saved',showConfirmButton: false,timer: 1500})
+            }
+        });
+        post.error(function (data, status) {
+            console.log(data);
+            swal({position: 'top-end',type: 'error',title: 'Data has not been saved',showConfirmButton: false,timer: 1500})
+        });
+    }
 	
 	
 	/*******************************************************************************
 	 * Onload()
 	 *******************************************************************************/
 	 $scope.findAll();
+	 $scope.findProcessVar();
 	
 	
 	
 	/*******************************************************************************
 	 * Event()
 	 *******************************************************************************/
-	 $scope.btAdd = function(){
+	 	$scope.btAdd = function(refProductId, refProcessMachineId, refProcessChainElementId){
 			$scope.action = "add";
 			$('#frm').trigger("reset");
+			$('#txtRefProductId').val(refProductId);
+			$('#txtRefProcessId').val(refProcessMachineId);
+			$('#txtRefProcessChainElementId').val(refProcessChainElementId);
+			
 			$("#btUpdate").hide();
 			$("#btSave").show();
 			$("#modalFrm").modal('show');
