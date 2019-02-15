@@ -9,7 +9,7 @@ public class ProductProcessVarFrm {
     @JsonProperty("SEQ")
     private int seq;
 
-    @JsonProperty("REF_PROCESS_MACHINE_ID")
+    @JsonProperty("REF_PROCESS_CHAIN_MACHINE_ID")
     private String ref_process_machine_id;
 
     @JsonProperty("NAME")
