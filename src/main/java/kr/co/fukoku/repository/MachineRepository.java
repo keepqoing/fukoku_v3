@@ -134,9 +134,10 @@ public interface MachineRepository {
 
 	// Chomrern as of 2019-01-14
 	@Select("SELECT m.*\n" +
-			"FROM process p INNER JOIN machine m\n" +
-			"ON p.id = m.ref_process_id\n" +
-			"WHERE p.name = #{process_name} and m.status = '1'")
+			"FROM process p INNER JOIN machine_process mp\n" +
+			"ON p.id = mp.ref_process_id INNER JOIN machine m\n" +
+			"ON mp.ref_machine_id = m.id\n" +
+			"WHERE p.name = #{process_name} AND m.status = '1';")
 	@Results(value={
 			@Result(property="importDate",column="import_date"),
 			@Result(property="facilityStaff",column="facility_staff"),

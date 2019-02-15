@@ -1158,7 +1158,14 @@ function createSubStepItem(btnObj){
 
     // Select for process select box
     // var arrMachine = ["설비","1차압입하중-압입기 1","2차압입하중-압입기 2","3차압입하중-압입기 3"];
+    /*
     var selMachine = createSelectBox(machine_Array, "subMachine", "machine_select");
+    */
+    var selMachine = createSelectedMachine("machine_select");
+    var selectedProcess = $(btnObj).parent().find(".txtMainTitle")[0].value;
+    lines.getSpecificMachine(selectedProcess, "", selMachine);
+
+
 
     // Minus button
     var buttMinus = createSubStepMinusButton();
