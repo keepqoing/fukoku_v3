@@ -327,9 +327,9 @@ app.controller('MainCtrl', function($scope, $http) {
 		var data = {
 				"id" : $scope.id,
 				"seq" : $("#txtSeq").val(),
-				"ref_process_id" : $("#selectOptProcess").val(),
-				"ref_machine_id" : $("#selectOptMachine").val(),
-				"next_sequence" : $("#txtNextSequence").val(),
+				"ref_process_id" : $("#txtRefProductId").val(),
+				"ref_machine_id" : $("#txtRefProcessId").val(),
+				"ref_process_chain_element_id" : $("#txtRefProcessChainElementId").val(),
 		}
 		console.log("data", data);
         var post = $http({
@@ -389,6 +389,12 @@ app.controller('MainCtrl', function($scope, $http) {
 				$("#modalFrm").modal('show');
 			};
 	
-	
+			$scope.onSubmitFrm = function(){
+				if($scope.action == "add"){
+					$scope.save("POST");
+				}else{
+					$scope.save("PUT");
+				}
+			}
 	
 });

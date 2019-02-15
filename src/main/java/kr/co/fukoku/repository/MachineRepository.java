@@ -33,6 +33,7 @@ public interface MachineRepository {
 	
 	@SelectProvider(type = MachineSQLBuilder.class, method = "find")
 	@Results(value={
+			@Result(property="id",column="id"),
 			@Result(property="importDate",column="import_date"),
 			@Result(property="facilityStaff",column="facility_staff"),
 			@Result(property="facilityContactPerson",column="facility_contact_person"),
@@ -52,6 +53,7 @@ public interface MachineRepository {
 	
 	@Select("Select * from machine where id=#{id} and status='1'")
 	@Results(value={
+			@Result(property="id",column="id"),
 			@Result(property="importDate",column="import_date"),
 			@Result(property="facilityStaff",column="facility_staff"),
 			@Result(property="facilityContactPerson",column="facility_contact_person"),
@@ -59,6 +61,9 @@ public interface MachineRepository {
 			@Result(property="plcCommunicationDevice", column="plc_communication_device"),
 			@Result(property="process", column="ref_process_id",
 				one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findOne")
+			),
+			@Result(property="processes", column="id",
+				many = @Many(select  = "kr.co.fukoku.repository.ProcessRepository.findProcessMachine")
 			)
 	})		
 	Machine findOne(@Param("id") long  id);

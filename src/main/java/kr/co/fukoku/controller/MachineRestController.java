@@ -141,6 +141,8 @@ public class MachineRestController {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
         	if(repository.update(frm)) {
+        		proMacRepo.deleteMachineProcess(frm.getId());
+        		proMacRepo.saveLstProcessMachine(frm.getProcesses(), frm.getId());
         		map.put("message", "Data has been updated!");
         		map.put("code", 200);
         	}else {

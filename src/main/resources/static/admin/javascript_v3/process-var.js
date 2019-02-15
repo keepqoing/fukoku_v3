@@ -229,7 +229,6 @@ app.controller('MainCtrl', function($scope, $http) {
 		}else{
 			$scope.save("PUT");
 		}
-		
 	}
 	
 	$scope.btDelete = function(id){

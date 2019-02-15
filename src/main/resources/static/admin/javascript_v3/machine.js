@@ -54,6 +54,10 @@ app.controller('MainCtrl', function($scope, $http) {
 			});
 		});*/
 	
+	$scope.getSelectedItems = function(item){
+        return item.selected;
+    };
+	
 	$scope.findAllProcess  =  function() {
 		var data = {
 			"name" : "",
@@ -107,7 +111,7 @@ app.controller('MainCtrl', function($scope, $http) {
         });
     }
 	
-	$scope.findOne = function(id){
+	$scope.findOne = function(id){   alert(id);
         var post = $http({
             method: "GET",
             url: "/v3/api/fukoku/machine/"+id,
@@ -116,8 +120,23 @@ app.controller('MainCtrl', function($scope, $http) {
         });
         post.success(function (response, status) {
             if(response.code == 200){
-            	console.log(response);
+            	console.log("reponse_one",response);
             	$scope.id = response.data.id;
+//            	
+//            	var processes = []
+//                $.each($("input[name='processCheck']:checked"), function(){     
+//                	processes.push(parseInt($(this).val()));
+//                });
+//                console.log(processes);
+                
+                
+            	for(i=0;i<response.data.lst_process.length;i++){
+            		console.log(response.data.lst_process[i].id);
+            		$("input[type=checkbox][value="+response.data.lst_process[i].id+"]").prop("checked",true);
+            		$scope.getSelectedItems(response.data.lst_process[i].name);
+            	}
+            	
+            	
             	$("#txtName").val(response.data.name);
             	$("#txtIP").val(response.data.ip);
             	$("#selectOptProcess").val(response.data.process.id);
@@ -334,9 +353,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	
 	 
 	    
-	    $scope.getSelectedItems = function(item){
-	        return item.selected;
-	    };
+	    
 	
 	
 });
