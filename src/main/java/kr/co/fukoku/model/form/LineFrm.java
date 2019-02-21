@@ -26,6 +26,9 @@ public class LineFrm {
 	@JsonProperty("status")
 	private String status;
 	
+	@JsonProperty("name_in")
+	private String nameIn;
+	
 	@JsonProperty("order_by")
 	private String orderBy;
 	
@@ -139,6 +142,14 @@ public class LineFrm {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getNameIn() {
+		return nameIn;
+	}
+
+	public void setNameIn(String nameIn) {
+		this.nameIn = nameIn;
 	}
 		
 	

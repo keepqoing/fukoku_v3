@@ -30,7 +30,7 @@ public interface ProductProcessVarRepository {
 	@Results(value={
 			@Result(property="seq", column="seq"),
 			@Result(property="refProcessMachineId", column="ref_process_chain_machine_id"),
-			@Result(property="refProuductId", column="ref_product_id"),
+			@Result(property="refProductId", column="ref_product_id"),
 			@Result(property="name", column="name"),
 			@Result(property="type", column="type"),
 			@Result(property="usl", column="usl"),
@@ -55,7 +55,7 @@ public interface ProductProcessVarRepository {
 			" ) VALUES (" +
 			"	#{f.seq}, "
 			+ " #{f.refProcessMachineId}, "
-			+ " #{f.refProuductId}, "
+			+ " #{f.refProductId}, "
 			+ " #{f.name}, "+
 			"	#{f.type}, "
 			+ " #{f.usl}, "
@@ -71,7 +71,7 @@ public interface ProductProcessVarRepository {
 	
 	@Update("UPDATE product_process_var set"
 			+ "	seq=#{f.seq}, " + 
-			"	ref_product_id=#{f.refProuductId}," + 
+			"	ref_product_id=#{f.refProductId}," + 
 			"	ref_process_chain_machine_id=#{f.refProcessMachineId}," + 
 			"	name=#{f.name}," + 
 			"	type=#{f.type}," + 

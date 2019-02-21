@@ -9,22 +9,18 @@ public class ProductProcessVar {
 	private long  id;
 	@JsonProperty("seq")
 	private long  seq;
-	@JsonProperty("ref_process_var_id")
-	private String refProcessVarId;
-	@JsonProperty("ref_prouduct_id")
-	private long refProuductId;
-	@JsonProperty("ref_process_machine_id")
-	private String refProcessMachineId;
-	@JsonProperty("ref_process_chain_element_id")
-	private long refProcessChainElementId;
-	@JsonProperty("name")
-	private String name;
+	@JsonProperty("ref_product_id")
+	private long refProductId; 
+	@JsonProperty("ref_process_chain_machine_id")
+	private String refProcessChainMachineId;
 	@JsonProperty("type")
 	private String type;
 	@JsonProperty("usl")
 	private long usl;
 	@JsonProperty("lsl")
 	private long lsl;
+	@JsonProperty("name")
+	private String name;
 	@JsonProperty("unit_kind")
 	private long unitKind;
 	@JsonProperty("transform_value")
@@ -33,6 +29,19 @@ public class ProductProcessVar {
 	private String remark;
 	@JsonProperty("status")
 	private String status;
+	
+	@JsonProperty("ref_process_machine_id")
+	private long  refProcessMachineId;
+	
+	
+	
+	
+	public long getRefProcessMachineId() {
+		return refProcessMachineId;
+	}
+	public void setRefProcessMachineId(long refProcessMachineId) {
+		this.refProcessMachineId = refProcessMachineId;
+	}
 	public long getId() {
 		return id;
 	}
@@ -45,35 +54,17 @@ public class ProductProcessVar {
 	public void setSeq(long seq) {
 		this.seq = seq;
 	}
-	public String getRefProcessVarId() {
-		return refProcessVarId;
+	public long getRefProductId() {
+		return refProductId;
 	}
-	public void setRefProcessVarId(String refProcessVarId) {
-		this.refProcessVarId = refProcessVarId;
+	public void setRefProductId(long refProductId) {
+		this.refProductId = refProductId;
 	}
-	public long getRefProuductId() {
-		return refProuductId;
+	public String getRefProcessChainMachineId() {
+		return refProcessChainMachineId;
 	}
-	public void setRefProuductId(long refProuductId) {
-		this.refProuductId = refProuductId;
-	}
-	public String getRefProcessMachineId() {
-		return refProcessMachineId;
-	}
-	public void setRefProcessMachineId(String refProcessMachineId) {
-		this.refProcessMachineId = refProcessMachineId;
-	}
-	public long getRefProcessChainElementId() {
-		return refProcessChainElementId;
-	}
-	public void setRefProcessChainElementId(long refProcessChainElementId) {
-		this.refProcessChainElementId = refProcessChainElementId;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
+	public void setRefProcessChainMachineId(String refProcessChainMachineId) {
+		this.refProcessChainMachineId = refProcessChainMachineId;
 	}
 	public String getType() {
 		return type;
@@ -92,6 +83,12 @@ public class ProductProcessVar {
 	}
 	public void setLsl(long lsl) {
 		this.lsl = lsl;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public long getUnitKind() {
 		return unitKind;
@@ -117,6 +114,15 @@ public class ProductProcessVar {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public ProductProcessVar() {
+		super();
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
