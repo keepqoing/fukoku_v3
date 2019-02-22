@@ -11,46 +11,62 @@ import java.util.List;
 public interface ProcessModelRepository {
 
     // Insert into proccess_chain table and get the last_insert_id for next table's (process_chain_element) foreign key
-    @Insert("INSERT INTO process_chain ("
-            + "	seq, name, ref_line"
-            + ") VALUES ("
+//    @Select("INSERT INTO process_chain ("
+//            + "	seq, name, ref_line"
+//            + ") VALUES ("
+//            + "	#{f.seq}, #{f.name}, #{f.ref_line} "
+//            + ")")
+   // @Options(useGeneratedKeys = true, keyProperty = "id")
+//    @Options(useGeneratedKeys = true, keyProperty = "ID", keyColumn = "ID")
+//    @SelectKey(before = false, keyProperty = "ID", statement = "SELECT LAST_INSERT_ID()", resultType = int.class)
+    // int save(@Param("f") ProcessModel f);
+
+//    @Select("SELECT LAST_INSERT_ID()")
+    @Select("CALL proc_insert_process_chain("
             + "	#{f.seq}, #{f.name}, #{f.ref_line} "
             + ")")
-   // @Options(useGeneratedKeys = true, keyProperty = "id")
-    @Options(useGeneratedKeys = true, keyProperty = "ID", keyColumn = "ID")
-//    @SelectKey(before = false, keyProperty = "ID", statement = "SELECT LAST_INSERT_ID()", resultType = int.class)
-    int save(@Param("f") ProcessModel f);
-
-    @Select("SELECT LAST_INSERT_ID()")
-    int getLastID();
+    int getLastID(@Param("f") ProcessChain f);
 
 
     // Insert into process_chain_element table and get the last_insert_id for next table's (process_chain_machine) foreign key
-    @Insert("INSERT INTO process_chain_product ("
-            + "	ref_product, ref_process_chain_id, status"
-            + ") VALUES ("
-            + "	#{f.ref_product}, #{f.ref_process_chain_id}, #{f.status} "
-            + ");")
+//    @Insert("INSERT INTO process_chain_product ("
+//            + "	ref_product, ref_process_chain_id, status"
+//            + ") VALUES ("
+//            + "	#{f.ref_product}, #{f.ref_process_chain_id}, #{f.status} "
+//            + ");")
+//    int saveProcessProduct(@Param("f") ProcessProductFrm f);
+
+    @Select("CALL proc_insert_process_chain_product( "
+        + "	#{f.ref_product}, #{f.ref_process_chain_id}, #{f.status} "
+        + ");")
     int saveProcessProduct(@Param("f") ProcessProductFrm f);
 
-
-
     // Insert into process_chain_element table and get the last_insert_id for next table's (process_chain_machine) foreign key
-    @Insert("INSERT INTO process_chain_element ("
-            + "	stage, name, ref_process_chain_id"
-            + ") VALUES ("
+//    @Insert("INSERT INTO process_chain_element ("
+//            + "	stage, name, ref_process_chain_id"
+//            + ") VALUES ("
+//            + "	#{f.stage}, #{f.name}, #{f.ref_process_chain_id} "
+//            + ");")
+//    int saveProcessChainElement(@Param("f") ProcessChainElementModelFrm f);
+
+//    @Select("SELECT LAST_INSERT_ID()")
+    @Select("CALL proc_insert_process_chain_element("
             + "	#{f.stage}, #{f.name}, #{f.ref_process_chain_id} "
             + ");")
-    int saveProcessChainElement(@Param("f") ProcessChainElementModelFrm f);
-
-    @Select("SELECT LAST_INSERT_ID()")
-    int getLastPCEID();
+    int getLastPCEID(@Param("f") ProcessChainElementModelFrm f);
 
 
     // Insert into process_chain_machine table
-    @Insert("INSERT INTO process_chain_machine ("
-            + " seq, ref_process, ref_machine, ref_process_chain_element, next_sequence"
-            + ") VALUES ("
+//    @Insert("INSERT INTO process_chain_machine ("
+//            + " seq, ref_process, ref_machine, ref_process_chain_element, next_sequence"
+//            + ") VALUES ("
+//            + "	#{f.seq}, "
+//            + " #{f.refProcess}, "
+//            + " #{f.refMachine}, "
+//            + " #{f.refProcessChainElement}, "
+//            + " #{f.next_sequence}"
+//            + ");")
+    @Select("CALL proc_insert_process_chain_machine ("
             + "	#{f.seq}, "
             + " #{f.refProcess}, "
             + " #{f.refMachine}, "
@@ -62,12 +78,16 @@ public interface ProcessModelRepository {
 
     //============ Reading data
     // 1.1 - Select all rows from process_chain table
-    @Select("SELECT * FROM process_chain")
+    @Select("SELECT distinct ref_line FROM process_chain")
     List<ProcessModel> findAllProcessModels();
+
+    // note - find line by distinct value
+    @Select("SELECT distinct ref_line FROM process_chain where ref_line = #{p_line}")
+    List<ProcessModel> findAllProcessModelsInLine(String p_line);
 
     // 1.2 - Select row from process_chain table by LINE
     @Select("CALL proc_process_model(#{lines});")
-    List<ProcessModel> findProcessModelsByLines(@Param("lines") String lines);
+    List<ProcessChain> findProcessModelsByLines(@Param("lines") String lines);
 
 
     // 1.3 - Select all Process Product

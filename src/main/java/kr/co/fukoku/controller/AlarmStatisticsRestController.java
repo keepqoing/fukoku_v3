@@ -134,7 +134,4 @@ public class AlarmStatisticsRestController {
         }
         return response;
     }
-
-
-
 }

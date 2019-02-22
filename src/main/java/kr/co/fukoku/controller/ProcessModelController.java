@@ -20,48 +20,53 @@ public class ProcessModelController {
     private ProcessModelRepository repository;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Map<String,Object>> save(@RequestBody List<ProcessModel> frm)  {
+    public ResponseEntity<Map<String,Object>> save(@RequestBody List<ProcessChain> frm)  {
         Map<String, Object> map = new HashMap<String, Object>();
 
 
 
         try {
-            for(ProcessModel processModel: frm){
-                ProcessModel pro = processModel;
+            for(ProcessChain processChain: frm){
+                ProcessChain pro = processChain;
 
                 // TRUNCATE FIRST
+                /*
                 int truncateSucess = repository.truncateProcessModel(pro.getRef_line());
                 if(truncateSucess != 1){
                     map.put("code", 500);
                     map.put("message", "Error! " );
                 }
+                */
 
-                long i = (repository.save(pro)) ;
-                System.out.println("I = " + i);
-                if(i>0){
-                    int lastID = repository.getLastID();
-                    pro.setId(lastID);
+//                long i = (repository.save(pro)) ;
+//                System.out.println("I = " + i);
+                int processChainID = repository.getLastID(pro);
+
+                if(processChainID > 0){
+//                    int lastID = repository.getLastID();
+                    pro.setId(processChainID);
 
 
                     /// Insert into Process_Product Table
-                    List<ProcessProductFrm> proPds = processModel.getProcess_product();
+                    List<ProcessProductFrm> proPds = processChain.getProcess_product();
                     for(ProcessProductFrm pp : proPds){
-                        pp.setRef_process_chain_id(lastID);
+                        pp.setRef_process_chain_id(processChainID);
                         int m = repository.saveProcessProduct(pp);
                     }
                     //==================================================
 
 
-                    List<ProcessChainElementModelFrm> pCEs = processModel.getProcess_chain_element();
+                    List<ProcessChainElementModelFrm> pCEs = processChain.getProcess_chain_element();
                     for(ProcessChainElementModelFrm pCE : pCEs){
-                        pCE.setRef_process_chain_id(lastID);
-                        long j = repository.saveProcessChainElement(pCE);
-                        if(j>0){
-                            int lastPCEID = repository.getLastPCEID();
-                            pCE.setId(lastPCEID);
+                        pCE.setRef_process_chain_id(processChainID);
+//                        long j = repository.saveProcessChainElement(pCE);
+                        int pCEID = repository.getLastPCEID(pCE);
+                        if(pCEID>0){
+//                            int lastPCEID = repository.getLastPCEID();
+                            pCE.setId(pCEID);
                             List<ProcessMachineModelFrm> pMs = pCE.getProcessMachineFrms();
                             for(ProcessMachineModelFrm pm : pMs){
-                                pm.setRefProcessChainElement(lastPCEID);
+                                pm.setRefProcessChainElement(pCEID);
                                 long z = repository.saveProcessMachine(pm);
                                 if(z > 0){
                                     map.put("message", "Data has been inserted!");
@@ -90,7 +95,7 @@ public class ProcessModelController {
     }
 
 
-
+    /*
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Map<String,Object>> findAllProcessModels()  {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -140,7 +145,65 @@ public class ProcessModelController {
         }
         return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
     }
+    */
 
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<Map<String,Object>> findAllProcessModels()  {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            List<ProcessModel> processModels = repository.findAllProcessModels();
+
+            if(processModels.size() > 0 ) {
+                for(ProcessModel processModel : processModels) {
+
+                    List<ProcessChain> processChains = repository.findProcessModelsByLines(processModel.getRef_line());
+
+                    if(processChains.size() > 0) {
+                        // Get all Procss Product
+
+                        for(ProcessChain processChain : processChains){
+                        List<ProcessProductFrm> processProductFrms =
+                                repository.findAllProcessProducts(processChain.getId());
+
+                        List<ProcessChainElementModelFrm> processChainElements =
+                                repository.findAllProcessChainElements(processChain.getId());
+
+                        if (processChainElements.size() > 0) {
+                            for (ProcessChainElementModelFrm pce : processChainElements) {
+                                List<ProcessMachineModelFrm> processMachines = repository.findAllProcessMachines(pce.getId());
+                                if (processMachines.size() > 0) {
+                                    // Product Process Var
+                                    for (ProcessMachineModelFrm pm : processMachines) {
+                                        List<ProductProcessVarFrm> ppf = repository.findAllProductProcessVar(pm.getId());
+                                        if (ppf.size() > 0) {
+                                            pm.setProductProcessVarFrm(ppf);
+                                        }
+                                    }
+                                    pce.setProcessMachineFrms(processMachines);
+                                }
+                            }
+                        }
+
+                            processChain.setProcess_product(processProductFrms);
+                            processChain.setProcess_chain_element(processChainElements);
+                            processModel.setProcessChains(processChains);
+                        System.out.println(processModel.toString());
+                    }
+                }
+                }
+                map.put("data", processModels);
+                map.put("code", 200);
+            }else {
+                map.put("code", 404);
+                map.put("message", "Data not found!");
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+            map.put("code", 500);
+            map.put("message", "Error! " + e.getMessage());
+        }
+        return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+    }
 
     @RequestMapping(value="/lines/{lines}", method = RequestMethod.GET)
     public ResponseEntity<Map<String,Object>> findAllProcessModelsByLines(@PathVariable("lines") String lines)  {
@@ -149,31 +212,45 @@ public class ProcessModelController {
 
 //            lines  = lines.replace("_",",");
 
-            List<ProcessModel> processModels = repository.findProcessModelsByLines(lines);
+            List<ProcessModel> processModels = repository.findAllProcessModelsInLine(lines);
 
             if(processModels.size() > 0 ) {
+                for(ProcessModel processModel : processModels) {
 
-                for(ProcessModel processModel : processModels){
+                    List<ProcessChain> processChains = repository.findProcessModelsByLines(processModel.getRef_line());
 
-                    // Get all Procss Product
-                    List<ProcessProductFrm> processProductFrms =
-                            repository.findAllProcessProducts(processModel.getId());
+                    if(processChains.size() > 0) {
+                        // Get all Procss Product
 
+                        for(ProcessChain processChain : processChains){
+                            List<ProcessProductFrm> processProductFrms =
+                                    repository.findAllProcessProducts(processChain.getId());
 
-                    List<ProcessChainElementModelFrm> processChainElements =
-                            repository.findAllProcessChainElements(processModel.getId());
+                            List<ProcessChainElementModelFrm> processChainElements =
+                                    repository.findAllProcessChainElements(processChain.getId());
 
-                    if(processChainElements.size() > 0){
-                        for(ProcessChainElementModelFrm pce : processChainElements){
-                            List<ProcessMachineModelFrm> processMachines = repository.findAllProcessMachines(pce.getId());
-                            if(processMachines.size() > 0 ){
-                                pce.setProcessMachineFrms(processMachines);
+                            if (processChainElements.size() > 0) {
+                                for (ProcessChainElementModelFrm pce : processChainElements) {
+                                    List<ProcessMachineModelFrm> processMachines = repository.findAllProcessMachines(pce.getId());
+                                    if (processMachines.size() > 0) {
+                                        // Product Process Var
+                                        for (ProcessMachineModelFrm pm : processMachines) {
+                                            List<ProductProcessVarFrm> ppf = repository.findAllProductProcessVar(pm.getId());
+                                            if (ppf.size() > 0) {
+                                                pm.setProductProcessVarFrm(ppf);
+                                            }
+                                        }
+                                        pce.setProcessMachineFrms(processMachines);
+                                    }
+                                }
                             }
+
+                            processChain.setProcess_product(processProductFrms);
+                            processChain.setProcess_chain_element(processChainElements);
+                            processModel.setProcessChains(processChains);
+                            System.out.println(processModel.toString());
                         }
                     }
-                    processModel.setProcess_product(processProductFrms);
-                    processModel.setProcess_chain_element(processChainElements);
-                    System.out.println(processModel.toString());
                 }
                 map.put("data", processModels);
                 map.put("code", 200);

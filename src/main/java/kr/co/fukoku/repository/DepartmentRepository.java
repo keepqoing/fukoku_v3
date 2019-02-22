@@ -62,5 +62,8 @@ public interface DepartmentRepository {
 	
 	@Delete("DELETE FROM department WHERE id=#{id}")
 	boolean delete(@Param("id") long id);
-	
+
+	// Chomrern - as of 2019-02-18
+	@Select("SELECT distinct name FROM department")
+	List<Department> getAllDepartment();
 }

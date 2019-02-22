@@ -462,6 +462,7 @@ function createLine(arrLine){
         if(!isExisted("tr"+arrLine[i]+"_1")) {
             var tr = document.createElement("tr");
             tr.id = "tr" + arrLine[i] + "_1";
+            tr.setAttribute("data-id", arrLine[i] + "_1");
             tr.className = "tr" + arrLine[i];
             var td = document.createElement("td");
             td.id = "td" + arrLine[i];
@@ -534,6 +535,7 @@ function newProduct_2_1(lineName, btnObj){
         td.className = "tdProduct";
         var tr = $(btnObj).parent().parent()[0];
         tr.appendChild(td);
+
     }
 
     if(countClassName >= 1  && newTd != undefined){
@@ -701,8 +703,9 @@ function newProduct_2_9_removeRow(btnObj){
 
         $(btnObj).parent().parent().parent().first().remove();
 
-
-        lines.deleteProcessModelByLine(lineName);
+        deleteRow = $(btnObj).parent().parent().parent().attr("data-id");
+        console.log("id is removed = " + deleteRow);
+        lines.deleteProcessModelByLine(deleteRow);
 
         // uncheck the deleted line
         document.getElementById("chk"+lineName).checked = false;
@@ -822,6 +825,7 @@ function addRowAfter(btnObj){
 
     var newRow= document.createElement('tr');
     newRow.id = finalClassName+ "_" + (countClassName + 1); // plus one because of new element
+    newRow.setAttribute("data-id", finalClassName.substr(2)+ "_" + (countClassName + 1)); // substring
     newRow.className = finalClassName;
 
     refElement.parentNode.insertBefore(newRow, refElement.nextSibling);
@@ -1567,11 +1571,13 @@ function loadDataToTable(result){
 
             // console.log("Line = " + result[i].REF_LINE);
 
-            // Process Product
-            var processProducts = result[i].PROCESS_PRODUCT;
+            for(var v = 0; v < result[i].PROCESS_CHAIN.length; v++) {
+                // Process Product
+                var processProducts = result[i].PROCESS_CHAIN[v].PROCESS_PRODUCT;
 
-            if (processProducts != null) {
-                newProduct_2_1_FromDB(result[i].REF_LINE, processProducts, result[i], btnObj);
+                if (processProducts != null) {
+                    newProduct_2_1_FromDB(result[i].REF_LINE, processProducts, result[i].PROCESS_CHAIN[v], btnObj);
+                }
             }
         }
     }
@@ -1580,7 +1586,7 @@ function loadDataToTable(result){
 
 var numberProcess = 0;
 // 1.1 - Read Data and Create One line for once
-function createOneLine(lineName){
+function createOneLine(lineName, name){
     numberProcess = 0;
 
 
@@ -1601,6 +1607,7 @@ function createOneLine(lineName){
 
         tr.id = "tr" + lineName + "_1";
         tr.className = "tr" + lineName;
+        tr.setAttribute("data-id", name);
         var td = document.createElement("td");
         td.id = "td" + lineName;
         td.className = "td" + lineName;

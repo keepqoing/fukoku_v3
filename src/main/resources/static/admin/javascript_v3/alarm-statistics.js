@@ -293,6 +293,7 @@ $(function () {
 
 
     // STANDARD FORMAT
+    /*
     var data = [{
         "ALARM_ID" : 0,
         "ALARM_NAME" : "A",
@@ -301,24 +302,119 @@ $(function () {
             "REF_PRODUCT" : "P",
             "TOTAL" : 0,
             "ALARM_PRODUCT_YEAR" : [{
-                "M1" : 0,
-                "M2" : 0,
-                "M3" : 0,
-                "M4" : 0,
-                "M5" : 0,
-                "M6" : 0,
-                "M7" : 0,
-                "M8" : 0,
-                "M9" : 0,
-                "M10" : 0,
-                "M11" : 0,
-                "M12" : 0,
-                "TOTAL" : 0,
-                "YEAR" : 2018
-            }]
-        }]
-    }];
+                "M1" : [
+                    "1": 0,
+                        "2": 0,
+                        "3": 0,
+                ...
+                    "31": 0,
+                        "total": 0
 
+                ],
+                    "M2" : [
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                ...
+                    "31": 0,
+                        "total": 0
+
+                ],
+                    "M3" : [
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                ...
+                    "31": 0,
+                        "total": 0
+
+                ],
+                    "M4" : [
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                ...
+                    "31": 0,
+                        "total": 0
+
+                ],
+                    "M5" : [
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                ...
+                    "31": 0,
+                        "total": 0
+
+                ],
+                    "M6" : [
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                ...
+                    "31": 0,
+                        "total": 0
+
+                ],
+                    "M7" : [
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                ...
+                    "31": 0,
+                        "total": 0
+
+                ],
+                    "M8" : [
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                ...
+                    "31": 0,
+                        "total": 0
+
+                ],
+                    "M9" : [
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                ...
+                    "31": 0,
+                        "total": 0
+
+                ],
+                    "M10" : [
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                ...
+                    "31": 0,
+                        "total": 0
+
+                ],
+                    "M11" : [
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                ...
+                    "31": 0,
+                        "total": 0
+
+                ],
+                    "M12" : [
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                ...
+                    "31": 0,
+                        "total": 0
+                ],
+                    "TOTAL" : 0,
+                        "YEAR" : 2018
+                }]
+                }]
+                }];
+    */
     // ================ 5. JSON ========================================================
     alarmStatistics.getAlarmData = function (startYear, endYear, factoryName, lineName, machineName) {
         $.ajax({
@@ -505,9 +601,11 @@ $(function () {
 
                 var theader2 = document.getElementById("tableHeader2");
                 var th1 = document.createElement("th");
+                th1.className="ptHeader";
                 th1.innerText = "합계";
 
                 var th2 = document.createElement("th");
+                th2.className="pnHeader";
                 th2.innerText = "제품명";
 
                 theader2.appendChild(th1);
@@ -875,7 +973,7 @@ $(function () {
     };
 
 
-    $(document).on('change','input:checkbox#show_product',function(){
+    $(document).on('change','input:checkbox#show_month',function(){
         if($(this).is(":checked"))
         {
             $(".yearHeader").show();
@@ -886,6 +984,24 @@ $(function () {
             $(".yearHeader").hide();
             $(".thYear").hide();
             $(".tdYear").hide();
+        }
+
+    });
+
+    $(document).on('change','input:checkbox#show_product',function(){
+        if($(this).is(":checked"))
+        {
+            $("#productHeader").show();
+            $(".ptHeader").show();
+            $(".pnHeader").show();
+            $(".tdPT").show();
+            $(".tdPN").show();
+        }else{
+            $("#productHeader").hide();
+            $(".ptHeader").hide();
+            $(".pnHeader").hide();
+            $(".tdPT").hide();
+            $(".tdPN").hide();
         }
 
     });
