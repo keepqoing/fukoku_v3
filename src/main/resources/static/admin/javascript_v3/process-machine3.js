@@ -27,6 +27,8 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.id;
 	$scope.processMachineId;
 	
+	$scope.processVars;
+	
 	/***
 	 * Function()
 	 */
@@ -38,6 +40,29 @@ app.controller('MainCtrl', function($scope, $http) {
 	    return input;
 	  };
 	
+	  $scope.findProcessVar = function(){
+		    var data = {
+					"name" : "",
+			};
+	        var post = $http({
+	            method: "POST",
+	            url: "/v3/api/fukoku/process-var/find",
+	            dataType: 'json',
+	            data : JSON.stringify(data),
+	            headers: { "Content-Type": "application/json" }
+	        });
+	        post.success(function (response, status) {
+	        	$scope.processVars = null;
+	            if(response.code == 200){
+	            	$scope.processVars = response.data;
+	            }else{
+	            	$scope.message = response.message;
+	            }
+	        });
+	        post.error(function (data, status) {
+	            console.log(data);
+	        });
+	    }
 	
 	$scope.findAll = function(){
         var post = $http({
@@ -127,10 +152,12 @@ app.controller('MainCtrl', function($scope, $http) {
         });
         post.success(function (response, status) {
             if(response.code == 200){
+            	
             	$scope.processVar = response.data;
             	console.log("1",$scope.processVar);
             	$scope.id = $scope.processVar.id;
-            	$("#selectOptProduct").val($scope.processVar.ref_prouduct_id);
+            	$("#selectOptProduct").val($scope.processVar.ref_product_id);
+            	$("#selectOptName").val($scope.processVar.ref_process_var_id);
             	$scope.processMachineId = $scope.processVar.ref_process_machine_id;
             	$("#txtSeq").val($scope.processVar.seq);
             	$("#txtName").val($scope.processVar.name);
@@ -179,7 +206,7 @@ app.controller('MainCtrl', function($scope, $http) {
 				"ref_process_machine_id" : $scope.processMachineId ,
 				"seq" : $("#txtSeq").val(),
 				"ref_product_id" : $("#selectOptProduct").val(),
-				"name" : $("#txtName").val(),
+				"ref_process_var_id" : $("#selectOptName").val(),
 				"type" : $("#selectType").val(),
 				"lsl" : $("#txtLsl").val(),
 				"usl" : $("#txtUsl").val(),
@@ -218,6 +245,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	 * Onload()
 	 *******************************************************************************/
 	$scope.findFactories(); 
+	$scope.findProcessVar();
 	$scope.findAll();
 	 
 	 
@@ -270,8 +298,9 @@ app.controller('MainCtrl', function($scope, $http) {
 			$scope.action = "update";
 			$('#frm').trigger("reset");
 			$scope.processMachineId = processMachineId;
-			$scope.findProcessChainProducts(refProcessChainElementId); 
-			$scope.findOne(productProcessVar);
+			$scope.findProcessChainProducts(refProcessChainElementId);
+			setTimeout(function(){ $scope.findOne(productProcessVar);  }, 0);
+			
 			$("#btSave").hide();
 			$("#btUpdate").show();
 			$("#modalFrm").modal('show');

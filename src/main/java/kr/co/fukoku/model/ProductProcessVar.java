@@ -13,6 +13,8 @@ public class ProductProcessVar {
 	private long refProductId; 
 	@JsonProperty("ref_process_chain_machine_id")
 	private String refProcessChainMachineId;
+	@JsonProperty("ref_process_var_id")
+	private long refProcessVarId;
 	@JsonProperty("type")
 	private String type;
 	@JsonProperty("usl")
@@ -36,6 +38,12 @@ public class ProductProcessVar {
 	
 	
 	
+	public long getRefProcessVarId() {
+		return refProcessVarId;
+	}
+	public void setRefProcessVarId(long refProcessVarId) {
+		this.refProcessVarId = refProcessVarId;
+	}
 	public long getRefProcessMachineId() {
 		return refProcessMachineId;
 	}

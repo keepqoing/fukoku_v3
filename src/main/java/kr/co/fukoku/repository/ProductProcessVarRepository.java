@@ -31,6 +31,7 @@ public interface ProductProcessVarRepository {
 			@Result(property="seq", column="seq"),
 			@Result(property="refProcessMachineId", column="ref_process_chain_machine_id"),
 			@Result(property="refProductId", column="ref_product_id"),
+			@Result(property="refProcessVarId", column="ref_process_var_id"),
 			@Result(property="name", column="name"),
 			@Result(property="type", column="type"),
 			@Result(property="usl", column="usl"),
@@ -51,7 +52,7 @@ public interface ProductProcessVarRepository {
 			"	lsl," + 
 			"	unit_kind," + 
 			"	transform_value," + 
-			"	remark" + 
+			"	remark, ref_process_var_id " + 
 			" ) VALUES (" +
 			"	#{f.seq}, "
 			+ " #{f.refProcessMachineId}, "
@@ -62,7 +63,7 @@ public interface ProductProcessVarRepository {
 			+ " #{f.lsl}, "
 			+ " #{f.unitKind}, "
 			+ " #{f.transformValue},"
-			+ " #{f.remark}"+
+			+ " #{f.remark}, #{f.refProcessVarId}"+
 			");")
 	boolean save(@Param("f") ProductProcessVar frm);
 	
@@ -79,7 +80,7 @@ public interface ProductProcessVarRepository {
 			"	lsl=#{f.lsl}," + 
 			"	unit_kind=#{f.unitKind}," + 
 			"	transform_value=#{f.transformValue}," +  
-			"	remark=#{f.remark} where id=#{f.id}")
+			"	remark=#{f.remark} ,ref_process_var_id=#{refProcessVarId} where id=#{f.id}")
 	boolean update(@Param("f") ProductProcessVar frm);
 	
 	
