@@ -1,6 +1,7 @@
 package kr.co.fukoku.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.One;
 import org.apache.ibatis.annotations.Many;
@@ -42,7 +43,7 @@ public interface ProcessMachine3Repository {
 	
 	
 	
-	@Select("select * from process_chain where  ref_line=#{ref_line};")
+	@Select("select * from process_chain where  ref_line=#{ref_line} GROUP BY ref_line;")
 	@Results(value={
 			@Result(property="id",column="id"),
 			@Result(property="name",column="name"),
@@ -59,7 +60,7 @@ public interface ProcessMachine3Repository {
 	
 	
 	
-	@Select("select * from process_chain_product where ref_process_chain_id=#{ref_process_chain_id};")
+	@Select("select * from process_chain_product where ref_process_chain_id=#{ref_process_chain_id} order  by  id asc;")
 	@Results(value={
 			@Result(property="id",column="id"),
 			@Result(property="refProduct",column="ref_product"),
@@ -80,20 +81,37 @@ public interface ProcessMachine3Repository {
 	
 	
 	
-	@Select("select * from process_chain_machine where ref_process_chain_element=#{id} order by seq asc;")
+	@Select("select pcm.id, pcm.seq, pcm.ref_process, pcm.ref_machine, pcm.ref_process_chain_element, pcm.next_sequence , "
+			+ "p.id as process_id from process_chain_machine pcm inner join process p on pcm.ref_process = p.name "
+			+ "where ref_process_chain_element=#{id} order by seq asc;")
 	@Results(value={
 			@Result(property="id", column="id"),
 			@Result(property="refProcess",column="ref_process"),
 			@Result(property="refMachine",column="ref_machine"),
 			@Result(property="refProcessChainElement",column="ref_process_chain_element"),
 			@Result(property="nextSequence",column="next_sequence"),
-			@Result(property="productProcessVars", column="id",
+			@Result(property="productProcessVars", column="process_chain_machine_id=id,process_id=process_id",
 				many = @Many(select  = "kr.co.fukoku.repository.ProcessMachine3Repository.finProductProcessVar")
 			)	
 	})
 	List<ProcessChainMachine> findProcessChainMachineByRefId(@Param("id") long id );
 	
-	@Select("select * from  product_process_var  where ref_process_chain_machine_id=#{id} order by seq asc;")
+	@Select("select\r\n" + 
+			"	ppv.id,\r\n" + 
+			"	ppv.seq,\r\n" + 
+			"	ppv.ref_product_id,\r\n" + 
+			"	ppv.ref_process_var_id,\r\n" + 
+			"	ppv.ref_process_chain_machine_id,\r\n" + 
+			"	ppv.type,\r\n" + 
+			"	ppv.usl,\r\n" + 
+			"	ppv.lsl,\r\n" + 
+			"	ppv.unit_kind,\r\n" + 
+			"	ppv.transform_value,\r\n" + 
+			"	ppv.remark,\r\n" + 
+			"	ppv.status,\r\n" + 
+			"	pv.name\r\n" + 
+			"from process_var pv inner  join product_process_var ppv on pv.id=ppv.ref_process_var_id "
+			+ "where  ppv.ref_process_chain_machine_id=#{process_chain_machine_id} order by ref_product_id asc;") //and pv.id=#{process_id} 
 	@Results(value={
 			@Result(property="refProductId",column="ref_product_id"),
 			@Result(property="refProcessChainElementId",column="ref_process_chain_element_id"),
@@ -101,7 +119,7 @@ public interface ProcessMachine3Repository {
 			@Result(property="transformValue",column="transform_value"),
 			@Result(property="refProcessChainMachineId",column="ref_process_chain_machine_id"),
 	})
-	List<ProductProcessVar> finProductProcessVar(@Param("id") long id );
+	List<ProductProcessVar> finProductProcessVar(Map<Object, String> params);
 	
 	
 	

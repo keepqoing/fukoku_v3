@@ -18,6 +18,9 @@ public class ProcessChainMachine {
 	private  long refProcessChainElement;
 	@JsonProperty("next_sequence")
 	private long nextSequence;
+	@JsonProperty("process_id")
+	private long processId;
+	
 	
 	private List<ProductProcessVar> productProcessVars;
 	
@@ -78,6 +81,12 @@ public class ProcessChainMachine {
 	}
 	public void setNextSequence(long nextSequence) {
 		this.nextSequence = nextSequence;
+	}
+	public long getProcessId() {
+		return processId;
+	}
+	public void setProcessId(long processId) {
+		this.processId = processId;
 	}
 	
 	

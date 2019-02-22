@@ -19,7 +19,15 @@ public class ProcessMachine3ServiceImpl implements ProcessMachine3Service{
 	@Override
 	public List<Line> findAll(LineFrm f) {
 		// TODO Auto-generated method stub
-		return repo.findAll(f);
+		List<Line> lines = repo.findAll(f);
+		
+//		for(int i=0;i<lines.size();i++) {
+//			for(int j=0;j<lines.get(i).getProcessChain().getProcessChainElement().size();j++) {
+//				
+//			}
+//		}
+		
+		return lines;
 	}
 
 	@Override
