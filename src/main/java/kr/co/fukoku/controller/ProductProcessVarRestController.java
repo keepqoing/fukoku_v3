@@ -1,6 +1,7 @@
 package kr.co.fukoku.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.co.fukoku.model.ProductProcessVar;
 import kr.co.fukoku.model.form.ProductProcessVarFrm;
 import kr.co.fukoku.repository.ProductProcessVarRepository;
 
@@ -23,7 +25,7 @@ public class ProductProcessVarRestController {
 	private ProductProcessVarRepository repository;
 	
 	@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Map<String,Object>> save(@RequestBody ProductProcessVarFrm frm)  {
+    public ResponseEntity<Map<String,Object>> save(@RequestBody ProductProcessVar frm)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
         	if(repository.save(frm)) {
@@ -42,7 +44,7 @@ public class ProductProcessVarRestController {
     }
 	
 	@RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<Map<String,Object>> update(@RequestBody ProductProcessVarFrm frm)  {
+    public ResponseEntity<Map<String,Object>> update(@RequestBody ProductProcessVar frm)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
         	if(repository.update(frm)) {
@@ -78,6 +80,27 @@ public class ProductProcessVarRestController {
         }
         return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
     }
+	
+	@RequestMapping(value="/{id}",method = RequestMethod.GET)
+    public ResponseEntity<Map<String,Object>> findOne(@PathVariable("id") long id)  {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+        	ProductProcessVar data =  repository.findOne(id);
+        	if(data != null ) {
+        		map.put("data", data);
+        		map.put("code", 200);
+        	}else {
+        		map.put("code", 404);
+        		map.put("message", "Data not found!");
+        	}
+        }catch(Exception e) {
+        	e.printStackTrace();
+        	map.put("code", 500);
+    		map.put("message", "Error! " + e.getMessage());
+        }
+        return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+    }
+	
 	
 
 }

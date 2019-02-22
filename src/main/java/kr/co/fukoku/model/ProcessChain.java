@@ -1,5 +1,7 @@
 package kr.co.fukoku.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ProcessChain {
@@ -16,6 +18,22 @@ public class ProcessChain {
 	private Product product;
 	@JsonProperty("status")
 	private String status;
+	
+	
+	
+	@JsonProperty("process_chain_element")
+	private List<ProcessChainElement> processChainElement;
+	
+	@JsonProperty("ref_line")
+	private String refLine;
+	@JsonProperty("process_chain_product")
+	private List<ProcessChainProduct> processChainProduct;
+	
+	
+	
+	public ProcessChain() {
+		super();
+	}
 	public ProcessChain(long id, long seq, String name, Line line, Product product, String status) {
 		super();
 		this.id = id;
@@ -65,6 +83,26 @@ public class ProcessChain {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public List<ProcessChainElement> getProcessChainElement() {
+		return processChainElement;
+	}
+	public void setProcessChainElement(List<ProcessChainElement> processChainElement) {
+		this.processChainElement = processChainElement;
+	}
+	public String getRefLine() {
+		return refLine;
+	}
+	public void setRefLine(String refLine) {
+		this.refLine = refLine;
+	}
+	public List<ProcessChainProduct> getProcessChainProduct() {
+		return processChainProduct;
+	}
+	public void setProcessChainProduct(List<ProcessChainProduct> processChainProduct) {
+		this.processChainProduct = processChainProduct;
+	}
+	
+	
 	
 	
 

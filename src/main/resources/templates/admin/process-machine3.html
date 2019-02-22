@@ -49,14 +49,22 @@
                         <div class="row">
                             	<div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
                                 	<div class="form-group">
-                                    	<select class="form-control">
-                                    		<option value="All" selected>All</option>
-                                    		<option value="1">보령 댐퍼 공장</option>
-                                    		<option value="0">보령 러버 공장</option>
-                                    	</select>
+                                    	<select class="form-control" id="selectOptFactory" ng-model="selectCtrl.selectedValue"  ng-change="selectByFactory()">
+		                                	<!-- <option value="0">All</option>  -->
+ 		                                	<option ng-repeat="o in factories"  value="{{o.id}}">{{o.name}}</option>
+		                                </select>
                                 	</div>
                                 </div>
                         </div>
+                        
+                        <div class="row">
+                            	<div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12 icheckbox_minimal-blue checked">
+                                	<span style="margin-right:10px" ng-repeat="f in checkBoxLines" >
+                                	 	<input type="checkbox" ng-change="lineCheck()" ng-model="ckLines.selected" class="minimal" name="ckLines" value="{{f.name}}"> <b>{{f.name}}</b>
+                                	</span>
+                                </div>
+                        </div>
+                        
                          <br/>
                          
                          
@@ -67,10 +75,10 @@
                                     <tr>
                                         <th>
                                         	라인
-                                        	<span class="pull-right">
-	                                    					<label style="font-size: 13px;"><input type="radio" name="sLine" value="ALL" checked="checked"> All</label>
-	                                    					<label style="font-size: 13px;"><input type="radio" name="sLine"  value="Active"> Active</label>
-	                                    					<label style="font-size: 13px;"><input type="radio" name="sLine"  value="Inactive"> Inactive</label>
+                                        	<span class="pull-right" ng-init="statusLineCheckOpt=3">
+	                                    					<label style="font-size: 13px;"><input type="radio" value="3" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'>All</label>
+	                                    					<label style="font-size: 13px;"><input type="radio" value="1" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'> Active</label>
+	                                    					<label style="font-size: 13px;"><input type="radio" value="0" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'> Inactive</label>
 	                                    	</span>
                                         </th>
                                         <th>
@@ -81,50 +89,162 @@
 	                                    					<label style="font-size: 13px;"><input type="radio" name="sProduct"  value="Inactive"> Inactive</label>
 	                                    	</span>
                                         </th>
-                                        <th ng-repeat="i in range(1,maxStage)">공정 {{i}}</th>
+                                        <th ng-repeat="i in range(1,countStage)">공정 {{i}}</th>
                                     </tr>
                                     
                                     </thead>
                                     <tbody>
+                                    
+                                   		 <!-- <tr ng-repeat="f in processMachines.data">
+                                   		 	<td><span><h4><b>{{f.name}}</b></h4></span></td>
+                                   		 	<td>
+		                                    		<table class="table table-bordered" >
+		                                    			<tr style="visibility: hidden;">
+		                                    				<td>Test</td>
+		                                    			</tr>
+		                                    			<tr ng-repeat="pcp in f.process_chain.process_chain_product">
+		                                    				<td>
+		                                    					<b class="label label-primary" style="font-size:14px">{{pcp.ref_product}}</b>
+		                                    				</td>
+		                                    			</tr>
+		                                    		</table>
+	                                    	</td>
+	                                    	<td ng-repeat="e in f.process_chain.process_chain_element">
+	                                    	
+	                                    		<table>
+	                                    			<tr>
+	                                    				<td><h5><span><b>{{e.name}}</b></span></h5></td>
+	                                    			</tr>
+	                                    			<tr ng-repeat="m in e.process_chain_machine">
+	                                    				<td>
+	                                    					<span  class="label label-success">{{m.ref_machine}}</span>
+			                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
+			                                    			<ul ng-repeat="pvar in m.productProcessVars" >
+												                <li>
+												               		<span class="label label-info"><b>{{pvar.name}}</b></span> 
+												                  	 <span class="pull-right">
+												                  	<button ng-click="btUpdate(e.id,m.id,pvar.id)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
+												                  	<button   ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
+												                  	 </span>
+												                </li>
+												             </ul>
+	                                    				</td>
+	                                    			</tr>
+	                                    		</table>
+	                                    	</td>
+                                   		 </tr> -->
+	                                    
+	                                    
 	                                    <tr ng-repeat="f in processMachines.data">
 	                                    	<td>
-	                                    			<span><h4><b>{{f.REF_LINE}}</b></h4></span>
+	                                    			<span><h4><b>{{f.name}}</b></h4></span>
 	                                    	</td>
 	                                    	<td>
-	                                    		
-	                                    		<ul ng-repeat="p in f.PROCESS_PRODUCT" class="products-list product-list-in-box">
-	                                    			
-	                                    			<li class="item"><b class="label label-primary" style="font-size:14px">{{p.REF_PRODUCT}}</b></li>
-	                                    		</ul>
+		                                    		<ul ng-repeat="pcp in f.process_chain.process_chain_product" class="products-list product-list-in-box">
+		                                    			<li class="item"><b class="label label-primary" style="font-size:14px">{{pcp.ref_product}}</b></li>
+		                                    		</ul> 
 	                                    	</td>
 	                                    	
-	                                    	<td ng-repeat="e in f.PROCESS_CHAIN_ELEMENT">
+	                                    	<td ng-repeat="e in f.process_chain.process_chain_element">
 	                                    	
-	                                    		<h5><span><b>{{e.NAME}}</b></span></h5>
+	                                    		<table>
+	                                    			<tr>
+	                                    				<td><h5><span><b>{{e.name}}</b></span></h5></td>
+	                                    			</tr>
+	                                    			<tr ng-repeat="m in e.process_chain_machine">
+	                                    				<td>
+	                                    					<span  class="label label-success">{{m.ref_machine}}</span>
+			                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
+			                                    			<ul ng-repeat="pvar in m.productProcessVars" >
+												                <li>
+												               		<span class="label label-info"><b>{{pvar.name}}</b></span> 
+												                  	 <span class="pull-right">
+												                  	<button ng-click="btUpdate(e.id,m.id,pvar.id)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
+												                  	<button   ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
+												                  	 </span>
+												                </li>
+												             </ul>
+	                                    				</td>
+	                                    			</tr>
+	                                    		</table>
 	                                    		
-	                                    		<div ng-repeat="m in e.PROCESS_MACHINE"> 
-	                                    			<span  class="label label-success">{{m.REF_MACHINE}}</span>
-	                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.ID,m.ID)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
-	                                    			<ul ng-repeat="pvar in m.PRODUCT_PROCESS_VAR" >
+	                                    		
+	                                    		
+	                                    		
+	                                    	
+	                                    		
+	                                    		
+	                                    	</td>
+	                                    	
+	                                    	 	<!-- <div ng-repeat="m in e.process_chain_machine"> 
+	                                    			<span  class="label label-success">{{m.ref_machine}}</span>
+	                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
+	                                    			<ul ng-repeat="pvar in m.productProcessVars" >
 										                <li>
-										               		<span class="label label-info"><b>{{pvar.NAME}}</b></span> 
+										               		<span class="label label-info"><b>{{pvar.name}}</b></span> 
 										                  	 <span class="pull-right">
-										                  	<button ng-click="btUpdate(e.ID,m.ID,pvar.ID)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
-										                  	<button   ng-click="delete(pvar.ID)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
+										                  	<button ng-click="btUpdate(e.id,m.id,pvar.id)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
+										                  	<button   ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
 										                  	 </span>
 										                </li>
 										              </ul>
-	                                    		</div>
-	                                    		
-	                                    		
-	                                    		
-	                                    	</td>
+	                                    		</div> -->
+	                                    	
 	                                    </tr>
                                     </tbody>
                                 </table>
                                 
                                 
-
+							 <!-- <table border="1" class="table table-bordered" id="dtTable">
+							 	<tr>
+									<th>라인</th>
+									<th>제품</th>
+									<th>공정 1</th>
+									<th>공정 2</th>
+								</tr>
+								<tr>
+									<td rowspan="4">HC</td>
+									<td rowspan="3">제품 1</td>
+									<td>공정 1</td>
+									<td>공정 2</td>
+								</tr>
+								<tr>
+									<td>공정 1</td>
+									<td>공정 2</td>
+								</tr>
+								<tr>
+									<td>공정 1</td>
+									<td>공정 2</td>
+								</tr>
+								
+								<tr>
+									<td>제품 2</td>
+									<td>공정 2</td>
+									<td>공정 2</td>
+								</tr>
+								
+								
+								
+								
+								
+								<tr>
+									<td rowspan="3">HC</td>
+									<td>제품 1</td>
+									<td>공정 1</td>
+									<td>공정 2</td>
+								</tr>
+								<tr>
+									<td>제품 2</td>
+									<td>공정 1</td>
+									<td>공정 2</td>
+								</tr>
+								<tr>
+									<td>제품 3</td>
+									<td>공정 1</td>
+									<td>공정 2</td>
+								</tr>
+							
+							</table> -->
 
                                 
                                 
@@ -181,8 +301,12 @@
                         <div class="form-group">
                             <label for="txtRemark" class="col-sm-2 control-label">변수이름:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtName" placeholder="" required/>
+                                <select class="form-control" id="selectOptName"  required>
+                                	<option ng-repeat="p in processVars" value="{{p.id}}">{{p.name}}</option>
+                                </select>
                             </div>
+                            
+                            
                         </div>
                         
                          <div class="form-group">
@@ -246,7 +370,7 @@
 
 </div>
 <th:block layout:fragment="script">
-						<script th:src="@{/static/admin/javascript_v3/process-machine2.js}"></script>
+						<script th:src="@{/static/admin/javascript_v3/process-machine3.js}"></script>
 						
 				
 					

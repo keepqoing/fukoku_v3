@@ -1,70 +1,78 @@
 package kr.co.fukoku.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Sets;
 
 public class ProductProcessVar {
 
 	@JsonProperty("id")
 	private long  id;
+	@JsonProperty("seq")
+	private long  seq;
+	@JsonProperty("ref_product_id")
+	private long refProductId; 
+	@JsonProperty("ref_process_chain_machine_id")
+	private String refProcessChainMachineId;
 	@JsonProperty("ref_process_var_id")
-	private String refProcessVarId;
-	@JsonProperty("ref_prouduct_id")
-	private String refProuductId;
-	@JsonProperty("ref_process_machine_id")
-	private String refProcessMachineId;
-	@JsonProperty("ref_process_chain_element_id")
-	private String refProcessChainElementId;
-	@JsonProperty("name")
-	private String name;
+	private long refProcessVarId;
 	@JsonProperty("type")
 	private String type;
 	@JsonProperty("usl")
-	private String usl;
+	private long usl;
 	@JsonProperty("lsl")
-	private String lsl;
+	private long lsl;
+	@JsonProperty("name")
+	private String name;
 	@JsonProperty("unit_kind")
-	private String unitKind;
+	private long unitKind;
 	@JsonProperty("transform_value")
-	private String transformValue;
+	private long transformValue;
 	@JsonProperty("remark")
 	private String remark;
 	@JsonProperty("status")
 	private String status;
+	
+	@JsonProperty("ref_process_machine_id")
+	private long  refProcessMachineId;
+	
+	
+	
+	
+	public long getRefProcessVarId() {
+		return refProcessVarId;
+	}
+	public void setRefProcessVarId(long refProcessVarId) {
+		this.refProcessVarId = refProcessVarId;
+	}
+	public long getRefProcessMachineId() {
+		return refProcessMachineId;
+	}
+	public void setRefProcessMachineId(long refProcessMachineId) {
+		this.refProcessMachineId = refProcessMachineId;
+	}
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getRefProcessVarId() {
-		return refProcessVarId;
+	public long getSeq() {
+		return seq;
 	}
-	public void setRefProcessVarId(String refProcessVarId) {
-		this.refProcessVarId = refProcessVarId;
+	public void setSeq(long seq) {
+		this.seq = seq;
 	}
-	public String getRefProuductId() {
-		return refProuductId;
+	public long getRefProductId() {
+		return refProductId;
 	}
-	public void setRefProuductId(String refProuductId) {
-		this.refProuductId = refProuductId;
+	public void setRefProductId(long refProductId) {
+		this.refProductId = refProductId;
 	}
-	public String getRefProcessMachineId() {
-		return refProcessMachineId;
+	public String getRefProcessChainMachineId() {
+		return refProcessChainMachineId;
 	}
-	public void setRefProcessMachineId(String refProcessMachineId) {
-		this.refProcessMachineId = refProcessMachineId;
-	}
-	public String getRefProcessChainElementId() {
-		return refProcessChainElementId;
-	}
-	public void setRefProcessChainElementId(String refProcessChainElementId) {
-		this.refProcessChainElementId = refProcessChainElementId;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
+	public void setRefProcessChainMachineId(String refProcessChainMachineId) {
+		this.refProcessChainMachineId = refProcessChainMachineId;
 	}
 	public String getType() {
 		return type;
@@ -72,28 +80,34 @@ public class ProductProcessVar {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getUsl() {
+	public long getUsl() {
 		return usl;
 	}
-	public void setUsl(String usl) {
+	public void setUsl(long usl) {
 		this.usl = usl;
 	}
-	public String getLsl() {
+	public long getLsl() {
 		return lsl;
 	}
-	public void setLsl(String lsl) {
+	public void setLsl(long lsl) {
 		this.lsl = lsl;
 	}
-	public String getUnitKind() {
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public long getUnitKind() {
 		return unitKind;
 	}
-	public void setUnitKind(String unitKind) {
+	public void setUnitKind(long unitKind) {
 		this.unitKind = unitKind;
 	}
-	public String getTransformValue() {
+	public long getTransformValue() {
 		return transformValue;
 	}
-	public void setTransformValue(String transformValue) {
+	public void setTransformValue(long transformValue) {
 		this.transformValue = transformValue;
 	}
 	public String getRemark() {
@@ -108,6 +122,16 @@ public class ProductProcessVar {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public ProductProcessVar() {
+		super();
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

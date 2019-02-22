@@ -251,6 +251,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		$("#btUpdate").hide();
 		$("#btSave").show();
 		$("#modalFrm").modal('show');
+		alert($scope.action);
 	};
 	
 	$scope.btEdit = function(id){
@@ -263,9 +264,11 @@ app.controller('MainCtrl', function($scope, $http) {
 		$("#btSave").hide();
 		$("#btUpdate").show();
 		$("#modalFrm").modal('show');
+		
 	}
 	
 	$scope.onSubmitFrm = function(){
+		
 		if($scope.action == "add"){
 			$scope.save("POST");
 		}else{

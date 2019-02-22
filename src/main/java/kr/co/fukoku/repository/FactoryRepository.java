@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -14,6 +15,7 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import kr.co.fukoku.model.Factory;
+import kr.co.fukoku.model.Line;
 import kr.co.fukoku.model.form.FactoryFrm;
 import kr.co.fukoku.repository.sql.FactorySQLBuilder;
 
@@ -25,8 +27,14 @@ public interface FactoryRepository {
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),
+//			@Result(property="lines", column="id",
+//				many = @Many(select  = "kr.co.fukoku.repository.FactoryRepository.findLineByRefFactoryId")
+//			)
 	})
 	List<Factory> findAll(@Param("f") FactoryFrm frm);
+	
+//	@Select("SELECT * FROM line WHERE ref_factory_id=#{ref_factory_id}")
+//	List<Line> findLineByRefFactoryId(@Param("ref_factory_id") long id);
 	
 	@SelectProvider(type = FactorySQLBuilder.class, method = "find")
 	List<Map<String, Object>> findMap(@Param("f") FactoryFrm frm);

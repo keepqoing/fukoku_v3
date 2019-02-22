@@ -19,6 +19,9 @@ public class ProcessMachine {
 	@JsonProperty("next_sequence")
 	private String nextSequence;
 	
+	@JsonProperty("product_process_var")
+	private List<ProductProcessVar> productProcessVar;
+	
 	
 	
 	
@@ -57,6 +60,12 @@ public class ProcessMachine {
 	}
 	public void setNextSequence(String nextSequence) {
 		this.nextSequence = nextSequence;
+	}
+	public List<ProductProcessVar> getProductProcessVar() {
+		return productProcessVar;
+	}
+	public void setProductProcessVar(List<ProductProcessVar> productProcessVar) {
+		this.productProcessVar = productProcessVar;
 	}
 	
 	

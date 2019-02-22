@@ -111,7 +111,7 @@ app.controller('MainCtrl', function($scope, $http) {
         });
     }
 	
-	$scope.findOne = function(id){   alert(id);
+	$scope.findOne = function(id){ 
         var post = $http({
             method: "GET",
             url: "/v3/api/fukoku/machine/"+id,

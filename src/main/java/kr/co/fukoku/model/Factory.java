@@ -1,5 +1,7 @@
 package kr.co.fukoku.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import kr.co.fukoku.model.Product;
@@ -23,6 +25,8 @@ public class Factory {
 	@JsonProperty("status")
 	private String status;
 	
+	@JsonProperty("lines")
+	private List<Line> lines;
 	
 	public Factory() {
 		super();
@@ -124,7 +128,13 @@ public class Factory {
 		this.status = status;
 	}
 	
+	public void setLines(List<Line> lines) {
+		this.lines = lines;
+	}
 	
+	public List<Line> getLines() {
+		return lines;
+	}
 	
 	
 	

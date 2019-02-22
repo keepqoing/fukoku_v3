@@ -1,5 +1,7 @@
 package kr.co.fukoku.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import kr.co.fukoku.model.Product;
@@ -26,6 +28,13 @@ public class Line {
 	private String remark;
 	@JsonProperty("status")
 	private String status;
+	
+	
+	
+	@JsonProperty("process_chain")
+	private ProcessChain processChain;
+	
+	
 	
 	public Line() {
 		super();
@@ -141,6 +150,21 @@ public class Line {
 		this.status = status;
 	}
 	
+	
+
+
+
+	public ProcessChain getProcessChain() {
+		return processChain;
+	}
+
+
+
+
+
+	public void setProcessChain(ProcessChain processChain) {
+		this.processChain = processChain;
+	}
 	
 	
 	
