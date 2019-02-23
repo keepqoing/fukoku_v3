@@ -6,6 +6,7 @@ $(function () {
     var machineArr = []; // for machine
     var machineSpecificArr = []; // for machine
 
+
     var _ctx = ($("meta[name='ctx']").attr("content") === undefined) ? "" : $("meta[name='ctx']").attr("content");
 
     // Prepend context path to all jQuery AJAX requests
@@ -110,7 +111,7 @@ $(function () {
     lines.createLineCheckBox = function(){
         var divLine = document.getElementById("lineCheckboxes");
         divLine.innerHTML = "";
-
+        console.log("Line checkbox length = " + lineArr.length);
         for(i=0; i< lineArr.length; i++){
             divLine.appendChild(lines.createCheckBox(lineArr[i][0], lineArr[i][1]));
         }
@@ -411,10 +412,10 @@ $(function () {
 
 
     // Remove Data
-    lines.deleteProcessModelByLine = function (p_line) {
+    lines.deleteProcessModelByLine = function (p_line, callback) {
         $.ajax({
             url: "/v3/api/fukoku/process_model/remove/" +  p_line,
-            type: 'DELETE',
+            type: 'GET',
             dataType: 'JSON',
 
             beforeSend: function (xhr) {
@@ -422,10 +423,23 @@ $(function () {
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function (response) {
-
+                if (callback) {
+                    callback(response);
+                }
+                // console.log("response = " + response.code);
+                // if(response.code == 200) {
+                //     delSucceess = 1;
+                // }else if(response.code == 404){
+                //     delSucceess = 1;
+                // }else{
+                //     delSucceess = 0;
+                //
+                // }
             },
             error: function (data, status, err) {
+
                 console.log("error: " + data + " status: " + status + " err:" + err);
+
             }
         });
     };
@@ -676,41 +690,53 @@ function newProduct_2_8_productSet(btnObj){
 }
 
 // -- Step 2-9. Remove the whole row of Process Product
+
 function newProduct_2_9_removeRow(btnObj){
     var z = "";
     z = confirm("삭제하시겠습니까?");
     if( z == true){
 
-        lineName = $(btnObj).parent().parent().attr("data-id");
-        // console.log(lineName);
-
-        var rowspan = parseInt($("#td"+lineName).attr("rowSpan"));
-        // test
-        var td = $('#td'+lineName);
-        $('#td'+lineName).attr('rowSpan', (rowspan - 1));
-
-        //$("<td/>").insertBefore($("#btnMinusProductHC_1").parent().parent().next().children().first());
-        var btnClassName = $(btnObj).parent().parent().parent().attr("class");
-        var btnRowId = $(btnObj).parent().parent().parent().attr("id");
-
-        // console.log("class[0] = " + $("."+btnClassName)[0].id);
-
-        // console.log("row id = " + btnRowId);
-
-        if($("."+btnClassName)[0].id == btnRowId && rowspan != 1){
-            $(td).insertBefore($(btnObj).parent().parent().parent().next().children().first());
-        }
-
-        $(btnObj).parent().parent().parent().first().remove();
-
         deleteRow = $(btnObj).parent().parent().parent().attr("data-id");
-        console.log("id is removed = " + deleteRow);
-        lines.deleteProcessModelByLine(deleteRow);
 
-        // uncheck the deleted line
-        document.getElementById("chk"+lineName).checked = false;
+        lines.deleteProcessModelByLine(deleteRow, function(response){
 
-        checkIfNoMoreRow();
+            if(response.code == 200 || response.code == 404) {
+                lineName = $(btnObj).parent().parent().attr("data-id");
+                // console.log(lineName);
+
+                var rowspan = parseInt($("#td" + lineName).attr("rowSpan"));
+                // test
+                var td = $('#td' + lineName);
+                $('#td' + lineName).attr('rowSpan', (rowspan - 1));
+
+                //$("<td/>").insertBefore($("#btnMinusProductHC_1").parent().parent().next().children().first());
+                var btnClassName = $(btnObj).parent().parent().parent().attr("class");
+                var btnRowId = $(btnObj).parent().parent().parent().attr("id");
+
+                // console.log("class[0] = " + $("."+btnClassName)[0].id);
+
+                // console.log("row id = " + btnRowId);
+
+                if ($("." + btnClassName)[0].id == btnRowId && rowspan != 1) {
+                    $(td).insertBefore($(btnObj).parent().parent().parent().next().children().first());
+                }
+
+                $(btnObj).parent().parent().parent().first().remove();
+
+
+                // uncheck the deleted line
+                document.getElementById("chk" + lineName).checked = false;
+
+                checkIfNoMoreRow();
+
+                swal("성공적으로 삭제되었습니다!");
+            }else{
+                swal("다른 메뉴가 이것을 사용하기 때문에 삭제할 수 없습니다!");
+
+            }
+        });
+
+
     }
 }
 
@@ -1586,7 +1612,7 @@ function loadDataToTable(result){
 
 var numberProcess = 0;
 // 1.1 - Read Data and Create One line for once
-function createOneLine(lineName, name){
+function createOneLine(lineName){
     numberProcess = 0;
 
 
@@ -1607,7 +1633,7 @@ function createOneLine(lineName, name){
 
         tr.id = "tr" + lineName + "_1";
         tr.className = "tr" + lineName;
-        tr.setAttribute("data-id", name);
+        tr.setAttribute("data-id", lineName + "_1");
         var td = document.createElement("td");
         td.id = "td" + lineName;
         td.className = "td" + lineName;

@@ -76,9 +76,6 @@ public class ProcessModelController {
 
                         }
                     }
-
-
-
                 }else {
                     map.put("code", 404);
                     map.put("message", "Data has not been inserted!");
@@ -287,15 +284,19 @@ public class ProcessModelController {
         return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
     }
 
-    @RequestMapping(value="/remove/{lines}",method = RequestMethod.DELETE)
+    @RequestMapping(value="/remove/{lines}",method = RequestMethod.GET)
     public ResponseEntity<Map<String,Object>> delete(@PathVariable("lines") String lines)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            if(repository.truncateProcessModel(lines)==1) {
+            int i = repository.truncateProcessModel(lines);
+            if( i == 1) {
                 map.put("message", "Data has been deleted!");
                 map.put("code", 200);
-            }else {
+            }else if(i == 2){
                 map.put("code", 404);
+                map.put("message", "Data has not been deleted!");
+            } else{
+                map.put("code", 888);
                 map.put("message", "Data has not been deleted!");
             }
         }catch(Exception e) {
