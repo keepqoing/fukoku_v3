@@ -145,21 +145,21 @@ app.controller('MainCtrl', function($scope, $http) {
             	$scope.message = response.message;
             	$scope.findAll($scope.data);
             	$("#modalFrm").modal('hide');
-            	swal({position: 'top-end',type: 'success',title: 'Data has been saved',showConfirmButton: false,timer: 1500})
+            	swal({position: 'top-end',type: 'success',title: '데이터가 저장되었습니다.',showConfirmButton: false,timer: 1500})
             }else{
             	$scope.message = response.message;
-            	swal({position: 'top-end',type: 'error',title: 'Data has not been saved',showConfirmButton: false,timer: 1500})
+            	swal({position: 'top-end',type: 'error',title: '데이터가 저장되지 않았습니다.',showConfirmButton: false,timer: 1500})
             }
         });
         post.error(function (data, status) {
             console.log(data);
-            swal({position: 'top-end',type: 'error',title: 'Data has not been saved',showConfirmButton: false,timer: 1500})
+            swal({position: 'top-end',type: 'error',title: '데이터가 저장되지 않았습니다.',showConfirmButton: false,timer: 1500})
         });
     }
 	
 	$scope.delete = function(id){
-		swal({  title: "ProcessVar" ,   
-			text: "Are you sure you want to deleted this process-var?",   
+		swal({  title: "공정항목" ,   
+			text: "이 공정항목 삭제 하시겠습니까?",   
 			type: "info",  
 			showCancelButton: true,   
 			closeOnConfirm: false,   
@@ -174,9 +174,9 @@ app.controller('MainCtrl', function($scope, $http) {
 	        post.success(function (response, status) {
 	        	$scope.products = null;
 	            if(response.code == 200){
-	            	swal({position: 'top-end',type: 'success',title: 'Data has been deleted',showConfirmButton: false,timer: 1500})
+	            	swal({position: 'top-end',type: 'success',title: '데이터가 저장되지 않았습니다.',showConfirmButton: false,timer: 1500})
 	            }else{
-	            	swal({position: 'top-end',type: 'error',title: 'Data has been deleted',showConfirmButton: false,timer: 1500})
+	            	swal({position: 'top-end',type: 'error',title: '데이터가 삭제되었습니다.',showConfirmButton: false,timer: 1500})
 	            }
 	            $scope.findAll($scope.data);
 	        });
@@ -272,10 +272,10 @@ app.controller('MainCtrl', function($scope, $http) {
     	    cache: false,
     	    success: function () {
     	    	$scope.findAll($scope.data);
-    	    	swal({position: 'top-end',type: 'success',title: 'Data has been imported.',showConfirmButton: false,timer: 1500})
+    	    	swal({position: 'top-end',type: 'success',title: '데이터를 가져 왔습니다.',showConfirmButton: false,timer: 1500})
     	    },
     	    error: function () {
-    	    	swal({position: 'top-end',type: 'error',title: 'Data has been imported.',showConfirmButton: false,timer: 1500})
+    	    	swal({position: 'top-end',type: 'error',title: '데이터를 가져 오지 않았습니다.',showConfirmButton: false,timer: 1500})
     	    }
     	});
 	    

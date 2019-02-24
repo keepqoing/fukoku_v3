@@ -23,7 +23,14 @@ public class Table {
 	public static final String PROCESS_MACHINE_COLUMN[] = {"seq","ref_process","ref_machine","ref_process_chain_element","next_sequence"};
 	public static final String PROCESS_VAR_COLUMN[] = {"seq","name","ref_process_id","remark","status","item_type"};
 	
+	
+	
 	public static final String DEPARTMENT_COLUMN[] = {"seq","code","name","parent","remark"};
+	
+	public static final String DATABASE_INFOR ="Database infor(s)";
+	public static final String DATABASE_INFOR_COLUMN[] = {"seq", "db_name", "db_ip_address", "db_port_no" , "db_user_name","db_user_password", "db_type", "remark"};
+	
+	
 	
 	
 	

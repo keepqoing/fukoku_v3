@@ -25,26 +25,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.fukoku.model.DatabaseInfor;
+import kr.co.fukoku.model.Factory;
+import kr.co.fukoku.model.Line;
 import kr.co.fukoku.model.Product;
+import kr.co.fukoku.model.form.DatabaseInforFrm;
 import kr.co.fukoku.model.form.FactoryFrm;
+import kr.co.fukoku.model.form.LineFrm;
 import kr.co.fukoku.model.form.ProductFrm;
 import kr.co.fukoku.model.response.Table;
+import kr.co.fukoku.repository.DatabaseInforRepository;
+import kr.co.fukoku.repository.FactoryRepository;
+import kr.co.fukoku.repository.LineRepository;
 import kr.co.fukoku.repository.ProductRepository;
 import kr.co.fukoku.utils.ExcelGeneratorDynamic;
 import kr.co.fukoku.utils.ReadExcelDynamic;
 
 @RestController
-@RequestMapping("/v3/api/fukoku/product")
-public class ProductRestController {
+@RequestMapping("/v3/api/fukoku/database-infor")
+public class DatabaseInforRestController {
 	
 	@Autowired
-	private ProductRepository repository;
+	private DatabaseInforRepository repository;
 	
 	@RequestMapping(value="/find",method = RequestMethod.POST)
-    public ResponseEntity<Map<String,Object>> findAll(@RequestBody ProductFrm f)  {
+    public ResponseEntity<Map<String,Object>> findAll(@RequestBody DatabaseInforFrm f)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-        	List<Product> data = repository.findAll(f);
+        	List<DatabaseInfor> data = repository.findAll(f);
         	if(data.size() > 0 ) {
         		map.put("data", data);
         		map.put("code", 200);
@@ -64,7 +72,7 @@ public class ProductRestController {
     public ResponseEntity<Map<String,Object>> findOne(@PathVariable("id") long id)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-        	Product data = repository.findOne(id);
+        	DatabaseInfor data = repository.findOne(id);
         	if(data != null ) {
         		map.put("data", data);
         		map.put("code", 200);
@@ -100,7 +108,7 @@ public class ProductRestController {
     }
 	
 	@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Map<String,Object>> save(@RequestBody ProductFrm frm)  {
+    public ResponseEntity<Map<String,Object>> save(@RequestBody DatabaseInforFrm frm)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
         	if(repository.save(frm)) {
@@ -119,7 +127,7 @@ public class ProductRestController {
     }
 	
 	@RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<Map<String,Object>> update(@RequestBody ProductFrm frm)  {
+    public ResponseEntity<Map<String,Object>> update(@RequestBody DatabaseInforFrm frm)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
         	if(repository.update(frm)) {
@@ -137,36 +145,17 @@ public class ProductRestController {
         return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
     }
 	
-	@RequestMapping(value="/distinct",method = RequestMethod.GET)
-    public ResponseEntity<Map<String,Object>> findAllDistinct()  {
-        Map<String, Object> map = new HashMap<String, Object>();
-        try {
-        	List<Product> data = repository.findAllDistinct();
-        	if(data.size() > 0 ) {
-        		map.put("data", data);
-        		map.put("code", 200);
-        	}else {
-        		map.put("code", 404);
-        		map.put("message", "Data not found!");
-        	}
-        }catch(Exception e) {
-        	e.printStackTrace();
-        	map.put("code", 500);
-    		map.put("message", "Error! " + e.getMessage());
-        }
-        return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
-    }
-
-	@RequestMapping(value = "/download",  method = RequestMethod.POST)
-    public ResponseEntity<InputStreamResource> excelCustomersReport(@RequestBody ProductFrm frm) throws IOException {
-		
+	@GetMapping(value = "/download")
+    public ResponseEntity<InputStreamResource> excelCustomersReport() throws IOException {
+		DatabaseInforFrm frm = new DatabaseInforFrm();
+		frm.setStatus("3");
+		frm.setName("");
 		List<Map<String, Object>>  f =(List<Map<String, Object>> ) repository.findMap(frm);
 		
-		ByteArrayInputStream in = ExcelGeneratorDynamic.customersToExcel(f,Table.PRODUCT_COLUMN);
-		// return IOUtils.toByteArray(in);
+		ByteArrayInputStream in = ExcelGeneratorDynamic.customersToExcel(f,Table.DATABASE_INFOR_COLUMN);
 		
 		HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=factory.xlsx");
+        headers.add("Content-Disposition", "attachment; filename=line.xlsx");
 		
 		 return ResponseEntity
 	                .ok()
@@ -177,17 +166,20 @@ public class ProductRestController {
 	@PostMapping(value = "/import")
 	public ResponseEntity<Map<String,Object>> handleFileUpload( @RequestParam("file") MultipartFile uploadfile) throws IOException, JSONException {
 		Map<String, Object> map = new HashMap<String, Object>();
-		JSONArray jsonArr = ReadExcelDynamic.readExcel(uploadfile, Table.PRODUCT_COLUMN);
-		List<ProductFrm> fArr = new ArrayList<ProductFrm>();
+		JSONArray jsonArr = ReadExcelDynamic.readExcel(uploadfile, Table.DATABASE_INFOR_COLUMN);
+		List<DatabaseInforFrm> fArr = new ArrayList<DatabaseInforFrm>();
 		
 		for(int i=0;i<jsonArr.length();i++) {
-			ProductFrm  f = new ProductFrm();
-			f.setName( (String) jsonArr.getJSONObject(i).get("name")  );
-			f.setType( (String) jsonArr.getJSONObject(i).get("type")  );
-			f.setStartDate( (String) jsonArr.getJSONObject(i).get("start_date")  );
-			f.setEndDate( (String) jsonArr.getJSONObject(i).get("end_date")  );
-			f.setCustomerName( (String) jsonArr.getJSONObject(i).get("customer_name")  );
+			DatabaseInforFrm  f = new DatabaseInforFrm();
+			f.setSeq( Long.parseLong((String) jsonArr.getJSONObject(i).get("seq"))  );
+			f.setName( (String) jsonArr.getJSONObject(i).get("db_name")  );
+			f.setIpAddress( (String) jsonArr.getJSONObject(i).get("db_ip_address")  );
+			f.setPort( (String) jsonArr.getJSONObject(i).get("db_port_no")  );
+			f.setUsername( (String) jsonArr.getJSONObject(i).get("db_user_name")  );
+			f.setPassword( (String) jsonArr.getJSONObject(i).get("db_user_password")  );
+			f.setType( (String) jsonArr.getJSONObject(i).get("db_type")  );
 			f.setRemark( (String) jsonArr.getJSONObject(i).get("remark")  );
+			//f.setStatus( (String) jsonArr.getJSONObject(i).get("status")  );
 			fArr.add(f);
 		}
 		
@@ -203,26 +195,5 @@ public class ProductRestController {
 		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 	}
 
-	// Chomrern - as of 2019-01-28
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Map<String,Object>> findAllProducts()  {
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			List<Product> data = repository.findAllProducts();
-			if(data.size() > 0 ) {
-				map.put("data", data);
-				map.put("code", 200);
-			}else {
-				map.put("code", 404);
-				map.put("message", "Data not found!");
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-			map.put("code", 500);
-			map.put("message", "Error! " + e.getMessage());
-		}
-		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
-	}
-	
-	
+
 }
