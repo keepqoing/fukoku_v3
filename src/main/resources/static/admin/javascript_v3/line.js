@@ -251,7 +251,6 @@ app.controller('MainCtrl', function($scope, $http) {
 		$("#btUpdate").hide();
 		$("#btSave").show();
 		$("#modalFrm").modal('show');
-		alert($scope.action);
 	};
 	
 	$scope.btEdit = function(id){
