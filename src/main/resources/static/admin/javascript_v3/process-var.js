@@ -281,6 +281,8 @@ app.controller('MainCtrl', function($scope, $http) {
 	    
 	});
 	
+	
+	
 	$scope.btOrder = function(col){
 		
 		if($scope.sorting == "asc"){
