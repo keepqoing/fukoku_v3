@@ -144,9 +144,14 @@ public class LineRestController {
 	
 	@GetMapping(value = "/download")
     public ResponseEntity<InputStreamResource> excelCustomersReport() throws IOException {
-		List<Map<String, Object>>  f =(List<Map<String, Object>> ) repository.findMap(new LineFrm(""));
+		LineFrm frm = new LineFrm();
+		frm.setStatus("3");
+		frm.setName("");
+		List<Map<String, Object>>  f =(List<Map<String, Object>> ) repository.findMap(frm);
 		
-		ByteArrayInputStream in = ExcelGeneratorDynamic.customersToExcel(f,Table.LINE_COLUMN);
+		//ByteArrayInputStream in = ExcelGeneratorDynamic.customersToExcel(f,Table.LINE_COLUMN);
+		String[] str = new String[] {"1","2","3"};
+		ByteArrayInputStream in = ExcelGeneratorDynamic.dataToExcelDropList(f,Table.LINE_COLUMN, str, 2);
 		// return IOUtils.toByteArray(in);
 		
 		HttpHeaders headers = new HttpHeaders();

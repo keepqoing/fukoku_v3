@@ -80,7 +80,7 @@ public interface ProductProcessVarRepository {
 			"	lsl=#{f.lsl}," + 
 			"	unit_kind=#{f.unitKind}," + 
 			"	transform_value=#{f.transformValue}," +  
-			"	remark=#{f.remark} ,ref_process_var_id=#{refProcessVarId} where id=#{f.id}")
+			"	remark=#{f.remark} , ref_process_var_id=#{f.refProcessVarId} where id=#{f.id}")
 	boolean update(@Param("f") ProductProcessVar frm);
 	
 	

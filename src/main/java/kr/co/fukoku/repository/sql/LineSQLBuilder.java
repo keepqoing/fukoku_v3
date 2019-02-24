@@ -18,6 +18,8 @@ public class LineSQLBuilder {
 			status = "	start_date <= CURRENT_TIMESTAMP and end_date >= CURRENT_TIMESTAMP and ";
 		}else if(f.getStatus().equalsIgnoreCase("0")) {
 			status = "	end_date < CURRENT_TIMESTAMP and ";
+		}else {
+			status = "";
 		}
 		
 		 StringBuffer buffer = new StringBuffer();
