@@ -725,7 +725,9 @@ function newProduct_2_9_removeRow(btnObj){
 
 
                 // uncheck the deleted line
-                document.getElementById("chk" + lineName).checked = false;
+                if(document.getElementsByClassName("tr"+lineName).length == 0) {
+                    document.getElementById("chk" + lineName).checked = false;
+                }
 
                 checkIfNoMoreRow();
 
