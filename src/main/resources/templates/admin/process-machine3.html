@@ -19,6 +19,7 @@
   <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
 
+	
 				
     
     <style>
@@ -32,6 +33,14 @@
 		td{
 			vertical-align:top;
 		}
+		
+		
+		
+	
+		
+		
+		
+		
     </style>
     
 </head>
@@ -71,13 +80,15 @@
                         
                          <br/>
                          
-                         
-                        <div class="row">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                         <!-- col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 -->
+                        
+                        
+                        <div id="table-scroll"  class="row outer">
+                            <div class="table-responsive inner">
                                 <table  class="table table-bordered" id="dtTable">
                                     <thead class="table-head bg-primary">
                                     <tr>
-                                        <th>
+                                        <th class="fixed-side" scope="col">
                                         	라인
                                         	<span class="pull-right" ng-init="statusLineCheckOpt=3">
 	                                    					<label style="font-size: 13px;"><input type="radio" value="3" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'>All</label>
@@ -85,9 +96,9 @@
 	                                    					<label style="font-size: 13px;"><input type="radio" value="0" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'> Inactive</label>
 	                                    	</span>
                                         </th>
-                                        <th>
-                                        	<div style="width:200px;float:left">제품</div>
-                                        	<div style="width:280px;float:left" ng-repeat="i in range(1,countStage)">공정 {{i}}</div>
+                                        <th  class="fixed-side" scope="col">
+                                        	<div style="width:250px;float:left">제품</div>
+                                        	<!-- <div style="width:280px;float:left" ng-repeat="i in range(1,countStage)">공정 {{i}}</div> -->
                                         	<!-- <span class="pull-right">
 	                                    					<label style="font-size: 13px;"><input type="radio" name="sProduct" value="ALL" checked="checked"> All</label>
 	                                    					<label style="font-size: 13px;"><input type="radio" name="sProduct"  value="Active"> Active</label>
@@ -141,24 +152,39 @@
 	                                    
 	                                    
 	                                    <tr ng-repeat="f in processMachines.data">
+	                                    	
 	                                    	<td>
 	                                    			<span><h4><b>{{f.name}}</b></h4></span>
 	                                    	</td>
 	                                    	<td>
 	                                    	
 	                                    			<table border="1" class="table-bordered">
+	                                    				
+	                                    				<!-- <tr style="background-color:#337ab7">	
+	                                    					<td style="background-color:#337ab7;height: 30px;color: white;font-weight: bold;">제품</td>
+	                                    					<td style="background-color:#337ab7;height: 30px;color: white;font-weight: bold;" ng-repeat="i in range(1,countStage)">공정 {{i}}</td>
+	                                    				</tr> -->
+	                                    				
+	                                    			
 	                                    				<tr ng-repeat="pcp in f.process_chain.process_chain_product">
-	                                    					<td style="width:200px;">
+	                                    				
+	                                    					<td style="width:250px;">
 	                                    						<b class="label label-primary" style="font-size:14px">{{pcp.ref_product}}</b>
 	                                    						
+	                                    								
 	                                    							
-	                                    								<td style="width:280px" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name=='압입'">
+	                                    								<td style="width:250px" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name=='압입'">
 	                                    									<table class="table-bordered">
+	                                    									
+	                                    										
+	                                    										
 	                                    										<tr ng-repeat="m in e.process_chain_machine">
 	                                    											<!-- <td><h5><span><b>{{pcp.ref_product}}</b></span></h5></td> -->
 	                                    											
-	                                    												<td style="width:280px" class="products-list product-list-in-box">
-																								<h5><span><b>{{e.name}}</b></span></h5>
+	                                    												
+	                                    												
+	                                    												<td style="width:250px" class="products-list product-list-in-box">
+																								<h5><span><b>{{e.name}}  </b></span></h5>
 																								<span  class="label label-success">{{m.ref_machine}}</span>
 												                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
 												                                    			<ul ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id">
@@ -175,12 +201,15 @@
 	                                    									</table>
 	                                    									
 	                                    								</td>
-	                                    								<td style="width:280px" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name !='압입'">
+	                                    								<td style="width:250px" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name !='압입'">
 	                                    									<table class="table table-bordered">
+	                                    										
+	                                    										
+	                                    										
 	                                    										<tr ng-repeat="m in e.process_chain_machine">
 	                                    											<!-- <td><h5><span><b>{{pcp.ref_product}}</b></span></h5></td> -->
 	                                    											
-	                                    												<td style="width:280px" class="products-list product-list-in-box">
+	                                    												<td style="width:250px" class="products-list product-list-in-box">
 																								<h5><span><b>{{e.name}}</b></span></h5>
 																								<span  class="label label-success">{{m.ref_machine}}</span>
 												                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
@@ -477,8 +506,15 @@
 <th:block layout:fragment="script">
 						<script th:src="@{/static/admin/javascript_v3/process-machine3.js}"></script>
 						
-				
-					
+					<!-- <script>
+						$(document).ready(function(){
+							jQuery(document).ready(function() {
+								   jQuery(".main-table").clone(true).appendTo('#table-scroll').addClass('clone');   
+								 });
+
+						});
+					</script>
+					 -->
 						
 </th:block>
 </body>
