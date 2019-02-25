@@ -1460,7 +1460,7 @@ var data = [{
     "SEQ" : 1,
     "NAME" : "PD_CM5E",
     "REF_LINE" : "PD",
-    "PROCESS_PRODUCT" : [{
+    "PROCESS_CHAIN_PRODUCT" : [{
         "ID" : 0,
         "REF_PRODUCT" : "A",
         "REF_PROCESS_CHAIN_ID" : 0,
@@ -1472,7 +1472,7 @@ var data = [{
         "STAGE" : 1,
         "NAME" : "PROCESS_1",
         "REF_PROCESS_CHAIN_ID" : 1,
-        "PROCESS_MACHINE" : [{
+        "PROCESS_CHAIN_MACHINE" : [{
             "ID" : 1,
             "SEQ" : 1,
             // "REF_PROCESS" : "",
@@ -1504,18 +1504,18 @@ function DBInsertion(){
         var PROCESS_PRODUCTS = [];
         $.each($(this).find("div.subDivProduct"), function(keyProcessProduct, processProduct) {
 
-            var PROCESS_PRODUCT = {
+            var PROCESS_CHAIN_PRODUCT = {
                 "ID" : 0,
                 "REF_PRODUCT" : $(processProduct).find(".selProduct").val(),
                 "REF_PROCESS_CHAIN_ID" : 0
             };
             $(':radio', $(processProduct)).each(function(){
                 if($(this).is(":checked")){
-                    PROCESS_PRODUCT["STATUS"] = $(this).val();
+                    PROCESS_CHAIN_PRODUCT["STATUS"] = $(this).val();
                 }
             });
 
-            PROCESS_PRODUCTS.push(PROCESS_PRODUCT);
+            PROCESS_PRODUCTS.push(PROCESS_CHAIN_PRODUCT);
         });
 
         //=========================================
@@ -1533,7 +1533,7 @@ function DBInsertion(){
             };
             var PROCESS_MACHINES = [];
             $.each($(process).find("div.subProcess"), function(keySubProcess, subProcess){
-                var PROCESS_MACHINE = {
+                var PROCESS_CHAIN_MACHINE = {
                     "ID" : 0,
                     "SEQ" : $(subProcess).find(".txtSeq").val(),
                     "REF_PROCESS" : $(process).find(".txtMainTitle").val(),
@@ -1545,14 +1545,14 @@ function DBInsertion(){
                 $.each($(subProcess).find(".linkTxtClass"), function(keyLinkText, linkText){
                     NEXT_SEQUENCES.push($(linkText).val());
                 });
-                PROCESS_MACHINE["NEXT_SEQUENCE"] = NEXT_SEQUENCES.join(",");
-                PROCESS_MACHINES.push(PROCESS_MACHINE);
+                PROCESS_CHAIN_MACHINE["NEXT_SEQUENCE"] = NEXT_SEQUENCES.join(",");
+                PROCESS_MACHINES.push(PROCESS_CHAIN_MACHINE);
             });
-            PROCESS_CHAIN_ELEMENT["PROCESS_MACHINE"] = PROCESS_MACHINES;
+            PROCESS_CHAIN_ELEMENT["PROCESS_CHAIN_MACHINE"] = PROCESS_MACHINES;
             PROCESS_CHAIN_ELEMENTS.push(PROCESS_CHAIN_ELEMENT);
         });
 
-        data["PROCESS_PRODUCT"] = PROCESS_PRODUCTS;
+        data["PROCESS_CHAIN_PRODUCT"] = PROCESS_PRODUCTS;
         data["PROCESS_CHAIN_ELEMENT"] = PROCESS_CHAIN_ELEMENTS;
         //
         datas.push(data);
@@ -1601,7 +1601,7 @@ function loadDataToTable(result){
 
             for(var v = 0; v < result[i].PROCESS_CHAIN.length; v++) {
                 // Process Product
-                var processProducts = result[i].PROCESS_CHAIN[v].PROCESS_PRODUCT;
+                var processProducts = result[i].PROCESS_CHAIN[v].PROCESS_CHAIN_PRODUCT;
 
                 if (processProducts != null) {
                     newProduct_2_1_FromDB(result[i].REF_LINE, processProducts, result[i].PROCESS_CHAIN[v], btnObj);
@@ -1867,9 +1867,9 @@ function createStepAfterMainProcessFromDB(lineName, stage, div, subResult) {
         // td.setAttribute("style", "width:970px");
 
         row.appendChild(td);
-        if(subResult.PROCESS_MACHINE != null) {
-            for(var k=0; k < subResult.PROCESS_MACHINE.length; k++) {
-                createSubStepItemFromDB(buttPlus, subResult.PROCESS_MACHINE[k], subResult.NAME, txtMain);
+        if(subResult.PROCESS_CHAIN_MACHINE != null) {
+            for(var k=0; k < subResult.PROCESS_CHAIN_MACHINE.length; k++) {
+                createSubStepItemFromDB(buttPlus, subResult.PROCESS_CHAIN_MACHINE[k], subResult.NAME, txtMain);
             }
         }
     }

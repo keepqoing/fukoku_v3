@@ -40,7 +40,7 @@ public class ProcessChain {
     private String name;
     @JsonProperty("REF_LINE")
     private String ref_line;
-    @JsonProperty("PROCESS_PRODUCT")
+    @JsonProperty("PROCESS_CHAIN_PRODUCT")
     private List<ProcessProductFrm> process_product;
     @JsonProperty("PROCESS_CHAIN_ELEMENT")
     private List<ProcessChainElementModelFrm> process_chain_element;

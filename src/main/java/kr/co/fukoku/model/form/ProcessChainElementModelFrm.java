@@ -13,7 +13,7 @@ public class ProcessChainElementModelFrm {
 	private String name;
 	@JsonProperty("REF_PROCESS_CHAIN_ID")
 	private long ref_process_chain_id;
-	@JsonProperty("PROCESS_MACHINE")
+	@JsonProperty("PROCESS_CHAIN_MACHINE")
 	private List<ProcessMachineModelFrm> processMachineFrms;
 
 	public ProcessChainElementModelFrm() {
