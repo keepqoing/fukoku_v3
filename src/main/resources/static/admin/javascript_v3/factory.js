@@ -232,10 +232,12 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.btExport = function(){
 		$http({
 		    url: '/v3/api/fukoku/factory/download',
-		    method: "GET",
+		    method: "POST",
 		    headers: {
 		       'Content-type': 'application/json'
 		    },
+		    dataType: 'json',
+            data : JSON.stringify($scope.data),
 		    responseType: 'arraybuffer'
 		}).success(function (data, status, headers, config) {
 			 var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});

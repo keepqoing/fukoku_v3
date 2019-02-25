@@ -28,6 +28,10 @@
 		    line-height: 1.5;
 		    border-radius: 3px;
 		}
+		
+		td{
+			vertical-align:top;
+		}
     </style>
     
 </head>
@@ -82,14 +86,15 @@
 	                                    	</span>
                                         </th>
                                         <th>
-                                        	제품
+                                        	<div style="width:200px;float:left">제품</div>
+                                        	<div style="width:280px;float:left" ng-repeat="i in range(1,countStage)">공정 {{i}}</div>
                                         	<!-- <span class="pull-right">
 	                                    					<label style="font-size: 13px;"><input type="radio" name="sProduct" value="ALL" checked="checked"> All</label>
 	                                    					<label style="font-size: 13px;"><input type="radio" name="sProduct"  value="Active"> Active</label>
 	                                    					<label style="font-size: 13px;"><input type="radio" name="sProduct"  value="Inactive"> Inactive</label>
 	                                    	</span> -->
                                         </th>
-                                        <th ng-repeat="i in range(1,countStage)">공정 {{i}}</th>
+                                       <!-- <th ng-repeat="i in range(1,countStage)">공정 {{i}}</th>  -->
                                     </tr>
                                     
                                     </thead>
@@ -140,19 +145,116 @@
 	                                    			<span><h4><b>{{f.name}}</b></h4></span>
 	                                    	</td>
 	                                    	<td>
-		                                    		<ul ng-repeat="pcp in f.process_chain.process_chain_product" class="products-list product-list-in-box">
+	                                    	
+	                                    			<table border="1" class="table-bordered">
+	                                    				<tr ng-repeat="pcp in f.process_chain.process_chain_product">
+	                                    					<td style="width:200px;">
+	                                    						<b class="label label-primary" style="font-size:14px">{{pcp.ref_product}}</b>
+	                                    						
+	                                    							
+	                                    								<td style="width:280px" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name=='압입'">
+	                                    									<table class="table-bordered">
+	                                    										<tr ng-repeat="m in e.process_chain_machine">
+	                                    											<!-- <td><h5><span><b>{{pcp.ref_product}}</b></span></h5></td> -->
+	                                    											
+	                                    												<td style="width:280px" class="products-list product-list-in-box">
+																								<h5><span><b>{{e.name}}</b></span></h5>
+																								<span  class="label label-success">{{m.ref_machine}}</span>
+												                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
+												                                    			<ul ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id">
+																					                <li>
+																					               		<span class="label label-info"><b>{{pvar.name}}</b></span> 
+																					                  	 <span class="pull-right1">
+																					                  	<button ng-click="btUpdate(e.id,m.id,pvar.id  ,  pcp.id, pcp.ref_product)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
+																					                  	<button   ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
+																					                  	 </span>
+																					                </li>
+																					             </ul>
+											                                    		</td> 
+	                                    										</tr>
+	                                    									</table>
+	                                    									
+	                                    								</td>
+	                                    								<td style="width:280px" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name !='압입'">
+	                                    									<table class="table table-bordered">
+	                                    										<tr ng-repeat="m in e.process_chain_machine">
+	                                    											<!-- <td><h5><span><b>{{pcp.ref_product}}</b></span></h5></td> -->
+	                                    											
+	                                    												<td style="width:280px" class="products-list product-list-in-box">
+																								<h5><span><b>{{e.name}}</b></span></h5>
+																								<span  class="label label-success">{{m.ref_machine}}</span>
+												                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
+												                                    			<ul ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id" >
+																					                <li>
+																					               		<span class="label label-info"><b>{{pvar.name}}</b></span> 
+																					                  	 <span class="pull-right1">
+																					                  	<button ng-click="btUpdate(e.id,m.id,pvar.id,  pcp.id, pcp.ref_product)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
+																					                  	<button   ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
+																					                  	 </span>
+																					                </li>
+																					             </ul>
+												                                    		
+											                                    		</td> 
+	                                    										</tr>
+	                                    									</table>
+	                                    								</td>
+	                                    							
+	                                    						
+	                                    					</td>
+	                                    				</tr>
+	                                    				
+	                                    				
+	                                    			</table>
+	                                    			
+	                                    			
+	                                    			
+	                                    			
+		                                    		<!-- <ul ng-repeat="pcp in f.process_chain.process_chain_product" class="products-list product-list-in-box">
+		                                    			
 		                                    			<li class="item"><b class="label label-primary" style="font-size:14px">{{pcp.ref_product}}</b></li>
-		                                    		</ul> 
+		                                    		
+		                                    		</ul>  -->
+		                                    		
+		                                    		
 	                                    	</td>
 	                                    	
+	                                    	
+	                                    	<!-- 
 	                                    	<td ng-repeat="e in f.process_chain.process_chain_element">
 	                                    	
-	                                    		<table>
-	                                    			<tr>
+	                                    		<table border="1">
+	                                    			 <tr>
 	                                    				<td><h5><span><b>{{e.name}}</b></span></h5></td>
-	                                    			</tr>
-	                                    			<tr ng-repeat="m in e.process_chain_machine">
-	                                    				<td>
+	                                    			</tr> 
+	                                    			
+	                                    			
+	                                    			<tr ng-repeat="pcp in f.process_chain.process_chain_product">
+	                                    			
+	                                    				
+	                                    				<td><h5><span><b>{{pcp.ref_product}}</b></span></h5></td>
+	                                    			
+	                                    				
+	                                    				<td  ng-repeat="m in e.process_chain_machine" ng-if="pcp.ref_process_chain_id == e.ref_process_chain_id" class="products-list product-list-in-box">
+															
+															<div>	
+															<h5><span><b>{{e.name}}</b></span></h5>
+															
+															<span  class="label label-success">{{m.ref_machine}}</span>
+			                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
+			                                    			 <ul ng-repeat="pvar in m.productProcessVars" >
+												                <li>
+												               		<span class="label label-info"><b>{{pvar.name}}</b></span> 
+												                  	 <span class="pull-right">
+												                  	<button ng-click="btUpdate(e.id,m.id,pvar.id)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
+												                  	<button   ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
+												                  	 </span>
+												                </li>
+												             </ul>
+			                                    		
+			                                    			</div>
+			                                    		</td> 
+		                                    		
+	                                    			<td>
 	                                    					<span  class="label label-success">{{m.ref_machine}}</span>
 			                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
 			                                    			<ul ng-repeat="pvar in m.productProcessVars" >
@@ -164,17 +266,18 @@
 												                  	 </span>
 												                </li>
 												             </ul>
-	                                    				</td>
+	                                    				</td> 
+	                                    				
+	                                    				
 	                                    			</tr>
 	                                    		</table>
 	                                    		
 	                                    		
-	                                    		
-	                                    		
-	                                    	
-	                                    		
-	                                    		
 	                                    	</td>
+	                                    	
+	                                    	-->
+	                                    	
+	                                    	
 	                                    	
 	                                    	 	<!-- <div ng-repeat="m in e.process_chain_machine"> 
 	                                    			<span  class="label label-success">{{m.ref_machine}}</span>
@@ -282,10 +385,12 @@
                         <div class="form-group">
                             <label for="txtName" class="col-sm-2 control-label">제품명:</label>
                             <div class="col-sm-10">
-                                <select class="form-control" id="selectOptProduct"  required>
+                                <!-- <select class="form-control" id="selectOptProduct"  required>
                                 	<option value="">제품명</option>
                                 	<option ng-repeat="p in processChainProducts" value="{{p.process_chain_product_id}}">{{p.ref_product.trim()}}</option>
-                                </select>
+                                </select> -->
+                                <input type="text" readonly="readonly" class="form-control" id="txtProduct" placeholder="" required/>
+                                <input type="text" style="display: none" class="form-control" id="txtProductId" placeholder="" required/>
                             </div>
                         </div>
                         

@@ -145,9 +145,9 @@ public class FactoryRestController {
     }
 
 	
-	@GetMapping(value = "/download")
-    public ResponseEntity<InputStreamResource> excelCustomersReport() throws IOException {
-		List<Map<String, Object>>  f =(List<Map<String, Object>> ) repository.findMap(new FactoryFrm(""));
+	@PostMapping(value = "/download")
+    public ResponseEntity<InputStreamResource> excelCustomersReport(@RequestBody FactoryFrm frm) throws IOException {
+		List<Map<String, Object>>  f =(List<Map<String, Object>> ) repository.findMap(frm);
 		
 		
 		ByteArrayInputStream in = ExcelGeneratorDynamic.customersToExcel(f,Table.FACTORY_COLUMN);

@@ -22,8 +22,8 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/swagger").setViewName("swagger/swagger-ui");
 
 		// TODO: BACKEND OFFICE ROUTING
-		registry.addViewController("/").setViewName("/admin/product");
-		registry.addViewController("/admin").setViewName("/admin/product");
+		registry.addViewController("/").setViewName("/admin/factory");
+		registry.addViewController("/admin").setViewName("/admin/factory");
 		registry.addViewController("/admin/product").setViewName("/admin/product");
 
 		registry.addViewController("/admin/factory").setViewName("/admin/factory");

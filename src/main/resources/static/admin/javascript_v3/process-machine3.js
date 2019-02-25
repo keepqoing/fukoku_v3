@@ -156,7 +156,7 @@ app.controller('MainCtrl', function($scope, $http) {
             	$scope.processVar = response.data;
             	console.log("1",$scope.processVar);
             	$scope.id = $scope.processVar.id;
-            	$("#selectOptProduct").val($scope.processVar.ref_product_id);
+            	$("#txtProductId").val($scope.processVar.ref_product_id);
             	$("#selectOptName").val($scope.processVar.ref_process_var_id);
             	$scope.processMachineId = $scope.processVar.ref_process_machine_id;
             	$("#txtSeq").val($scope.processVar.seq);
@@ -205,7 +205,7 @@ app.controller('MainCtrl', function($scope, $http) {
 				"id" : $scope.id,
 				"ref_process_machine_id" : $scope.processMachineId ,
 				"seq" : $("#txtSeq").val(),
-				"ref_product_id" : $("#selectOptProduct").val(),
+				"ref_product_id" : $("#txtProductId").val(),
 				"ref_process_var_id" : $("#selectOptName").val(),
 				"type" : $("#selectType").val(),
 				"lsl" : $("#txtLsl").val(),
@@ -283,24 +283,27 @@ app.controller('MainCtrl', function($scope, $http) {
 	}
 	
 	
-	$scope.btAdd = function(refProcessChainElementId, processMachineId){ 
+	$scope.btAdd = function(refProcessChainElementId, processMachineId, productId, productName){ 
 		$scope.action = "add";
 		$('#frm').trigger("reset");
 		$scope.processMachineId = processMachineId;
 		$scope.findProcessChainProducts(refProcessChainElementId); 
+		//alert(productId + " "+productName );
+		$("#txtProduct").val(productName);
+		$("#txtProductId").val(productId);
 		$("#btUpdate").hide();
 		$("#btSave").show();
 		$("#modalFrm").modal('show');
 	};
 	
 	
-	 $scope.btUpdate = function(refProcessChainElementId, processMachineId,productProcessVar){
+	 $scope.btUpdate = function(refProcessChainElementId, processMachineId,productProcessVar,productId, productName){
 			$scope.action = "update";
 			$('#frm').trigger("reset");
 			$scope.processMachineId = processMachineId;
 			$scope.findProcessChainProducts(refProcessChainElementId);
 			setTimeout(function(){ $scope.findOne(productProcessVar);  }, 0);
-			
+			$("#txtProduct").val(productName);
 			$("#btSave").hide();
 			$("#btUpdate").show();
 			$("#modalFrm").modal('show');
