@@ -7,7 +7,7 @@
 
 <head>
 
-    <title>공정설비관리</title>
+    <title>공정변수설계</title>
     
     <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
     <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
@@ -50,7 +50,7 @@
 
     <section class="content-header">
         <h1>
-          	공정설비관리
+          	공정변수설계
         </h1>
     </section>
 
@@ -68,6 +68,18 @@
 		                                </select>
                                 	</div>
                                 </div>
+                                
+                                <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                	<div class="form-group">
+                                    	<span class="pull-left" ng-init="statusLineCheckOpt=3">
+	                                    					<label style="font-size: 13px;"><input type="radio" value="3" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'>All</label>
+	                                    					<label style="font-size: 13px;"><input type="radio" value="1" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'> Active</label>
+	                                    					<label style="font-size: 13px;"><input type="radio" value="0" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'> Inactive</label>
+	                                    	</span>
+                                	</div>
+                                </div>
+                                
+                                			
                         </div>
                         
                         <div class="row">
@@ -90,11 +102,6 @@
                                     <tr>
                                         <th class="fixed-side" scope="col">
                                         	라인
-                                        	<span class="pull-right" ng-init="statusLineCheckOpt=3">
-	                                    					<label style="font-size: 13px;"><input type="radio" value="3" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'>All</label>
-	                                    					<label style="font-size: 13px;"><input type="radio" value="1" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'> Active</label>
-	                                    					<label style="font-size: 13px;"><input type="radio" value="0" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'> Inactive</label>
-	                                    	</span>
                                         </th>
                                         <th  class="fixed-side" scope="col">
                                         	<div style="width:250px;float:left">제품</div>
@@ -155,6 +162,17 @@
 	                                    	
 	                                    	<td>
 	                                    			<span><h4><b>{{f.name}}</b></h4></span>
+	                                    			<span style="float:right">
+		                                    			<div>
+		                                    				<label style="font-size: 13px;"><input type="radio" value="3" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'>All</label>
+		                                    			</div>
+		                                    			<div>
+		                                    				<label style="font-size: 13px;"><input type="radio" value="1" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'> Active</label>
+		                                    			</div>
+		                                    			<div>
+		                                    				<label style="font-size: 13px;"><input type="radio" value="0" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'> Inactive</label>
+		                                    			</div>
+	                                    			</span>
 	                                    	</td>
 	                                    	<td>
 	                                    	
@@ -189,7 +207,7 @@
 												                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
 												                                    			<ul ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id">
 																					                <li>
-																					               		<span class="label label-info"><b>{{pvar.name}}</b></span> 
+																					               		<span class="label label-info"><b>{{pvar.name}}</b></span>  <span>{{pvar.lsl}} ~ {{pvar.usl}}</span>
 																					                  	 <span class="pull-right1">
 																					                  	<button ng-click="btUpdate(e.id,m.id,pvar.id  ,  pcp.id, pcp.ref_product)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
 																					                  	<button   ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
@@ -215,7 +233,7 @@
 												                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
 												                                    			<ul ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id" >
 																					                <li>
-																					               		<span class="label label-info"><b>{{pvar.name}}</b></span> 
+																					               		<span class="label label-info"><b>{{pvar.name}}</b></span> <span>{{pvar.lsl}} ~ {{pvar.usl}}</span>
 																					                  	 <span class="pull-right1">
 																					                  	<button ng-click="btUpdate(e.id,m.id,pvar.id,  pcp.id, pcp.ref_product)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
 																					                  	<button   ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
@@ -477,14 +495,28 @@
                         <div class="form-group">
                             <label for="txtRemark" class="col-sm-2 control-label">변환값:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtTransformValue" placeholder="" required/>
+                            	<div class="col-sm-2">
+                            	 	<select class="form-control" id="selectType"  required>
+	                                	<option value="add">+</option>
+	                                	<option value="minus">-</option>
+	                                	<option value="multiple">*</option>
+	                                	<option value="divide">/</option>
+                               		 </select>
+                            	 </div>
+                            	 <div class="col-sm-10">
+                                	<input type="number" step="0.01" class="form-control" id="txtTransformValue" placeholder="" required/>
+                                 </div>
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <label for="txtRemark" class="col-sm-2 control-label">설명:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtRemark" placeholder="" required/>
+                            	 
+                            	
+                            		<input type="text" class="form-control" id="txtRemark" placeholder="" required/>
+                            	
+                                
                             </div>
                         </div>
                         
