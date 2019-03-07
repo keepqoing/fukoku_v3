@@ -207,7 +207,7 @@
 												                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
 												                                    			<ul ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id">
 																					                <li>
-																					               		<span class="label label-info"><b>{{pvar.name}}</b></span>  <span>{{pvar.lsl}} ~ {{pvar.usl}}</span>
+																					               		<span class="label label-info"><b>{{pvar.name}}</b></span>  <span>{{pvar.lsl}} ~ {{pvar.usl}} {{unit_kind}}</span>
 																					                  	 <span class="pull-right1">
 																					                  	<button ng-click="btUpdate(e.id,m.id,pvar.id  ,  pcp.id, pcp.ref_product)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
 																					                  	<button   ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
@@ -233,7 +233,7 @@
 												                                    			<button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)"><i class="fa fa-fw fa-plus-square"></i>공정변수추가</button>
 												                                    			<ul ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id" >
 																					                <li>
-																					               		<span class="label label-info"><b>{{pvar.name}}</b></span> <span>{{pvar.lsl}} ~ {{pvar.usl}}</span>
+																					               		<span class="label label-info"><b>{{pvar.name}}</b></span> <span>{{pvar.lsl}} ~ {{pvar.usl}} {{unit_kind}}</span>
 																					                  	 <span class="pull-right1">
 																					                  	<button ng-click="btUpdate(e.id,m.id,pvar.id,  pcp.id, pcp.ref_product)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
 																					                  	<button   ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
