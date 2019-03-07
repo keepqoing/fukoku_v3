@@ -35,6 +35,12 @@ public class ProductProcessVar {
 	@JsonProperty("ref_process_machine_id")
 	private long  refProcessMachineId;
 	
+	@JsonProperty("usl_plc")
+	private long uslPlc;
+	@JsonProperty("lsl_plc")
+	private long lslPlc;
+	@JsonProperty("sign")
+	private String sign;
 	
 	
 	
@@ -124,6 +130,24 @@ public class ProductProcessVar {
 	}
 	public ProductProcessVar() {
 		super();
+	}
+	public long getUslPlc() {
+		return uslPlc;
+	}
+	public void setUslPlc(long uslPlc) {
+		this.uslPlc = uslPlc;
+	}
+	public long getLslPlc() {
+		return lslPlc;
+	}
+	public void setLslPlc(long lslPlc) {
+		this.lslPlc = lslPlc;
+	}
+	public String getSign() {
+		return sign;
+	}
+	public void setSign(String sign) {
+		this.sign = sign;
 	}
 	
 	

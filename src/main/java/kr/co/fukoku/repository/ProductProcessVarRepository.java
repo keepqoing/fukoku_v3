@@ -38,7 +38,10 @@ public interface ProductProcessVarRepository {
 			@Result(property="lsl", column="lsl"),
 			@Result(property="unitKind", column="unit_kind"),
 			@Result(property="transformValue", column="transform_value"),
-			@Result(property="remark", column="remark")
+			@Result(property="remark", column="remark"),
+			@Result(property="uslPlc", column="usl_plc"),
+			@Result(property="lslPlc", column="lsl_plc"),
+			@Result(property="sign", column="sign")
 	})
 	ProductProcessVar findOne(@Param("id") long id);
 	
@@ -52,7 +55,7 @@ public interface ProductProcessVarRepository {
 			"	lsl," + 
 			"	unit_kind," + 
 			"	transform_value," + 
-			"	remark, ref_process_var_id " + 
+			"	remark, ref_process_var_id , usl_plc, lsl_plc, sign " + 
 			" ) VALUES (" +
 			"	#{f.seq}, "
 			+ " #{f.refProcessMachineId}, "
@@ -63,7 +66,7 @@ public interface ProductProcessVarRepository {
 			+ " #{f.lsl}, "
 			+ " #{f.unitKind}, "
 			+ " #{f.transformValue},"
-			+ " #{f.remark}, #{f.refProcessVarId}"+
+			+ " #{f.remark}, #{f.refProcessVarId} , #{f.uslPlc}, #{f.lslPlc}, #{f.sign}"+
 			");")
 	boolean save(@Param("f") ProductProcessVar frm);
 	
@@ -80,7 +83,12 @@ public interface ProductProcessVarRepository {
 			"	lsl=#{f.lsl}," + 
 			"	unit_kind=#{f.unitKind}," + 
 			"	transform_value=#{f.transformValue}," +  
-			"	remark=#{f.remark} , ref_process_var_id=#{f.refProcessVarId} where id=#{f.id}")
+			"	remark=#{f.remark} , "
+			+ " ref_process_var_id=#{f.refProcessVarId}, "
+			+ " usl_plc=#{f.uslPlc}, "
+			+ " lsl_plc=#{f.lslPlc}, "
+			+ " sign=#{f.sign} "
+			+ " where id=#{f.id}")
 	boolean update(@Param("f") ProductProcessVar frm);
 	
 	

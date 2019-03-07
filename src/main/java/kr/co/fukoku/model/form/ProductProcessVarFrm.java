@@ -38,6 +38,13 @@ public class ProductProcessVarFrm {
 
     @JsonProperty("STATUS")
     private String status;
+    
+    @JsonProperty("usl_plc")
+	private long uslPlc;
+	@JsonProperty("lsl_plc")
+	private long lslPlc;
+	@JsonProperty("sign")
+	private String sign;
 
     public ProductProcessVarFrm() {
     }
@@ -152,4 +159,31 @@ public class ProductProcessVarFrm {
     public void setStatus(String status) {
         this.status = status;
     }
+
+	public long getUslPlc() {
+		return uslPlc;
+	}
+
+	public void setUslPlc(long uslPlc) {
+		this.uslPlc = uslPlc;
+	}
+
+	public long getLslPlc() {
+		return lslPlc;
+	}
+
+	public void setLslPlc(long lslPlc) {
+		this.lslPlc = lslPlc;
+	}
+
+	public String getSign() {
+		return sign;
+	}
+
+	public void setSign(String sign) {
+		this.sign = sign;
+	}
+    
+    
+    
 }
