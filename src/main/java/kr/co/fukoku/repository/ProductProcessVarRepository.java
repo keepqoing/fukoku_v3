@@ -45,6 +45,7 @@ public interface ProductProcessVarRepository {
 	})
 	ProductProcessVar findOne(@Param("id") long id);
 	
+	
 	@Insert("INSERT INTO product_process_var ("+
 			"	seq, " + 
 			"	ref_process_chain_machine_id," + 
