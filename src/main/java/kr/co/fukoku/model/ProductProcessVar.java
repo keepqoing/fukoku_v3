@@ -24,7 +24,7 @@ public class ProductProcessVar {
 	@JsonProperty("name")
 	private String name;
 	@JsonProperty("unit_kind")
-	private long unitKind;
+	private String unitKind;
 	@JsonProperty("transform_value")
 	private long transformValue;
 	@JsonProperty("remark")
@@ -98,10 +98,10 @@ public class ProductProcessVar {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public long getUnitKind() {
+	public String getUnitKind() {
 		return unitKind;
 	}
-	public void setUnitKind(long unitKind) {
+	public void setUnitKind(String unitKind) {
 		this.unitKind = unitKind;
 	}
 	public long getTransformValue() {

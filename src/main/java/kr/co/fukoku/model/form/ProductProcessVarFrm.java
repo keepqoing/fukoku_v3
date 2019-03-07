@@ -28,7 +28,7 @@ public class ProductProcessVarFrm {
     private int lsl;
 
     @JsonProperty("UNITKIND")
-    private int unitKind;
+    private String unitKind;
 
     @JsonProperty("TRANSFORM_VALUE")
     private int transform_value;
@@ -42,7 +42,7 @@ public class ProductProcessVarFrm {
     public ProductProcessVarFrm() {
     }
 
-    public ProductProcessVarFrm(long id, int seq, String ref_product_id, String ref_process_machine_id, String name, String type, int usl, int lsl, int unitKind, int transform_value, String remark, String status) {
+    public ProductProcessVarFrm(long id, int seq, String ref_product_id, String ref_process_machine_id, String name, String type, int usl, int lsl, String unitKind, int transform_value, String remark, String status) {
         this.id = id;
         this.seq = seq;
         this.ref_product_id = ref_product_id;
@@ -121,11 +121,11 @@ public class ProductProcessVarFrm {
         this.lsl = lsl;
     }
 
-    public int getUnitKind() {
+    public String getUnitKind() {
         return unitKind;
     }
 
-    public void setUnitKind(int unitKind) {
+    public void setUnitKind(String unitKind) {
         this.unitKind = unitKind;
     }
 
