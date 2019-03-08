@@ -223,16 +223,16 @@ app.controller('MainCtrl', function($scope, $http) {
 				$scope.usl = parseInt(uslPlc) +  parseInt(tranformValue);
 			}
 			else if(sign == '-'){
-				$scope.lsl = parseInt(lslPlc) +  parseInt(tranformValue);
-				$scope.usl = parseInt(uslPlc) +  parseInt(tranformValue);
+				$scope.lsl = parseInt(lslPlc) -  parseInt(tranformValue);
+				$scope.usl = parseInt(uslPlc) -  parseInt(tranformValue);
 			}
 			else if(sign == '*'){
-				$scope.lsl = parseInt(lslPlc) +  parseInt(tranformValue);
-				$scope.usl = parseInt(uslPlc) +  parseInt(tranformValue);
+				$scope.lsl = parseInt(lslPlc) *  parseInt(tranformValue);
+				$scope.usl = parseInt(uslPlc) *  parseInt(tranformValue);
 			}
 			else if(sign == "/"){
-				$scope.lsl = parseInt(lslPlc) +  parseInt(tranformValue);
-				$scope.usl = parseInt(uslPlc) +  parseInt(tranformValue);
+				$scope.lsl = parseInt(lslPlc) /  parseInt(tranformValue);
+				$scope.usl = parseInt(uslPlc) /  parseInt(tranformValue);
 			}
 			
 		}
