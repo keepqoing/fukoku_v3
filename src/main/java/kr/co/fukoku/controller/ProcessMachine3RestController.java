@@ -79,11 +79,11 @@ public class ProcessMachine3RestController {
         return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
     }
 	
-	@RequestMapping(value="/find/line/{id}",method = RequestMethod.GET)
-    public ResponseEntity<Map<String,Object>> findAll(@PathVariable("id") long id)  {
+	@RequestMapping(value="/find/line/{id}/{status}",method = RequestMethod.GET)
+    public ResponseEntity<Map<String,Object>> findAll(@PathVariable("id") long id, @PathVariable("status") String status)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-        	List<Line> data = service.findLineByFactoryId(id);
+        	List<Line> data = service.findLineByFactoryId(id,status);
         	if(data.size() > 0 ) {
         		map.put("data", data);
         		map.put("code", 200);

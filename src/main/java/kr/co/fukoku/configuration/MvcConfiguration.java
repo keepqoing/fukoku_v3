@@ -31,7 +31,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/machine").setViewName("/admin/machine");
 		registry.addViewController("/admin/process").setViewName("/admin/process");
 		registry.addViewController("/admin/process-var").setViewName("/admin/process-var");
-		registry.addViewController("/admin/process-machine").setViewName("/admin/process-machine");
+		registry.addViewController("/admin/process-machine").setViewName("/admin/process-machine4");
 		registry.addViewController("/admin/process-machine3").setViewName("/admin/process-machine3");
 		registry.addViewController("/admin/process-machine4").setViewName("/admin/process-machine4");
 		

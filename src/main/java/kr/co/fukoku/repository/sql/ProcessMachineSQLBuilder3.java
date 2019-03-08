@@ -61,5 +61,31 @@ public class ProcessMachineSQLBuilder3 {
 		
 	
 	}
+	
+	
+	
+	public static String findLineByFactoryIdAndStatus(@Param("id") long id , @Param("status") String getStatus ) {
+		
+		
+	    
+		
+		
+		String status  = "";
+		if(getStatus.equalsIgnoreCase("1")) {
+			status = "	and status='1' ";
+		}else if(getStatus.equalsIgnoreCase("0")) {
+			status = "	and status='0' ";
+		}else {
+			status = "";
+		}
+		
+		 StringBuffer buffer = new StringBuffer();
+	        buffer.append(
+	        		"select * from line where  ref_factory_id="+id + status+ " order by seq  asc");
+	        System.out.print(buffer.toString());
+	    return buffer.toString();
+		
+	
+	}
 
 }

@@ -31,9 +31,9 @@ public class ProcessMachine3ServiceImpl implements ProcessMachine3Service{
 	}
 
 	@Override
-	public List<Line> findLineByFactoryId(long id) {
+	public List<Line> findLineByFactoryId(long id, String status) {
 		// TODO Auto-generated method stub
-		return repo.findLineByFactoryId(id);
+		return repo.findLineByFactoryId(id,status);
 	}
 
 	@Override

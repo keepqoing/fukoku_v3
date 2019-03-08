@@ -10,7 +10,7 @@ import kr.co.fukoku.model.form.LineFrm;
 public interface ProcessMachine3Service {
 	
 	List<Line> findAll(@Param("f") LineFrm f);
-	List<Line> findLineByFactoryId( long id);
+	List<Line> findLineByFactoryId( long id,String status);
 	long countStage();
 
 }

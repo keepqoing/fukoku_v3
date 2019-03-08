@@ -123,14 +123,14 @@ public interface ProcessMachine3Repository {
 	
 	
 	
-	// Other
-	@Select("SELECT * FROM line WHERE ref_factory_id=#{id}")
+	// Other 
+	@SelectProvider(type = ProcessMachineSQLBuilder3.class, method = "findLineByFactoryIdAndStatus")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),
 			@Result(property="layoutName",column="layout_name")
 	})
-	List<Line> findLineByFactoryId(@Param("id") long id);
+	List<Line> findLineByFactoryId(@Param("id") long id, @Param("status") String status);
 	
 //	@SelectProvider(type = FactorySQLBuilder.class, method = "find")
 //	@Results(value={

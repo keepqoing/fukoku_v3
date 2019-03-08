@@ -32,6 +32,8 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.usl;
 	$scope.lsl;
 	
+	$scope.status="3";
+	
 	/***
 	 * Function()
 	 */
@@ -81,6 +83,9 @@ app.controller('MainCtrl', function($scope, $http) {
             if(response.code == 200){
             	$scope.processMachines = response;
             	$scope.countStage = $scope.processMachines.count_stage;
+            	
+            	
+            	
             }else{
             	$scope.message = response.message;
             }
@@ -111,7 +116,7 @@ app.controller('MainCtrl', function($scope, $http) {
         	$scope.checkBoxLines = null;
             if(response.code == 200){
             	$scope.factories = response.data;
-            	$scope.findLineByFactoryId($scope.selectCtrl.selectedValue);
+            	$scope.findLineByFactoryId($scope.selectCtrl.selectedValue,$scope.status);
             }else{
             	$scope.message = response.message;
             }
@@ -123,10 +128,10 @@ app.controller('MainCtrl', function($scope, $http) {
         });
     }
 	
-	$scope.findLineByFactoryId = function(id){
+	$scope.findLineByFactoryId = function(id, status){
         var post = $http({
             method: "GET",
-            url: "/v3/api/fukoku/process-machine3/find/line/"+id,
+            url: "/v3/api/fukoku/process-machine3/find/line/"+id+"/"+status,
             dataType: 'json',
             headers: { "Content-Type": "application/json" }
         });
@@ -138,7 +143,7 @@ app.controller('MainCtrl', function($scope, $http) {
             }else{
             	$scope.message = response.message;
             }
-//            console.log($scope.checkBoxLines);
+            console.log("$scope.checkBoxLines ",$scope.checkBoxLines);
         });
         post.error(function (data, status) {
             console.log(data);
@@ -304,7 +309,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.selectByFactory = function(){
 		$scope.data["ref_factory_id"] = parseInt($scope.selectCtrl.selectedValue);
 //		console.log($scope.data);
-		$scope.findLineByFactoryId(parseInt($scope.selectCtrl.selectedValue))
+		$scope.findLineByFactoryId(parseInt($scope.selectCtrl.selectedValue) , $scope.status)
 //		$scope.data["name"] = "";
 //		$scope.data["status"] = "3";
 //		$scope.data["ref_factory_id"] = "0";
@@ -326,6 +331,9 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.changeStatusLineCheckOpt = function(status){
 		$scope.data["status"] = status;
 		$scope.findAll($scope.data);
+		
+		$scope.findLineByFactoryId(parseInt($scope.selectCtrl.selectedValue) , status)
+		
 	}
 	
 	
