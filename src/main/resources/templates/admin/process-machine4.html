@@ -91,7 +91,7 @@
 		}
 		.innerProductWrapper{
 			background-color: white;
-			width: 180px;
+			width: 150px; 
 		  	margin: 3px;
 		  	font-weight: bold;
 		}
@@ -99,15 +99,22 @@
 		.machineWrapper{
 			min-height: 100px;
 			padding: 4px;
-			display: flex;
-/* 			overflow:hidden;  */
 			width: 220px;
 		}
 		.machineWrapperAB{
 			min-height: 100px;
 			padding: 4px;
-			overflow:hidden;
 			width: 220px;
+		}
+		
+		.machineProccessWrapper{
+			min-height: 100px;
+			padding: 4px;
+  			display: flex; 
+			overflow-x: auto;
+		}
+		.machineProccessWrapper::-webkit-scrollbar {
+		  display: none;
 		}
 		
 		.innerMachineWrapper{
@@ -201,48 +208,56 @@
 		    				</div>
 	    					<div class="innerlineWrapper">
 	    							   <div class="productWrapper" ng-repeat="pcp in f.process_chain.process_chain_product">
-				    						<div class="innerProductWrapper">
-				    								{{pcp.ref_product}}
-				    			     		</div>
-				    						<div class="machineWrapperAB" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name=='압입'">
-				    								<div class="innerMachineWrapper" ng-repeat="m in e.process_chain_machine" >
-				    										<h5 style="color:#2172a1">{{e.name}}</h5> 
-				    										
-				    										<span  class="label label-success">{{m.ref_machine}}</span>
-												            <button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)">
-												                  <i class="fa fa-fw fa-plus-square"></i>공정변수추가
-												            </button>
-				    										
-				    										<div class="processWrapper" ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id">
-								    								<span class="label label-info"><b>{{pvar.name}}</b></span> <span>{{pvar.lsl}} ~ {{pvar.usl}} {{pvar.unit_kind}}</span>
-																	<span class="pull-right1">
-																	<button ng-click="btUpdate(e.id,m.id,pvar.id,  pcp.id, pcp.ref_product)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
-																	<button ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
-																	</span>
-								    			     		</div>
-				    			     				</div>
+				    						<div class="innerProductWrapper label label-warning" >
+				    							<h5 style="width:150px;font-weight:bold">{{pcp.ref_product}}</h5>
 				    			     		</div>
 				    			     		
-				    			     		<div class="machineWrapper" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name!='압입'">
-				    								<div class="innerMachineWrapper" ng-repeat="m in e.process_chain_machine" >
-				    										<h5 style="color:#2172a1">{{e.name}}</h5> 
-				    										
-				    										<span  class="label label-success">{{m.ref_machine}}</span>
-												            <button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)">
-												                  <i class="fa fa-fw fa-plus-square"></i>공정변수추가
-												            </button>
-												            
-				    										<div class="processWrapper" ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id">
-								    								<span class="label label-info"><b>{{pvar.name}}</b></span> <span>{{pvar.lsl}} ~ {{pvar.usl}} {{pvar.unit_kind}}</span>
-																	<span class="pull-right1">
-																	<button ng-click="btUpdate(e.id,m.id,pvar.id,  pcp.id, pcp.ref_product)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
-																	<button ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
-																	</span>
-								    			     		</div>
-				    			     				</div>
-				    			     				
-				    			     				
+				    			     		<div class="machineProccessWrapper">
+				    			     		
+				    			     					<div class="machineWrapperAB" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name=='압입'">
+				    												<div class="innerMachineWrapper" ng-repeat="m in e.process_chain_machine" >
+							    										<h5 style="color:#2172a1">{{e.name}}</h5> 
+							    										
+							    										<span  class="label label-success">{{m.ref_machine}}</span>
+															            <button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)">
+															                  <i class="fa fa-fw fa-plus-square"></i>공정변수추가
+															            </button>
+							    										
+							    										<div class="processWrapper" ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id">
+											    								<span class="label label-info"><b>{{pvar.name}}</b></span> <span>{{pvar.lsl}} ~ {{pvar.usl}} {{pvar.unit_kind}}</span>
+																				<span class="pull-right1">
+																				<button ng-click="btUpdate(e.id,m.id,pvar.id,  pcp.id, pcp.ref_product)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
+																				<button ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
+																				</span>
+											    			     		</div>
+							    			     				</div>
+							    			     		</div> 
+							    			     		
+							    			     		<div class="machineWrapper" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name!='압입'">
+							    								<div class="innerMachineWrapper" ng-repeat="m in e.process_chain_machine" >
+							    										<h5 style="color:#2172a1">{{e.name}}</h5> 
+							    										
+							    										<span  class="label label-success">{{m.ref_machine}}</span>
+															            <button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)">
+															                  <i class="fa fa-fw fa-plus-square"></i>공정변수추가
+															            </button>
+															            
+							    										<div class="processWrapper" ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id">
+											    								<span class="label label-info"><b>{{pvar.name}}</b></span> <span>{{pvar.lsl}} ~ {{pvar.usl}} {{pvar.unit_kind}}</span>
+																				<span class="pull-right1">
+																				<button ng-click="btUpdate(e.id,m.id,pvar.id,  pcp.id, pcp.ref_product)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
+																				<button ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
+																				</span>
+											    			     		</div>
+							    			     				</div>
+							    			     				
+							    			     				
+							    			     		</div>
+				    			     		
+				    			     		
 				    			     		</div>
+				    			     		
+				    						
 				    			     		
 				    			     		
 				    			     		
@@ -258,7 +273,7 @@
     			     <!-- Test -->
     			     <div class="factoryWrapper" ng-repeat="i in range(1,1)">
 		    				<div class="lineWrapper">
-		    					<div>{{f.name}}</div>
+		    					<div>Test</div>
 		    										
 		    										<div style="float:right">
 		                                    			<div>
@@ -272,30 +287,35 @@
 		                                    			</div>
 	                                    			</div>
 		    				</div>
+		    				
+		    				
 	    					<div class="innerlineWrapper">
-	    							   <div class="productWrapper" ng-repeat="i in range(1,3)">
-				    						<div class="innerProductWrapper">
-				    								{{i}}
-				    			     		</div>
-				    						<div class="machineWrapper" ng-repeat="i in range(1,2)">
-				    								<div class="innerMachineWrapper" ng-repeat="i in range(1,5)" >
-				    										<h5 style="color:#2172a1">{{i}}</h5> 
-				    										
-				    										<span  class="label label-success">{{i}}</span>
-												            <button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)">
-												                  <i class="fa fa-fw fa-plus-square"></i>공정변수추가
-												            </button>
-				    										
-				    										<div class="processWrapper" ng-repeat="i in range(1,3)">
-								    								<span class="label label-info"><b>{{i}}</b></span> <span>{{pvar.lsl}} ~ {{pvar.usl}} {{pvar.unit_kind}}</span>
-																	<span class="pull-right1">
-																	<button ng-click="btUpdate(e.id,m.id,pvar.id,  pcp.id, pcp.ref_product)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
-																	<button ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
-																	</span>
-								    			     		</div>
-				    			     				</div>
+	    							   <div class="productWrapper" ng-repeat="i in range(1,1)">
+				    						<div class="innerProductWrapper label label-warning" >
+				    							<h5 style="width:150px;font-weight:bold">Test</h5>
 				    			     		</div>
 				    			     		
+				    			     		<div class="machineProccessWrapper">
+				    			     		
+					    						<div class="machineWrapper" ng-repeat="s in range(1,52)">
+					    								<div class="innerMachineWrapper" ng-repeat="e in range(1,1)" >
+					    										<h5 style="color:#2172a1">{{s}}</h5> 
+					    										
+					    										<span  class="label label-success">{{s}}</span>
+													            <button type="button" class="btn btn-success btn-xs" ng-click="btAdd(e.id,m.id,pcp.id,pcp.ref_product)">
+													                  <i class="fa fa-fw fa-plus-square"></i>공정변수추가
+													            </button>
+					    										
+					    										<div class="processWrapper" ng-repeat="z in range(1,3)">
+									    								<span class="label label-info"><b>{{z}}</b></span> <span>{{pvar.lsl}} ~ {{pvar.usl}} {{pvar.unit_kind}}</span>
+																		<span class="pull-right1">
+																		<button ng-click="btUpdate(e.id,m.id,pvar.id,  pcp.id, pcp.ref_product)" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i> </button>
+																		<button ng-click="delete(pvar.id)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i> </button> 
+																		</span>
+									    			     		</div>
+					    			     				</div>
+					    			     		</div>
+				    			     		</div>
 				    			     		
 						    			</div>
 						    			
