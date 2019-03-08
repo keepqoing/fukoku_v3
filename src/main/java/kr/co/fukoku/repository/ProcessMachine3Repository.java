@@ -132,6 +132,24 @@ public interface ProcessMachine3Repository {
 	})
 	List<Line> findLineByFactoryId(@Param("id") long id, @Param("status") String status);
 	
+	 
+	
+	
+	@SelectProvider(type = ProcessMachineSQLBuilder3.class, method = "find")
+	@Results(value={
+			@Result(property="startDate",column="start_date"),
+			@Result(property="endDate",column="end_date"),
+			@Result(property="layoutName",column="layout_name"),
+			@Result(property="name", column="name2"),
+			@Result(property="processChain", column="name",
+				one = @One(select  = "kr.co.fukoku.repository.ProcessMachine3Repository.findProcessChainByRefLine")
+			)
+	})
+	Line findByLineNameAndProductStatus(@Param("f") LineFrm f);
+	
+	
+	
+	
 //	@SelectProvider(type = FactorySQLBuilder.class, method = "find")
 //	@Results(value={
 //			@Result(property="startDate",column="start_date"),
