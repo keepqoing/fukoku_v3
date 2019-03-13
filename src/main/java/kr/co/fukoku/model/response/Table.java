@@ -29,13 +29,13 @@ public class Table {
 	
 	public static final String DATABASE_INFOR ="Database infor(s)";
 	public static final String DATABASE_INFOR_COLUMN[] = {"seq", "db_name", "db_ip_address", "db_port_no" , "db_user_name","db_user_password", "db_type", "remark"};
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+	public static final String ABNORMAL_COLUMN[] = {"factory","department","management_name","line","type","step","code","category_name","sub_category_code"};
 	
 	
 

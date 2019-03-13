@@ -1,0 +1,884 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>설비종합효율현황</title>
+    <style>
+        body {
+            font: 10px arial;
+        }
+        table {
+            font-size: 12pt;
+        }
+
+        table thead {
+            background-color: #3c8dbc;
+            color: white;
+        }
+
+        table thead th {
+            text-align: center;
+        }
+
+        table tbody tr {
+            text-align: center;
+            height: 50px;
+        }
+
+        table.table-bordered {
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+
+        table.table-bordered > thead > tr > th {
+            border: 2px solid black;
+            vertical-align: middle;
+            width: 100px;
+        }
+
+        table.table-bordered > tbody > tr > td {
+            border: 2px solid black;
+            vertical-align: middle;
+            width: 100px;
+        }
+
+    </style>
+    <script src="https://d3js.org/d3.v2.min.js"></script>
+    <script type="text/javascript" src="/static/admin/javascripts/d3/gauge.js"></script>
+    <script>
+        var gauges = [];
+
+
+        function createGauge(name, label, min, max) {
+            var config =
+                {
+                    size: 220,
+                    label: label,
+                    min: undefined != min ? min : 0,
+                    max: undefined != max ? max : 100,
+                    minorTicks: 5
+                }
+
+            var range = config.max - config.min;
+            config.redZones = [{from: 0, to: 40}];
+            config.yellowZones = [{from: 40, to: 80}];
+            config.greenZones = [{from: 80, to: 100}];
+
+            gauges[name] = new Gauge(name + "GaugeContainer", config);
+            gauges[name].render();
+        }
+
+        function createGauges() {
+            createGauge("totalFacilityEfficiency", "설비종합효율");  // Total equipment efficiency
+            createGauge("timeOperationRate", "시간가동율"); // Time operation rate
+            createGauge("performanceStartupRate", "성능가동율"); // Production efficiency
+            createGauge("yieldRate", "양품율"); // Yield rate
+
+            createGauge("totalFacilityEfficiency1", "설비종합효율");
+            createGauge("timeOperationRate1", "시간가동율");
+            createGauge("performanceStartupRate1", "성능가동율");
+            createGauge("yieldRate1", "양품율");
+
+            createGauge("totalFacilityEfficiency2", "설비종합효율");
+            createGauge("timeOperationRate2", "시간가동율");
+            createGauge("performanceStartupRate2", "성능가동율");
+            createGauge("yieldRate2", "양품율");
+
+            createGauge("totalFacilityEfficiency3", "설비종합효율");
+            createGauge("timeOperationRate3", "시간가동율");
+            createGauge("performanceStartupRate3", "성능가동율");
+            createGauge("yieldRate3", "양품율");
+
+            createGauge("totalFacilityEfficiency4", "설비종합효율");
+            createGauge("timeOperationRate4", "시간가동율");
+            createGauge("performanceStartupRate4", "성능가동율");
+            createGauge("yieldRate4", "양품율");
+
+            createGauge("totalFacilityEfficiency5", "설비종합효율");
+            createGauge("timeOperationRate5", "시간가동율");
+            createGauge("performanceStartupRate5", "성능가동율");
+            createGauge("yieldRate5", "양품율");
+        }
+
+        function updateGauges() {
+            for (var key in gauges) {
+                var value = getRandomValue(gauges[key])
+                //console.log(key);
+                gauges[key].redraw(value);
+            }
+        }
+
+        function getRandomValue(gauge) {
+            var overflow = 0; //10;
+            return gauge.config.min - overflow + (gauge.config.max - gauge.config.min + overflow * 2) * Math.random();
+        }
+
+        function setUpdateGauges(mkey, value) {
+            for (var key in gauges) {
+                if (key == mkey) {
+                    gauges[key].redraw(value);
+                }
+            }
+        }
+
+        function initialize() {
+
+            createGauges();
+            reloadData();
+            // console.log("RELOAD DATA ===================== ");
+            setInterval(reloadData, 15000);
+
+        }
+
+        function formatNumber(number) {
+            return (number < 10 ? '0' : '') + number;
+        }
+
+        function reloadData() {
+            var parentIB = $('#selectIBMachine').closest('.panel-body');
+            var parentHC = $('#selectHCMachine').closest('.panel-body');
+            var parentHD = $('#selectHDMachine').closest('.panel-body');
+            var parentPD = $('#selectPDMachine').closest('.panel-body');
+            var parentHA = $('#selectHAMachine').closest('.panel-body');
+            var parentHB = $('#selectHBMachine').closest('.panel-body');
+            var currentTime = new Date();
+            var endTime = jQuery.format.date(currentTime,'yyyy-MM-dd HH:mm');
+
+            dashboard.getGaugesData("selectIBMachine", "IB", $("#selectIBMachine").val(), parentIB.find('.startTimeClass input').val(), endTime);
+            dashboard.getGaugesData("selectHCMachine", "HC", $("#selectHCMachine").val(), parentHC.find('.startTimeClass input').val(), endTime);
+            dashboard.getGaugesData("selectHDMachine", "HD", $("#selectHDMachine").val(), parentHD.find('.startTimeClass input').val(), endTime);
+            dashboard.getGaugesData("selectPDMachine", "PD", $("#selectPDMachine").val(), parentPD.find('.startTimeClass input').val(), endTime);
+            dashboard.getGaugesData("selectHAMachine", "HA", $("#selectHAMachine").val(), parentHA.find('.startTimeClass input').val(), endTime);
+            dashboard.getGaugesData("selectHBMachine", "HB", $("#selectHBMachine").val(), parentHB.find('.startTimeClass input').val(), endTime);
+            parentIB.find('.endTimeClass input').val(endTime);
+            parentHC.find('.endTimeClass input').val(endTime);
+            parentHD.find('.endTimeClass input').val(endTime);
+            parentHA.find('.endTimeClass input').val(endTime);
+            parentHB.find('.endTimeClass input').val(endTime);
+        }
+
+        $(document).ready(function () {
+            $(function () {
+
+                var d1 = new Date();
+                var d2 = new Date();
+
+
+                var current_h_m = parseInt((d1.getHours()+""+formatNumber(d1.getMinutes())));
+
+
+
+                if( current_h_m < 800 ){
+                    d1.setDate(d1.getDate() -1 );
+                }else{
+                    d1.setDate(d1.getDate());
+                }
+
+
+
+                d1.setHours(8,0,0);
+
+                $('#startTime').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endTime').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD HH:mm',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime1').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endTime1').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD HH:mm',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime2').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endTime2').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD HH:mm',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime3').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endTime3').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD HH:mm',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime4').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endTime4').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD HH:mm',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime5').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endTime5').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD HH:mm',
+                    defaultDate: new Date()
+                });
+
+                $("#endTime").on("dp.change", function (e) {
+                    changeEndTime("");
+                });
+                $("#endTime1").on("dp.change", function (e) {
+                    changeEndTime("1");
+                });
+                $("#endTime2").on("dp.change", function (e) {
+                    changeEndTime("2");
+                });
+                $("#endTime3").on("dp.change", function (e) {
+                    changeEndTime("3");
+                });
+                $("#endTime4").on("dp.change", function (e) {
+                    changeEndTime("4");
+                });
+                $("#endTime5").on("dp.change", function (e) {
+                    changeEndTime("5");
+                });
+
+                function changeEndTime(id){
+                    var selectedDate = new Date($("#endTime"+id).find("input").val());
+                    var today = new Date();
+                    var selectDateDDMMYY = frmDate(selectedDate);
+                    today = Date.parse(frmDate(today)) /1000;
+                    selectedDate = Date.parse(frmDate(selectedDate))/1000;
+                    console.log(today);
+                    console.log(selectedDate);
+                    if(today > selectedDate ){
+                        console.log(selectDateDDMMYY+" 08:00:00");
+                        $("#endTime"+id).find("input").val(selectDateDDMMYY+" 08:00:00")
+                    }
+                }
+
+                function frmDate(date) {
+                    var d = new Date(date),
+                        month = '' + (d.getMonth() + 1),
+                        day = '' + d.getDate(),
+                        year = d.getFullYear();
+
+                    if (month.length < 2) month = '0' + month;
+                    if (day.length < 2) day = '0' + day;
+
+                    return [year, month, day].join('-');
+                }
+
+
+            });
+        });
+    </script>
+    <script src="../../static/admin/javascripts/libraries/jquery-dateFormat.js"></script>
+
+</head>
+
+<body onload="initialize()">
+<div layout:fragment="content">
+    <section class="content-header">
+        <!-- Total efficiency of facilities -->
+        <h1>
+            설비종합효율현황
+        </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="font-size: 10pt;">IB LINE</div>
+                                    <div class="panel-body">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <select class="form-control" id="selectIBMachine">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date startTimeClass' id='startTime'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date endTimeClass' id='endTime'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                                    </div>
+                                                </div>
+                                                <div class="hiddenInput"></div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                     style="text-align: center">
+                                                    <span class="totalFacilityRate" id="totalFacilityEfficiencyGaugeContainer"></span>
+                                                    <span class="totalOperatingTimeRate" id="timeOperationRateGaugeContainer"></span>
+                                                    <span class="totalStartupRate" id="performanceStartupRateGaugeContainer"></span>
+                                                    <span class="totalYieldRateRate" id="yieldRateGaugeContainer"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="font-size: 10pt;">HC LINE</div>
+                                    <div class="panel-body">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <select class="form-control" id="selectHCMachine">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date startTimeClass' id='startTime1'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date endTimeClass' id='endTime1'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                                    </div>
+                                                </div>
+                                                <div class="hiddenInput"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                     style="text-align: center">
+                                                    <span class="totalFacilityRate" id="totalFacilityEfficiency1GaugeContainer"></span>
+                                                    <span class="totalOperatingTimeRate" id="timeOperationRate1GaugeContainer"></span>
+                                                    <span class="totalStartupRate" id="performanceStartupRate1GaugeContainer"></span>
+                                                    <span class="totalYieldRateRate" id="yieldRate1GaugeContainer"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="font-size: 10pt;">HD LINE</div>
+                                    <div class="panel-body">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <select class="form-control" id="selectHDMachine">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date startTimeClass' id='startTime2'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date endTimeClass' id='endTime2'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                                    </div>
+                                                </div>
+                                                <div class="hiddenInput"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                     style="text-align: center">
+                                                    <span class="totalFacilityRate" id="totalFacilityEfficiency2GaugeContainer"></span>
+                                                    <span class="totalOperatingTimeRate" id="timeOperationRate2GaugeContainer"></span>
+                                                    <span class="totalStartupRate" id="performanceStartupRate2GaugeContainer"></span>
+                                                    <span class="totalYieldRateRate" id="yieldRate2GaugeContainer"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="font-size: 10pt;">PD LINE</div>
+                                    <div class="panel-body">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <select class="form-control" id="selectPDMachine">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date startTimeClass' id='startTime3'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date endTimeClass' id='endTime3'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                                    </div>
+                                                </div>
+                                                <div class="hiddenInput"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                     style="text-align: center">
+                                                    <span class="totalFacilityRate" id="totalFacilityEfficiency3GaugeContainer"></span>
+                                                    <span class="totalOperatingTimeRate" id="timeOperationRate3GaugeContainer"></span>
+                                                    <span class="totalStartupRate" id="performanceStartupRate3GaugeContainer"></span>
+                                                    <span class="totalYieldRateRate" id="yieldRate3GaugeContainer"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="font-size: 10pt;">HA LINE</div>
+                                    <div class="panel-body">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <select class="form-control" id="selectHAMachine">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date startTimeClass' id='startTime4'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date endTimeClass' id='endTime4'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                                    </div>
+                                                </div>
+                                                <div class="hiddenInput"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                     style="text-align: center">
+                                                    <span class="totalFacilityRate" id="totalFacilityEfficiency4GaugeContainer"></span>
+                                                    <span class="totalOperatingTimeRate" id="timeOperationRate4GaugeContainer"></span>
+                                                    <span class="totalStartupRate" id="performanceStartupRate4GaugeContainer"></span>
+                                                    <span class="totalYieldRateRate" id="yieldRate4GaugeContainer"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="font-size: 10pt;">HB LINE</div>
+                                    <div class="panel-body">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <select class="form-control" id="selectHBMachine">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date startTimeClass' id='startTime5'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date endTimeClass' id='endTime5'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                                    </div>
+                                                </div>
+                                                <div class="hiddenInput"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                     style="text-align: center">
+                                                    <span class="totalFacilityRate" id="totalFacilityEfficiency5GaugeContainer"></span>
+                                                    <span class="totalOperatingTimeRate" id="timeOperationRate5GaugeContainer"></span>
+                                                    <span class="totalStartupRate" id="performanceStartupRate5GaugeContainer"></span>
+                                                    <span class="totalYieldRateRate" id="yieldRate5GaugeContainer"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+             id="modalDetail1">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="box box-primary modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <!-- Details -->
+                        <h4 class="modal-title">세부정보</h4>
+                    </div>
+                    <div class="modal-body" style="padding: 0px">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="thead-inverse head" style="background-color: #3c8dbc;">
+                                <tr>
+                                    <!-- Element name -->
+                                    <th>요소명</th>
+                                    <!-- value -->
+                                    <th>값</th>
+                                </tr>
+                                </thead>
+                                <tbody id="DASHBOARD_DETAIL1">
+                                <!--<tr role="row" class="odd" style="text-align:center;font-weight:bold;">
+                                    <td colspan="2">콘텐츠 없음</td>
+                                </tr>-->
+                                <tr>
+
+                                    <td>시간가동율</td>
+                                    <td id="timeOpereationRate"></td>
+                                </tr>
+                                <tr>
+
+                                    <td>성능가동율</td>
+                                    <td id="totalProductRate"></td>
+                                </tr>
+                                <tr>
+
+                                    <td>양품율</td>
+                                    <td id="okProductRate"></td>
+                                </tr>
+                                <tr>
+
+                                    <td>설비종합효율</td>
+                                    <td id="machineEfficiencyRate"></td>
+                                </tr>
+                                <tr>
+                                    <!-- Total equipment efficiency = time operation rate x production efficiency x good product rate -->
+                                    <td colspan="2">설비종합효율 = 시간가동율 x 성능가동율 x 양품율</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- close -->
+                        <button type="button" class="btn btn-indigo btn-danger" data-dismiss="modal" id="btnClose">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+             id="modalDetail2">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="box box-primary modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <!-- Details -->
+                        <h4 class="modal-title">세부정보</h4>
+                    </div>
+                    <div class="modal-body" style="padding: 0px">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="thead-inverse head" style="background-color: #3c8dbc;">
+                                <tr>
+                                    <!-- Element name -->
+                                    <th>요소명</th>
+                                    <th>값</th>
+                                </tr>
+                                </thead>
+                                <tbody id="DASHBOARD_DETAIL2">
+                                <!--<tr role="row" class="odd" style="text-align:center;font-weight:bold;">
+                                    <td colspan="2">콘텐츠 없음</td>
+                                </tr>-->
+                                <tr>
+                                    <td>부하시간</td>
+                                    <td class="txtWorkingTimeValue"></td>
+                                </tr>
+                                <tr>
+                                    <!-- Operating time -->
+                                    <td>부하비가동시간</td>
+                                    <td class="txtWorkingNonActiveTime"></td>
+                                </tr>
+
+                                <tr>
+
+                                    <td colspan="2">시간가동율=(부하시간 - 부하비가동시간) / (부하시간) x 100</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-indigo btn-danger" data-dismiss="modal" id="btnClose">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+             id="modalDetail3">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="box box-primary modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <!-- Details -->
+                        <h4 class="modal-title">세부정보</h4>
+                    </div>
+                    <div class="modal-body" style="padding: 0px">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="thead-inverse head" style="background-color: #3c8dbc;">
+                                <tr>
+                                    <th>요소명</th>
+                                    <th>값</th>
+                                </tr>
+                                </thead>
+                                <tbody id="DASHBOARD_DETAIL3">
+                                <!--<tr role="row" class="odd" style="text-align:center;font-weight:bold;">
+                                    <td colspan="2">콘텐츠 없음</td>
+                                </tr>-->
+                                <tr>
+                                    <!-- Production Quantity -->
+                                    <td>생산수량</td>
+                                    <td class="txtTotalProductValue"></td>
+                                </tr>
+                                <tr>
+                                    <!-- Theoretical cycle time -->
+                                    <td>이론사이클타임</td>
+                                    <td class="txtCycleTimeValue"></td>
+                                </tr>
+                                <tr>
+                                    <!-- Working Time  -->
+                                    <td>부하시간</td>
+                                    <td class="txtWorkingTimeValue"></td>
+                                </tr>
+                                <tr>
+                                    <!-- Working Non Active Time -->
+                                    <td>부하비가동시간</td>
+                                    <td class="txtWorkingNonActiveTime"></td>
+                                </tr>
+
+                                <tr>
+
+                                    <td colspan="2">(생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-indigo btn-danger" data-dismiss="modal" id="btnClose">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+             id="modalDetail4">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="box box-primary modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 class="modal-title">세부정보</h4>
+                    </div>
+                    <div class="modal-body" style="padding: 0px">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="thead-inverse head" style="background-color: #3c8dbc;">
+                                <tr>
+                                    <th>요소명</th>
+                                    <th>값</th>
+                                </tr>
+                                </thead>
+                                <tbody id="DASHBOARD_DETAIL4">
+                                <!--<tr role="row" class="odd" style="text-align:center;font-weight:bold;">
+                                    <td colspan="2">콘텐츠 없음</td>
+                                </tr>-->
+
+                                <tr>
+                                    <td>양품수량</td>
+                                    <td class="txtOkProductValue"></td>
+                                </tr>
+                                <tr>
+
+                                    <td>생산수량</td>
+                                    <td class="txtTotalProductValue"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">양품율 = 양품수량 / 생산수량 x 100</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-indigo btn-danger" data-dismiss="modal" id="btnClose">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--<script src="/static/admin/javascripts/dashboard2.js"></script>-->
+    <script src="../../static/admin/javascripts/dashboard2.js"></script>
+    <!--<script id="ALARM_HISTORY_TEMPLATE" type="text/x-jquery-tmpl">-->
+	    <!--<tr data-id="{{= ID}} "style="text-align:center;">-->
+		    <!--<td>{{= NO}}</td>-->
+			<!--<td><strong>{{= MSTATE}}</strong></td>-->
+			<!--<td><strong>{{= START_ALARM_TIME}}</strong></td>-->
+		<!--</tr>-->
+    <!--</script>-->
+</div>
+</body>
+</html>

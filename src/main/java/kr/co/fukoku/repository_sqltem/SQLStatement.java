@@ -2485,12 +2485,13 @@ FIND_ALL_PD("SELECT \n" +
     //    Chomrern - 2018-10-04
     // TODO: SQL STATEMENT FOR QUERY New Dash Board
     public enum DashBoard2 {
-
+        // call procedure version 2 that is inside this function
         FIND_DASHBOARD2(" CALL proc_cal_dashboard_3(? , ? , ? , ? , ?); " ),
 
-
+        // call procedure version 2 that is inside this function
         FIND_DAILY_ANALYSIS(" CALL proc_call_daily_mstate_analysis(?,?,?,?,?); "),
 
+        // call procedure version 2 that is inside this function
         FIND_PROCESS_ANALYSIS(" CALL proc_process_analysis_by_line(?, ?, ?, ?); ");
 
 

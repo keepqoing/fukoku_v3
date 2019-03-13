@@ -149,5 +149,23 @@ public interface MachineRepository {
 			)
 	})
 	List<Machine> findAllByProcess(@Param("process_name") String process_name);
-	
+
+
+	// Chomrern - as of 2019-03-11. This api is requested by Bakhit
+	@Select("Select * from machine where status='1'")
+	@Results(value={
+			@Result(property="id",column="id"),
+			@Result(property="importDate",column="import_date"),
+			@Result(property="facilityStaff",column="facility_staff"),
+			@Result(property="facilityContactPerson",column="facility_contact_person"),
+			@Result(property="plcType",column="plc_type"),
+			@Result(property="plcCommunicationDevice", column="plc_communication_device"),
+			@Result(property="process", column="ref_process_id",
+					one = @One(select  = "kr.co.fukoku.repository.ProcessRepository.findOne")
+			),
+			@Result(property="processes", column="id",
+					many = @Many(select  = "kr.co.fukoku.repository.ProcessRepository.findProcessMachine")
+			)
+	})
+	List<Machine> findAllMachines();
 }

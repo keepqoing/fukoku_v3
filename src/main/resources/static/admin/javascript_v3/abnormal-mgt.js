@@ -399,6 +399,10 @@ function createStepAfterMainProcess(txtValue, btnObj) {
             var buttMinus = mainMinusButton();
 
 
+            // Move button
+            var buttShow = mainShowAllButton();
+
+
             // Textbox
             var txtBox = document.createElement("input");
             txtBox.setAttribute("type","text");
@@ -413,6 +417,7 @@ function createStepAfterMainProcess(txtValue, btnObj) {
             var _br = document.createElement("br");
             _br.setAttribute("class","clear:both");
             divColor.appendChild(_br);
+            divColor.appendChild(buttShow);
 
             td.appendChild(divColor);
             td.setAttribute("data-id", txtValue);
@@ -516,8 +521,11 @@ function createSubStepItem(btnObj){
     // Textbox
     var txtName = createSubStepTextBox("txtName", "100px");
 
-    // Plus button
-    var buttPlus = createSubStepPlusButton();
+    // Popup button
+    var buttPopUp = createSubStepPlusButton("연결","showPopUp");
+
+    // Relationship button
+    var buttRelationship = createSubStepPlusButton("연결보기","showRelationship");
 
     // Div for one sub step
     var div = createDivSubStep();
@@ -530,7 +538,8 @@ function createSubStepItem(btnObj){
     div.appendChild(txtSeq);
     div.appendChild(txtCode);
     div.appendChild(txtName);
-    div.appendChild(buttPlus);
+    div.appendChild(buttPopUp);
+    div.appendChild(buttRelationship);
 
     div.setAttribute("class","subStep");
     // var td = document.getElementById("td" + lineName + "_" + rowNum + "_s_" + tValue);
@@ -583,13 +592,47 @@ function removeSubStepItem(btnObject){
 }
 
 // -- Creating plus button for Sub Step Item
-function createSubStepPlusButton(){
+function createSubStepPlusButton(btnName, functionName){
     var buttPlus = document.createElement('button'); // create a button
     buttPlus.setAttribute('type','button'); // set attributes ...
-    buttPlus.innerText = "표시";
+    buttPlus.innerText = btnName;
     buttPlus.setAttribute('class',"add-house btn btn-success btn-xs");
     buttPlus.setAttribute('style','float:left; margin-left:5px; margin-top:5px;');
-    buttPlus.setAttribute('onclick', "showSubItem(this) " );
+    buttPlus.setAttribute('onclick', functionName + "(this) " );
 
     return buttPlus;
+}
+
+// This function is used to create show all button
+function mainShowAllButton(){
+    // Plus button
+    var buttPlus = document.createElement('button'); // create a button
+    buttPlus.setAttribute('type','button'); // set attributes ...
+    // buttPlus.setAttribute('id','mainMove' + lineName + '_' + rowNum + '_s_' + txtNum); // mainPlusIB_1_s_1
+    buttPlus.setAttribute("value", "전체보기");
+    buttPlus.innerText =  "전체보기";
+    buttPlus.setAttribute('class',"add-house btn btn-primary btn-xs");
+    buttPlus.setAttribute('style','float:right; font-size:11px;');
+    buttPlus.setAttribute('onclick', "showAll(this)" );
+
+    return buttPlus;
+}
+
+function importFile(){
+    $.ajax({
+        url: "/v3/api/fukoku/abnormal/import",
+        type: "POST",
+        data: new FormData($("#fileUploadForm")[0]),
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function () {
+            $scope.findAll($scope.data);
+            swal({position: 'top-end',type: 'success',title: '데이터를 가져 왔습니다.',showConfirmButton: false,timer: 1500})
+        },
+        error: function () {
+            swal({position: 'top-end',type: 'error',title: '데이터를 가져 오지 않았습니다.',showConfirmButton: false,timer: 1500})
+        }
+    });
 }

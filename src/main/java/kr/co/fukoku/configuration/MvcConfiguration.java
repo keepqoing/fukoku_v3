@@ -48,6 +48,9 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/break-time").setViewName("/admin/break-time");
 		registry.addViewController("/admin/operating-time").setViewName("/admin/operating-time");
 		registry.addViewController("/admin/abnormal-mgt-design").setViewName("/admin/abnormal-mgt-design");
+
+		// Menus are from old version 2
+		registry.addViewController("/admin/dashboard2").setViewName("/admin/dashboard2");
 	}
 
 	@Override
