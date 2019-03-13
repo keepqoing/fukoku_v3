@@ -67,9 +67,9 @@
   			display: flex; 
 			overflow-x: auto; 
 		}
-		.factoryWrapper::-webkit-scrollbar {
-		  display: none;
-		}
+/* 		.factoryWrapper::-webkit-scrollbar { */
+/* 		  display: none; */
+/* 		} */
 		.lineWrapper{
 			background-color: white;
 			min-width: 200px;
@@ -114,9 +114,19 @@
 			overflow-x: auto;
 		}
 		.machineProccessWrapper::-webkit-scrollbar {
-		  display: none;
+		    width: 12px;
 		}
-		
+		 
+		.machineProccessWrapper::-webkit-scrollbar-track {
+		    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+		    border-radius: 10px;
+		}
+		 
+		.machineProccessWrapper::-webkit-scrollbar-thumb {
+		    border-radius: 10px;
+		    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+		}
+
 		.innerMachineWrapper{
 			width: 200px;
 		  	margin: 4px;
@@ -159,7 +169,8 @@
                                 	</div>
                                 </div>
                                 
-                                <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                                	<label for="txtName" class="control-label">라인:</label>
                                 	<div class="form-group">
                                     	<span class="pull-left" ng-init="statusLineCheckOpt=3">
 	                                    					<label style="font-size: 13px;"><input type="radio" value="3" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'>All</label>
@@ -168,6 +179,19 @@
 	                                    	</span>
                                 	</div>
                                 </div>
+                                
+                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                               		 <label for="txtName" class="control-label">제품:</label>
+                                	<div class="form-group">
+                                    	<span class="pull-left" ng-init="statusLineCheckOpt=3">
+		                                    	<label style="font-size: 13px;"><input type="radio" value="3" ng-model="statusLineProductCheckOpt" ng-change='selectByProductStatus(statusLineProductCheckOpt)'>All</label>
+		                                    	<label style="font-size: 13px;"><input type="radio" value="1" ng-model="statusLineProductCheckOpt" ng-change='selectByProductStatus(statusLineProductCheckOpt)'> Active</label>
+		                                    	<label style="font-size: 13px;"><input type="radio" value="0" ng-model="statusLineProductCheckOpt" ng-change='selectByProductStatus(statusLineProductCheckOpt)'> Inactive</label>
+	                                    </span>
+                                	</div>
+                                </div>
+                                
+                                
                                 
                                 			
                         </div>
@@ -193,18 +217,6 @@
     				<div class="factoryWrapper" ng-repeat="f in processMachines.data">
 		    				<div class="lineWrapper">
 		    					<div>{{f.name}}</div>
-		    										
-		    										<div style="float:right">
-		                                    			<div>
-		                                    				<label style="font-size: 13px;"><input type="radio" value="3" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'>All</label>
-		                                    			</div>
-		                                    			<div>
-		                                    				<label style="font-size: 13px;"><input type="radio" value="1" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'> Active</label>
-		                                    			</div>
-		                                    			<div>
-		                                    				<label style="font-size: 13px;"><input type="radio" value="0" ng-model="statusLineCheckOpt" ng-change='changeStatusLineCheckOpt(statusLineCheckOpt)'> Inactive</label>
-		                                    			</div>
-	                                    			</div>
 		    				</div>
 	    					<div class="innerlineWrapper">
 	    							   <div class="productWrapper" ng-repeat="pcp in f.process_chain.process_chain_product">
@@ -233,7 +245,7 @@
 							    			     				</div>
 							    			     		</div> 
 							    			     		
-							    			     		<div class="machineWrapper" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name!='압입'">
+							    			     		<div class="machineWrapper" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name!='압입' ">
 							    								<div class="innerMachineWrapper" ng-repeat="m in e.process_chain_machine" >
 							    										<h5 style="color:#2172a1">{{e.name}}</h5> 
 							    										

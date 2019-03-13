@@ -52,7 +52,7 @@ public class ProcessMachineSQLBuilder3 {
 		
 		 StringBuffer buffer = new StringBuffer();
 	        buffer.append(
-	        		"select *, name as name2 from line where   " +  byFactory + nameIn +
+	        		"select *, name as name2,  "+ f.getProductStatus() +" as productStatus  from line where   " +  byFactory + nameIn +
 	        				status + f.getStatus() +
 	        		"		name like  '%"+  f.getName().trim() +"%'   "+f.getOrderBy()+";"
 	        		);
@@ -65,9 +65,6 @@ public class ProcessMachineSQLBuilder3 {
 	
 	
 	public static String findLineByFactoryIdAndStatus(@Param("id") long id , @Param("status") String getStatus ) {
-		
-		
-	    
 		
 		
 		String status  = "";

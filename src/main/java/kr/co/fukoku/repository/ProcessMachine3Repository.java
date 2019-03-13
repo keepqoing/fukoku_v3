@@ -135,17 +135,68 @@ public interface ProcessMachine3Repository {
 	 
 	
 	
+	/**
+	 * 
+	 * Find One Line
+	 * @param f
+	 * @return
+	 */
+	
 	@SelectProvider(type = ProcessMachineSQLBuilder3.class, method = "find")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),
 			@Result(property="layoutName",column="layout_name"),
 			@Result(property="name", column="name2"),
-			@Result(property="processChain", column="name",
-				one = @One(select  = "kr.co.fukoku.repository.ProcessMachine3Repository.findProcessChainByRefLine")
+			@Result(property="processChain", column="refLine=name, productStatus=productStatus ",
+				one = @One(select  = "kr.co.fukoku.repository.ProcessMachine3Repository.findProcessChainByRefLinePassProductStatus")
 			)
 	})
-	Line findByLineNameAndProductStatus(@Param("f") LineFrm f);
+	List<Line> findAllByLineNameAndProductStatus(@Param("f") LineFrm f);
+	
+	
+	
+	@Select("select * , #{productStatus} as productStatus from process_chain  where  ref_line=#{refLine}  GROUP BY ref_line;")
+	@Results(value={
+			@Result(property="id",column="id"),
+			@Result(property="name",column="name"),
+			@Result(property="refLine",column="ref_line"),
+			@Result(property="processChainProduct", column="refProcessChainId=id,productStatus=productStatus",
+				many = @Many(select  = "kr.co.fukoku.repository.ProcessMachine3Repository.findProcessChainProductByRefChainIdByProductStatus")
+		    ),
+			@Result(property="processChainElement", column="id",
+				many = @Many(select  = "kr.co.fukoku.repository.ProcessMachine3Repository.findProcessChainElementByRefChainId")
+			)
+	})
+	ProcessChain findProcessChainByRefLinePassProductStatus(Map<String, Object> params );
+	
+	
+	public static String findProcessChainByStatus(Map<String, Object> params  ) {
+		// All, Active, Inactive
+		String status = " ";
+		System.out.println(params.get("productStatus"));
+		int s = (int) params.get("productStatus");
+		if(  s == 3 ) {
+			status = " ";
+		}else {
+			status = "  and status='"+params.get("productStatus")+"'";
+		}
+		StringBuffer buffer = new StringBuffer();
+        buffer.append(
+        		"select * from process_chain_product where ref_process_chain_id=#{refProcessChainId} "+status+" order  by  id asc;"
+        );
+        System.out.println(buffer.toString());
+        return buffer.toString();
+	}
+	
+	//@Select("select * from process_chain_product where ref_process_chain_id=#{refProcessChainId} and status=#{productStatus} order  by  id asc;")
+	@SelectProvider(type = ProcessMachine3Repository.class, method = "findProcessChainByStatus")
+	@Results(value={
+			@Result(property="id",column="id"),
+			@Result(property="refProduct",column="ref_product"),
+			@Result(property="refProcessChainId",column="ref_process_chain_id")
+	})
+	List<ProcessChainProduct> findProcessChainProductByRefChainIdByProductStatus(Map<String, Object> params  );
 	
 	
 	
