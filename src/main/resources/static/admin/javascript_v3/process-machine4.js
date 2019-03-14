@@ -336,7 +336,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	 *******************************************************************************/
 	
 	$scope.selectByProductStatus = function(statusLineProductCheckOpt){
-		alert( statusLineProductCheckOpt);
+		//alert( statusLineProductCheckOpt);
 		$scope.data["product_status"] = statusLineProductCheckOpt;
 		$scope.findAllByLineNameAndProductStatus($scope.data);
 	}
