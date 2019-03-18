@@ -18,15 +18,15 @@ public class ProductProcessVar {
 	@JsonProperty("type")
 	private String type;
 	@JsonProperty("usl")
-	private long usl;
+	private String usl;
 	@JsonProperty("lsl")
-	private long lsl;
+	private String lsl;
 	@JsonProperty("name")
 	private String name;
 	@JsonProperty("unit_kind")
 	private String unitKind;
 	@JsonProperty("transform_value")
-	private long transformValue;
+	private String transformValue;
 	@JsonProperty("remark")
 	private String remark;
 	@JsonProperty("status")
@@ -86,16 +86,16 @@ public class ProductProcessVar {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public long getUsl() {
+	public String getUsl() {
 		return usl;
 	}
-	public void setUsl(long usl) {
+	public void setUsl(String usl) {
 		this.usl = usl;
 	}
-	public long getLsl() {
+	public String getLsl() {
 		return lsl;
 	}
-	public void setLsl(long lsl) {
+	public void setLsl(String lsl) {
 		this.lsl = lsl;
 	}
 	public String getName() {
@@ -110,10 +110,10 @@ public class ProductProcessVar {
 	public void setUnitKind(String unitKind) {
 		this.unitKind = unitKind;
 	}
-	public long getTransformValue() {
+	public String getTransformValue() {
 		return transformValue;
 	}
-	public void setTransformValue(long transformValue) {
+	public void setTransformValue(String transformValue) {
 		this.transformValue = transformValue;
 	}
 	public String getRemark() {

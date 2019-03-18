@@ -252,20 +252,20 @@ app.controller('MainCtrl', function($scope, $http) {
 		console.log(sign);
 		if( $.isNumeric($("#txtUslPlc").val()) && $.isNumeric($("#txtLslPlc").val()) && $.isNumeric($("#txtTransformValue").val()) ){
 			if(sign == '+'){
-				$scope.lsl = parseInt(lslPlc) +  parseInt(tranformValue);
-				$scope.usl = parseInt(uslPlc) +  parseInt(tranformValue);
+				$scope.lsl = parseFloat(lslPlc) +  parseFloat(tranformValue);
+				$scope.usl = parseFloat(uslPlc) +  parseFloat(tranformValue);
 			}
 			else if(sign == '-'){
-				$scope.lsl = parseInt(lslPlc) -  parseInt(tranformValue);
-				$scope.usl = parseInt(uslPlc) -  parseInt(tranformValue);
+				$scope.lsl = parseFloat(lslPlc) -  parseFloat(tranformValue);
+				$scope.usl = parseFloat(uslPlc) -  parseFloat(tranformValue);
 			}
 			else if(sign == '*'){
-				$scope.lsl = parseInt(lslPlc) *  parseInt(tranformValue);
-				$scope.usl = parseInt(uslPlc) *  parseInt(tranformValue);
+				$scope.lsl = parseFloat(lslPlc) *  parseFloat(tranformValue);
+				$scope.usl = parseFloat(uslPlc) *  parseFloat(tranformValue);
 			}
 			else if(sign == "/"){
-				$scope.lsl = parseInt(lslPlc) /  parseInt(tranformValue);
-				$scope.usl = parseInt(uslPlc) /  parseInt(tranformValue);
+				$scope.lsl = parseFloat(lslPlc) /  parseFloat(tranformValue);
+				$scope.usl = parseFloat(uslPlc) /  parseFloat(tranformValue);
 			}
 			
 		}
