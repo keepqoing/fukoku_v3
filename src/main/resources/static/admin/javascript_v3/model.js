@@ -576,6 +576,8 @@ function newProduct_2_2(lineName, countClassName){
     div.className = "divProduct";
     div.id = "divProduct" + lineName + "_" + countClassName;
 
+    // Create Add Step Button
+    var btnAddStep = newProduct_2_3_addProductBtn("공정단계추가","btnAddStep", "primary", "newProduct_2_10_addStep");
 
     // Create Remove Product Button
     var btnRemoveProcessProduct = newProduct_2_3_addProductBtn("공정흐름삭제","btnRemoveProcessProduct", "danger", "newProduct_2_9_removeRow");
@@ -583,12 +585,12 @@ function newProduct_2_2(lineName, countClassName){
     // Create Process Product Button
     var btnProcessProduct = newProduct_2_3_addProductBtn("제품추가","btnProcessProduct", "success", "newProduct_2_8_productSet");
 
-    // Create Add Step Button
-    var btnAddStep = newProduct_2_3_addProductBtn("공정단계추가","btnAddStep", "primary", "newProduct_2_10_addStep");
 
+
+    div.appendChild(btnAddStep);
     div.appendChild(btnRemoveProcessProduct);
     div.appendChild(btnProcessProduct);
-    div.appendChild(btnAddStep);
+
 
     return div;
 }
@@ -1733,18 +1735,21 @@ function newProduct_2_2_FromDB(lineName, countClassName,Product, Status){
     div.id = "divProduct" + lineName + "_" + countClassName;
 
 
+    // Create Add Step Button
+    var btnAddStep = newProduct_2_3_addProductBtn("공정단계추가","btnAddStep", "primary", "newProduct_2_10_addStep");
+
     // Create Remove Product Button
     var btnRemoveProcessProduct = newProduct_2_3_addProductBtn("공정흐름삭제","btnRemoveProcessProduct", "danger", "newProduct_2_9_removeRow");
 
     // Create Process Product Button
     var btnProcessProduct = newProduct_2_3_addProductBtn("제품추가","btnProcessProduct", "success", "newProduct_2_8_productSet");
 
-    // Create Add Step Button
-    var btnAddStep = newProduct_2_3_addProductBtn("공정단계추가","btnAddStep", "primary", "newProduct_2_10_addStep");
 
+
+    div.appendChild(btnAddStep);
     div.appendChild(btnRemoveProcessProduct);
     div.appendChild(btnProcessProduct);
-    div.appendChild(btnAddStep);
+
 
     return div;
 }
