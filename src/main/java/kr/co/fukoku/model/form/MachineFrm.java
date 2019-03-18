@@ -2,9 +2,9 @@ package kr.co.fukoku.model.form;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.web.multipart.MultipartFile;
 
-import kr.co.fukoku.model.Product;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MachineFrm {
 
@@ -38,6 +38,9 @@ public class MachineFrm {
 	private String status;
 	@JsonProperty("station")
 	private String station;
+	
+	/*@JsonProperty("file")
+	private MultipartFile file;*/
 	
 	@JsonProperty("lst_process")
 	private List<Long> processes;
@@ -180,6 +183,16 @@ public class MachineFrm {
 	public void setStation(String station) {
 		this.station = station;
 	}
+
+	/*public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}*/
+	
+	
 	
 	
 	

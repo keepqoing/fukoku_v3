@@ -42,4 +42,10 @@ public class ProcessMachine3ServiceImpl implements ProcessMachine3Service{
 		return repo.countStage();
 	}
 
+	@Override
+	public List<Line> findAllByLineNameAndProductStatus(LineFrm f) {
+		// TODO Auto-generated method stub
+		return repo.findAllByLineNameAndProductStatus(f);
+	}
+
 }

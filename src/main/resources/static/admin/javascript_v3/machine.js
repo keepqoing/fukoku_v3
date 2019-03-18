@@ -181,13 +181,18 @@ app.controller('MainCtrl', function($scope, $http) {
 				"plc_communication_device" : $("#txtPlcCommunicationDevice").val(),
 				"station" : $("#txtStation").val(),
 				"remark" : $("#txtRemark").val(),
-				"lst_process" : processes
+				"lst_process" : processes,
+				"file" : $("#txtFile").prop('files')
 		}
 		console.log("data", data);
         var post = $http({
             method: method,
             url: "/v3/api/fukoku/machine",
-            dataType: 'json',
+            /*dataType: 'json',*/
+            enctype: 'multipart/form-data',
+    	    processData: false,
+    	    contentType: false,
+    	    cache: false,
             data : JSON.stringify(data),
             headers: { "Content-Type": "application/json" }
         });

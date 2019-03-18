@@ -26,6 +26,9 @@ public class LineFrm {
 	@JsonProperty("status")
 	private String status;
 	
+	@JsonProperty("product_status")
+	private String productStatus;
+	
 	@JsonProperty("name_in")
 	private String nameIn;
 	
@@ -150,6 +153,14 @@ public class LineFrm {
 
 	public void setNameIn(String nameIn) {
 		this.nameIn = nameIn;
+	}
+
+	public String getProductStatus() {
+		return productStatus;
+	}
+
+	public void setProductStatus(String productStatus) {
+		this.productStatus = productStatus;
 	}
 		
 	

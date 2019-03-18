@@ -271,5 +271,14 @@ app.controller('MainCtrl', function($scope, $http) {
 
 	};
 	
+	$("#selectOptType").change(function(){
+		if($(this).val() == "hadoop"){
+			$("#changeType").text("Table");
+		}else{
+			$("#changeType").text("Database");
+		}
+		
+	});
+	
 	
 });
