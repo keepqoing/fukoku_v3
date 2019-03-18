@@ -31,7 +31,7 @@ public class AbnormalController {
     @PostMapping(value = "/import")
     public ResponseEntity<Map<String,Object>> handleFileUpload(@RequestParam("file") MultipartFile uploadfile) throws IOException, JSONException {
         Map<String, Object> map = new HashMap<String, Object>();
-        JSONArray jsonArr = ReadExcelDynamic.readExcel(uploadfile, Table.ABNORMAL_COLUMN);
+        JSONArray jsonArr = ReadExcelDynamic.readExcel(uploadfile, Table.ABNORMAL_MGT_COLUMN);
         List<AbnormalFrm> fArr = new ArrayList<AbnormalFrm>();
 
         for(int i=0;i<jsonArr.length();i++) {

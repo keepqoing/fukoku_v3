@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout" ng-app="fukoku">
+
+<head>
+
+    <title>공장관리</title>
+    
+    <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
+    <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/d3/d3.min.js}" charset="utf-8"></script>
+    <script th:src="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/angular-nvd3/dist/angular-nvd3.js}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-sanitize.js"></script>
+    
+    <style>
+        .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+    </style>
+    
+</head>
+<body ng-controller="MainCtrl">
+
+<div layout:fragment="content">
+
+    <section class="content-header">
+        <h1>
+            	공장관리
+
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                       
+                       
+                        <div class="row">
+                                
+                                <div class="col-xl-8 col-lg-8 col-md-6 col-sm-6 col-xs-12">
+                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">공장추가</button>
+                                    <form id="fileUploadForm"  class="btn btn-info btn-file">Upload <input type="file" id="btImport" name="file" (change)="btImport()"> </form>
+                                    <button type="button" id="btExport" class="btn btn-info" ng-click="btExport()">Download</button>
+                                </div>
+                                
+                                <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                	<div class="form-group">
+                                    	<select class="form-control" id="selectActive" ng-model="status" ng-change="btSearchActive()">
+                                    		<option value="All" selected>All</option>
+                                    		<option value="1">Active</option>
+                                    		<option value="0">Expired</option>
+                                    	</select>
+                                	</div>
+                                </div>
+                            
+                                <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                     <div class="box-tools">
+						                <div class="input-group input-group-sm" style="min-width: 150px;">
+						                  <input type="text" name="table_search" class="form-control pull-right" id="txtSearch" placeholder="검색">
+						
+						                  <div class="input-group-btn">
+						                    <button type="button" class="btn btn-default" ng-click="btSearch()"><i class="fa fa-search"></i></button>
+						                  </div>
+						                </div>
+						              </div>
+                                </div>
+                            
+                            
+                        </div>
+
+						<br/>
+	
+                        <div class="row">
+                        	
+                       
+                        
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <table  class="table table-bordered table-striped">
+                                    <thead class="table-head">
+                                    <tr>
+                                       <th>순번 <i class="fa fa-fw fa-sort" ng-click="btOrder('seq')" style="cursor: pointer;"></i></th> <!-- Seq -->
+                                        <th>이름 <i class="fa fa-fw fa-sort" ng-click="btOrder('name')" style="cursor: pointer;"></i></th>
+                                        <th>주소 <i class="fa fa-fw fa-sort" ng-click="btOrder('address')" style="cursor: pointer;"></i></th>
+                                        <th>가동시작일 <i class="fa fa-fw fa-sort" ng-click="btOrder('start_date')" style="cursor: pointer;"></i></th>
+                                        <th>가동종료일 <i class="fa fa-fw fa-sort" ng-click="btOrder('end_date')" style="cursor: pointer;"></i></th>
+                                        <th>설명 <i class="fa fa-fw fa-sort" ng-click="btOrder('remark')" style="cursor: pointer;"></i></th>
+                                        <th>수정</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+	                                    <tr  ng-repeat="f in factories">
+	                                    	<td>{{f.seq}}</td>
+	                                    	<td>{{f.name}}</td>
+	                                    	<td>{{f.address}}</td>
+	                                    	<td>{{f.start_date}}</td>
+	                                    	<td>{{f.end_date}}</td>
+	                                    	
+	                                    	<td>{{f.remark}}</td>
+	                                    	<td style="width:100px">
+	                                    			<button data-f-id="{{f.id}}" ng-click="btEdit(f.id)" style="width:30px;" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i></button>
+	                                    			<button data-f-id="{{f.id}}" ng-click="btDelete(f.id)" style="width:30px" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i></button>
+	                                     	</td>
+	                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalFrm">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="box box-primary modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">공장관리</h4>
+                </div>
+
+                <form class="form-horizontal" enctype="multipart/form-data" id="frm" ng-submit="onSubmitFrm()">
+                    <div class="box-body">
+                    
+                    
+                     <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">순번:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtSeq" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">이름:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtName" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                     
+                        
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">주소:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtAddress" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="txtStartDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">가동시작일</label>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                <div class='input-group date' id='startDate'>
+                                    <input type='text' class="form-control" id="txtStartDate" placeholder="" required/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="txtEndDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">가동종료일</label>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                <div class='input-group date' id='endDate'>
+                                    <input type='text' class="form-control" id="txtEndDate" placeholder="" required/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        <div class="form-group">
+                            <label for="txtRemark" class="col-sm-2 control-label">설명:</label>
+                            <div class="col-sm-10">
+                                <textarea rows="5" class="form-control" id="txtRemark"></textarea>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">저장</button>
+                        <button type="submit" class="btn btn-info pull-right btn-flat" id="btUpdate" style="display:none;">저장
+                        </button>
+                    </div><!-- /.box-footer -->
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    
+     <div class="modal fade" id="modal-import">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Import Data</h4>
+              </div>
+              
+              
+              <div class="modal-body">
+	                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+	                              
+	                  </div>
+              </div>
+             
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Import</button>
+              </div>
+              
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        
+        
+        
+        
+
+</div>
+<th:block layout:fragment="script">
+<script th:src="@{/static/admin/javascript_v3/factory.js}"></script>
+<script>
+		
+        $(document).ready(function () {
+            $(function () {
+                $('#startDate,#endDate').datetimepicker({
+                	format: 'YYYY-MM-DD',
+                    defaultDate: new Date()
+                });
+            });
+        });
+    </script>
+</th:block>
+</body>
+</html>

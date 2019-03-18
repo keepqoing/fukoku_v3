@@ -3,10 +3,7 @@ package kr.co.fukoku.repository;
 import kr.co.fukoku.model.AbnormalMgt;
 import kr.co.fukoku.model.form.AbnormalMgtFrm;
 import kr.co.fukoku.repository.sql.AbnormalMgtSQLBuilder;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -46,13 +43,12 @@ public interface AbnormalMgtRepository {
             + " )"
             + "</foreach></script>")
     boolean saveLst(@Param("lst") List<AbnormalMgtFrm>  lst);
-//
-//    @Update("UPDATE department SET"
-//            + "	seq=#{f.seq}, "
-//            + " name=#{f.name},"
-//            + " code=#{f.code} ,"
-//            + " parent=#{f.parent},"
-//            + " remark=#{f.remark} "
-//            + "		 WHERE id=#{f.id}")
-//    boolean update(@Param("f") DepartmentFrm frm);
+
+    @Update("UPDATE abnormal-mgt SET"
+            + "	ref_factory=#{f.ref_factory}, "
+            + " ref_department=#{f.ref_department},"
+            + " lines=#{f.lines} ,"
+            + " data=#{f.data}"
+            + "		 WHERE name=#{f.name}")
+    boolean update(@Param("f") AbnormalMgtFrm frm);
 }

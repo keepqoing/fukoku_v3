@@ -611,8 +611,8 @@ function mainShowAllButton(){
     // buttPlus.setAttribute('id','mainMove' + lineName + '_' + rowNum + '_s_' + txtNum); // mainPlusIB_1_s_1
     buttPlus.setAttribute("value", "전체보기");
     buttPlus.innerText =  "전체보기";
-    buttPlus.setAttribute('class',"add-house btn btn-primary btn-xs");
-    buttPlus.setAttribute('style','float:right; font-size:11px;');
+    buttPlus.setAttribute('class',"add-house btn btn-success btn-xs");
+    buttPlus.setAttribute('style','clear:both; margin-top:5px; float:right; font-size:11px;');
     buttPlus.setAttribute('onclick', "showAll(this)" );
 
     return buttPlus;

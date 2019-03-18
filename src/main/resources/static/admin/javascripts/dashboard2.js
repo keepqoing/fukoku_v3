@@ -16,7 +16,8 @@ $(function() {
         gauges[key].redraw(value);
     };
 
-    dashboard.getAllMachineNameByLineName = function(line, selector/*, callback*/){
+    /*
+    dashboard.getAllMachineNameByLineName = function(line, selector){
         $.ajax({
             url: "/v1/api/fukoku/machine/select-box",
             type: 'GET',
@@ -59,9 +60,59 @@ $(function() {
                     var startTime =  jQuery.format.date(currentTime,'yyyy-MM-dd'); // in store procedure set default start_time = 08:00 already
                     // dashboard.getGaugesData(selector,line,machineName,startTime, jQuery.format.date(currentTime,'yyyy-MM-dd HH:mm'));
                 }
-                /*if(callback){
-                    callback($('#'+selector+''));
-                }*/
+
+            },
+            error:function(data,status,err) {
+                console.log("error: "+data+" status: "+status+" err:"+err);
+            }
+        });
+    };
+    */
+
+    dashboard.getAllMachineNameByLineName = function(line, selector){
+        $.ajax({
+            url: "/v3/api/fukoku/machine/findAllByLine/" + line,
+            type: 'GET',
+            dataType: 'JSON',
+            data:{
+                "lineName"  :   line
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function(response) {
+                $('#'+selector+'').empty();
+                if(response.code == "200"){
+                    $.each(response.data.reverse(), function(key, value){
+                        $('#'+selector+'').append("<option value="+value.name+">"+value.name+"</option>");
+                    });
+                    if(line == "IB"){
+                        dashboard.matchLastMachine(selector,"V홈높이,흔들림");
+                    }
+                    if(line == "HC"){
+                        dashboard.matchLastMachine(selector,"T플레이트");
+                    }
+                    if(line == "HD"){
+                        dashboard.matchLastMachine(selector,"V홈높이,흔들림");
+                    }
+                    if(line == "PD"){
+                        dashboard.matchLastMachine(selector,"도장기");
+                    }
+                    if(line == "HA"){
+                        dashboard.matchLastMachine(selector,"V홈높이,흔들림");
+                    }
+                    if(line == "HB"){
+                        dashboard.matchLastMachine(selector,"T/Mark");
+                    }
+
+                    var machineName = $('#'+selector+'').val();
+                    var currentTime = new Date();
+                    // var startTime =  jQuery.format.date(currentTime,'yyyy-MM-dd') + ' 08:00'; //dashboard.setDateTimeFormat("08:00");
+                    var startTime =  jQuery.format.date(currentTime,'yyyy-MM-dd'); // in store procedure set default start_time = 08:00 already
+                    // dashboard.getGaugesData(selector,line,machineName,startTime, jQuery.format.date(currentTime,'yyyy-MM-dd HH:mm'));
+                }
+
             },
             error:function(data,status,err) {
                 console.log("error: "+data+" status: "+status+" err:"+err);
