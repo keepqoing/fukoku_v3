@@ -42,17 +42,17 @@ public interface ProductRepository {
 	List<Map<String, Object>> findMap(@Param("f") ProductFrm frm);
 	
 	@Insert("INSERT INTO product ("
-			+ "	name, type, start_date, end_date, customer_name, remark"
+			+ "	name, type, start_date, end_date, customer_name, remark, acronym "
 			+ ") VALUES ("
-			+ "	#{f.name}, #{f.type}, #{f.startDate}, #{f.endDate}, #{f.customerName}, #{f.remark}"
+			+ "	#{f.name}, #{f.type}, #{f.startDate}, #{f.endDate}, #{f.customerName}, #{f.remark} , #{f.acronym}"
 			+ ");")
 	boolean save(@Param("f") ProductFrm frm);
 	
 	@Insert("<script>insert into product ("
-			+ " name, type, start_date, end_date, customer_name, remark"
+			+ " name, type, start_date, end_date, customer_name, remark, acronym"
 			+ ") VALUES "
 			+ " <foreach collection='lst' item='f' separator=','>("
-			+ "	#{f.name}, #{f.type}, #{f.startDate}, #{f.endDate}, #{f.customerName}, #{f.remark}"
+			+ "	#{f.name}, #{f.type}, #{f.startDate}, #{f.endDate}, #{f.customerName}, #{f.remark}, #{f.acronym}"
 			+ " )"
 			+ "</foreach></script>")
 	boolean saveLst(@Param("lst") List<ProductFrm>  lst);
@@ -64,7 +64,7 @@ public interface ProductRepository {
 			+ "	start_date=#{f.startDate}, "
 			+ "	end_date=#{f.endDate},"
 			+ " remark=#{f.remark}, "
-			+ " customer_name=#{f.customerName}" 
+			+ " customer_name=#{f.customerName} , acronym = #{f.acronym}" 
 			+ " WHERE id=#{f.id}")
 	boolean update(@Param("f") ProductFrm frm);
 	

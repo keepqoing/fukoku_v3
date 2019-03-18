@@ -28,6 +28,17 @@ public class Factory {
 	@JsonProperty("lines")
 	private List<Line> lines;
 	
+	@JsonProperty("acronym")
+	private String acronym;
+	
+	public String getAcronym() {
+		return acronym;
+	}
+
+	public void setAcronym(String acronym) {
+		this.acronym = acronym;
+	}
+	
 	public Factory() {
 		super();
 	}

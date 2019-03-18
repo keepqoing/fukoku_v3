@@ -53,7 +53,7 @@ public interface LineRepository {
 	Line findOne(@Param("id") long  id);
 	
 	@Insert("INSERT INTO line ("
-			+ " seq, name, ref_factory_id, layout_name , ref_product_id,start_date, end_date, remark"
+			+ " seq, name, ref_factory_id, layout_name , ref_product_id,start_date, end_date, remark,  acronym "
 			+ ") VALUES ("
 			+ "	#{f.seq}, "
 			+ "	#{f.name}, "
@@ -62,12 +62,12 @@ public interface LineRepository {
 			+ " #{f.refProductId}, "
 			+ " #{f.startDate}, "
 			+ " #{f.endDate}, "
-			+ " #{f.remark}"
+			+ " #{f.remark},  #{f.acronym}"
 			+ ");")
 	boolean save(@Param("f") LineFrm frm);
 	
 	@Insert("<script>insert into line ("
-			+ " seq, name, ref_factory_id, layout_name , ref_product_id,start_date, end_date, remark"
+			+ " seq, name, ref_factory_id, layout_name , ref_product_id,start_date, end_date, remark, acronym"
 			+ ") VALUES "
 			+ " <foreach collection='lst' item='f' separator=','>("
 			+ "	#{f.seq}, "
@@ -77,7 +77,7 @@ public interface LineRepository {
 			+ " #{f.refProductId}, "
 			+ " #{f.startDate}, "
 			+ " #{f.endDate}, "
-			+ " #{f.remark}"
+			+ " #{f.remark}, #{f.acronym}"
 			+ " )"
 			+ "</foreach></script>")
 	boolean saveLst(@Param("lst") List<LineFrm>  lst);
@@ -90,7 +90,7 @@ public interface LineRepository {
 			+ " ref_product_id=#{f.refProductId},"
 			+ " start_date=#{f.startDate},"
 			+ " end_date=#{f.endDate},"
-			+ " remark=#{f.remark} "
+			+ " remark=#{f.remark}, acronym = #{f.acronym} "
 			+ "		 WHERE id=#{f.id}")
 	boolean update(@Param("f") LineFrm frm);
 	

@@ -25,7 +25,10 @@ public interface ProcessRepository {
 	@SelectProvider(type = ProcessSQLBuilder.class, method = "find")
 	@Results(value={
 			@Result(property="despPicture",column="desp_picture"),
-			@Result(property="repVariableName",column="rep_variable_name")
+			@Result(property="repVariableName",column="rep_variable_name"),
+			@Result(property="product", column="ref_product_id",
+			    one = @One(select  = "kr.co.fukoku.repository.ProductRepository.findOne")
+			)
 	})
 	List<kr.co.fukoku.model.Process> findAll(@Param("f") ProcessFrm frm);
 	
@@ -35,22 +38,25 @@ public interface ProcessRepository {
 	@Select("Select * from process where id=#{id} and status='1' ")
 	@Results(value={
 			@Result(property="despPicture",column="desp_picture"),
-			@Result(property="repVariableName",column="rep_variable_name")
+			@Result(property="repVariableName",column="rep_variable_name"),
+			@Result(property="product", column="ref_product_id",
+				one = @One(select  = "kr.co.fukoku.repository.ProductRepository.findOne")
+			)
 	})
 	kr.co.fukoku.model.Process findOne(@Param("id") long  id);
 	
 	@Insert("INSERT INTO process ("
-			+ "	seq, name, type, remark, rep_variable_name "
+			+ "	seq, name, type, remark, rep_variable_name, ref_product_id , acronym"
 			+ ") VALUES ("
-			+ "	#{f.seq}, #{f.name}, #{f.type}, #{f.remark}, #{f.repVariableName}"
+			+ "	#{f.seq}, #{f.name}, #{f.type}, #{f.remark}, #{f.repVariableName}, #{f.refProductId},  #{f.acronym}"
 			+ ");")
 	boolean save(@Param("f") ProcessFrm frm);
 	
 	@Insert("<script>insert into process ("
-			+ "	seq, name, type, remark, rep_variable_name "
+			+ "	seq, name, type, remark, rep_variable_name , acronym"
 			+ ") VALUES "
 			+ " <foreach collection='lst' item='f' separator=','>("
-			+ "	#{f.seq}, #{f.name}, #{f.type}, #{f.remark}, #{f.repVariableName}"
+			+ "	#{f.seq}, #{f.name}, #{f.type}, #{f.remark}, #{f.repVariableName},  #{f.acronym}"
 			+ " )"
 			+ "</foreach></script>")
 	boolean saveLst(@Param("lst") List<ProcessFrm>  lst);
@@ -59,7 +65,7 @@ public interface ProcessRepository {
 			+ "	seq=#{f.seq}, "
 			+ "	name=#{f.name}, "
 			+ "	type=#{f.type}, "
-			+ " remark=#{f.remark},  rep_variable_name = #{f.repVariableName} "
+			+ " remark=#{f.remark},  rep_variable_name = #{f.repVariableName}, ref_product_id=#{f.refProductId} , acronym = #{f.acronym} "
 			+ " WHERE id=#{f.id}")
 	boolean update(@Param("f") ProcessFrm frm);
 	

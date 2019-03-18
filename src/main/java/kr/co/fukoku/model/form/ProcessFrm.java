@@ -25,9 +25,22 @@ public class ProcessFrm {
 	@JsonProperty("status")
 	private String status;
 	
+	@JsonProperty("ref_product_id")
+	private long refProductId;
 	
 	@JsonProperty("order_by")
 	private String orderBy;
+	
+	@JsonProperty("acronym")
+	private String acronym;
+	
+	public String getAcronym() {
+		return acronym;
+	}
+
+	public void setAcronym(String acronym) {
+		this.acronym = acronym;
+	}
 	
 	public void setOrderBy(String orderBy) {
 		this.orderBy = orderBy;
@@ -116,6 +129,14 @@ public class ProcessFrm {
 
 	public void setDespPicture(String despPicture) {
 		this.despPicture = despPicture;
+	}
+
+	public long getRefProductId() {
+		return refProductId;
+	}
+
+	public void setRefProductId(long refProductId) {
+		this.refProductId = refProductId;
 	}
 	
 	

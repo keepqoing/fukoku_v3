@@ -21,6 +21,17 @@ public class Product {
 	@JsonProperty("status")
 	private String status;
 	
+	@JsonProperty("acronym")
+	private String acronym;
+	
+	public String getAcronym() {
+		return acronym;
+	}
+
+	public void setAcronym(String acronym) {
+		this.acronym = acronym;
+	}
+	
 	public Product(long id, String name, String type, String startDate, String endDate, String customerName,
 			String remark, String status) {
 		super();

@@ -150,6 +150,7 @@ app.controller('MainCtrl', function($scope, $http) {
             	$("#txtStation").val(response.data.station);
             	$("#txtSeq").val(response.data.seq);
             	$("#txtRemark").val(response.data.remark);
+            	$("#txtAcronym").val(response.data.acronym);
             }else{
             	$scope.message = response.message;
             }
@@ -182,7 +183,8 @@ app.controller('MainCtrl', function($scope, $http) {
 				"station" : $("#txtStation").val(),
 				"remark" : $("#txtRemark").val(),
 				"lst_process" : processes,
-				"file" : $("#txtFile").prop('files')
+				"file" : $("#txtFile").prop('files'),
+				"acronym": $("#txtAcronym").val()
 		}
 		console.log("data", data);
         var post = $http({

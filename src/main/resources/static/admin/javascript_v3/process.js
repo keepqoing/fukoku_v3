@@ -13,7 +13,7 @@ app.controller('MainCtrl', function($scope, $http) {
 			"name" : "",
 	};
 	
-	
+	$scope.products;
 	
 	/***
 	 * Function()
@@ -53,7 +53,24 @@ app.controller('MainCtrl', function($scope, $http) {
 		});
 	});*/
 	
-	
+	$scope.findAllProduct = function(){
+        var post = $http({
+            method: "GET",
+            url: "/v3/api/fukoku/product/distinct",
+            dataType: 'json',
+            headers: { "Content-Type": "application/json" }
+        });
+        post.success(function (response, status) {
+            if(response.code == 200){
+            	console.log(response.data);
+            	$scope.products = response.data;
+            }
+            
+        });
+        post.error(function (data, status) {
+            console.log(data);
+        });
+    }
 	
 	
 	$scope.findAll = function(){
@@ -94,6 +111,8 @@ app.controller('MainCtrl', function($scope, $http) {
             	$("#txtDespPicture").val(response.data.desp_picture);
             	$("#txtSeq").val(response.data.seq);
             	$("#txtRemark").val(response.data.remark);
+            	$("#selectOptProduct").val(response.data.product.id);
+            	$("#txtAcronym").val(response.data.acronym);
             }else{
             	$scope.message = response.message;
             }
@@ -111,7 +130,9 @@ app.controller('MainCtrl', function($scope, $http) {
 				"rep_variable_name" : $("#txtRepVariableName").val(),
 				"desp_picture" : $("#txtDespPicture").val(),
 				"type" : $("#txtType").val(),
+				"ref_product_id" : $("#selectOptProduct").val(),
 				"remark" : $("#txtRemark").val(),
+				"acronym": $("#txtAcronym").val()
 		}
 		console.log("data", data);
         var post = $http({
@@ -175,7 +196,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	 *******************************************************************************/
 	
 	$scope.findAll($scope.data);
-	
+	$scope.findAllProduct();
 	
 	/*******************************************************************************
 	 * Event()

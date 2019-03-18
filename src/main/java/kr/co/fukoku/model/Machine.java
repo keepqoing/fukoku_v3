@@ -39,6 +39,16 @@ public class Machine {
 	@JsonProperty("station")
 	private String station;
 	
+	@JsonProperty("acronym")
+	private String acronym;
+	
+	public String getAcronym() {
+		return acronym;
+	}
+
+	public void setAcronym(String acronym) {
+		this.acronym = acronym;
+	}
 	
 	@JsonProperty("lst_process")
 	private List<Process> processes;

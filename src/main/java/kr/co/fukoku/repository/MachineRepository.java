@@ -70,7 +70,7 @@ public interface MachineRepository {
 	
 	@Insert("INSERT INTO machine ("
 			+ " seq, name, ref_process_id,ip ,import_date, code, manufacturer, facility_staff"
-			+ " , plc_type, plc_communication_device ,remark, facility_contact_person, station"
+			+ " , plc_type, plc_communication_device ,remark, facility_contact_person, station, acronym"
 			+ ") VALUES ("
 			+ "	#{f.seq}, "
 			+ "	#{f.name}, "
@@ -84,14 +84,14 @@ public interface MachineRepository {
 			+ " #{f.plcCommunicationDevice}, "
 			+ " #{f.remark},"
 			+ " #{f.facilityContactPerson},"
-			+ " #{f.station}"
+			+ " #{f.station}, #{f.acronym}"
 			+ ");")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="f.id", before=false, resultType=long.class)
 	long save(@Param("f") MachineFrm frm);
 	
 	@Insert("<script>insert into machine ("
 			+ " seq, name, ref_process_id,ip ,import_date, code, manufacturer, facility_staff"
-			+ " , plc_type, plc_communication_device ,remark, facility_contact_person, station"
+			+ " , plc_type, plc_communication_device ,remark, facility_contact_person, station, acronym"
 			+ ") VALUES "
 			+ " <foreach collection='lst' item='f' separator=','>("
 			+ "	#{f.seq}, "
@@ -106,7 +106,7 @@ public interface MachineRepository {
 			+ " #{f.plcCommunicationDevice}, "
 			+ " #{f.remark},"
 			+ " #{f.facilityContactPerson},"
-			+ " #{f.station}"
+			+ " #{f.station}, #{f.acronym}"
 			+ " )"
 			+ "</foreach></script>")
 	boolean saveLst(@Param("lst") List<MachineFrm>  lst);
@@ -124,7 +124,7 @@ public interface MachineRepository {
 			+ " plc_communication_device=#{f.plcCommunicationDevice},"
 			+" facility_contact_person=#{f.facilityContactPerson},"
 			+ " remark=#{f.remark}, "
-			+ " station=#{f.station} "
+			+ " station=#{f.station}, acronym= #{f.acronym} "
 			+ "		 WHERE id=#{f.id}")
 	boolean update(@Param("f") MachineFrm frm);
 	

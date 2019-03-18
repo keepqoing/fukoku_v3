@@ -25,8 +25,20 @@ public class Process {
 	@JsonProperty("status")
 	private String status;
 	
+	@JsonProperty("product")
+	private Product product;
 	
 	
+	@JsonProperty("acronym")
+	private String acronym;
+	
+	public String getAcronym() {
+		return acronym;
+	}
+
+	public void setAcronym(String acronym) {
+		this.acronym = acronym;
+	}
 	
 	public Process(long id, long seq, String name, String repVariableName, String despPicture, String type,
 			String remark, String status) {
@@ -90,6 +102,15 @@ public class Process {
 	}
 	public void setDespPicture(String despPicture) {
 		this.despPicture = despPicture;
+	}
+	
+	
+	
+	public Product getProduct() {
+		return product;
+	}
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 	@Override
 	public String toString() {

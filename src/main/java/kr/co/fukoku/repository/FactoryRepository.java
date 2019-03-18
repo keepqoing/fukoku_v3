@@ -49,19 +49,20 @@ public interface FactoryRepository {
 	Factory findOne(@Param("id") long  id);
 	
 	@Insert("insert into factory ("
-			+ " seq, name, address , start_date, end_date, remark"
+			+ " seq, name, address , start_date, end_date, remark, acronym"
 			+ ") VALUES ("
 			+ "	#{f.seq}, "
 			+ "	#{f.name}, "
 			+ " #{f.address}, "
 			+ " #{f.startDate}, "
 			+ " #{f.endDate}, "
-			+ " #{f.remark}"
+			+ " #{f.remark},"
+			+ " #{f.acronym} "
 			+ ");")
 	boolean save(@Param("f") FactoryFrm frm);
 	
 	@Insert("<script>insert into factory ("
-			+ " seq, name, address , start_date, end_date, remark"
+			+ " seq, name, address , start_date, end_date, remark, acronym"
 			+ ") VALUES "
 			+ " <foreach collection='lst' item='f' separator=','>("
 			+ "	#{f.seq}, "
@@ -69,7 +70,7 @@ public interface FactoryRepository {
 			+ " #{f.address}, "
 			+ " #{f.startDate}, "
 			+ " #{f.endDate}, "
-			+ " #{f.remark}"
+			+ " #{f.remark}, #{f.acronym}"
 			+ " )"
 			+ "</foreach></script>")
 	boolean saveLst(@Param("lst") List<FactoryFrm>  lst);
@@ -80,7 +81,7 @@ public interface FactoryRepository {
 			+ " address=#{f.address} ,"
 			+ " start_date=#{f.startDate},"
 			+ " end_date=#{f.endDate},"
-			+ " remark=#{f.remark} "
+			+ " remark=#{f.remark} , acronym = #{f.acronym} "
 			+ "		 WHERE id=#{f.id}")
 	boolean update(@Param("f") FactoryFrm frm);
 	

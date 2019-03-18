@@ -24,6 +24,17 @@ public class ProductFrm {
 	@JsonProperty("order_by")
 	private String orderBy;
 	
+	@JsonProperty("acronym")
+	private String acronym;
+	
+	public String getAcronym() {
+		return acronym;
+	}
+
+	public void setAcronym(String acronym) {
+		this.acronym = acronym;
+	}
+	
 	public void setOrderBy(String orderBy) {
 		this.orderBy = orderBy;
 	}

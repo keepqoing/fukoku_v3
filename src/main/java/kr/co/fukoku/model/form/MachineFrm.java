@@ -45,6 +45,17 @@ public class MachineFrm {
 	@JsonProperty("lst_process")
 	private List<Long> processes;
 	
+	@JsonProperty("acronym")
+	private String acronym;
+	
+	public String getAcronym() {
+		return acronym;
+	}
+
+	public void setAcronym(String acronym) {
+		this.acronym = acronym;
+	}
+	
 	public List<Long> getProcesses() {
 		return processes;
 	}

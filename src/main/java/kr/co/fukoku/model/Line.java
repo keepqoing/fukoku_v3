@@ -29,6 +29,17 @@ public class Line {
 	@JsonProperty("status")
 	private String status;
 	
+	@JsonProperty("acronym")
+	private String acronym;
+	
+	public String getAcronym() {
+		return acronym;
+	}
+
+	public void setAcronym(String acronym) {
+		this.acronym = acronym;
+	}
+	
 	
 	
 	@JsonProperty("process_chain")

@@ -146,6 +146,7 @@ app.controller('MainCtrl', function($scope, $http) {
             	$("#txtProductType").val(response.data.product_type);
             	$("#txtSeq").val(response.data.seq);
             	$("#txtRemark").val(response.data.remark);
+            	$("#txtAcronym").val(response.data.acronym);
             }else{
             	$scope.message = response.message;
             }
@@ -167,6 +168,7 @@ app.controller('MainCtrl', function($scope, $http) {
 				"end_date" : $("#endDate").find("input").val(),
 				"address" : $("#txtAddress").val(),
 				"remark" : $("#txtRemark").val(),
+				"acronym": $("#txtAcronym").val()
 		}
 		console.log("data", data);
         var post = $http({
