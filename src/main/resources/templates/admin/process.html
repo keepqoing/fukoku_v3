@@ -82,11 +82,12 @@
                                 <table  class="table table-bordered table-striped" id="dtTable">
                                     <thead class="table-head">
                                     <tr>
+                                     <th>생산제품유형</th> <!-- product type -->
                                        <th>순번 <i class="fa fa-fw fa-sort" ng-click="btOrder('seq')" style="cursor: pointer;"></i></th>
                                         <th>공정명 <i class="fa fa-fw fa-sort" ng-click="btOrder('name')" style="cursor: pointer;"></i></th>
                                         <th>공정유형 <i class="fa fa-fw fa-sort" ng-click="btOrder('type')" style="cursor: pointer;"></i></th>
                                        <th>대표관리항목</th>
-                                        <th>생산제품유형</th> <!-- product type -->
+                                       
                                       <!--  <th>공정설명그림</th> -->
                                         <th>설명</th>
                                         <th>수정</th>
@@ -94,11 +95,12 @@
                                     </thead>
                                     <tbody>
 	                                    <tr  ng-repeat="f in processes">
+												<td>{{f.product.type}}</td>
 	                                    	<td>{{f.seq}}</td>
 	                                    	<td>{{f.name}}</td>
 	                                    	<td>{{f.type}}</td>
 	                                    	<td>{{f.rep_variable_name}}</td>
-	                                    	<td>{{f.product.type}}</td>
+	                                    	
 	                                    	<!-- <td>{{f.desp_picture}}</td> -->
 	                                    	<td>{{f.remark}}</td>
 	                                    	<td style="width:100px">
