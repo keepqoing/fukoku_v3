@@ -114,6 +114,7 @@ app.controller('MainCtrl', function($scope, $http) {
             	$("#txtSeq").val(response.data.seq);
             	$("#txtRemark").val(response.data.remark);
             	$("#txtItemType").val(response.data.item_type);
+            	$("#txtAcronym").val(response.data.acronym);
             }else{
             	$scope.message = response.message;
             }
@@ -131,6 +132,8 @@ app.controller('MainCtrl', function($scope, $http) {
 				"ref_process_id" : $("#selectOpt").val(),
 				"remark" : $("#txtRemark").val(),
 				"item_type" : $("#txtItemType").val(),
+				"acronym": $("#txtAcronym").val()
+				
 		}
 		console.log("data", data);
         var post = $http({

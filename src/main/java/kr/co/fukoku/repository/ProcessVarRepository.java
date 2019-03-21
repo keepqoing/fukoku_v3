@@ -46,25 +46,25 @@ public interface ProcessVarRepository {
 	ProcessVar findOne(@Param("id") long  id);
 	
 	@Insert("INSERT INTO process_var ("
-			+ " seq, name, ref_process_id, remark,item_type"
+			+ " seq, name, ref_process_id, remark,item_type,  acronym"
 			+ ") VALUES ("
 			+ "	#{f.seq}, "
 			+ "	#{f.name}, "
 			+ " #{f.refProcessId}, "
 			+ " #{f.remark},"
-			+ " #{f.itemType} "
+			+ " #{f.itemType},  #{f.acronym} "
 			+ ");")
 	boolean save(@Param("f") ProcessVarFrm frm);
 	
 	@Insert("<script>insert into process_var ("
-			+ " seq, name, ref_process_id, remark,item_type"
+			+ " seq, name, ref_process_id, remark,item_type,  acronym"
 			+ ") VALUES "
 			+ " <foreach collection='lst' item='f' separator=','>("
 			+ "	#{f.seq}, "
 			+ "	#{f.name}, "
 			+ " #{f.refProcessId}, "
 			+ " #{f.remark},"
-			+ " #{f.itemType} "
+			+ " #{f.itemType},  #{f.acronym} "
 			+ " )"
 			+ "</foreach></script>")
 	boolean saveLst(@Param("lst") List<ProcessVarFrm>  lst);
@@ -73,7 +73,7 @@ public interface ProcessVarRepository {
 			+ "	seq=#{f.seq}, "
 			+ " name=#{f.name},"
 			+ " ref_process_id=#{f.refProcessId},"
-			+ " remark=#{f.remark} , item_type=#{f.itemType}"
+			+ " remark=#{f.remark} , item_type=#{f.itemType} , acronym=#{f.acronym}"
 			+ "		 WHERE id=#{f.id}")
 	boolean update(@Param("f") ProcessVarFrm frm);
 	

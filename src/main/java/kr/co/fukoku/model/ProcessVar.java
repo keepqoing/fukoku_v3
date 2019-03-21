@@ -21,6 +21,12 @@ public class ProcessVar {
 	private String itemType;
 	
 	
+	@JsonProperty("acronym")
+	private String acronym;
+	
+	public String getAcronym() {
+		return acronym;
+	}
 	
 	public ProcessVar(String name) {
 		super();
