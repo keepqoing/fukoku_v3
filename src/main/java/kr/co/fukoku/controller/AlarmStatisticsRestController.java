@@ -8,19 +8,24 @@ import kr.co.fukoku.model.AlarmStatistics;
 
 import kr.co.fukoku.model.Line;
 import kr.co.fukoku.model.Machine;
+import kr.co.fukoku.model.form.AlarmJSON.AlarmFactory;
 import kr.co.fukoku.repository_sqltem.AlarmStatisticsRepositoryBody;
 import kr.co.fukoku.utils.Counting;
 import kr.co.fukoku.utils.Pagination;
 import kr.co.fukoku.utils.ResponseList;
 import kr.co.fukoku.utils.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/api/fukoku/alarm-statistics")
@@ -134,4 +139,6 @@ public class AlarmStatisticsRestController {
         }
         return response;
     }
+
+
 }
