@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "http://113.198.137.181:8080")
+@CrossOrigin(origins = "*")
 @RequestMapping("/v3/api/fukoku/json-alarm")
 public class AlarmJsonRestController {
 
