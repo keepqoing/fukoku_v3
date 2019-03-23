@@ -67,6 +67,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
 				.addResourceLocations("file:/home/gac/fukoku-upload/files/excels/");
 		registry.addResourceHandler("/home/gac/fukoku-upload/files/images/**")
 				.addResourceLocations("file:/home/gac/fukoku-upload/files/images/");
+
 	}
 
 	
