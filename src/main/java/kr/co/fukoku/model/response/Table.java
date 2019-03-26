@@ -35,7 +35,8 @@ public class Table {
 
 
 
-	public static final String ABNORMAL_MGT_COLUMN[] = {"factory","department","management_name","line","type","step","code","category_name","sub_category_code"};
+	public static final String ABNORMAL_MGT_COLUMN[] = {"seq","name","ref_factory_id","ref_department_id","lines","data"};
+	public static final String STATE_NAME_COLUMN[] = {"seq","eng_name","korean_name","status","color"};
 	
 	
 

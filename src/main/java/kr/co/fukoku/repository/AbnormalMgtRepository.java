@@ -12,43 +12,84 @@ import java.util.Map;
 @Repository
 public interface AbnormalMgtRepository {
     @SelectProvider(type = AbnormalMgtSQLBuilder.class, method = "find")
-    List<AbnormalMgt> findAll(@Param("f") AbnormalMgtFrm frm);
+    @Results(value={
+            @Result(property = "factory", column="ref_factory_id",
+                one = @One(select = "kr.co.fukoku.repository.FactoryRepository.findOne")
+            ),
+            @Result(property = "department", column="ref_department_id",
+                    one = @One(select = "kr.co.fukoku.repository.DepartmentRepository.findOne")
+            ),
+            @Result(property = "line", column="ref_line_id",
+                    one = @One(select = "kr.co.fukoku.repository.LineRepository.findOne")
+            )
+    })
+    List<AbnormalMgt> findAll(@Param("f") AbnormalMgtFrm f);
 
     @SelectProvider(type = AbnormalMgtSQLBuilder.class, method = "find")
-    List<Map<String, Object>> findMap(@Param("f") AbnormalMgtFrm frm);
+    List<Map<String, Object>> findMap(@Param("f") AbnormalMgtFrm f);
 
-    @Select("SELECT * FROM abnormal_mgt WHERE name=#{name} ")
+    @Select("SELECT * FROM abnormal_mgt WHERE name = #{name} ")
+    @Results(value={
+            @Result(property = "factory", column="ref_factory_id",
+                    one = @One(select = "kr.co.fukoku.repository.FactoryRepository.findOne")
+            ),
+            @Result(property = "department", column="ref_department_id",
+                    one = @One(select = "kr.co.fukoku.repository.DepartmentRepository.findOne")
+            ),
+            @Result(property = "line", column="ref_line_id",
+                    one = @One(select = "kr.co.fukoku.repository.LineRepository.findOne")
+            )
+    })
     AbnormalMgt findOne(@Param("name") String name);
 
+
+    @Select("SELECT * FROM abnormal_mgt WHERE id = #{id} ")
+    @Results(value={
+            @Result(property = "factory", column="ref_factory_id",
+                    one = @One(select = "kr.co.fukoku.repository.FactoryRepository.findOne")
+            ),
+            @Result(property = "department", column="ref_department_id",
+                    one = @One(select = "kr.co.fukoku.repository.DepartmentRepository.findOne")
+            ),
+            @Result(property = "line", column="ref_line_id",
+                    one = @One(select = "kr.co.fukoku.repository.LineRepository.findOne")
+            )
+    })
+    AbnormalMgt findOneById(@Param("id") int id);
+
     @Insert("INSERT INTO abnormal_mgt ("
-            + " name, ref_factory , ref_department, lines, data "
+            + " seq, name, ref_factory_id , ref_department_id, ref_line_id, data "
             + ") VALUES ("
+            + "	#{f.seq}, "
             + "	#{f.name}, "
-            + "	#{f.ref_factory}, "
-            + " #{f.ref_department}, "
-            + " #{f.lines}, "
+            + "	#{f.refFactoryId}, "
+            + " #{f.refDepartmentId}, "
+            + " #{f.refLineId}, "
             + " #{f.data}"
             + ");")
-    boolean save(@Param("f") AbnormalMgtFrm frm);
+    boolean save(@Param("f") AbnormalMgtFrm f);
 
-    @Insert("<script>insert into abnormal_mgt ("
-            + " name, ref_factory , ref_department, lines, data "
+    @Insert("<script>INSERT INTO abnormal_mgt ("
+            + " seq, name, ref_factory_id , ref_department_id, ref_line_id, data "
             + ") VALUES "
             + " <foreach collection='lst' item='f' separator=','>("
+            + "	#{f.seq}, "
             + "	#{f.name}, "
-            + "	#{f.ref_factory}, "
-            + " #{f.ref_department}, "
-            + " #{f.lines}, "
+            + "	#{f.refFactoryId}, "
+            + " #{f.refDepartmentId}, "
+            + " #{f.refLineId}, "
             + " #{f.data}"
             + " )"
             + "</foreach></script>")
     boolean saveLst(@Param("lst") List<AbnormalMgtFrm>  lst);
 
     @Update("UPDATE abnormal-mgt SET"
-            + "	ref_factory=#{f.ref_factory}, "
-            + " ref_department=#{f.ref_department},"
-            + " lines=#{f.lines} ,"
-            + " data=#{f.data}"
-            + "		 WHERE name=#{f.name}")
-    boolean update(@Param("f") AbnormalMgtFrm frm);
+            + "	seq = #{f.seq}, "
+            + "	name = #{f.name}, "
+            + "	ref_factory_id = #{f.refFactoryId}, "
+            + " ref_department_id = #{f.refDepartmentId},"
+            + " ref_line_id = #{f.refLineId} ,"
+            + " data = #{f.data}"
+            + "		 WHERE id = #{f.id}")
+    boolean update(@Param("f") AbnormalMgtFrm f);
 }

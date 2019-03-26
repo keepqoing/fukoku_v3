@@ -2,31 +2,57 @@ package kr.co.fukoku.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class AbnormalMgt {
-    @JsonProperty("NAME")
+    @JsonProperty("id")
+    private int id;
+
+    @JsonProperty("seq")
+    private int seq;
+
+    @JsonProperty("name")
     private String name;
 
-    @JsonProperty("REF_FACTORY")
-    private int refFactory;
+    @JsonProperty("factory")
+    private Factory factory;
 
-    @JsonProperty("REF_DEPARTMENT")
-    private int refDepartment;
+    @JsonProperty("department")
+    private Department department;
 
-    @JsonProperty("LINES")
-    private String lines;
+    @JsonProperty("lst_line")
+    private List<Line> lines;
 
-    @JsonProperty("DATA")
+    @JsonProperty("data")
     private String data;
 
     public AbnormalMgt() {
     }
 
-    public AbnormalMgt(String name, int refFactory, int refDepartment, String lines, String data) {
+    public AbnormalMgt(int id, int seq, String name, Factory factory, Department department, List<Line> lines, String data) {
+        this.id = id;
+        this.seq = seq;
         this.name = name;
-        this.refFactory = refFactory;
-        this.refDepartment = refDepartment;
+        this.factory = factory;
+        this.department = department;
         this.lines = lines;
         this.data = data;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getSeq() {
+        return seq;
+    }
+
+    public void setSeq(int seq) {
+        this.seq = seq;
     }
 
     public String getName() {
@@ -37,27 +63,27 @@ public class AbnormalMgt {
         this.name = name;
     }
 
-    public int getRefFactory() {
-        return refFactory;
+    public Factory getFactory() {
+        return factory;
     }
 
-    public void setRefFactory(int refFactory) {
-        this.refFactory = refFactory;
+    public void setFactory(Factory factory) {
+        this.factory = factory;
     }
 
-    public int getRefDepartment() {
-        return refDepartment;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setRefDepartment(int refDepartment) {
-        this.refDepartment = refDepartment;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
-    public String getLines() {
+    public List<Line> getLines() {
         return lines;
     }
 
-    public void setLines(String lines) {
+    public void setLines(List<Line> lines) {
         this.lines = lines;
     }
 

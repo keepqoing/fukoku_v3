@@ -2,34 +2,62 @@ package kr.co.fukoku.model.form;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class AbnormalMgtFrm {
-    @JsonProperty("NAME")
+
+    @JsonProperty("id")
+    private int id;
+
+    @JsonProperty("seq")
+    private int seq;
+
+    @JsonProperty("name")
     private String name;
 
-    @JsonProperty("REF_FACTORY")
-    private int refFactory;
+    @JsonProperty("ref_factory_id")
+    private int refFactoryId;
 
-    @JsonProperty("REF_DEPARTMENT")
-    private int refDepartment;
+    @JsonProperty("ref_department_id")
+    private int refDepartmentId;
 
-    @JsonProperty("LINES")
-    private String lines;
+    @JsonProperty("lst_line")
+    private List<Long> lines;
 
-    @JsonProperty("DATA")
+    @JsonProperty("data")
     private String data;
 
-    @JsonProperty("ORDER_BY")
+    @JsonProperty("order_by")
     private String orderBy;
 
     public AbnormalMgtFrm() {
     }
 
-    public AbnormalMgtFrm(String name, int refFactory, int refDepartment, String lines, String data) {
+    public AbnormalMgtFrm(int id, int seq, String name, int refFactoryId, int refDepartmentId, List<Long> lines, String data, String orderBy) {
+        this.id = id;
+        this.seq = seq;
         this.name = name;
-        this.refFactory = refFactory;
-        this.refDepartment = refDepartment;
+        this.refFactoryId = refFactoryId;
+        this.refDepartmentId = refDepartmentId;
         this.lines = lines;
         this.data = data;
+        this.orderBy = orderBy;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getSeq() {
+        return seq;
+    }
+
+    public void setSeq(int seq) {
+        this.seq = seq;
     }
 
     public String getName() {
@@ -40,27 +68,27 @@ public class AbnormalMgtFrm {
         this.name = name;
     }
 
-    public int getRefFactory() {
-        return refFactory;
+    public int getRefFactoryId() {
+        return refFactoryId;
     }
 
-    public void setRefFactory(int refFactory) {
-        this.refFactory = refFactory;
+    public void setRefFactoryId(int refFactoryId) {
+        this.refFactoryId = refFactoryId;
     }
 
-    public int getRefDepartment() {
-        return refDepartment;
+    public int getRefDepartmentId() {
+        return refDepartmentId;
     }
 
-    public void setRefDepartment(int refDepartment) {
-        this.refDepartment = refDepartment;
+    public void setRefDepartmentId(int refDepartmentId) {
+        this.refDepartmentId = refDepartmentId;
     }
 
-    public String getLines() {
+    public List<Long> getLines() {
         return lines;
     }
 
-    public void setLines(String lines) {
+    public void setLines(List<Long> lines) {
         this.lines = lines;
     }
 

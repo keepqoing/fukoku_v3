@@ -73,7 +73,26 @@ public class AbnormalMgtRestController {
         }
         return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
     }
-	
+
+	@RequestMapping(value="/id/{id}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String,Object>> findOneById(@PathVariable("id") int id)  {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			AbnormalMgt data = repository.findOneById(id);
+			if(data != null ) {
+				map.put("data", data);
+				map.put("code", 200);
+			}else {
+				map.put("code", 404);
+				map.put("message", "Data not found!");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			map.put("code", 500);
+			map.put("message", "Error! " + e.getMessage());
+		}
+		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+	}
 
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -145,9 +164,10 @@ public class AbnormalMgtRestController {
 			AbnormalMgtFrm  f = new AbnormalMgtFrm();
 
 			f.setName( (String) jsonArr.getJSONObject(i).get("name")  );
-			f.setRefFactory( Integer.parseInt((String) jsonArr.getJSONObject(i).get("ref_factory")));  ;
-			f.setRefDepartment( Integer.parseInt((String) jsonArr.getJSONObject(i).get("ref_department")));  ;
-			f.setLines( (String) jsonArr.getJSONObject(i).get("lines")  );
+			f.setSeq( Integer.parseInt((String) jsonArr.getJSONObject(i).get("seq")));  ;
+			f.setRefFactoryId( Integer.parseInt((String) jsonArr.getJSONObject(i).get("ref_factory_id")));  ;
+			f.setRefDepartmentId( Integer.parseInt((String) jsonArr.getJSONObject(i).get("ref_department_id")));  ;
+//			f.set( (String) jsonArr.getJSONObject(i).get("ref_line_id")  );
 			f.setData( (String) jsonArr.getJSONObject(i).get("data")  );
 			fArr.add(f);
 		}
