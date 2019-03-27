@@ -31,11 +31,11 @@ public class StateNameRestController {
 	@Autowired
 	private StateNameRepository repository;
 
-	@RequestMapping(value="/find",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> findAll(@RequestBody StateNameFrm f) {
+	@RequestMapping(value="/find",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> findAll() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			List<StateName> data = repository.findAll(f);
+			List<StateName> data = repository.findAll();
 			if (data.size() > 0) {
 				map.put("data", data);
 				map.put("code", 200);

@@ -12,12 +12,12 @@ import java.util.Map;
 @Repository
 public interface StateNameRepository {
 
-	@SelectProvider(type = StateNameSQLBuilder.class, method = "find")
+	@Select("Select * from state_name;")
 	@Results(value={
 			@Result(property="engName",column="eng_name"),
 			@Result(property="koreanName",column="korean_name")
 	})
-	List<StateName> findAll(@Param("f") StateNameFrm frm);
+	List<StateName> findAll();
 
 	@SelectProvider(type = StateNameSQLBuilder.class, method = "find")
 	List<Map<String, Object>> findMap(@Param("f") StateNameFrm frm);
