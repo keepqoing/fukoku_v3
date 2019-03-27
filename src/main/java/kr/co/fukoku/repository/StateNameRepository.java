@@ -43,14 +43,15 @@ public interface StateNameRepository {
 	boolean save(@Param("f") StateNameFrm frm);
 
 	@Insert("<script>insert into state_name ("
-			+ " seq, eng_name, korean_name , status, color "
+			+ " seq, eng_name, korean_name , status, color, unit "
 			+ ") VALUES "
 			+ " <foreach collection='lst' item='f' separator=','>("
 			+ "	#{f.seq}, "
 			+ "	#{f.engName}, "
 			+ " #{f.koreanName}, "
 			+ " #{f.status}, "
-			+ " #{f.color}"
+			+ " #{f.color}, "
+			+ " #{f.unit}"
 			+ " )"
 			+ "</foreach></script>")
 	boolean saveLst(@Param("lst") List<StateNameFrm> lst);
@@ -58,14 +59,14 @@ public interface StateNameRepository {
 	@Update("UPDATE state_name SET"
 			+ "	seq = #{f.seq}, "
 			+ " eng_name = #{f.engName},"
-			+ " korean_name = #{f.koreanName} ,"
-			+ " status = #{f.status},"
-			+ " color = #{f.color} "
+			+ " korean_name = #{f.koreanName}, "
+			+ " status = #{f.status}, "
+			+ " color = #{f.color}, "
+			+ " unit = #{f.unit} "
 			+ "		 WHERE id=#{f.id}")
 	boolean update(@Param("f") StateNameFrm frm);
 	
 	@Delete("DELETE FROM state_name WHERE id=#{id}")
 	boolean delete(@Param("id") long id);
 
-	
 }

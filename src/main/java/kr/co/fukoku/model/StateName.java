@@ -16,18 +16,21 @@ public class StateName {
 	private String status;
 	@JsonProperty("color")
 	private String color;
+	@JsonProperty("unit")
+	private String unit;
 
 	public StateName() {
 		super();
 	}
 
-	public StateName(long id, long seq, String engName, String koreanName, String status, String color) {
+	public StateName(long id, long seq, String engName, String koreanName, String status, String color, String unit) {
 		this.id = id;
 		this.seq = seq;
 		this.engName = engName;
 		this.koreanName = koreanName;
 		this.status = status;
 		this.color = color;
+		this.unit = unit;
 	}
 
 	public long getId() {
@@ -76,5 +79,13 @@ public class StateName {
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 }

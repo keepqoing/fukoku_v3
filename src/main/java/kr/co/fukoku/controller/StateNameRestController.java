@@ -201,7 +201,7 @@ public class StateNameRestController {
 			f.setKoreanName( (String) jsonArr.getJSONObject(i).get("korean_name")  );
 			f.setStatus( (String) jsonArr.getJSONObject(i).get("status")  );
 			f.setColor( (String) jsonArr.getJSONObject(i).get("color")  );
-
+			f.setUnit((String) jsonArr.getJSONObject(i).get("unit"));
 			fArr.add(f);
 		}
 		
