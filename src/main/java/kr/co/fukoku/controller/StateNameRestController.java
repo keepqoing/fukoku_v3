@@ -95,6 +95,7 @@ public class StateNameRestController {
 	public ResponseEntity<Map<String, Object>> findOneByEnglishName(@PathVariable("englishName") String englishName) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
+
 			StateName data = repository.findOneByKoreanName(englishName);
 			if (data != null) {
 				map.put("data", data);
