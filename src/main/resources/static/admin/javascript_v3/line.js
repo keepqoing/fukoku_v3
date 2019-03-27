@@ -27,6 +27,11 @@ app.controller('MainCtrl', function($scope, $http) {
 	 * Function()
 	 */
 	
+
+    angular.element(document).ready(function() {  
+        dTable = $('#user_table')  
+        dTable.DataTable();  
+    });  
 	/*angular.element(document).ready(function() {
 		$scope.dtTable = $("#dtTable");
 		$scope.dtTable.dataTable({
