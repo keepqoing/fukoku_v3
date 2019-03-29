@@ -15,7 +15,8 @@ public interface StateNameRepository {
 	@Select("Select * from state_name;")
 	@Results(value={
 			@Result(property="engName",column="eng_name"),
-			@Result(property="koreanName",column="korean_name")
+			@Result(property="koreanName",column="korean_name"),
+			@Result(property="apiFieldName",column="api_field_name")
 	})
 	List<StateName> findAll();
 
