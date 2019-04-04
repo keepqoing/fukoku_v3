@@ -29,6 +29,10 @@ public class ProcessChain {
 	@JsonProperty("process_chain_product")
 	private List<ProcessChainProduct> processChainProduct;
 	
+	@JsonProperty("process_chain_product_with_produced_amount")
+	private List<ProcessChainProduct> processChainProductProducedAmount;
+	
+	
 	
 	
 	public ProcessChain() {

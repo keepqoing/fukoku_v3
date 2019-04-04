@@ -1,6 +1,7 @@
 package kr.co.fukoku.model;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,6 +21,10 @@ public class ProcessChainMachine {
 	private long nextSequence;
 	@JsonProperty("process_id")
 	private long processId;
+	
+	
+	@JsonProperty("mstate")
+	private Map<String , Object> mstate;
 	
 	
 	private List<ProductProcessVar> productProcessVars;
@@ -88,6 +93,13 @@ public class ProcessChainMachine {
 	public void setProcessId(long processId) {
 		this.processId = processId;
 	}
+	public Map<String, Object> getMstate() {
+		return mstate;
+	}
+	public void setMstate(Map<String, Object> mstate) {
+		this.mstate = mstate;
+	}
+	
 	
 	
 

@@ -23,6 +23,22 @@
 				
     
     <style>
+    
+      .STOP{
+      		background-color: #FF0000;
+      }
+      
+      .AUTO{
+      		background-color: #00a65a;
+      }
+      
+       .WAIT{
+      		background-color: #FFD800;
+      }
+       .OFFLINE {
+      		background-color: #666666;
+      }
+    
        btn-group-xs > .btn, .btn-xs {
 		    padding: 0px 0px;
 		    font-size: 10px;
@@ -59,20 +75,23 @@
 		} */
 		
 		
-		
+		#addScroll{
+		 overflow-x: auto;  
+		 background-color: #3c8dbc;
+		}
 		.factoryWrapper{
 			background-color: #3c8dbc;
 			min-height: 50px;
 			padding: 4px;
   			display: flex; 
-			overflow-x: auto; 
+			/* overflow-x: auto;  */
 		}
 /* 		.factoryWrapper::-webkit-scrollbar { */
 /* 		  display: none; */
 /* 		} */
 		.lineWrapper{
 			background-color: white;
-			min-width: 100px;
+			min-width: 200px;
 		  	margin: 3px; 
 		  	padding: 15px;
 		  	font-weight: bold;
@@ -81,7 +100,7 @@
 			background-color: white;
 /* 			min-width: 200px; */
 		  	margin: 3px;
-		  	overflow-x: auto; 
+		  	/* overflow-x: auto;  */
 		}
 		.productWrapper{
 			min-height: 30px;
@@ -110,8 +129,8 @@
 		.machineProccessWrapper{
 			min-height: 30px;
 			padding: 4px;
-  			display: flex; 
-			overflow-x: auto;
+   			display: flex;  
+ 			/* overflow-x: auto;  */
 		}
 		.machineProccessWrapper::-webkit-scrollbar {
 		    width: 12px;
@@ -138,6 +157,23 @@
 			min-width: 200px;
 			max-width: 200px;
 		  	margin: 3px;
+		}
+		
+		.titleStyle {
+		    min-width: 130px;
+		  	margin: 4px;
+		  	box-shadow: 0 1px #FFFFFF inset, 0 1px 3px rgba(34, 25, 25, 0.4);
+		  	min-height: 45px;
+		  	padding: 4px;
+		}
+		
+		.titleStyleFirstProduct {
+		    width: 150px;
+			margin: 3px;
+			font-weight: bold;
+			background-color: #f39c12 !important;
+			min-height: 45px;
+            text-align: center;
 		}
 	
     </style>
@@ -204,6 +240,53 @@
        <div class="row">
     
     		<div class="col-md-12" >
+    			
+    			
+    			<!-- <section id="addScroll">
+    				<div class="factoryWrapper" ng-repeat="f in processMachines.data">
+		    				<div class="lineWrapper">
+		    					<div  ng-if="f.name=='HC'">
+		    						<div class="titleStyle"><h5 style="color:#2172a1;margin:-2px!important">Line</h5> </div>
+		    						<div>{{f.name}}</div>
+			    					<div class="productWrapper1" ng-repeat="pcpa in f.process_chain.process_chain_product_with_produced_amount">
+			    					    <div>작업계흭없음</div>
+			    						<div style="width:150px;font-weight:bold">{{pcpa.ref_product}} : 1000</div>
+			    					</div>
+		    					</div>
+		    					
+		    					<div  ng-if="f.name!='HC'">
+			    					<div>{{f.name}}</div>
+			    					<div class="productWrapper1" ng-repeat="pcpa in f.process_chain.process_chain_product_with_produced_amount">
+			    					    <div>작업계흭없음</div>
+			    						<div style="width:150px;font-weight:bold">{{pcpa.ref_product}} : 1000</div>
+			    					</div>
+		    					</div>
+		    				</div>
+	    					<div class="innerlineWrapper">
+				    			     		<div class="machineProccessWrapper">
+				    			     					
+				    			     						<div class="machineWrapper" ng-repeat="am in processMachines.machines">
+				    			     							<div  ng-if="f.name=='HC'">
+							    									<div class="titleStyle"><h5 style="color:#2172a1">{{am.name}}</h5> </div>
+							    									<div class="machineWrapper">
+ 							    												<span  class="label label-success" ng-repeat="p in am.products">{{p.name}}</span> 
+ 							    									</div> 
+							    								</div>
+							    								
+							    								<div  ng-if="f.name!='HC'">
+							    										<div class="machineWrapper">
+ 							    												<span  class="label label-success" ng-repeat="p in am.products">{{p.name}}</span> 
+ 							    										</div> 
+							    								</div>
+							    			     			</div>
+				    			     		</div>	
+	    			     	</div>
+    			     </div>
+    			     
+    			</section> -->
+    			
+    			
+    			
     			<section>
     				<div class="factoryWrapper" ng-repeat="f in processMachines.data">
 		    				<div class="lineWrapper">
@@ -219,27 +302,28 @@
 				    			     		
 				    			     					<div class="machineWrapperAB" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name=='압입'">
 				    												<div class="innerMachineWrapper" ng-repeat="m in e.process_chain_machine" >
+							    										<h5 style="color:#2172a1">{{e.name}}</h5> 
 							    										
-							    										
-							    										<span  class="label label-danger">{{m.ref_machine}}</span>
-							    										
-							    										<span id="ibPre1" style="width: 20px; height: 20px; background-color: red; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+							    										<span  class="label label-success">{{m.ref_machine}}</span>
+															            <button type="button" class="btn btn-xs {{m.mstate.mstate_id}}">
+															            </button>
 															            
-							    										
-							  
+															            <span class="{{m.mstate.mstate_id}}"  id="ibPre1" style="width: 20px; height: 20px;display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+															            							    										
 							    			     				</div>
 							    			     		</div> 
 							    			     		
 							    			     		<div class="machineWrapper" ng-repeat="e in f.process_chain.process_chain_element" ng-if="e.name!='압입' ">
 							    								<div class="innerMachineWrapper" ng-repeat="m in e.process_chain_machine" >
-							    										
+							    										<h5 style="color:#2172a1">{{e.name}}</h5> 
 							    										
 							    										<span  class="label label-success">{{m.ref_machine}}</span>
-							    										
-							    										<span id="ibPre1" style="width: 20px; height: 20px; background-color: green; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
-															          
+															            <button type="button" class="btn btn-xs {{m.mstate.mstate_id}}">
+															            </button>
 															            
-							    									
+															            <span  class="{{m.mstate.mstate_id}}" id="ibPre1" style="width: 20px; height: 20px;  display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+															            
+							    										
 							    			     				</div>
 							    			     				
 							    			     				
@@ -260,11 +344,14 @@
     			     
     			     
     			     
-    			     
-    			   
+    			    
     			     
     			     
     			</section>
+    			
+    			
+    			
+    			
     		</div>
     		
     		
@@ -277,151 +364,13 @@
         
     </section>
 
-    <!-- Modal -->
+ 
 
-    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-         id="modalFrm">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-
-                <div class="box box-primary modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">공정설비관리</h4>
-                </div>
-
-
-                <form class="form-horizontal" enctype="multipart/form-data" id="frm" ng-submit="onSubmitFrm()">
-                    <div class="box-body">
-                    
-                   		
-                        <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">제품명:</label>
-                            <div class="col-sm-10">
-                                <!-- <select class="form-control" id="selectOptProduct"  required>
-                                	<option value="">제품명</option>
-                                	<option ng-repeat="p in processChainProducts" value="{{p.process_chain_product_id}}">{{p.ref_product.trim()}}</option>
-                                </select> -->
-                                <input type="text" readonly="readonly" class="form-control" id="txtProduct" placeholder="" required/>
-                                <input type="text" style="display: none" class="form-control" id="txtProductId" placeholder="" required/>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">순번:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtSeq" placeholder="" required/>
-                            </div>
-                        </div>
-                        
-                        
-                        
-                        <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">변수이름:</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" id="selectOptName"  required>
-                                	<option ng-repeat="p in processVars" value="{{p.id}}">{{p.name}}</option>
-                                </select>
-                            </div>
-                            
-                            
-                        </div>
-                        
-                         <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">변수유형:</label>
-                           <div class="col-sm-10">
-                                <select class="form-control" id="selectType"  required>
-                                	<option value="String">String</option>
-                                	<option value="Integer">Integer</option>
-                                	<option value="Array">Array</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">LSL PLC:</label>
-                            <div class="col-sm-10">
-                                <input type="text"  class="form-control" id="txtLslPlc" placeholder="" required/>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">USL PLC:</label>
-                            <div class="col-sm-10">
-                                <input type="text"  class="form-control" id="txtUslPlc" placeholder="" required/>
-                            </div>
-                        </div>          
-                        <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">단위:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="txtUnitKind" placeholder="" required/>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">변환값:</label>
-                            <div class="col-sm-10">
-                            	<div class="col-sm-2">
-                            	 	<select class="form-control" id="selectSign"  required>
-	                                	<option value="+">+</option>
-	                                	<option value="-">-</option>
-	                                	<option value="*">*</option>
-	                                	<option value="/">/</option>
-                               		 </select>
-                            	 </div>
-                            	 <div class="col-sm-8">
-                                	<input type="number"  step="0.01" class="form-control" id="txtTransformValue" placeholder="" required/>
-                              		<h1>{{count}}</h1>
-                              		
-                                 </div>
-                                 <div class="col-sm-2">
-                                	<button type="button" ng-click="calculateLslUsl()" class="btn btn-info btn-flat" >Calculate</button>
-                                 </div>
-                            </div>
-                        </div>
-                        
-                         <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">LSL:</label>
-                            <div class="col-sm-10">
-                                <input type="text" readonly="readonly" class="form-control" id="txtLsl" placeholder="0" required/>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">USL:</label>
-                            <div class="col-sm-10">
-                                <input type="text" readonly="readonly" class="form-control" id="txtUsl" placeholder="0" required/>
-                            </div>
-                        </div>  
-                        
-                        <div class="form-group">
-                            <label for="txtRemark" class="col-sm-2 control-label">설명:</label>
-                            <div class="col-sm-10">
-                            	 
-                            	
-                            		<input type="text" class="form-control" id="txtRemark" placeholder="" required/>
-                            	
-                                
-                            </div>
-                        </div>
-                        
-                   
-                    </div><!-- /.box-body -->
-                    
-                    <div class="box-footer">
-                        <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
-                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">저장</button>
-                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">저장
-                        </button>
-                    </div><!-- /.box-footer -->
-                </form>
-            </div>
-        </div>
-    </div>
+    
 
 </div>
 <th:block layout:fragment="script">
-						<script th:src="@{/static/admin/javascript_v3/process-machine4.js}"></script>
+						<script th:src="@{/static/admin/javascript_v3/mstate-monitoring.js}"></script>
 						<script>
 						$(document).ready(function () {
 				            $(function () {

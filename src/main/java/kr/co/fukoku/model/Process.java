@@ -1,5 +1,7 @@
 package kr.co.fukoku.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Process {
@@ -27,6 +29,9 @@ public class Process {
 	
 	@JsonProperty("product")
 	private Product product;
+	
+	@JsonProperty("products")
+	private List<Product> products;
 	
 	
 	@JsonProperty("acronym")
@@ -112,6 +117,17 @@ public class Process {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+	
+	
+	
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+
 	@Override
 	public String toString() {
 		return "Process [id=" + id + ", seq=" + seq + ", name=" + name + ", repVariableName=" + repVariableName
