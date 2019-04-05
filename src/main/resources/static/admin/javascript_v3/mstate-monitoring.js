@@ -41,9 +41,9 @@ app.controller('MainCtrl', function($scope, $http) {
 	 *******************************************************************************/
 	$scope.findRealTime();
 	 
-//	setInterval(function(){
-//		$scope.findAll();
-//	}, 1000);
+	setInterval(function(){
+		$scope.findRealTime();
+	}, 1000);
 	
 	
 	
