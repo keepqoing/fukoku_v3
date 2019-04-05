@@ -359,8 +359,10 @@
 		}
 		
 		.table td,th {
-		   text-align: center;   
+		   text-align: center;  
 		}
+		
+	
 		
 		.table th {
 		   font-weight: bold;
@@ -446,15 +448,21 @@
 									                 </span>
 							                  </td>
 							                  <td ng-repeat="p in processes">
-							                      <span ng-repeat="pce in l.process_chain.process_chain_element" ng-if="p.name == pce.name">
+							                      <div ng-repeat="pce in l.process_chain.process_chain_element" ng-if="p.name == pce.name">
 							                  			<!-- {{pce.name}} -->
-							                  			<span ng-repeat="pcm in pce.process_chain_machine">
-							                  				<p>
-							                  					<span  class="label label-default" style="margin-right: 2px;padding: 7px;" >{{pcm.ref_machine}}</span> 
-							                  					<span  class="{{pcm.mstate.mstate_id}}"  style="width: 25px; height: 25px;  display: inline-block; vertical-align: middle; border-radius: 50%;"> </span>
-							                  				</p>
-							                  			</span>
-							                  	  </span>
+							                  			<!-- <div class="form-group col-md-12"  ng-repeat="pcm in pce.process_chain_machine">
+										                  <div  class="col-sm-6 control-label"style="margin-right: 2px;padding: 7px;">{{pcm.ref_machine}}</div> 
+										
+										                  <div class="col-sm-6">
+										                    <div  class="{{pcm.mstate.mstate_id}}"  style="width: 25px; height: 25px;  display: inline-block; vertical-align: middle; border-radius: 50%;"> </div>
+										                  </div>
+										                </div> -->
+										                
+							                  			<div ng-repeat="pcm in pce.process_chain_machine"  style="margin-top:10px;width:130px;">
+							                  					<div  class="label label-default" style="margin-right: 2px;padding: 7px;margin-bottom:5px;color:blue">{{pcm.ref_machine}}</div> 
+							                  					<div  class="{{pcm.mstate.mstate_id}}"  style="width: 25px; height: 25px;  display: inline-block; vertical-align: middle; border-radius: 50%;"> </div>
+							                  			</div> 
+							                  	  </div>
 							                  </td>
 							                  
 						                   </tr>

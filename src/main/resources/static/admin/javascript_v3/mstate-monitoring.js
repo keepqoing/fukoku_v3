@@ -42,7 +42,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.findRealTime();
 	 
 	setInterval(function(){
-		$scope.findRealTime();
+//		$scope.findRealTime();
 	}, 1000);
 	
 	
