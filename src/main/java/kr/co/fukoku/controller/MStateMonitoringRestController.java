@@ -59,22 +59,15 @@ public class MStateMonitoringRestController {
 	@Autowired
 	private MStateMonitoringService service;
 	
-
-	
-	@RequestMapping(value="/find",method = RequestMethod.POST)
-    public ResponseEntity<Map<String,Object>> findAll(@RequestBody LineFrm f)  {
+	@RequestMapping(value="/real-time",method = RequestMethod.GET)
+    public ResponseEntity<Map<String,Object>> realTime()  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-        	List<Line> data = service.findAll(f);
-        	if(data.size() > 0 ) {
-        		map.put("data", data);
-        		map.put("machines", service.findAllProcess());
-        		//map.put("count_stage", service.countStage());
-        		map.put("code", 200);
-        	}else {
-        		map.put("code", 404);
-        		map.put("message", "Data not found!");
-        	}
+        	List<Line> lines = service.findAllLines();
+        	List<Process> processes = service.findAllProcesses();
+        	map.put("lines", lines);
+        	map.put("processes", processes);
+        	map.put("code", 200);
         }catch(Exception e) {
         	e.printStackTrace();
         	map.put("code", 500);
@@ -83,45 +76,6 @@ public class MStateMonitoringRestController {
         return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
     }
 	
-	@RequestMapping(value="/find-line-name-product-status",method = RequestMethod.POST)
-    public ResponseEntity<Map<String,Object>> findAllByLineNameAndProductStatus(@RequestBody LineFrm f)  {
-        Map<String, Object> map = new HashMap<String, Object>();
-        try {
-        	List<Line> data = service.findAllByLineNameAndProductStatus(f);
-        	if(data.size() > 0 ) {
-        		map.put("data", data);
-        		map.put("code", 200);
-        	}else {
-        		map.put("code", 404);
-        		map.put("message", "Data not found!");
-        	}
-        }catch(Exception e) {
-        	e.printStackTrace();
-        	map.put("code", 500);
-    		map.put("message", "Error! " + e.getMessage());
-        }
-        return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
-    }
-	
-	@RequestMapping(value="/find/line/{id}/{status}",method = RequestMethod.GET)
-    public ResponseEntity<Map<String,Object>> findAll(@PathVariable("id") long id, @PathVariable("status") String status)  {
-        Map<String, Object> map = new HashMap<String, Object>();
-        try {
-        	List<Line> data = service.findLineByFactoryId(id,status);
-        	if(data.size() > 0 ) {
-        		map.put("data", data);
-        		map.put("code", 200);
-        	}else {
-        		map.put("code", 404);
-        		map.put("message", "Data not found!");
-        	}
-        }catch(Exception e) {
-        	e.printStackTrace();
-        	map.put("code", 500);
-    		map.put("message", "Error! " + e.getMessage());
-        }
-        return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
-    }
 	
 	
 	

@@ -28,82 +28,49 @@ import kr.co.fukoku.repository.sql.ProcessMachineSQLBuilder3;
 public interface MStateMonitoringRepository {
 	
 	
-	@Select("select * from process order by seq asc")
+	/***************** Mstate Monitoring********************/
+	
+	/**
+	 * Find All Processes
+	 * @return
+	 */
+	@Select("select * from process order by seq asc;")
 	@Results(value={
 			@Result(property="despPicture",column="desp_picture"),
-			@Result(property="repVariableName",column="rep_variable_name"),
-			@Result(property="products", column="ref_product_id",
-		    	many = @Many(select  = "findProducts")
-		    )
+			@Result(property="repVariableName",column="rep_variable_name")
 	})
-	List<kr.co.fukoku.model.Process> findAllProcess( );
+	List<kr.co.fukoku.model.Process> findAllProcesses();
 	
-	@Select("Select * from product where id=#{id} and status='1' ")
-	@Results(value={
-			@Result(property="startDate",column="start_date"),
-			@Result(property="endDate",column="end_date"),
-			@Result(property="customerName",column="customer_name")
-	})
-	List<Product> findProducts(@Param("id") long  id);
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@SelectProvider(type = ProcessMachineSQLBuilder3.class, method = "find")
+	/**
+	 * Find All Lines
+	 * @return
+	 */
+	@Select("SELECT *, name  as name2 FROM line ORDER BY seq ASC")
 	@Results(value={
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),
 			@Result(property="layoutName",column="layout_name"),
 			@Result(property="name", column="name2"),
 			@Result(property="processChain", column="name",
-				one = @One(select  = "findProcessChainByRefLine")
-			)
+				one = @One(select  = "findProcessChainByRefLineV2")
+			),
+			@Result(property="dailySeq", column="name2",
+			  one = @One(select  = "findLastDailySeqV2")
+		    )
+			
 	})
-	List<Line> findAll(@Param("f") LineFrm f);
-	
-	
+	List<Line> findAllLines();
 	
 	@Select("select * from process_chain where  ref_line=#{ref_line} GROUP BY ref_line;")
 	@Results(value={
 			@Result(property="id",column="id"),
 			@Result(property="name",column="name"),
 			@Result(property="refLine",column="ref_line"),
-			@Result(property="processChainProduct", column="id",
-				many = @Many(select  = "findProcessChainProductByRefChainId")
-		    ),
-			@Result(property="processChainProductProducedAmount", column="id",
-			     many = @Many(select  = "findProcessChainProductByRefChainIdWithProducedAmount")
-	        ),
 			@Result(property="processChainElement", column="id",
-				many = @Many(select  = "findProcessChainElementByRefChainId")
+				many = @Many(select  = "findProcessChainElementByRefChainIdV2")
 			)
 	})
-	ProcessChain findProcessChainByRefLine(@Param("name") String name );
-	
-	
-	
-	
-	@Select("select * from process_chain_product where ref_process_chain_id=#{ref_process_chain_id} order  by  id desc limit 1;")
-	@Results(value={
-			@Result(property="id",column="id"),
-			@Result(property="refProduct",column="ref_product"),
-			@Result(property="refProcessChainId",column="ref_process_chain_id")
-	})
-	List<ProcessChainProduct> findProcessChainProductByRefChainIdWithProducedAmount(@Param("ref_process_chain_id") String refLine );
-	
-	@Select("select * from process_chain_product where ref_process_chain_id=#{ref_process_chain_id} order  by  id;")
-	@Results(value={
-			@Result(property="id",column="id"),
-			@Result(property="refProduct",column="ref_product"),
-			@Result(property="refProcessChainId",column="ref_process_chain_id")
-	})
-	List<ProcessChainProduct> findProcessChainProductByRefChainId(@Param("ref_process_chain_id") String refLine );
+	ProcessChain findProcessChainByRefLineV2(@Param("name") String name );
 	
 	@Select("select * from process_chain_element where ref_process_chain_id=#{ref_process_chain_id} order by stage asc;")
 	@Results(value={
@@ -111,12 +78,10 @@ public interface MStateMonitoringRepository {
 			@Result(property="refProduct",column="ref_product"),
 			@Result(property="refProcessChainId",column="ref_process_chain_id"),
 			@Result(property="processChainMachine", column="id",
-				many = @Many(select  = "findProcessChainMachineByRefId")
+				many = @Many(select  = "findProcessChainMachineByRefIdV2")
 			)
 	})
-	List<ProcessChainElement> findProcessChainElementByRefChainId(@Param("ref_process_chain_id") String refLine );
-	
-	
+	List<ProcessChainElement> findProcessChainElementByRefChainIdV2(@Param("ref_process_chain_id") String refLine );
 	
 	@Select("select pcm.id, pcm.seq, pcm.ref_process, pcm.ref_machine, pcm.ref_process_chain_element, pcm.next_sequence , "
 			+ "p.id as process_id from process_chain_machine pcm inner join process p on pcm.ref_process = p.name "
@@ -127,72 +92,24 @@ public interface MStateMonitoringRepository {
 			@Result(property="refMachine",column="ref_machine"),
 			@Result(property="refProcessChainElement",column="ref_process_chain_element"),
 			@Result(property="nextSequence",column="next_sequence"),
-			@Result(property="productProcessVars", column="process_chain_machine_id=id,process_id=process_id",
-				many = @Many(select  = "finProductProcessVar")
-			)	,
 			@Result(property="mstate", column="ref_machine",
-			  one = @One(select  = "findLastedMState")
-		    )	
-			
+			  one = @One(select  = "findLastMStateV2")
+		    )
 	})
-	List<ProcessChainMachine> findProcessChainMachineByRefId(@Param("id") long id );
+	List<ProcessChainMachine> findProcessChainMachineByRefIdV2(@Param("id") long id );
+	
+	@Select("select work_date, line, machine , SUBSTRING_INDEX(SUBSTRING_INDEX(mstate_id, '_' , -3), '_' , 1) as mstate_id from monitoring_mstate_tmp where machine=#{ref_machine} order by id desc limit 1")
+	Map<String, Object> findLastMStateV2(@Param("ref_machine") String refMachine );
+	
+	
+	@Select("select pi_ds,pi_m from monitoring_workpiece_tmp where \r\n" + 
+			"mi_mn=(select ref_machine from process_chain_machine  where SUBSTRING_INDEX(ref_machine,'_',1) = #{line} order by seq desc limit 1) \r\n" + 
+			"order by id desc limit 1;")
+	Map<String, Object> findLastDailySeqV2(@Param("line") String refMachine );
 	
 	
 	
-	
-	@Select("select work_date, line, machine , SUBSTRING_INDEX(SUBSTRING_INDEX(mstate_id, '_' , -3), '_' , 1) as mstate_id from monitoring_mstate_tmp where machine=#{ref_machine} order by row_key desc limit 1")
-	Map<String, Object> findLastedMState(@Param("ref_machine") String refMachine );
-	
-	
-	
-	
-	
-	
-	@Select("select\r\n" + 
-			"	ppv.id,\r\n" + 
-			"	ppv.seq,\r\n" + 
-			"	ppv.ref_product_id,\r\n" + 
-			"	ppv.ref_process_var_id,\r\n" + 
-			"	ppv.ref_process_chain_machine_id,\r\n" + 
-			"	ppv.type,\r\n" + 
-			"	ppv.usl,\r\n" + 
-			"	ppv.lsl,\r\n" + 
-			"	ppv.unit_kind,\r\n" + 
-			"	ppv.transform_value,\r\n" + 
-			"	ppv.remark,\r\n" + 
-			"	ppv.status,\r\n" + 
-			"	pv.name\r\n" + 
-			"from process_var pv inner  join product_process_var ppv on pv.id=ppv.ref_process_var_id "
-			+ "where  ppv.ref_process_chain_machine_id=#{process_chain_machine_id} order by ref_product_id asc;") //and pv.id=#{process_id} 
-	@Results(value={
-			@Result(property="refProductId",column="ref_product_id"),
-			@Result(property="refProcessChainElementId",column="ref_process_chain_element_id"),
-			@Result(property="unitKind",column="unit_kind"),
-			@Result(property="transformValue",column="transform_value"),
-			@Result(property="refProcessChainMachineId",column="ref_process_chain_machine_id"),
-	})
-	List<ProductProcessVar> finProductProcessVar(Map<Object, String> params);
-	
-	
-	// Other 
-		@SelectProvider(type = ProcessMachineSQLBuilder3.class, method = "findLineByFactoryIdAndStatus")
-		@Results(value={
-				@Result(property="startDate",column="start_date"),
-				@Result(property="endDate",column="end_date"),
-				@Result(property="layoutName",column="layout_name")
-		})
-		List<Line> findLineByFactoryId(@Param("id") long id, @Param("status") String status);
-		
-		
-		@SelectProvider(type = ProcessMachineSQLBuilder3.class, method = "find")
-		@Results(value={
-				@Result(property="startDate",column="start_date"),
-				@Result(property="endDate",column="end_date"),
-				@Result(property="layoutName",column="layout_name"),
-				@Result(property="name", column="name2"),
-				@Result(property="processChain", column="refLine=name, productStatus=productStatus ",
-					one = @One(select  = "kr.co.fukoku.repository.ProcessMachine3Repository.findProcessChainByRefLinePassProductStatus")
-				)
-		})
-		List<Line> findAllByLineNameAndProductStatus(@Param("f") LineFrm f);
+	/*****************End Mstate Monitoring******************/
+	 
+
 }

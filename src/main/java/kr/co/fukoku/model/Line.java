@@ -1,6 +1,7 @@
 package kr.co.fukoku.model;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -31,6 +32,8 @@ public class Line {
 	
 	@JsonProperty("acronym")
 	private String acronym;
+	
+	private Map<String , Object> dailySeq;
 	
 	public String getAcronym() {
 		return acronym;
@@ -175,6 +178,14 @@ public class Line {
 
 	public void setProcessChain(ProcessChain processChain) {
 		this.processChain = processChain;
+	}
+
+	public Map<String, Object> getDailySeq() {
+		return dailySeq;
+	}
+
+	public void setDailySeq(Map<String, Object> dailySeq) {
+		this.dailySeq = dailySeq;
 	}
 	
 	

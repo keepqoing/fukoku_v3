@@ -26,6 +26,11 @@ public class ProcessChainMachine {
 	@JsonProperty("mstate")
 	private Map<String , Object> mstate;
 	
+	@JsonProperty("workpiece")
+	private Map<String , Object> workpiece;
+	
+	
+	
 	
 	private List<ProductProcessVar> productProcessVars;
 	
@@ -99,6 +104,13 @@ public class ProcessChainMachine {
 	public void setMstate(Map<String, Object> mstate) {
 		this.mstate = mstate;
 	}
+	public Map<String, Object> getWorkpiece() {
+		return workpiece;
+	}
+	public void setWorkpiece(Map<String, Object> workpiece) {
+		this.workpiece = workpiece;
+	}
+	
 	
 	
 	
