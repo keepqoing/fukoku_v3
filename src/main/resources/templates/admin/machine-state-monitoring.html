@@ -24,22 +24,199 @@
     
     <style>
     
+    	.STOP_LABEL{
+		  background: #FF0000;
+		  background-image: radial-gradient(brown, transparent);
+		  background-size: 5px 5px; 
+		  width: 100px;
+		  height: 100px;
+		  border-radius: 50%;
+		  box-shadow: 
+		    0 0 2px #111 inset,
+		    0 0 10px #FF0000;
+       }
+       
+       .AUTO_LABEL{
+      	  background: #00a65a;
+		  background-image: radial-gradient(lime, transparent);
+		  background-size: 5px 5px;
+		  width: 100px;
+		  height: 100px;
+		  border-radius: 50%;
+		  box-shadow: 
+		    0 0 2px #111 inset,
+		    0 0 10px #00a65a;
+       }
+       
+       .WAIT_LABEL{
+		  background: orange;
+		  background-image: radial-gradient(yellow, transparent);
+		  background-size: 5px 5px;
+		  width: 100px;
+		  height: 100px;
+		  border-radius: 50%;
+		  box-shadow: 
+		    0 0 2px #111 inset,
+		    0 0 10px orange;
+		}
+		
+		.MANUAL_LABEL{
+		  background: #0000ff;
+		  background-image: radial-gradient(gray, transparent);
+		  background-size: 5px 5px;
+		  width: 100px;
+		  height: 100px;
+		  border-radius: 50%;
+		  box-shadow: 
+		    0 0 2px #111 inset,
+		    0 0 10px OFFLINE;
+		}
+		
+		
+		.OFFLINE_LABEL{
+		  background: #666666;
+		  background-image: radial-gradient(gray, transparent);
+		  background-size: 5px 5px;
+		  width: 100px;
+		  height: 100px;
+		  border-radius: 50%;
+		  box-shadow: 
+		    0 0 2px #111 inset,
+		    0 0 10px OFFLINE;
+		}
+       
+       
+       
+    
+    
+    
       .STOP{
-      		background-color: #FF0000;
+		  background: #FF0000;
+		  background-image: radial-gradient(brown, transparent);
+		  background-size: 5px 5px; 
+		  width: 100px;
+		  height: 100px;
+		  border-radius: 50%;
+		  animation: 1s STOP infinite;
+		  box-shadow: 
+		    0 0 2px #111 inset,
+		    0 0 10px #FF0000;
       }
+     
+      @keyframes STOP{
+		  0%{opacity: .1;}
+		  20%{opacity: 1;}
+		  40%{opacity: 1;}
+		  60%{opacity: .1;}
+		  80%{opacity: 1;}
+		  85%{opacity: 1;}
+		  90%{opacity: 1;}
+		  95%{opacity: 1;}
+		  100%{opacity: 1;}
+		}
+
+      
       .AUTO{
-      		background-color: #00a65a;
+      	  background: #00a65a;
+		  background-image: radial-gradient(lime, transparent);
+		  background-size: 5px 5px;
+		  width: 100px;
+		  height: 100px;
+		  border-radius: 50%;
+		  box-shadow: 
+		    0 0 2px #111 inset,
+		    0 0 10px #00a65a;
+		  animation: 1s AUTO infinite;
       }
       
+      @keyframes AUTO{
+		  0%{opacity: 1;}
+		  20%{opacity: 1;}
+		  40%{opacity: 1;}
+		  60%{opacity: 1;}
+		  80%{opacity: 1;}
+		  85%{opacity: 1;}
+		  90%{opacity: 1;}
+		  95%{opacity: .1;}
+		  100%{opacity: .1;}
+		}
+      
        .WAIT{
-      		background-color: orange;
-      }
-       .OFFLINE {
-      		background-color: #666666;
-      }
-      .MANUAL{
-   			 background-color: #0000ff;
-      }
+		  background: orange;
+		  background-image: radial-gradient(yellow, transparent);
+		  background-size: 5px 5px;
+		  width: 100px;
+		  height: 100px;
+		  border-radius: 50%;
+		  animation: 1s WAIT infinite;
+		  box-shadow: 
+		    0 0 2px #111 inset,
+		    0 0 10px orange;
+		}
+		
+		@keyframes WAIT{
+		  0%{opacity: 1;}
+		  20%{opacity: 1;}
+		  40%{opacity: 1;}
+		  60%{opacity: 1;}
+		  80%{opacity: .1;}
+		  85%{opacity: 1;}
+		  90%{opacity: .1;}
+		  95%{opacity: 1;}
+		  100%{opacity: 1;}
+		}
+		
+		.OFFLINE{
+		  background: #666666;
+		  background-image: radial-gradient(gray, transparent);
+		  background-size: 5px 5px;
+		  width: 100px;
+		  height: 100px;
+		  border-radius: 50%;
+		  animation: 1s WAIT infinite;
+		  box-shadow: 
+		    0 0 2px #111 inset,
+		    0 0 10px OFFLINE;
+		}
+		
+		@keyframes OFFLINE{
+		  0%{opacity: 1;}
+		  20%{opacity: 1;}
+		  40%{opacity: 1;}
+		  60%{opacity: 1;}
+		  80%{opacity: .1;}
+		  85%{opacity: 1;}
+		  90%{opacity: .1;}
+		  95%{opacity: 1;}
+		  100%{opacity: 1;}
+		}
+		
+		.MANUAL{
+		  background: #0000ff;
+		  background-image: radial-gradient(gray, transparent);
+		  background-size: 5px 5px;
+		  width: 100px;
+		  height: 100px;
+		  border-radius: 50%;
+		  animation: 1s WAIT infinite;
+		  box-shadow: 
+		    0 0 2px #111 inset,
+		    0 0 10px OFFLINE;
+		}
+		
+		@keyframes MANUAL{
+		  0%{opacity: 1;}
+		  20%{opacity: 1;}
+		  40%{opacity: 1;}
+		  60%{opacity: 1;}
+		  80%{opacity: .1;}
+		  85%{opacity: 1;}
+		  90%{opacity: .1;}
+		  95%{opacity: 1;}
+		  100%{opacity: 1;}
+		}
+      
+      
     
     
     
@@ -211,16 +388,24 @@
                     <div class="box-body">
                         
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <span style="width: 20px; height: 20px; background-color: #00a65a; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                
+                                <span class="AUTO_LABEL"  style="width: 20px; height: 20px; background-color: #00a65a; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
                                 <span style="margin-right: 10px;">  RUN</span>
-                                <span style="width: 20px; height: 20px; background-color: orange; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                
+                                <span class="WAIT_LABEL" style="width: 20px; height: 20px; background-color: orange; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
                                 <span style="margin-right: 10px;">  WAITING</span>
-                                <span style="width: 20px; height: 20px; background-color: #FF0000; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                
+                                <span class="STOP_LABEL" style="width: 20px; height: 20px; background-color: #FF0000; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
                                 <span style="margin-right: 10px;">  STOP</span>
-                                <span style="width: 20px; height: 20px; background-color: #666666; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                
+                                <span class="OFFLINE_LABEL" style="width: 20px; height: 20px; background-color: #666666; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
                                 <span style="margin-right: 10px;">  OFFLINE</span>
-                                <span style="width: 20px; height: 20px; background-color: #0000ff; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                
+                                <span class="MANUAL_LABEL" style="width: 20px; height: 20px; background-color: #0000ff; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
                                 <span style="margin-right: 10px;">  MANUAL</span>
+                                
+                                
+                                <span></span>
 
                             </div>
                         
@@ -265,7 +450,7 @@
 							                  			<!-- {{pce.name}} -->
 							                  			<span ng-repeat="pcm in pce.process_chain_machine">
 							                  				<p>
-							                  					<span  class="label {{pcm.mstate.mstate_id}}" style="margin-right: 2px;padding: 7px;" >{{pcm.ref_machine}}</span> 
+							                  					<span  class="label label-default" style="margin-right: 2px;padding: 7px;" >{{pcm.ref_machine}}</span> 
 							                  					<span  class="{{pcm.mstate.mstate_id}}"  style="width: 25px; height: 25px;  display: inline-block; vertical-align: middle; border-radius: 50%;"> </span>
 							                  				</p>
 							                  			</span>
