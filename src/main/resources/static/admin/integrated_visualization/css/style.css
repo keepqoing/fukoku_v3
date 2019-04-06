@@ -1,0 +1,143 @@
+.bar-chart-container {
+    border-radius: 2px;
+    border: 2px solid #d3d3d3;
+    padding: 0px;
+    height: 660px;
+    position: relative;
+}
+
+.radio-button-label-disabled{
+    color: silver;
+}
+select:disabled{
+    color: silver !important;
+}
+
+.x-axis{
+    -ms-transform: rotate(-90deg); /* IE 9 */
+    -webkit-transform: rotate(-90deg); /* Safari 3-8 */
+    transform: rotate(-90deg);
+}
+.chips{
+    margin: 10px;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: rgba(245, 245, 245, 1);
+    border-radius: 20px;
+    padding-right: 10px;
+    font-weight: bold; 
+    font-size: 14px;
+}
+.chips > div {
+    display: inline-block;
+    font-size: 14px;
+}
+
+.company-chips{
+    display: inline-block;
+    background-color: dodgerblue;
+    border-radius: 20px;
+    padding: 5px 10px; 
+    color: white;
+    font-weight: normal;
+}
+
+.line-chips{
+    display: inline-block;
+    background-color: #17A2B8;
+    border-radius: 20px;
+    padding: 5px 10px; 
+    color: white;
+    font-weight: normal;
+}
+
+.machine-chips{
+    display: inline-block;
+    background-color: lightseagreen;
+    border-radius: 20px;
+    padding: 5px 10px; 
+    color: white;
+    font-weight: normal;
+}
+
+.year-chips{
+    display: inline-block;
+    background-color: skyblue;
+    border-radius: 20px;
+    padding: 5px 10px; 
+    color: white;
+    font-weight: normal;
+}
+
+.start-chips{
+    display: inline-block;
+    background-color: steelblue;
+    border-radius: 20px;
+    padding: 5px 10px; 
+    color: white;
+    font-weight: normal;
+}
+
+.end-chips{
+    display: inline-block;
+    background-color: steelblue;
+    border-radius: 20px;
+    padding: 5px 10px; 
+    color: white;
+    font-weight: normal;
+}
+
+.input-group-text {
+    /* font-size: 0.875rem;
+    padding: .1rem .375rem; */
+    margin-bottom: 0;
+}
+
+.custom-select {
+    padding: 5px;
+    /* font-size: 0.875rem;
+    padding: .1rem .375rem;
+    height: 1.875rem; */
+}
+
+.card-header {
+    padding: .5rem 0.75rem;
+}
+
+.z-axis{
+    border-radius: 0; 
+    font-weight: 700; 
+    font-size: 14px;
+    color: #555;
+    background-color: #eee;
+    border-color: #ccc;
+    border-width: 1px;
+    border-style: solid;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    margin-right: 10px;
+    padding: 6px 12px;
+}
+
+.nav>li>a{
+    padding: 6px 12px;
+}
+
+.date-input{
+    /* border-radius: 1rem; 
+    border-color: rgba(0,0,0,0.125);
+    border-width: 0.5px; */
+    border-color: rgba(245, 245, 245, 1);
+    /* background-color: rgba(245, 245, 245, 1); */
+    font-weight: bold; 
+    font-size: 0.875rem;
+    border-width: 0px;
+    height: 100%;
+    line-height: 1.5;
+    padding-left: 10px;
+    width: 100px;
+}
+
+.input-group-addon{
+    width:0;
+}
