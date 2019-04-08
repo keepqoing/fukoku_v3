@@ -71,12 +71,21 @@
             height: 18px;
         }
 
-        .table-responsive{
-            max-height: 650px;
-            overflow: auto;
-            white-space: nowrap;
+        .table_wrapper {
+            display: flex;
+            overflow-x: auto;
+            height: 700px;
+            width: 100%;
+
 
         }
+
+        table {
+            width: 100%
+        }
+
+
+
     </style>
 
     <script src="../../static/admin/sweet_alert/sweetalert.min-new.js"></script>
@@ -144,23 +153,24 @@
                         <div class="row">
 
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                                        <table class="table" id="mainTable">
-                                            <thead class="thead-inverse table-head" id="tableHeader">
-                                            <!--<tr id="firstHeader">-->
-                                                <!--<th>라인</th>-->
-                                            <!--</tr>-->
-                                            </thead>
-                                            <tbody id="processTable">
-                                            <!--<tr id="firstRow">-->
-                                                <!--<td id="lineName">IB <br/>-->
-                                                    <!--<button type="button" class="btn btn-primary" onclick="addColumn()">제품추가<br>-->
-                                                        <!--(체인)</button>-->
-                                                <!--</td>-->
-                                            <!--</tr>-->
-                                            </tbody>
-                                        </table>
+                                        <div class="table_wrapper">
+                                            <table class="table fixed_headers" id="mainTable">
+                                                <thead class="thead-inverse table-head" id="tableHeader">
+                                                <!--<tr id="firstHeader">-->
+                                                    <!--<th>라인</th>-->
+                                                <!--</tr>-->
+                                                </thead>
+                                                <tbody id="processTable">
+                                                <!--<tr id="firstRow">-->
+                                                    <!--<td id="lineName">IB <br/>-->
+                                                        <!--<button type="button" class="btn btn-primary" onclick="addColumn()">제품추가<br>-->
+                                                            <!--(체인)</button>-->
+                                                    <!--</td>-->
+                                                <!--</tr>-->
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-
                         </div>
 
                     </div>
