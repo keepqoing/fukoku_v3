@@ -112,6 +112,28 @@ public class StateNameRestController {
 		return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/api-field-name/{apiFieldName}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> findOneByApiFieldName(@PathVariable("apiFieldName") String apiFieldName) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+
+			StateName data = repository.findOneByApiFieldName(apiFieldName);
+			if (data != null) {
+				map.put("data", data);
+				map.put("code", 200);
+			} else {
+				map.put("code", 404);
+				map.put("message", "Data not found!");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("code", 500);
+			map.put("message", "Error! " + e.getMessage());
+		}
+		return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+	}
+
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable("id") long id) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -203,6 +225,7 @@ public class StateNameRestController {
 			f.setStatus( (String) jsonArr.getJSONObject(i).get("status")  );
 			f.setColor( (String) jsonArr.getJSONObject(i).get("color")  );
 			f.setUnit((String) jsonArr.getJSONObject(i).get("unit"));
+			f.setApiFieldName((String) jsonArr.getJSONObject(i).get("api_field_name"));
 			fArr.add(f);
 		}
 		

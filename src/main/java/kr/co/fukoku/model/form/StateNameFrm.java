@@ -18,11 +18,13 @@ public class StateNameFrm {
 	private String color;
 	@JsonProperty("unit")
 	private String unit;
+	@JsonProperty("api_field_name")
+	private String apiFieldName;
 
 	public StateNameFrm() {
 	}
 
-	public StateNameFrm(long id, long seq, String engName, String koreanName, String status, String color, String unit) {
+	public StateNameFrm(long id, long seq, String engName, String koreanName, String status, String color, String unit, String apiFieldName) {
 		this.id = id;
 		this.seq = seq;
 		this.engName = engName;
@@ -30,6 +32,7 @@ public class StateNameFrm {
 		this.status = status;
 		this.color = color;
 		this.unit = unit;
+		this.apiFieldName = apiFieldName;
 	}
 
 	public long getId() {
@@ -86,5 +89,13 @@ public class StateNameFrm {
 
 	public void setUnit(String unit) {
 		this.unit = unit;
+	}
+
+	public String getApiFieldName() {
+		return apiFieldName;
+	}
+
+	public void setApiFieldName(String apiFieldName) {
+		this.apiFieldName = apiFieldName;
 	}
 }

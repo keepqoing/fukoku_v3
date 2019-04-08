@@ -388,8 +388,8 @@ function render_yang_ying_lines(data,width=900,height=400,margin,caption="Captio
 
     // Define the axes
     var	xAxis = d3.svg.axis().scale(x)
-        .orient("bottom").ticks(0);
-
+        // .orient("bottom").ticks(0);
+        .orient("bottom").ticks(d3.time.hour, 1);
     var	yAxis = d3.svg.axis().scale(y)
         .orient("left").ticks(10);
 
@@ -481,7 +481,7 @@ function render_yang_ying_lines(data,width=900,height=400,margin,caption="Captio
                 .attr("text-anchor", "end")
                 .attr("dy", 3)
                 .attr("dx", 5)
-                .text(function(d){return formatDateToString(new Date(d.date));})
+                .text(function(d){return formatDateToString(new Date(d.date), "hh:mm:ss");})
         }
         var ticks = svg.selectAll('circle')
             .data(data_for_ticks)
@@ -510,11 +510,11 @@ function render_yang_ying_lines(data,width=900,height=400,margin,caption="Captio
                 .on('mouseover', function(d) {
 
                     if(isPrecedingUnit){
-                        var html = "<table><thead><tr><th>Close</th><th>Date</th></tr></thead><tbody><tr><td>" + unit + d.close + "</td><td>" + formatDateToString(new Date(d.date)) + "</td></tr></tbody></table>"
+                        var html = "<table><thead><tr><th>Close</th><th>Date</th></tr></thead><tbody><tr><td>" + unit + d.close + "</td><td>" + formatDateToString(new Date(d.date), "hh:mm:ss") + "</td></tr></tbody></table>"
                         tooltip.select('.tabular_div').html(html);
                     }
                     else{
-                        var html = "<table><thead><tr><th>Close</th><th>Date</th></tr></thead><tbody><tr><td>"  + d.close + unit + "</td><td>" + formatDateToString(new Date(d.date)) + "</td></tr></tbody></table>"
+                        var html = "<table><thead><tr><th>Close</th><th>Date</th></tr></thead><tbody><tr><td>"  + d.close + unit + "</td><td>" + formatDateToString(new Date(d.date), "hh:mm:ss") + "</td></tr></tbody></table>"
                         tooltip.select('.tabular_div').html(html);
                     }
 
@@ -585,11 +585,11 @@ function render_yang_ying_lines(data,width=900,height=400,margin,caption="Captio
             .on('mouseover', function(d) {
 
                 if(isPrecedingUnit){
-                    var html = "<table><thead><tr><th>Close</th><th>Date</th></tr></thead><tbody><tr><td>" + unit + d.p[0].close + "</td><td>" + formatDateToString(new Date(d.p[0].date)) + "</td></tr><tr><td>" + unit + d.p[d.p.length -1].close + "</td><td>" + formatDateToString(new Date(d.p[d.p.length -1].date)) + "</td></tr></tbody></table>"
+                    var html = "<table><thead><tr><th>Close</th><th>Date</th></tr></thead><tbody><tr><td>" + unit + d.p[0].close + "</td><td>" + formatDateToString(new Date(d.p[0].date), "hh:mm:ss") + "</td></tr><tr><td>" + unit + d.p[d.p.length -1].close + "</td><td>" + formatDateToString(new Date(d.p[d.p.length -1].date),'hh:mm:ss') + "</td></tr></tbody></table>"
                     tooltip.select('.tabular_div').html(html);
                 }
                 else{
-                    var html = "<table><thead><tr><th>Close</th><th>Date</th></tr></thead><tbody><tr><td>" + d.p[0].close + unit + "</td><td>" + formatDateToString(new Date(d.p[0].date)) + "</td></tr><tr><td>" + d.p[d.p.length -1].close + unit + "</td><td>" + formatDateToString(new Date(d.p[d.p.length -1].date)) + "</td></tr></tbody></table>"
+                    var html = "<table><thead><tr><th>Close</th><th>Date</th></tr></thead><tbody><tr><td>" + d.p[0].close + unit + "</td><td>" + formatDateToString(new Date(d.p[0].date), "hh:mm:ss") + "</td></tr><tr><td>" + d.p[d.p.length -1].close + unit + "</td><td>" + formatDateToString(new Date(d.p[d.p.length -1].date),'hh:mm:ss') + "</td></tr></tbody></table>"
                     tooltip.select('.tabular_div').html(html);
                 }
 
@@ -644,15 +644,26 @@ function render_yang_ying_lines(data,width=900,height=400,margin,caption="Captio
           .text(function(d){return d.category});
     }
 
-    function formatDateToString(date){
-       // 01, 02, 03, ... 29, 30, 31
-       var dd = (date.getDate() < 10 ? '0' : '') + date.getDate();
-       // 01, 02, 03, ... 10, 11, 12
-       var MM = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
-       // 1970, 1971, ... 2015, 2016, ...
-       var yy = (date.getFullYear()).toString();
-       // create the format you want
-       return (dd + "-" + MM + "-" + yy.substr(-2,2));
+    function formatDateToString(date, format){
+        if(format == "") {
+            // 01, 02, 03, ... 29, 30, 31
+            var dd = (date.getDate() < 10 ? '0' : '') + date.getDate();
+            // 01, 02, 03, ... 10, 11, 12
+            var MM = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
+            // 1970, 1971, ... 2015, 2016, ...
+            var yy = (date.getFullYear()).toString();
+            // create the format you want
+            return (dd + "-" + MM + "-" + yy.substr(-2, 2));
+        }else{
+            // 01, 02, 03, ... 29, 30, 31
+            var hh = (date.getHours() < 10 ? '0' : '') + date.getHours();
+            // 01, 02, 03, ... 10, 11, 12
+            var mm = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+            // 01, 02, 03, ... 10, 11, 12
+            var ss = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
+            // create the format you want
+            return (hh + "-" + mm + "-" + ss);
+        }
     }
 
 }

@@ -3,16 +3,16 @@ package kr.co.fukoku.model.form.AlarmAppearance;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AlarmAppearanceGraph {
-    @JsonProperty("date")
+    @JsonProperty("dates")
     private String time;
 
-    @JsonProperty("close")
-    private double hasAlarm;
+    @JsonProperty("y")
+    private String hasAlarm;
 
     public AlarmAppearanceGraph() {
     }
 
-    public AlarmAppearanceGraph(String time, double hasAlarm) {
+    public AlarmAppearanceGraph(String time, String hasAlarm) {
         this.time = time;
         this.hasAlarm = hasAlarm;
     }
@@ -25,11 +25,11 @@ public class AlarmAppearanceGraph {
         this.time = time;
     }
 
-    public double getHasAlarm() {
+    public String getHasAlarm() {
         return hasAlarm;
     }
 
-    public void setHasAlarm(double hasAlarm) {
+    public void setHasAlarm(String hasAlarm) {
         this.hasAlarm = hasAlarm;
     }
 }

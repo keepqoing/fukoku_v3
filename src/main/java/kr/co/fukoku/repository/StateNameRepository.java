@@ -32,19 +32,24 @@ public interface StateNameRepository {
 	@Select("Select * from state_name where eng_name=#{englishName} and status='1'")
 	StateName findOneByEnglishName(@Param("englishName") String englishName);
 
+	@Select("Select * from state_name where api_field_name=#{apiFieldName} and status='1'")
+	StateName findOneByApiFieldName(@Param("englishName") String apiFieldName);
+
 	@Insert("insert into state_name ("
-			+ " seq, eng_name, korean_name , status, color "
+			+ " seq, eng_name, korean_name , status, color, unit, api_field_name "
 			+ ") VALUES ("
 			+ "	#{f.seq}, "
 			+ "	#{f.engName}, "
 			+ " #{f.koreanName}, "
 			+ " #{f.status}, "
-			+ " #{f.color}"
+			+ " #{f.color}, "
+			+ " #{f.unit}, "
+			+ " #{f.apiFieldName} "
 			+ ");")
 	boolean save(@Param("f") StateNameFrm frm);
 
 	@Insert("<script>insert into state_name ("
-			+ " seq, eng_name, korean_name , status, color, unit "
+			+ " seq, eng_name, korean_name , status, color, unit, api_field_name "
 			+ ") VALUES "
 			+ " <foreach collection='lst' item='f' separator=','>("
 			+ "	#{f.seq}, "
@@ -52,7 +57,8 @@ public interface StateNameRepository {
 			+ " #{f.koreanName}, "
 			+ " #{f.status}, "
 			+ " #{f.color}, "
-			+ " #{f.unit}"
+			+ " #{f.unit}, "
+			+ " #{f.apiFieldName} "
 			+ " )"
 			+ "</foreach></script>")
 	boolean saveLst(@Param("lst") List<StateNameFrm> lst);
@@ -63,7 +69,8 @@ public interface StateNameRepository {
 			+ " korean_name = #{f.koreanName}, "
 			+ " status = #{f.status}, "
 			+ " color = #{f.color}, "
-			+ " unit = #{f.unit} "
+			+ " unit = #{f.unit}, "
+			+ " api_field_name = #{f.api_field_name} "
 			+ "		 WHERE id=#{f.id}")
 	boolean update(@Param("f") StateNameFrm frm);
 	

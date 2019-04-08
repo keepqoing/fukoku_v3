@@ -137,49 +137,30 @@ app.controller('MainCtrl', function($scope, $http) {
                 console.log(response)
                 $("#kagiChart").html("");
                 if (response.code == 200) {
-
+                        var arrX = [];
+                        var arrY = [];
                         // $.each(response.data, function (key, value) {
-                        //     var a = parseFloat(response.data[key].line1);
+                        //     var arrX = parseFloat(response.data[key].x);
                         //
                         //     response.data[key]["line1"] = (parseFloat(a.toFixed(2))?parseFloat(a.toFixed(2)):0);
                         //
                         // });
+
                         // var settings = {
                         //     selector: "#barMultiLine",
                         //     width: 20000,
                         //     height: 450
                         // };
                         // barchartMultiLine(response.data, settings);
-                    var data = response.data;
-                    var chart_options = {
-                        "caption": "알람진단예측",
-                        "subCaption": "08:00:00부",
-                        "reversalValue": 25,
-                        "reversalType": "diff",
-                        "unit": "",
-                        "isPrecedingUnit":true,
-                        "rallyThickness": "3",
-                        "rallyThicknessOnHover": "6",
-                        "declineThickness": "2",
-                        "declineThicknessOnHover": "4",
-                        "rallyColor": "#2ecc71",
-                        "declineColor": "#e74c3c",
-                        "width":900,
-                        "height":500,
-                        "margin":{top: 75, right: 50, bottom: 100, left: 50},
-                        "showBreakPoints":true,
-                        "showBreakPointText":true,
-                        "breakPointColor":"#3498db",
-                        "breakPointRadius":5,
-                        "breakPointRadiusOnHover":8,
-                        "showBreakPointTooltips":true,
-                        "showRangeTooltips":true,
-                        "showLegend":true,
-                        "chartTheme":"dark",
-                        "showAnimation":true,
-                        "animationDurationPerTrend":100,
-                        "animationEase":"linear"
-                    }
+                    // var data = [
+                    //     {
+                    //         x: arrX,
+                    //         y: arrY,
+                    //         type: 'scatter'
+                    //     }
+                    // ];
+                    //
+                    // Plotly.newPlot('myDiv', data, {}, {showSendToCloud: true});
 
                     // var data = [
                     //     {
@@ -194,7 +175,7 @@ app.controller('MainCtrl', function($scope, $http) {
                     //         "date": "2015-01-06",
                     //         "close": 106.26
                     //     }];
-                    KagiChart(data,chart_options);
+                    Draw_LineChart_V3(response.data, "", "", "#alarmChart", "y", "lineT" );
 
 
                 }else{
