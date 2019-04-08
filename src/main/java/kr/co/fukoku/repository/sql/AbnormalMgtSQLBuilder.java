@@ -13,11 +13,7 @@ public class AbnormalMgtSQLBuilder {
 		}else {
 			f.setOrderBy(" order by name ");
 		}
-		
-		//System.out.println(f.getStatus());;
-		
-		
-		
+
 		 StringBuffer buffer = new StringBuffer();
 	        buffer.append(
 	        		"select * from abnormal_mgt where " +

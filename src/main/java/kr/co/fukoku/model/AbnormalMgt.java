@@ -6,7 +6,7 @@ import java.util.List;
 
 public class AbnormalMgt {
     @JsonProperty("id")
-    private int id;
+    private long id;
 
     @JsonProperty("seq")
     private int seq;
@@ -27,9 +27,11 @@ public class AbnormalMgt {
     private String data;
 
     public AbnormalMgt() {
+        super();
     }
 
-    public AbnormalMgt(int id, int seq, String name, Factory factory, Department department, List<Line> lines, String data) {
+    public AbnormalMgt(long id, int seq, String name, Factory factory, Department department, List<Line> lines, String data) {
+        super();
         this.id = id;
         this.seq = seq;
         this.name = name;
@@ -39,11 +41,11 @@ public class AbnormalMgt {
         this.data = data;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

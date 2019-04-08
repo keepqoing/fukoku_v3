@@ -20,8 +20,107 @@ app.controller('MainCtrl', function($scope, $http) {
 			"order by" : ""
 	};
 
+	/***
+	 * Selected Lines
+	 */
 
-	
+	$scope.selectedLine;
+
+
+	$scope.getSelectedItems = function(item){
+		return item.selected;
+	};
+
+	/***
+	 * /Find all lines
+	 * @param method
+	 */
+	$scope.findAllLines  =  function(data) {
+		var data = {
+			"name" : data,
+			"status" : ""
+		};
+		var post = $http({
+			method: "POST",
+			url: "/v3/api/fukoku/line/find",
+			dataType: 'json',
+			data : JSON.stringify(data),
+			headers: { "Content-Type": "application/json" }
+		});
+		post.success(function (response, status) {
+			if(response.code == 200){
+				console.log(response.data);
+				$scope.lines = response.data;
+			}
+		});
+		post.error(function (data, status) {
+			console.log(data);
+		});
+	}
+	/* * */
+
+	/****
+	 * Find all factories
+	 * @param method
+	 */
+	$scope.findAllFactories = function(data){
+		var data = {
+			"name" : data,
+			"status" : ""
+		};
+		var post = $http({
+			method: "POST",
+			url: "/v3/api/fukoku/factory/find",
+			dataType: 'json',
+			data : JSON.stringify(data),
+			headers: { "Content-Type": "application/json" }
+		});
+		post.success(function (response, status) {
+			if(response.code == 200){
+				console.log(response.data);
+				$scope.factories = response.data;
+			}
+
+		});
+		post.error(function (data, status) {
+			console.log(data);
+		});
+	}
+
+	$scope.findAllFactories("");
+	/* *** */
+
+	/***
+	 * Find all departments
+	 * @param method
+	 */
+	$scope.findAllDepartments = function(data){
+		var data = {
+			"name" : data,
+			"status" : ""
+		};
+		var post = $http({
+			method: "POST",
+			url: "/v3/api/fukoku/department/find",
+			dataType: 'json',
+			data : JSON.stringify($scope.data),
+			headers: { "Content-Type": "application/json" }
+		});
+		post.success(function (response, status) {
+			$scope.departments = null;
+			if(response.code == 200){
+				$scope.departments = response.data;
+			}else{
+				$scope.message = response.message;
+			}
+		});
+		post.error(function (data, status) {
+			console.log(data);
+		});
+	}
+	$scope.findAllDepartments("");
+	/* *** */
+
 
 	$scope.findAll = function(){
         var post = $http({
@@ -31,12 +130,9 @@ app.controller('MainCtrl', function($scope, $http) {
             data : JSON.stringify($scope.data),
             headers: { "Content-Type": "application/json" }
         });
-        console.log($scope.data);
         post.success(function (response, status) {
         	$scope.abnormal = null;
-        	console.log(response);
             if(response.code == 200){
-            	console.log("YES");
             	$scope.abnormal = response.data;
             }else{
             	$scope.message = response.message;
@@ -50,7 +146,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	$scope.findOne = function(id){
         var post = $http({
             method: "GET",
-            url: "/v3/api/fukoku/abnormal-mgt/"+id,
+            url: "/v3/api/fukoku/abnormal-mgt/id/"+id,
             dataType: 'json',
             headers: { "Content-Type": "application/json" }
         });
@@ -58,10 +154,18 @@ app.controller('MainCtrl', function($scope, $http) {
             if(response.code == 200){
             	console.log(response);
             	$scope.id = response.data.id;
+
+            	// list of lines
+				for(i=0;i<response.data.lst_line.length;i++){
+					console.log(response.data.lst_line[i].id);
+					$("input[type=checkbox][value="+response.data.lst_line[i].id+"]").prop("checked",true);
+					$scope.getSelectedItems(response.data.lst_line[i].name);
+				}
+
                 $("#txtSeq").val(response.data.seq);
-            	$("#txtRefFactory").val(response.data.ref_factory);
-                $("#txtRefDepartment").val(response.data.ref_department);
-				// $("#line") -- check later
+				$("#txtName").val(response.data.name);
+            	$("#selectOptFactory").val(response.data.factory.id);
+                $("#selectOptDepartment").val(response.data.department.id);
             	$("#txtData").val(response.data.data);
 
             }else{
@@ -73,113 +177,33 @@ app.controller('MainCtrl', function($scope, $http) {
         });
     }
 
-
-    /***
-	 * /Find all lines
-     * @param method
-     */
-    $scope.findAllLines  =  function(data) {
-        var data = {
-            "name" : data,
-			"status" : ""
-        };
-        var post = $http({
-            method: "POST",
-            url: "/v3/api/fukoku/line/find",
-            dataType: 'json',
-            data : JSON.stringify(data),
-            headers: { "Content-Type": "application/json" }
-        });
-        post.success(function (response, status) {
-            if(response.code == 200){
-                console.log(response.data);
-                $scope.lines = response.data;
-            }
-        });
-        post.error(function (data, status) {
-            console.log(data);
-        });
-    }
-    /* * */
-
-    /****
-	 * Find all factories
-     * @param method
-     */
-    $scope.findAllFactories = function(data){
-        var data = {
-            "name" : data,
-            "status" : ""
-        };
-        var post = $http({
-            method: "POST",
-            url: "/v3/api/fukoku/factory/find",
-            dataType: 'json',
-            data : JSON.stringify(data),
-            headers: { "Content-Type": "application/json" }
-        });
-        post.success(function (response, status) {
-            if(response.code == 200){
-                console.log(response.data);
-                $scope.factories = response.data;
-            }
-
-        });
-        post.error(function (data, status) {
-            console.log(data);
-        });
-    }
-
-    $scope.findAllFactories("");
-    /* *** */
-
-    /***
-	 * Find all departments
-     * @param method
-     */
-    $scope.findAllDepartments = function(data){
-        var data = {
-            "name" : data,
-            "status" : ""
-        };
-        var post = $http({
-            method: "POST",
-            url: "/v3/api/fukoku/department/find",
-            dataType: 'json',
-            data : JSON.stringify($scope.data),
-            headers: { "Content-Type": "application/json" }
-        });
-        post.success(function (response, status) {
-            $scope.departments = null;
-            if(response.code == 200){
-                $scope.departments = response.data;
-            }else{
-                $scope.message = response.message;
-            }
-        });
-        post.error(function (data, status) {
-            console.log(data);
-        });
-    }
-    $scope.findAllDepartments("");
-	/* *** */
-
 	$scope.save = function(method){
+
+		var lines = [];
+		$.each($("input[name='lineCheck']:checked"), function(){
+			lines.push(parseInt($(this).val()));
+		});
+		console.log(lines);
+
 		var data = {
 				"id" : $scope.id,
             	"seq" : $("#txtSeq").val(),
+				"name" : $("#txtName").val(),
             	"ref_factory_id" : $("#selectOptFactory").val(),
 				"ref_department_id" : $("#selectOptDepartment").val(),
-				// "ref_line_id" : $("#startDate").find("input").val(),
-				"data" : $("#endDate").find("txtData").val()
+				"lst_line" : lines,
+				"data" : $("#txtData").val()
 		}
 		console.log("data", data);
         var post = $http({
             method: method,
             url: "/v3/api/fukoku/abnormal-mgt",
-            dataType: 'json',
-            data : JSON.stringify(data),
-            headers: { "Content-Type": "application/json" }
+			enctype: 'multipart/form-data',
+			processData: false,
+			contentType: false,
+			cache: false,
+			data : JSON.stringify(data),
+			headers: { "Content-Type": "application/json" }
         });
         post.success(function (response, status) {
             if(response.code == 200){
@@ -216,7 +240,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	            headers: { "Content-Type": "application/json" }
 	        });
 	        post.success(function (response, status) {
-	        	$scope.products = null;
+
 	            if(response.code == 200){
 	            	swal({position: 'top-end',type: 'success',title: '데이터가 삭제되었습니다.',showConfirmButton: false,timer: 1500})
 	            }else{
@@ -290,24 +314,13 @@ app.controller('MainCtrl', function($scope, $http) {
 		$scope.findAll($scope.data);
 	}
 	
-	$scope.btSearchActive = function(){
-		// alert($scope.status);
-		$scope.data["name"] = $("#txtSearch").val();
-		// $scope.data["status"] = $scope.status;
-		$scope.findAll($scope.data);
-	}
-	
-
-	
 	$scope.btExport = function(){
 		$http({
 		    url: '/v3/api/fukoku/abnormal-mgt/download',
-		    method: "POST",
+		    method: "GET",
 		    headers: {
 		       'Content-type': 'application/json'
 		    },
-		    dataType: 'json',
-            data : JSON.stringify($scope.data),
 		    responseType: 'arraybuffer'
 		}).success(function (data, status, headers, config) {
 			 var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
@@ -315,7 +328,7 @@ app.controller('MainCtrl', function($scope, $http) {
 			 window.open(objectUrl);
 
 		}).error(function (data, status, headers, config) {
-		    //upload failed
+		    //DOWNLOADING IS NOT SUCCESSFULLY
 		});
 	}
 	
@@ -352,5 +365,6 @@ app.controller('MainCtrl', function($scope, $http) {
 		console.log($scope.data);
 		$scope.findAll($scope.data);
 	};
+
 
 });

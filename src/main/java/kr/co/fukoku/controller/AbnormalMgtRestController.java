@@ -27,12 +27,13 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/v3/api/fukoku/abnormal-mgt")
 public class AbnormalMgtRestController {
 	
 	@Autowired
 	private AbnormalMgtRepository repository;
-	
+
 	@RequestMapping(value="/find",method = RequestMethod.POST)
     public ResponseEntity<Map<String,Object>> findAll(@RequestBody AbnormalMgtFrm frm)  {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -75,7 +76,7 @@ public class AbnormalMgtRestController {
     }
 
 	@RequestMapping(value="/id/{id}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String,Object>> findOneById(@PathVariable("id") int id)  {
+	public ResponseEntity<Map<String,Object>> findOneById(@PathVariable("id") long id)  {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			AbnormalMgt data = repository.findOneById(id);
@@ -100,13 +101,13 @@ public class AbnormalMgtRestController {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
         	System.out.print(frm.toString());
-        	if(repository.save(frm)) {
-        		map.put("message", "Data has been inserted!");
-        		map.put("code", 200);
-        	}else {
-        		map.put("code", 404);
-        		map.put("message", "Data has not been inserted!");
-        	}
+        	repository.save(frm);
+       		// Insert into abnormal_mgt_line table
+			repository.saveLstAbnormalMgtLine(frm.getLines(), frm.getId());
+
+			map.put("message", "Data has been inserted!");
+			map.put("code", 200);
+
         }catch(Exception e) {
         	e.printStackTrace();
         	map.put("code", 500);
@@ -121,6 +122,12 @@ public class AbnormalMgtRestController {
         try {
         	System.out.print(frm.toString());
         	if(repository.update(frm)) {
+
+        		// Firstly, remove the old relationship between abnormal_mgt and line
+				repository.deleteAbnormalMgtLine(frm.getId());
+				// Secondly, save the new relationship between abnormal_mgt and line
+				repository.saveLstAbnormalMgtLine(frm.getLines(), frm.getId());
+
         		map.put("message", "Data has been updated!");
         		map.put("code", 200);
         	}else {

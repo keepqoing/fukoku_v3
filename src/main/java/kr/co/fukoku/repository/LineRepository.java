@@ -127,5 +127,16 @@ public interface LineRepository {
 			)
 	})
 	List<Line> findAllLinesByFactoryID(@Param("fid") long fid);
+
+	@Select("SELECT ln.*, aml.id as abnormal_mgt_id "+
+	" FROM line ln INNER JOIN abnormal_mgt_line aml "+
+	" ON ln.id = aml.ref_line_id "+
+	" WHERE aml.ref_abnormal_mgt_id = #{id} ")
+	@Results(value={
+			@Result(property="startDate",column="start_date"),
+			@Result(property="endDate",column="end_date"),
+			@Result(property="layoutName",column="layout_name")
+	})
+	List<Line> findAbnormalMgtLine(@Param("id") long id);
 	
 }

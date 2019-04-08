@@ -46,7 +46,6 @@
     <section class="content-header">
         <h1>
             이상조치관리
-
         </h1>
     </section>
 
@@ -55,18 +54,13 @@
             <div class="col-xs-12">
                 <div class="box box-primary">
                     <div class="box-body">
-                       
-                       
                         <div class="row">
-                                
                                 <div class="col-xl-8 col-lg-8 col-md-6 col-sm-6 col-xs-12">
                                     <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">이상조치관리추가</button>
                                     <form id="fileUploadForm"  class="btn btn-info btn-file">업로드<input type="file" id="btImport" name="file" (change)="btImport()"> </form>
                                     <button type="button" id="btExport" class="btn btn-info" ng-click="btExport()">다운로드</button>
                                 </div>
-                                
 
-                            
                                 <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
                                      <div class="box-tools">
 						                <div class="input-group input-group-sm" style="min-width: 150px;">
@@ -78,27 +72,20 @@
 						                </div>
 						              </div>
                                 </div>
-                            
-                            
                         </div>
-
 						<br/>
-	
                         <div class="row">
-                        	
-                       
-                        
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
                                 <table  class="table table-bordered table-striped">
                                     <thead class="table-head">
                                     <tr>
                                        <th>순번 <i class="fa fa-fw fa-sort" ng-click="btOrder('seq')" style="cursor: pointer;"></i></th> <!-- Seq -->
-                                        <th>공장명 <i class="fa fa-fw fa-sort" ng-click="btOrder('ref_factory_id')" style="cursor: pointer;"></i></th>
-                                        <th>부서명 <i class="fa fa-fw fa-sort" ng-click="btOrder('ref_department_id')" style="cursor: pointer;"></i></th>
-                                        <th>이상조치관리명 <i class="fa fa-fw fa-sort" ng-click="btOrder('name')" style="cursor: pointer;"></i></th>
-                                        <th>라인명 <i class="fa fa-fw fa-sort" ng-click="btOrder('ref_line_id')" style="cursor: pointer;"></i></th>
-                                        <th>데이터 <i class="fa fa-fw fa-sort" ng-click="btOrder('data')" style="cursor: pointer;"></i></th>
-                                        <th>수정</th>
+                                       <th>이상조치관리명 <i class="fa fa-fw fa-sort" ng-click="btOrder('name')" style="cursor: pointer;"></i></th>
+                                       <th>공장명 <i class="fa fa-fw fa-sort" ng-click="btOrder('ref_factory_id')" style="cursor: pointer;"></i></th>
+                                       <th>부서명 <i class="fa fa-fw fa-sort" ng-click="btOrder('ref_department_id')" style="cursor: pointer;"></i></th>
+                                       <th>라인명 <i class="fa fa-fw fa-sort" ng-click="btOrder('ref_line_id')" style="cursor: pointer;"></i></th>
+                                       <th>데이터 <i class="fa fa-fw fa-sort" ng-click="btOrder('data')" style="cursor: pointer;"></i></th>
+                                       <th>수정</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -107,11 +94,13 @@
 	                                    	<td>{{f.name}}</td>
 	                                    	<td>{{f.factory.name}}</td>
 	                                    	<td>{{f.department.name}}</td>
-	                                    	<td>{{f.line.name}}</td>
+	                                    	<td>
+                                                <span style="margin-right:5px" ng-repeat="ln in f.lst_line" class="label label-success">{{ln.name}}</span>
+                                            </td>
 	                                    	<td>{{f.data}}</td>
 	                                    	<td style="width:100px">
 	                                    			<button data-f-id="{{f.id}}" ng-click="btEdit(f.id)" style="width:30px;" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i></button>
-	                                    			<button data-f-id="{{f.id}}" ng-click="btDelete(f.id)" style="width:30px" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i></button>
+<!--	                                    			<button data-f-id="{{f.id}}" ng-click="btDelete(f.id)" style="width:30px" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i></button>-->
 	                                     	</td>
 	                                    </tr>
                                     </tbody>
@@ -143,19 +132,25 @@
                     <div class="box-body">
                     
                     
-                     <div class="form-group">
+                        <div class="form-group">
                             <label for="txtSeq" class="col-sm-2 control-label">순번:</label>
                             <div class="col-sm-10">
                                 <input type="number" class="form-control" id="txtSeq" placeholder="" required/>
                             </div>
                         </div>
-                        
+
+                        <div class="form-group">
+                            <label for="txtSeq" class="col-sm-2 control-label">이상조치관리명:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtName" placeholder="" required/>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label for="selectOptFactory" class="col-sm-2 control-label">공장명:</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="selectOptFactory"  required>
-                                    <option value="">공장명</option>
+                                    <option value=""  disabled="disabled" selected="selected">공장명</option>
                                     <option ng-repeat="o in factories" value="{{o.id}}">{{o.name}}</option>
                                 </select>
                             </div>
@@ -165,7 +160,7 @@
                             <label for="selectOptDepartment" class="col-sm-2 control-label">부서명:</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="selectOptDepartment"  required>
-                                    <option value="">부서명</option>
+                                    <option value=""  disabled="disabled" selected="selected">부서명</option>
                                     <option ng-repeat="o in departments" value="{{o.id}}">{{o.name}}</option>
                                 </select>
                             </div>
@@ -176,12 +171,25 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">라인:</label>
                             <div class="col-sm-10">
-                                <input type="checkbox" name="selLines" id="lineIB" value="IB"><label for="lineIB">IB</label>
-                                <input type="checkbox" name="selLines" id="lineHA" value="HA"><label for="lineHA">HA</label>
-                                <input type="checkbox" name="selLines" id="lineHB" value="HB"><label for="lineHB">HB</label>
-                                <input type="checkbox" name="selLines" id="lineHC" value="HC"><label for="lineHC">HC</label>
-                                <input type="checkbox" name="selLines" id="lineHD" value="HD"><label for="lineHD">HD</label>
-                                <input type="checkbox" name="selLines" id="linePD" value="PD"><label for="linePD">PD</label>
+<!--                                <input type="checkbox" name="selLines" id="lineIB" value="IB"><label for="lineIB">IB</label>-->
+<!--                                <input type="checkbox" name="selLines" id="lineHA" value="HA"><label for="lineHA">HA</label>-->
+<!--                                <input type="checkbox" name="selLines" id="lineHB" value="HB"><label for="lineHB">HB</label>-->
+<!--                                <input type="checkbox" name="selLines" id="lineHC" value="HC"><label for="lineHC">HC</label>-->
+<!--                                <input type="checkbox" name="selLines" id="lineHD" value="HD"><label for="lineHD">HD</label>-->
+<!--                                <input type="checkbox" name="selLines" id="linePD" value="PD"><label for="linePD">PD</label>-->
+                                <span ng-repeat="o in lines | filter: getSelectedItems">  <button style="margin-top:5px" type="button" class="btn btn-info" > {{o.name}} </button> </span>
+
+                                <span ><button type="button" style="margin-top:5px" class="btn btn-success" data-toggle="collapse" data-target="#demo">라인명 <i class="fa fa-fw fa-toggle-down"></i></button></span>
+                                <div id="demo" class="collapse">
+                                    <div class="list">
+                                        <ul class="items-list">
+                                            <li ng-repeat="o in lines">
+                                                <input type="checkbox" name="lineCheck" ng-model="o.selected" value="{{o.id}}"/>
+                                                <span>{{o.name}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -240,7 +248,13 @@
 </div>
 <th:block layout:fragment="script">
 <script th:src="@{/static/admin/javascript_v3/abnormal-mgt.js}"></script>
-
+<script>
+    $( document ).ready(function() {
+        $('.selected-items-box').bind('click', function(e) {
+            $('.wrapper .list').slideToggle('fast');
+        });
+    });
+</script>
 </th:block>
 </body>
 </html>

@@ -7,7 +7,7 @@ import java.util.List;
 public class AbnormalMgtFrm {
 
     @JsonProperty("id")
-    private int id;
+    private long id;
 
     @JsonProperty("seq")
     private int seq;
@@ -31,9 +31,16 @@ public class AbnormalMgtFrm {
     private String orderBy;
 
     public AbnormalMgtFrm() {
+        super();
     }
 
-    public AbnormalMgtFrm(int id, int seq, String name, int refFactoryId, int refDepartmentId, List<Long> lines, String data, String orderBy) {
+    public AbnormalMgtFrm(String name) {
+        super();
+        this.name = name;
+    }
+
+    public AbnormalMgtFrm(long id, int seq, String name, int refFactoryId, int refDepartmentId, List<Long> lines, String data, String orderBy) {
+        super();
         this.id = id;
         this.seq = seq;
         this.name = name;
@@ -44,11 +51,11 @@ public class AbnormalMgtFrm {
         this.orderBy = orderBy;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
