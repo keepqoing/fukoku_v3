@@ -235,11 +235,11 @@ $(function () {
 
     dashboardTable.getAllMachineNameByLineName = function(lineName){
         $.ajax({
-            url: "/v1/api/fukoku/machine/select-box",
+            url: "/v3/api/fukoku/machine/findAllByLine/" + lineName,
             type: 'GET',
             dataType: 'JSON',
             data:{
-                "lineName"  :   lineName
+
             },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -250,54 +250,54 @@ $(function () {
                 if(lineName == "IB") {
                     $('#ibSelectMachine').empty();
                     // $("#ibSelectMachine").append("<option value=''>설비</option>");
-                    if (response.CODE == "7777") {
-                        $.each(response.DATA, function (key, value) {
-                            $("#ibSelectMachine").append("<option value=" + value.MAPPING_NAME + ">" + value.MACHINE_NAME + "</option>");
+                    if (response.code == "200") {
+                        $.each(response.data, function (key, value) {
+                            $("#ibSelectMachine").append("<option value=" + value.name + ">" + value.name + "</option>");
                         });
                         dashboardTable.matchLastMachine("ibSelectMachine","V홈높이,흔들림");
                     }
                 }else if(lineName == "HA") {
                     $('#haSelectMachine').empty();
                     // $("#haSelectMachine").append("<option value=''>설비</option>");
-                    if (response.CODE == "7777") {
-                        $.each(response.DATA, function (key, value) {
-                            $("#haSelectMachine").append("<option value=" + value.MAPPING_NAME + ">" + value.MACHINE_NAME + "</option>");
+                    if (response.code == "200") {
+                        $.each(response.data, function (key, value) {
+                            $("#haSelectMachine").append("<option value=" + value.name + ">" + value.name + "</option>");
                         });
                         dashboardTable.matchLastMachine("haSelectMachine","V홈높이,흔들림");
                     }
                 }else if(lineName == "HB") {
                     $('#hbSelectMachine').empty();
                     // $("#hbSelectMachine").append("<option value=''>설비</option>");
-                    if (response.CODE == "7777") {
-                        $.each(response.DATA, function (key, value) {
-                            $("#hbSelectMachine").append("<option value=" + value.MAPPING_NAME + ">" + value.MACHINE_NAME + "</option>");
+                    if (response.code == "200") {
+                        $.each(response.data, function (key, value) {
+                            $("#hbSelectMachine").append("<option value=" + value.name + ">" + value.name + "</option>");
                         });
                         dashboardTable.matchLastMachine("hbSelectMachine","T/Mark");
                     }
                 }else if(lineName == "HC") {
                     $('#hcSelectMachine').empty();
                     // $("#hcSelectMachine").append("<option value=''>설비</option>");
-                    if (response.CODE == "7777") {
-                        $.each(response.DATA, function (key, value) {
-                            $("#hcSelectMachine").append("<option value=" + value.MAPPING_NAME + ">" + value.MACHINE_NAME + "</option>");
+                    if (response.code == "200") {
+                        $.each(response.data, function (key, value) {
+                            $("#hcSelectMachine").append("<option value=" + value.name + ">" + value.name + "</option>");
                         });
                         dashboardTable.matchLastMachine("hcSelectMachine","T플레이트");
                     }
                 }else if(lineName == "HD") {
                     $('#hdSelectMachine').empty();
                     // $("#hdSelectMachine").append("<option value=''>설비</option>");
-                    if (response.CODE == "7777") {
-                        $.each(response.DATA, function (key, value) {
-                            $("#hdSelectMachine").append("<option value=" + value.MAPPING_NAME + ">" + value.MACHINE_NAME + "</option>");
+                    if (response.code == "200") {
+                        $.each(response.data, function (key, value) {
+                            $("#hdSelectMachine").append("<option value=" + value.name + ">" + value.name + "</option>");
                         });
                         dashboardTable.matchLastMachine("hdSelectMachine","V홈높이,흔들림");
                     }
                 }else if(lineName == "PD") {
                     $('#pdSelectMachine').empty();
                     // $("#pdSelectMachine").append("<option value=''>설비</option>");
-                    if (response.CODE == "7777") {
-                        $.each(response.DATA, function (key, value) {
-                            $("#pdSelectMachine").append("<option value=" + value.MAPPING_NAME + ">" + value.MACHINE_NAME + "</option>");
+                    if (response.code == "200") {
+                        $.each(response.data, function (key, value) {
+                            $("#pdSelectMachine").append("<option value=" + value.name + ">" + value.name + "</option>");
                         });
                         dashboardTable.matchLastMachine("pdSelectMachine","도장기");
                     }

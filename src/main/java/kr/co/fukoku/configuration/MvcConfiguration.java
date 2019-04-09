@@ -58,6 +58,8 @@ public class MvcConfiguration implements WebMvcConfigurer {
 
 		// Menus are from old version 2
 		registry.addViewController("/admin/dashboard2").setViewName("/admin/dashboard2");
+		registry.addViewController("/admin/dashboard-table").setViewName("/admin/dashboard-table");
+		registry.addViewController("/admin/line-chart").setViewName("/admin/line-chart");
 
 		//integrated_visualization
 		registry.addViewController("/admin/integrated_visualization").setViewName("/admin/integrated_visualization");

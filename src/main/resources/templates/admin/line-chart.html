@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+<head>
+    <meta charset="UTF-8">
+    <title> 설비종합효율현황(일별추세)</title>
+    <!-- Load c3.css -->
+    <link href="/static/admin/javascripts/c3/c3.css" rel="stylesheet">
+
+
+    <style>
+        body {
+            font: 10px arial;
+        }
+        table {
+            font-size: 12pt;
+        }
+
+        table .head {
+            background-color: #3c8dbc;
+            color: white;
+        }
+
+        table thead th {
+            text-align: center;
+        }
+
+        table tbody tr {
+            text-align: center;
+            height: 50px;
+        }
+
+        table.table-bordered {
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+
+        table.table-bordered > thead > tr > th {
+            border: 2px solid black;
+            vertical-align: middle;
+            width: 100px;
+        }
+
+        table.table-bordered > tbody > tr > td {
+            border: 2px solid black;
+            vertical-align: middle;
+            width: 100px;
+        }
+
+        circle {
+            r:3;
+        }
+
+    </style>
+</head>
+<body ng-controller="MainCtrl">
+<div layout:fragment="content">
+    <section class="content-header">
+        <h1>
+            <!--공정불량기간현황정보-->
+            <!--설비종합효율현황 (Line Chart)-->
+            설비종합효율현황(일별추세)
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="font-size: 10pt;">IB LINE</div>
+                    <div class="panel-body">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <br/>
+                            <div class="row">
+                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <select class="form-control" id="selectIBMachine">
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class='input-group date startTimeClass' id='startTime'>
+                                            <input type='text' class="form-control"/>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class='input-group date endTimeClass' id='endTime'>
+                                            <input type='text' class="form-control"/>
+                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                    </div>
+                                </div>
+                                <div class="hiddenInput"></div>
+                            </div>
+                            <div class="row">
+
+                                <div id="chart1" style="width:95%;"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="font-size: 10pt;">HC LINE</div>
+                    <div class="panel-body">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <br/>
+                            <div class="row">
+                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <select class="form-control" id="selectHCMachine">
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class='input-group date startTimeClass' id='startTime1'>
+                                            <input type='text' class="form-control"/>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class='input-group date endTimeClass' id='endTime1'>
+                                            <input type='text' class="form-control"/>
+                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                    </div>
+                                </div>
+                                <div class="hiddenInput"></div>
+                            </div>
+                            <div class="row">
+                                <div id="chart2" style="width:95%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="font-size: 10pt;">HD LINE</div>
+                    <div class="panel-body">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <br/>
+                            <div class="row">
+                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <select class="form-control" id="selectHDMachine">
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class='input-group date startTimeClass' id='startTime2'>
+                                            <input type='text' class="form-control"/>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class='input-group date endTimeClass' id='endTime2'>
+                                            <input type='text' class="form-control"/>
+                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                    </div>
+                                </div>
+                                <div class="hiddenInput"></div>
+                            </div>
+                            <div class="row">
+                                <div id="chart3" style="width:95%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="font-size: 10pt;">PD LINE</div>
+                    <div class="panel-body">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <br/>
+                            <div class="row">
+                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <select class="form-control" id="selectPDMachine">
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class='input-group date startTimeClass' id='startTime3'>
+                                            <input type='text' class="form-control"/>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class='input-group date endTimeClass' id='endTime3'>
+                                            <input type='text' class="form-control"/>
+                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                    </div>
+                                </div>
+                                <div class="hiddenInput"></div>
+                            </div>
+                            <div class="row">
+                                <div id="chart4" style="width:95%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="font-size: 10pt;">HA LINE</div>
+                    <div class="panel-body">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <br/>
+                            <div class="row">
+                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <select class="form-control" id="selectHAMachine">
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class='input-group date startTimeClass' id='startTime4'>
+                                            <input type='text' class="form-control"/>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class='input-group date endTimeClass' id='endTime4'>
+                                            <input type='text' class="form-control"/>
+                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                    </div>
+                                </div>
+                                <div class="hiddenInput"></div>
+                            </div>
+                            <div class="row">
+                                <div id="chart5" style="width:95%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="font-size: 10pt;">HB LINE</div>
+                    <div class="panel-body">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <br/>
+                            <div class="row">
+                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <select class="form-control" id="selectHBMachine">
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class='input-group date startTimeClass' id='startTime5'>
+                                            <input type='text' class="form-control"/>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class='input-group date endTimeClass' id='endTime5'>
+                                            <input type='text' class="form-control"/>
+                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                    </div>
+                                </div>
+                                <div class="hiddenInput"></div>
+                            </div>
+                            <div class="row">
+                                <div id="chart6" style="width:95%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+<th:block layout:fragment="script">
+    <!-- Load d3.js and c3.js -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="/static/admin/javascripts/c3/c3.js"></script>
+
+    <script src="../../static/admin/javascripts/libraries/jquery-dateFormat.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                var startDateYesterDay = new Date();
+                startDateYesterDay.setDate(startDateYesterDay.getDate() - 30);
+                $('#startTime').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    //defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: startDateYesterDay
+                });
+                $('#endTime').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime1').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: startDateYesterDay
+
+                });
+                $('#endTime1').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime2').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD',
+                    defaultDate: startDateYesterDay
+                });
+                $('#endTime2').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime3').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate:startDateYesterDay
+
+                });
+                $('#endTime3').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime4').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: startDateYesterDay
+
+                });
+                $('#endTime4').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime5').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: startDateYesterDay
+
+                });
+                $('#endTime5').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: new Date()
+                });
+            });
+        });
+    </script>
+    <script src="../../static/admin/javascripts/line-chart.js"></script>
+</th:block>
+
+</body>
+
+</html>

@@ -77,11 +77,11 @@ $(function () {
 
     lineChart.getAllMachineNameByLineName = function(line, selector){
         $.ajax({
-            url: "/v1/api/fukoku/machine/select-box",
+            url: "/v3/api/fukoku/machine/findAllByLine/" + line,
             type: 'GET',
             dataType: 'JSON',
             data:{
-                "lineName"  :   line
+
             },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -89,9 +89,9 @@ $(function () {
             },
             success: function(response) {
                 $('#'+selector+'').empty();
-                if(response.CODE == "7777"){
-                    $.each(response.DATA.reverse(), function(key, value){
-                        $('#'+selector+'').append("<option value="+value.MAPPING_NAME+">"+value.MACHINE_NAME+"</option>");
+                if(response.code == "200"){
+                    $.each(response.data.reverse(), function(key, value){
+                        $('#'+selector+'').append("<option value="+value.name+">"+value.name+"</option>");
                     });
                     if(line == "IB"){
                         lineChart.matchLastMachine(selector,"V홈높이,흔들림");

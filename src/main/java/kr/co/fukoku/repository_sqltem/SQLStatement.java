@@ -2490,8 +2490,8 @@ FIND_ALL_PD("SELECT \n" +
 
         FIND_DASHBOARD2(" CALL V3_PROC_CAL_DASHBOARD(? , ? , ? , ? , ?); " ),
 
-        // call procedure version 2 that is inside this function
-        FIND_DAILY_ANALYSIS(" CALL proc_call_daily_mstate_analysis(?,?,?,?,?); "),
+
+        FIND_DAILY_ANALYSIS(" CALL V3_PROC_CAL_DAILY_MSTATE_ANALYSIS(?,?,?,?,?); "),
 
         // call procedure version 2 that is inside this function
         FIND_PROCESS_ANALYSIS(" CALL proc_process_analysis_by_line(?, ?, ?, ?); ");
