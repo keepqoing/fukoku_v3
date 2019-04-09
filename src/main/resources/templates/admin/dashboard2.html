@@ -439,8 +439,8 @@
                                 </tr>
                                 <tr>
 
-                                    <td>양품율</td>
-                                    <td id="okProductRate"></td>
+                                    <td>직행율</td>
+                                    <td id="bypassedProductRate"></td>
                                 </tr>
                                 <tr>
 
@@ -449,7 +449,7 @@
                                 </tr>
                                 <tr>
                                     <!-- Total equipment efficiency = time operation rate x production efficiency x good product rate -->
-                                    <td colspan="2">설비종합효율 = 시간가동율 x 성능가동율 x 양품율</td>
+                                    <td colspan="2">설비종합효율 = 시간가동율 x 성능가동율 x 직행율</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -592,8 +592,8 @@
                                 </tr>-->
 
                                 <tr>
-                                    <td>양품수량</td>
-                                    <td class="txtOkProductValue"></td>
+                                    <td>직행수량</td>
+                                    <td class="txtBypassedProductValue"></td>
                                 </tr>
                                 <tr>
 
@@ -601,7 +601,7 @@
                                     <td class="txtTotalProductValue"></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">양품율 = 양품수량 / 생산수량 x 100</td>
+                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -654,32 +654,32 @@
             createGauge("totalFacilityEfficiency", "설비종합효율");  // Total equipment efficiency
             createGauge("timeOperationRate", "시간가동율"); // Time operation rate
             createGauge("performanceStartupRate", "성능가동율"); // Production efficiency
-            createGauge("yieldRate", "양품율"); // Yield rate
+            createGauge("yieldRate", "직행율"); // Yield rate
 
             createGauge("totalFacilityEfficiency1", "설비종합효율");
             createGauge("timeOperationRate1", "시간가동율");
             createGauge("performanceStartupRate1", "성능가동율");
-            createGauge("yieldRate1", "양품율");
+            createGauge("yieldRate1", "직행율");
 
             createGauge("totalFacilityEfficiency2", "설비종합효율");
             createGauge("timeOperationRate2", "시간가동율");
             createGauge("performanceStartupRate2", "성능가동율");
-            createGauge("yieldRate2", "양품율");
+            createGauge("yieldRate2", "직행율");
 
             createGauge("totalFacilityEfficiency3", "설비종합효율");
             createGauge("timeOperationRate3", "시간가동율");
             createGauge("performanceStartupRate3", "성능가동율");
-            createGauge("yieldRate3", "양품율");
+            createGauge("yieldRate3", "직행율");
 
             createGauge("totalFacilityEfficiency4", "설비종합효율");
             createGauge("timeOperationRate4", "시간가동율");
             createGauge("performanceStartupRate4", "성능가동율");
-            createGauge("yieldRate4", "양품율");
+            createGauge("yieldRate4", "직행율");
 
             createGauge("totalFacilityEfficiency5", "설비종합효율");
             createGauge("timeOperationRate5", "시간가동율");
             createGauge("performanceStartupRate5", "성능가동율");
-            createGauge("yieldRate5", "양품율");
+            createGauge("yieldRate5", "직행율");
         }
 
         function updateGauges() {

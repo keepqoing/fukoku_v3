@@ -35,11 +35,11 @@ public class DashBoard2RepositoryBody implements DashBoard2Repository {
 //            dashBoard2.setPlanned_stop_time(rs.getString("planned_stop_time"));
 //            dashBoard2.setNon_planned_stop_time(rs.getString("non_planned_stop_time"));
                 dashBoard2.setTotal_product(rs.getDouble("total_product"));
-                dashBoard2.setOk_product(rs.getDouble("ok_product"));
+                dashBoard2.setBypassed_product(rs.getDouble("bypassed_product"));
                 dashBoard2.setNg_product(rs.getDouble("ng_product"));
                 dashBoard2.setTime_operation_rate(rs.getDouble("time_operation_rate"));
                 dashBoard2.setTotal_product_rate(rs.getDouble("total_product_rate"));
-                dashBoard2.setOk_product_rate(rs.getDouble("ok_product_rate"));
+                dashBoard2.setBypassed_product_rate(rs.getDouble("bypassed_product_rate"));
                 dashBoard2.setMachine_efficiency_rate(rs.getDouble("machine_efficiency_rate"));
 
 

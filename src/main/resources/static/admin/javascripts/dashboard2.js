@@ -168,9 +168,9 @@ $(function() {
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtTotalMachineEfficiencyRate'>");
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtTotalTimeOpereationRate'>");
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtTotalProductRate'>");
-                        parentNode.find(".hiddenInput").append("<input type='hidden' class='txtTotalOkProductRate'>");
+                        parentNode.find(".hiddenInput").append("<input type='hidden' class='txtTotalBypassedProductRate'>");
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtCycleTime'>");
-                        parentNode.find(".hiddenInput").append("<input type='hidden' class='txtOkProduct'>");
+                        parentNode.find(".hiddenInput").append("<input type='hidden' class='txtBypassedProduct'>");
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtWorkingTime'>");
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtCycleTime'>");
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtProductQuantity'>");
@@ -181,20 +181,20 @@ $(function() {
                         console.log("machine : " + response.DATA[0].MACHINE_EFFICIENCY_RATE.toFixed(2));
                         console.log("time operation : " + response.DATA[0].TIME_OPERATION_RATE.toFixed(2));
                         console.log("total product : " + response.DATA[0].TOTAL_PRODUCT_RATE.toFixed(2));
-                        console.log("ok product : " + response.DATA[0].OK_PRODUCT_RATE.toFixed(2));
+                        console.log("bypassed product : " + response.DATA[0].BYPASSED_PRODUCT_RATE.toFixed(2));
 
                         dashboard.setUpdateGauges(gauges1,response.DATA[0].MACHINE_EFFICIENCY_RATE.toFixed(2));
                         dashboard.setUpdateGauges(gauges2,response.DATA[0].TIME_OPERATION_RATE.toFixed(2));
                         dashboard.setUpdateGauges(gauges3,response.DATA[0].TOTAL_PRODUCT_RATE.toFixed(2));
-                        dashboard.setUpdateGauges(gauges4,response.DATA[0].OK_PRODUCT_RATE.toFixed(2));
+                        dashboard.setUpdateGauges(gauges4,response.DATA[0].BYPASSED_PRODUCT_RATE.toFixed(2));
 
                         parentNode.find(".txtTotalMachineEfficiencyRate").val(response.DATA[0].MACHINE_EFFICIENCY_RATE.toFixed(2) + " %");
                         parentNode.find(".txtTotalTimeOpereationRate").val(response.DATA[0].TIME_OPERATION_RATE.toFixed(2) + " %");
                         parentNode.find(".txtTotalProductRate").val(response.DATA[0].TOTAL_PRODUCT_RATE.toFixed(2) + " %");
                         parentNode.find(".txtProductQuantity").val(response.DATA[0].TOTAL_PRODUCT + " 개");
-                        parentNode.find(".txtTotalOkProductRate").val(response.DATA[0].OK_PRODUCT_RATE.toFixed(2) + " %");
+                        parentNode.find(".txtTotalBypassedProductRate").val(response.DATA[0].BYPASSED_PRODUCT_RATE.toFixed(2) + " %");
                         parentNode.find(".txtCycleTime").val(response.DATA[0].THEORETICAL_CYCLE_TIME.toFixed(2) + " 초");
-                        parentNode.find(".txtOkProduct").val(response.DATA[0].OK_PRODUCT + " 개");
+                        parentNode.find(".txtBypassedProduct").val(response.DATA[0].BYPASSED_PRODUCT + " 개");
                         parentNode.find(".txtWorkingTime").val(response.DATA[0].WORKING_TIME.toFixed(2) + " 분");
                         parentNode.find(".txtWorkingNonActiveTime").val(response.DATA[0].WK_NON_ACTIVE_TIME.toFixed(2) + " 분");
 
@@ -279,7 +279,10 @@ $(function() {
         $('#modalDetail1').modal('show');
         $("#DASHBOARD_DETAIL1").find("tr>#timeOpereationRate").text(parentNode.find(".txtTotalTimeOpereationRate").val());
         $("#DASHBOARD_DETAIL1").find("tr>#totalProductRate").text(parentNode.find(".txtTotalProductRate").val());
-        $("#DASHBOARD_DETAIL1").find("tr>#okProductRate").text(parentNode.find(".txtTotalOkProductRate").val());
+
+        console.log("================================= " + parentNode.find(".txtTotalBypassedProductRate").val());
+
+        $("#DASHBOARD_DETAIL1").find("tr>#bypassedProductRate").text(parentNode.find(".txtTotalBypassedProductRate").val());
         $("#DASHBOARD_DETAIL1").find("tr>#machineEfficiencyRate").text(parentNode.find(".txtTotalMachineEfficiencyRate").val());
 
     });
@@ -303,7 +306,7 @@ $(function() {
     $('.totalYieldRateRate').click(function(){
         var parentNode = $(this).closest('.panel-body');
         $('#modalDetail4').modal('show');
-        $("#DASHBOARD_DETAIL4").find("tr>.txtOkProductValue").text(parentNode.find(".txtOkProduct").val());
+        $("#DASHBOARD_DETAIL4").find("tr>.txtBypassedProductValue").text(parentNode.find(".txtBypassedProduct").val());
         $("#DASHBOARD_DETAIL4").find("tr>.txtTotalProductValue").text(parentNode.find(".txtProductQuantity").val());
 
     });
@@ -353,9 +356,9 @@ $(function() {
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtTotalMachineEfficiencyRate'>");
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtTotalTimeOpereationRate'>");
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtTotalProductRate'>");
-                        parentNode.find(".hiddenInput").append("<input type='hidden' class='txtTotalOkProductRate'>");
+                        parentNode.find(".hiddenInput").append("<input type='hidden' class='txtTotalBypassedProductRate'>");
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtCycleTime'>");
-                        parentNode.find(".hiddenInput").append("<input type='hidden' class='txtOkProduct'>");
+                        parentNode.find(".hiddenInput").append("<input type='hidden' class='txtBypassedProduct'>");
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtWorkingTime'>");
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtCycleTime'>");
                         parentNode.find(".hiddenInput").append("<input type='hidden' class='txtProductQuantity'>");
@@ -366,20 +369,20 @@ $(function() {
                         console.log("machine : " + response.DATA[0].MACHINE_EFFICIENCY_RATE.toFixed(2));
                         console.log("time operation : " + response.DATA[0].TIME_OPERATION_RATE.toFixed(2));
                         console.log("total product : " + response.DATA[0].TOTAL_PRODUCT_RATE.toFixed(2));
-                        console.log("ok product : " + response.DATA[0].OK_PRODUCT_RATE.toFixed(2));
+                        console.log("bypassed product : " + response.DATA[0].BYPASSED_PRODUCT_RATE.toFixed(2));
 
                         dashboard.setUpdateGaugesFirstTime(gauges1,response.DATA[0].MACHINE_EFFICIENCY_RATE.toFixed(2));
                         dashboard.setUpdateGaugesFirstTime(gauges2,response.DATA[0].TIME_OPERATION_RATE.toFixed(2));
                         dashboard.setUpdateGaugesFirstTime(gauges3,response.DATA[0].TOTAL_PRODUCT_RATE.toFixed(2));
-                        dashboard.setUpdateGaugesFirstTime(gauges4,response.DATA[0].OK_PRODUCT_RATE.toFixed(2));
+                        dashboard.setUpdateGaugesFirstTime(gauges4,response.DATA[0].BYPASSED_PRODUCT_RATE.toFixed(2));
 
                         parentNode.find(".txtTotalMachineEfficiencyRate").val(response.DATA[0].MACHINE_EFFICIENCY_RATE.toFixed(2) + " %");
                         parentNode.find(".txtTotalTimeOpereationRate").val(response.DATA[0].TIME_OPERATION_RATE.toFixed(2) + " %");
                         parentNode.find(".txtTotalProductRate").val(response.DATA[0].TOTAL_PRODUCT_RATE.toFixed(2) + " %");
                         parentNode.find(".txtProductQuantity").val(response.DATA[0].TOTAL_PRODUCT + " 개");
-                        parentNode.find(".txtTotalOkProductRate").val(response.DATA[0].OK_PRODUCT_RATE.toFixed(2) + " %");
+                        parentNode.find(".txtTotalBypaasedProductRate").val(response.DATA[0].BYPASSED_PRODUCT_RATE.toFixed(2) + " %");
                         parentNode.find(".txtCycleTime").val(response.DATA[0].THEORETICAL_CYCLE_TIME.toFixed(2) + " 초");
-                        parentNode.find(".txtOkProduct").val(response.DATA[0].OK_PRODUCT + " 개");
+                        parentNode.find(".txtBypassedProduct").val(response.DATA[0].BYPASSED_PRODUCT + " 개");
                         parentNode.find(".txtWorkingTime").val(response.DATA[0].WORKING_TIME.toFixed(2) + " 분");
                         parentNode.find(".txtWorkingNonActiveTime").val(response.DATA[0].WK_NON_ACTIVE_TIME.toFixed(2) + " 분");
 

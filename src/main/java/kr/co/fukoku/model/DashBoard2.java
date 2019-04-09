@@ -26,23 +26,23 @@ public class DashBoard2 {
     private double non_planned_stop_time;
     @JsonProperty("TOTAL_PRODUCT")
     private double total_product;
-    @JsonProperty("OK_PRODUCT")
-    private double ok_product;
+    @JsonProperty("BYPASSED_PRODUCT")
+    private double bypassed_product;
     @JsonProperty("NG_PRODUCT")
     private double ng_product;
     @JsonProperty("TIME_OPERATION_RATE")
     private double time_operation_rate;
     @JsonProperty("TOTAL_PRODUCT_RATE")
     private double total_product_rate;
-    @JsonProperty("OK_PRODUCT_RATE")
-    private double ok_product_rate;
+    @JsonProperty("BYPASSED_PRODUCT_RATE")
+    private double bypassed_product_rate;
     @JsonProperty("MACHINE_EFFICIENCY_RATE")
     private double machine_efficiency_rate;
 
     public DashBoard2() {
     }
 
-    public DashBoard2(String work_plan, double planned_work_time, double working_time, double wk_non_active_time, double target_product_qty, double theoretical_cycle_time, double non_active_time, double planned_stop_time, double non_planned_stop_time, double total_product, double ok_product, double ng_product, double time_operation_rate, double total_product_rate, double ok_product_rate, double machine_efficiency_rate) {
+    public DashBoard2(String work_plan, double planned_work_time, double working_time, double wk_non_active_time, double target_product_qty, double theoretical_cycle_time, double non_active_time, double planned_stop_time, double non_planned_stop_time, double total_product, double bypassed_product, double ng_product, double time_operation_rate, double total_product_rate, double bypassed_product_rate, double machine_efficiency_rate) {
         this.work_plan = work_plan;
         this.planned_work_time = planned_work_time;
         this.working_time = working_time;
@@ -53,16 +53,15 @@ public class DashBoard2 {
         this.planned_stop_time = planned_stop_time;
         this.non_planned_stop_time = non_planned_stop_time;
         this.total_product = total_product;
-        this.ok_product = ok_product;
+        this.bypassed_product = bypassed_product;
         this.ng_product = ng_product;
         this.time_operation_rate = time_operation_rate;
         this.total_product_rate = total_product_rate;
-        this.ok_product_rate = ok_product_rate;
+        this.bypassed_product_rate = bypassed_product_rate;
         this.machine_efficiency_rate = machine_efficiency_rate;
     }
 
     public String getWork_plan() {
-        if(Strings.isNullOrEmpty(work_plan)) return "";
         return work_plan;
     }
 
@@ -142,12 +141,12 @@ public class DashBoard2 {
         this.total_product = total_product;
     }
 
-    public double getOk_product() {
-        return ok_product;
+    public double getBypassed_product() {
+        return bypassed_product;
     }
 
-    public void setOk_product(double ok_product) {
-        this.ok_product = ok_product;
+    public void setBypassed_product(double bypassed_product) {
+        this.bypassed_product = bypassed_product;
     }
 
     public double getNg_product() {
@@ -174,12 +173,12 @@ public class DashBoard2 {
         this.total_product_rate = total_product_rate;
     }
 
-    public double getOk_product_rate() {
-        return ok_product_rate;
+    public double getBypassed_product_rate() {
+        return bypassed_product_rate;
     }
 
-    public void setOk_product_rate(double ok_product_rate) {
-        this.ok_product_rate = ok_product_rate;
+    public void setBypassed_product_rate(double bypassed_product_rate) {
+        this.bypassed_product_rate = bypassed_product_rate;
     }
 
     public double getMachine_efficiency_rate() {
@@ -188,27 +187,5 @@ public class DashBoard2 {
 
     public void setMachine_efficiency_rate(double machine_efficiency_rate) {
         this.machine_efficiency_rate = machine_efficiency_rate;
-    }
-
-    @Override
-    public String toString() {
-        return "DashBoard2{" +
-                "work_plan='" + work_plan + '\'' +
-                ", planned_work_time=" + planned_work_time +
-                ", working_time=" + working_time +
-                ", wk_non_active_time=" + wk_non_active_time +
-                ", target_product_qty=" + target_product_qty +
-                ", theoretical_cycle_time=" + theoretical_cycle_time +
-                ", non_active_time=" + non_active_time +
-                ", planned_stop_time=" + planned_stop_time +
-                ", non_planned_stop_time=" + non_planned_stop_time +
-                ", total_product=" + total_product +
-                ", ok_product=" + ok_product +
-                ", ng_product=" + ng_product +
-                ", time_operation_rate=" + time_operation_rate +
-                ", total_product_rate=" + total_product_rate +
-                ", ok_product_rate=" + ok_product_rate +
-                ", machine_efficiency_rate=" + machine_efficiency_rate +
-                '}';
     }
 }

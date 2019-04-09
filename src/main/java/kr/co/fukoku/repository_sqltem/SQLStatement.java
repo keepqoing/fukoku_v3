@@ -2486,7 +2486,9 @@ FIND_ALL_PD("SELECT \n" +
     // TODO: SQL STATEMENT FOR QUERY New Dash Board
     public enum DashBoard2 {
         // call procedure version 2 that is inside this function
-        FIND_DASHBOARD2(" CALL proc_cal_dashboard_3(? , ? , ? , ? , ?); " ),
+        //FIND_DASHBOARD2(" CALL proc_cal_dashboard_3(? , ? , ? , ? , ?); " ), -- OLD VERSION
+
+        FIND_DASHBOARD2(" CALL V3_PROC_CAL_DASHBOARD(? , ? , ? , ? , ?); " ),
 
         // call procedure version 2 that is inside this function
         FIND_DAILY_ANALYSIS(" CALL proc_call_daily_mstate_analysis(?,?,?,?,?); "),
