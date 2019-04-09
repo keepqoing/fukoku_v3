@@ -31,7 +31,7 @@ $(function () {
         $("#cTable").hide();
         openLoading();
         $.ajax({
-            url: "/v1/api/fukoku/new-correlation",
+            url: "http://113.198.137.142:8080/v1/api/fukoku/new-correlation",
             type: 'GET',
             dataType: 'JSON',
             data:{
@@ -84,9 +84,59 @@ $(function () {
     };
 
 
-    corelations.getAllLinesName = function(){
+
+    /*
+   *** get FACTORY
+    */
+    corelations.getAllFactories = function () {
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/factory",
+            type: 'GET',
+            dataType: 'JSON',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (response) {
+                if (response.code == 200) {
+                    if (response.data.length > 0) {
+                        var sel = document.getElementById("selFactory");
+                        var option = document.createElement("option");
+                        option.setAttribute("value","0"); // store Process name
+                        option.text = "공장"; // show Process name
+                        sel.appendChild(option);
+
+                        for(i = 0; i < response.data.length; i++){
+                            var option = document.createElement("option");
+                            option.setAttribute("value", response.data[i].id); // store factory id
+                            option.text = response.data[i].name; // show factory name
+                            sel.appendChild(option);
+                        }
+                        // $("#selFactory").prop("selectedIndex",1).change();
+
+
+                    }
+                }
+            },
+            error: function (data, status, err) {
+                console.log("error: " + data + " status: " + status + " err:" + err);
+            }
+        });
+    };
+    // First load, call this function
+    corelations.getAllFactories();
+
+    // When the factory select box is changed, so we need to query the lines
+    $(document).on('change','select.selFactory',function(){
+
+        corelations.getAllLinesName($("#"+this.id + " option:selected").val());
+
+
+    });
+
+    corelations.getAllLinesName = function(fid){
+        $.ajax({
+            url: "/v3/api/fukoku/line/factory/" +  fid ,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -97,9 +147,9 @@ $(function () {
             success: function(response) {
                 $('#selectLine').empty();
                 $("#selectLine").append("<option value=''>라인</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectLine").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#selectLine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
                 }
             },
@@ -112,7 +162,7 @@ $(function () {
     corelations.getAllProcessesByLineAndMachine = function(){
         openLoading();
         $.ajax({
-            url: "/v1/api/fukoku/process/correlation",
+            url: "http://113.198.137.142:8080/v1/api/fukoku/process/correlation",
             type: 'GET',
             dataType: 'JSON',
             data:{
@@ -142,7 +192,7 @@ $(function () {
     };
 
 
-    corelations.getAllLinesName();
+    // corelations.getAllLinesName();
 
     $("#selectLine").change(function(){
         corelations.getAllProcessesByLineAndMachine();

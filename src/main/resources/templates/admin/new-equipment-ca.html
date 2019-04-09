@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+<head>
+    <title>라인공정별상관분석</title>
+    <style>
+        /* The container */
+        .container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Hide the browser's default radio button */
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Create a custom radio button */
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+            border-radius: 50%;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .container:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the radio button is checked, add a blue background */
+        .container input:checked ~ .checkmark {
+            background-color: #3c8dbc;
+        }
+
+        /* Create the indicator (the dot/circle - hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the indicator (dot/circle) when checked */
+        .container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /* Style the indicator (dot/circle) */
+        .container .checkmark:after {
+            top: 9px;
+            left: 9px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+        table {
+            font-size: 12pt;
+        }
+
+        .table-head {
+            background-color: #3c8dbc;
+            color: white;
+        }
+
+        table thead th {
+            text-align: center;
+        }
+
+        table tbody tr {
+            height: 30px;
+        }
+
+        table.table-bordered {
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+
+        table.table-bordered > thead > tr > th {
+            border: 2px solid black;
+            vertical-align: middle;
+            width: 100px;
+        }
+
+        table.table-bordered > tbody > tr > td {
+            border: 2px solid black;
+            vertical-align: middle;
+            width: 100px;
+        }
+        body {
+            font: 11px sans-serif;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+
+        .dot {
+            stroke: #000;
+        }
+
+        .tooltip {
+            position: absolute;
+            width: 200px;
+            height: 28px;
+            pointer-events: none;
+        }
+        .tr-header{
+            font-weight: bold;
+            background-color: #3c8dbc;
+
+            text-align: center;
+        }
+        td, th{
+            text-align: center;
+            vertical-align: middle!important;
+        }
+    </style>
+
+
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <h1>
+            라인공정별상관분석
+        </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+
+                            <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <select class="form-control selFactory" name="selFactory" id="selFactory">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <select class="form-control" id="selectLine">
+                                        <option value="">라인</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--<div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">-->
+                            <!--<div class="form-group">-->
+                            <!--<div class='input-group date' id='startDate'>-->
+                            <!--<input type='text' class="form-control" id="txtStartDate" placeholder="시작날짜"/>-->
+                            <!--<span class="input-group-addon">-->
+                            <!--<span class="glyphicon glyphicon-calendar"></span>-->
+                            <!--</span>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">-->
+                            <!--<div class="form-group">-->
+                            <!--<div class='input-group date' id='endDate'>-->
+                            <!--<input type='text' class="form-control" id="txtEndDate" placeholder="완료날짜"/>-->
+                            <!--<span class="input-group-addon">-->
+                            <!--<span class="glyphicon glyphicon-calendar"></span>-->
+                            <!--</span>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                <button id="btnQuery" class="btn btn-primary">검색</button>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="row" id="txtCorrelationTable">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12 table-responsive">
+                                <thead>
+                                <table class="table table-bordered" >
+                                    <tr class="tr-header">
+                                        <th rowspan="2" style="width: 250px; color: white;">설비</th>
+                                        <th style="color:white;">X인자기준항목</th>
+                                        <th style="color:white;">Y인자 비교항목</th>
+                                    </tr>
+                                    <tr class="tr-header">
+                                        <th>
+                                            <div class="form-group">
+                                                <div class='input-group date' id='startDateX'>
+                                                    <input type='text' class="form-control" id="txtStartDateX" placeholder="X시작날짜"/>
+                                                    <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class='input-group date' id='endDateX'>
+                                                    <input type='text' class="form-control" id="txtEndDateX" placeholder="X완료날짜"/>
+                                                    <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+                                                </div>
+                                            </div>
+
+                                        </th>
+                                        <th style="vertical-align: top!important;">
+                                            <div class="form-group">
+                                                <span>
+                                                    <input class="spinner" value="0" type="number" min="0" max="24" step="1" id="timeGapHour" style="width:40px;" oninput='format(this)'><span style="color:white">시</span>
+                                                    <input class="spinner" value="0" type="number" min="0" max="60" step="1" id="timeGapMinute"  style="width:40px;" oninput='format(this)'><span style="color:white">분</span>
+                                                    <input class="spinner" value="0" type="number" min="0" max="60" step="1" id="timeGapSecond"  style="width:40px;" oninput='format(this)'><span style="color:white">초</span>
+                                                </span>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class='input-group date' id='startDateY' disabled="true">
+                                                    <input type='text' class="form-control" id="txtStartDateY" placeholder="Y시작날짜" disabled="true"/>
+                                                    <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class='input-group date' id='endDateY' disabled="true">
+                                                    <input type='text' class="form-control" id="txtEndDateY" placeholder="Y완료날짜" disabled="true"/>
+                                                    <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+                                                </div>
+                                            </div>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="PROCESS_TABLE">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12 table-responsive">
+                                <div class="table" id="corelation" style="width: 680px; margin: 0 auto;"></div>
+                                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                                <div class="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12 table-responsive">
+                                    <table class="table table-bordered" id="cTable">
+                                        <tr>
+                                            <td style="font-weight: bold;background-color: #3c8dbc;color: white; width: 50px;">상관게수</td>
+                                            <td style="font-weight: bold;background-color: #3c8dbc;color: white; width: 50px;">상관게수</td>
+                                            <td style="color: red;" id="txtCorrelationValue"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<th:block layout:fragment="script">
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $('#startDate, #endDate, #startDateX, #endDateX, #startDateY, #endDateY').datetimepicker({
+                    format: 'YYYY-MM-DD HH:mm:ss',
+                    defaultDate: new Date()
+                });
+
+
+                $("input:text").focus(function() { $(this).select(); } );
+
+                $(document).on('input', '.spinner', function() {
+
+                    var allowedDigits = 2;
+                    var length = $(this).val().length;
+                    var max = parseInt($(this).attr("max"));
+
+                    // appears there is a bug in the latest version of Chrome. When there are multiple decimals,
+                    // the value of a number type field can no longer be accessed. For now, all we can do is clear it
+                    // when that happens
+                    if($(this).val() == ""){
+                        $(this).val("");
+                    }
+
+                    if ($(this).val().indexOf('.') != -1) {
+                        allowedDigits = 3;
+                    }
+
+                    if(length > allowedDigits){
+                        $(this).val($(this).val().substring(1));
+                    }
+
+                    if($(this).val() > max && max > 0){
+                        $(this).val($(this).val().substring(1));
+                    }
+                });
+
+            });
+        });
+    </script>
+    <!--<script src="http://d3js.org/d3.v3.js"></script>-->
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="/static/admin/javascripts/d3/corelation.js"></script>
+    <script src="/static/admin/javascripts/new-equipment-ca.js"></script>
+    <script>
+        function format(input){
+            if(input.value.length === 1){
+                input.value = "0" + input.value;
+            }
+        }
+    </script>
+</th:block>
+</body>
+</html>

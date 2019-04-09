@@ -110,9 +110,60 @@ $(function () {
         calHeatmap.getCountTT();
     });*/
 
-    calHeatmap.getAllLinesName = function(){
+
+    /*
+    *** get FACTORY
+     */
+    calHeatmap.getAllFactories = function () {
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/factory",
+            type: 'GET',
+            dataType: 'JSON',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (response) {
+                if (response.code == 200) {
+                    if (response.data.length > 0) {
+                        var sel = document.getElementById("selFactory");
+                        var option = document.createElement("option");
+                        option.setAttribute("value","0"); // store Process name
+                        option.text = "공장"; // show Process name
+                        sel.appendChild(option);
+
+                        for(i = 0; i < response.data.length; i++){
+                            var option = document.createElement("option");
+                            option.setAttribute("value", response.data[i].id); // store factory id
+                            option.text = response.data[i].name; // show factory name
+                            sel.appendChild(option);
+                        }
+                        // $("#selFactory").prop("selectedIndex",1).change();
+
+
+                    }
+                }
+            },
+            error: function (data, status, err) {
+                console.log("error: " + data + " status: " + status + " err:" + err);
+            }
+        });
+    };
+    // First load, call this function
+    calHeatmap.getAllFactories();
+
+
+    // When the factory select box is changed, so we need to query the lines
+    $(document).on('change','select.selFactory',function(){
+
+        calHeatmap.getAllLinesName($("#"+this.id + " option:selected").val());
+
+
+    });
+
+    calHeatmap.getAllLinesName = function(fid){
+        $.ajax({
+            url: "/v3/api/fukoku/line/factory/" +  fid ,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -123,9 +174,9 @@ $(function () {
             success: function(response) {
                 $('#select-line').empty();
                 $("#select-line").append("<option value='ALL'>ALL</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#select-line").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#select-line").append("<option value="+value.name+">"+value.name+"</option>");
                     });
                 }
             },
@@ -137,7 +188,7 @@ $(function () {
 
     calHeatmap.getAllMachineNameByLineName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/machine/select-box",
+            url: "/v3/api/fukoku/machine/findAllByLine/" + $("#select-line").val(),
             type: 'GET',
             dataType: 'JSON',
             data:{
@@ -150,9 +201,9 @@ $(function () {
             success: function(response) {
                 $('#select-machine').empty();
                 $("#select-machine").append("<option value='ALL'>ALL</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#select-machine").append("<option value="+value.MAPPING_NAME+">"+value.MACHINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#select-machine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
                 }
             },
@@ -162,15 +213,15 @@ $(function () {
         });
     };
 
-    calHeatmap.getAllLinesName();
-    calHeatmap.getAllMachineNameByLineName('ALL');
+    // calHeatmap.getAllLinesName();
+    // calHeatmap.getAllMachineNameByLineName('ALL');
     $('#select-line').on('click', function () {
         calHeatmap.getAllMachineNameByLineName();
     });
 
     calHeatmap.getCountTT = function(){
         $.ajax({
-            url: "/v1/api/fukoku/cal-heatmap/tt",
+            url: "/v3/api/fukoku/cal-heatmap/tt",
             type: 'GET',
             dataType: 'JSON',
             data:{
@@ -221,7 +272,7 @@ $(function () {
     calHeatmap.getCountOK = function(){
         // openLoading();
         $.ajax({
-            url: "/v1/api/fukoku/cal-heatmap/ok",
+            url: "/v3/api/fukoku/cal-heatmap/ok",
             type: 'GET',
             dataType: 'JSON',
             data:{
@@ -264,7 +315,7 @@ $(function () {
 
     calHeatmap.getCountNG = function(){
         $.ajax({
-            url: "/v1/api/fukoku/cal-heatmap/ng",
+            url: "/v3/api/fukoku/cal-heatmap/ng",
             type: 'GET',
             dataType: 'JSON',
             data:{
@@ -305,7 +356,7 @@ $(function () {
 
     calHeatmap.getCountDF = function(){
         $.ajax({
-            url: "/v1/api/fukoku/cal-heatmap/df",
+            url: "/v3/api/fukoku/cal-heatmap/df",
             type: 'GET',
             dataType: 'JSON',
             data:{
@@ -343,7 +394,7 @@ $(function () {
         });
     };
 
-    calHeatmap.getCountTT();
+    // calHeatmap.getCountTT();
 
 
     $('#btnSearch').click(function () {

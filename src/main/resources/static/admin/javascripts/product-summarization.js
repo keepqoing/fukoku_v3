@@ -509,7 +509,7 @@ $(function () {
     // Add line to select box
     productSummarization.getAllLinesName = function(callback){
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/line/factory/" + 2,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -520,9 +520,9 @@ $(function () {
             success: function(response) {
                 $('#selectLine').empty();
                 $("#selectLine").append("<option value="+"'ALL'" +">"+"ALL"+"</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectLine").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#selectLine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
                     $("#selectLine").val("IB");
                     if(callback)
@@ -535,13 +535,13 @@ $(function () {
         });
     };
     productSummarization.getAllLinesName(function(){
-        productSummarization.getAllProductByLine();
+        // productSummarization.getAllProductByLine();
     });
 
     // Get all machine name
     productSummarization.getAllMachinesName = function(callback){
         $.ajax({
-            url: "/v1/api/fukoku/machine/all/select-box",
+            url: "/v3/api/fukoku/machine/findAll",
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -552,9 +552,9 @@ $(function () {
             success: function(response) {
                 $('#selectMachine').empty();
                 $("#selectMachine").append("<option value=''>All</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectMachine").append("<option value='"+value.MAPPING_NAME+"' data-id="+value.MAPPING_NAME+">"+value.MACHINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#selectMachine").append("<option value='"+value.name+"' data-id="+value.name+">"+value.name+"</option>");
                     });
                     $("#selectMachine").val("Balancer");
                     if(callback)
@@ -567,9 +567,9 @@ $(function () {
         });
     };
     productSummarization.getAllMachinesName(function () {
-        productSummarization.getAllProductByMachine();
-        productSummarization.getAllProductByOK();
-        productSummarization.getAllProductByNG();
+        // productSummarization.getAllProductByMachine();
+        // productSummarization.getAllProductByOK();
+        // productSummarization.getAllProductByNG();
         // productSummarization.getAllProductByDF();
 
     });

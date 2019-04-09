@@ -13,22 +13,73 @@ $(function() {
         }
     });
 
-    productionStatus.getAllLinesName = function(){
+
+    /*
+    *** get FACTORY
+     */
+    productionStatus.getAllFactories = function () {
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/factory",
             type: 'GET',
             dataType: 'JSON',
-            data:{},
-            beforeSend: function(xhr) {
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (response) {
+                if (response.code == 200) {
+                    if (response.data.length > 0) {
+                        var sel = document.getElementById("selFactory");
+                        var option = document.createElement("option");
+                        option.setAttribute("value","0"); // store Process name
+                        option.text = "공장"; // show Process name
+                        sel.appendChild(option);
+
+                        for(i = 0; i < response.data.length; i++){
+                            var option = document.createElement("option");
+                            option.setAttribute("value", response.data[i].id); // store factory id
+                            option.text = response.data[i].name; // show factory name
+                            sel.appendChild(option);
+                        }
+                        // $("#selFactory").prop("selectedIndex",1).change();
+
+
+                    }
+                }
+            },
+            error: function (data, status, err) {
+                console.log("error: " + data + " status: " + status + " err:" + err);
+            }
+        });
+    };
+    // First load, call this function
+    productionStatus.getAllFactories();
+
+
+    // When the factory select box is changed, so we need to query the lines
+    $(document).on('change','select.selFactory',function(){
+
+        productionStatus.getAllLinesName($("#"+this.id + " option:selected").val());
+
+
+    });
+
+    productionStatus.getAllLinesName = function(fid){
+
+        $.ajax({
+            url: "/v3/api/fukoku/line/factory/" +  fid ,
+            type: 'GET',
+            dataType: 'JSON',
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function(response) {
                 $('#selectLine').empty();
                 $("#selectLine").append("<option value=''>라인</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectLine").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#selectLine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
                 }
             },
@@ -40,11 +91,11 @@ $(function() {
 
     productionStatus.getAllMachineNameByLineName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/machine/select-box",
+            url: "/v3/api/fukoku/machine/findAllByLine/" + $("#selectLine").val(),
             type: 'GET',
             dataType: 'JSON',
             data:{
-                "lineName"  :   $("#selectLine").val()
+
             },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -53,9 +104,9 @@ $(function() {
             success: function(response) {
                 $('#selectMachine').empty();
                 $("#selectMachine").append("<option value=''>설비</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectMachine").append("<option value="+value.MAPPING_NAME+">"+value.MACHINE_NAME+"</option>");
+                if(response.code == "200"){
+                    $.each(response.data, function(key, value){
+                        $("#selectMachine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
                 }
             },
@@ -67,12 +118,13 @@ $(function() {
 
     productionStatus.getAllProductName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/product/select-box",
+            url: "/v3/api/fukoku/product/distinct",
             type: 'GET',
             dataType: 'JSON',
             data: {
-                "line"         :       $("#selectLine").val()
+
             },
+            headers: { "Content-Type": "application/json" },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
@@ -81,9 +133,9 @@ $(function() {
                 $('#selectProduct').empty();
                 $("#selectProduct").append("<option value=''>품종</option>");
                 $("#selectProduct").append("<option value=''>모든</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectProduct").append("<option value='"+value.NAME+"'>"+value.NAME+"</option>");
+                if(response.code == "200"){
+                    $.each(response.data, function(key, value){
+                        $("#selectProduct").append("<option value='"+value.name+"'>"+value.name+"</option>");
                     });
                 }
             },
@@ -122,7 +174,7 @@ $(function() {
         $("#PRODUCT_STATUS").html("");
         openLoading();
         $.ajax({
-            url: "/v1/api/fukoku/process-analysis",
+            url: "/v3/api/fukoku/process-analysis",
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -130,7 +182,7 @@ $(function() {
                 "machine"       :   $("#selectMachine").val(),
                 "start_date"     :   $("#txtStartDate").val(),
                 "end_date"       :   $("#txtEndDate").val()
-               // "limit"         :   $("#PER_PAGE").val(),
+                // "limit"         :   $("#PER_PAGE").val(),
                 //"page"          :   currentPage,
             },
             beforeSend: function (xhr) {
@@ -145,34 +197,34 @@ $(function() {
                         $("#PRODUCT_STATUS_TEMPLATE").tmpl(response.DATA).appendTo("tbody#PRODUCT_STATUS");
                         productionStatus.getAllProductStatusGraphs();
                     } else {
-                        $("#PRODUCT_STATUS").html("<tr style='text-align:center;'><td colspan='19'>콘텐츠 없음</td></tr>");
+                        $("#PRODUCT_STATUS").html("<tr style='text-align:center;'><td colspan='23'>콘텐츠 없음</td></tr>");
                         $("#PAGINATION").html("");
                         $("#limitPage").html(0);
                         $("#totalPage").html(0);
                         $("#totalRecords").html("(0 열)");
                     }
 
-/*
-                                    if (response.DATA != null) {
-                                        if (response.DATA.length > 0) {
-                                            $("#barMultiLine").html("");
-                                            $("#mark").show();
-                                            $.each(response.DATA, function (key, value) {
-                                                var a = parseFloat(response.DATA[key].line1);
-                                                var a1 = parseFloat(response.DATA[key].line2);
-                                                response.DATA[key]["line1"] = (parseFloat(a.toFixed(3))?parseFloat(a.toFixed(3)):0);
-                                                response.DATA[key]["line2"] = (parseFloat(a1.toFixed(3))?parseFloat(a1.toFixed(3)):0);
-                                                response.DATA[key]["line3"] = 2;
-                                            });
-                                            var settings = {
-                                                selector: "#barMultiLine",
-                                                width: 1200,
-                                                height: 450
-                                            };
-                                            barchartMultiLine(response.DATA, settings);
-                                        }
-                                    }
-*/
+                    /*
+                                                        if (response.DATA != null) {
+                                                            if (response.DATA.length > 0) {
+                                                                $("#barMultiLine").html("");
+                                                                $("#mark").show();
+                                                                $.each(response.DATA, function (key, value) {
+                                                                    var a = parseFloat(response.DATA[key].line1);
+                                                                    var a1 = parseFloat(response.DATA[key].line2);
+                                                                    response.DATA[key]["line1"] = (parseFloat(a.toFixed(3))?parseFloat(a.toFixed(3)):0);
+                                                                    response.DATA[key]["line2"] = (parseFloat(a1.toFixed(3))?parseFloat(a1.toFixed(3)):0);
+                                                                    response.DATA[key]["line3"] = 2;
+                                                                });
+                                                                var settings = {
+                                                                    selector: "#barMultiLine",
+                                                                    width: 1200,
+                                                                    height: 450
+                                                                };
+                                                                barchartMultiLine(response.DATA, settings);
+                                                            }
+                                                        }
+                    */
                 }
                 closeLoading();
             },
@@ -186,7 +238,7 @@ $(function() {
         $("#barMultiLine").html("");
         $("#mark").show();
         $.ajax({
-            url: "/v1/api/fukoku/process-analysis/graph",
+            url: "/v3/api/fukoku/process-analysis/graph",
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -210,11 +262,13 @@ $(function() {
                             var a2 = parseFloat(response.DATA[key].line3);
                             var a3 = parseFloat(response.DATA[key].line4);
                             var a4 = parseFloat(response.DATA[key].line5);
+                            var a5 = parseFloat(response.DATA[key].line6);
                             response.DATA[key]["line1"] = (parseFloat(a.toFixed(2))?parseFloat(a.toFixed(2)):0);
                             response.DATA[key]["line2"] = (parseFloat(a1.toFixed(2))?parseFloat(a1.toFixed(2)):0);
                             response.DATA[key]["line3"] = (parseFloat(a2.toFixed(2))?parseFloat(a2.toFixed(2)):0);
                             response.DATA[key]["line4"] = (parseFloat(a3.toFixed(2))?parseFloat(a3.toFixed(2)):0);
                             response.DATA[key]["line5"] = (parseFloat(a4.toFixed(2))?parseFloat(a4.toFixed(2)):0);
+                            response.DATA[key]["line6"] = (parseFloat(a5.toFixed(2))?parseFloat(a4.toFixed(2)):0);
                         });
                         var settings = {
                             selector: "#barMultiLine",
@@ -350,7 +404,7 @@ $(function() {
 
     productionStatus.getAllMachinesNameV2 = function(){
         $.ajax({
-            url: "/v1/api/fukoku/machine/all/select-box",
+            url: "/v3/api/fukoku/machine/findAllByLine/" + $("#selectLine").val(),
             type: 'GET',
             dataType: 'JSON',
 
@@ -361,9 +415,9 @@ $(function() {
             success: function(response) {
                 $('#selectMachine').empty();
                 $("#selectMachine").append("<option value=''>설비</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectMachine").append("<option value='"+value.MAPPING_NAME+"' data-id="+value.ID+">"+value.MACHINE_NAME+"</option>");
+                if(response.code == "200"){
+                    $.each(response.data, function(key, value){
+                        $("#selectMachine").append("<option value='"+value.name+"' data-id="+value.id+">"+value.name+"</option>");
                     });
                 }
             },
@@ -375,7 +429,7 @@ $(function() {
 
 
 
-    productionStatus.getAllLinesName();
+
     productionStatus.getAllMachinesNameV2();
 
 

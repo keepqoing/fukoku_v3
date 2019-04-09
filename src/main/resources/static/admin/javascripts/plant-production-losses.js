@@ -11,26 +11,74 @@ $(function() {
         }
     });
 
-    plantProductionLosses.getAllLinesName = function(){
+
+
+    /*
+    *** get FACTORY
+     */
+    plantProductionLosses.getAllFactories = function () {
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/factory",
             type: 'GET',
             dataType: 'JSON',
-            data:{},
-            beforeSend: function(xhr) {
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (response) {
+                if (response.code == 200) {
+                    if (response.data.length > 0) {
+                        var sel = document.getElementById("selFactory");
+                        var option = document.createElement("option");
+                        option.setAttribute("value","0"); // store Process name
+                        option.text = "공장"; // show Process name
+                        sel.appendChild(option);
+
+                        for(i = 0; i < response.data.length; i++){
+                            var option = document.createElement("option");
+                            option.setAttribute("value", response.data[i].id); // store factory id
+                            option.text = response.data[i].name; // show factory name
+                            sel.appendChild(option);
+                        }
+                        // $("#selFactory").prop("selectedIndex",1).change();
+
+
+                    }
+                }
+            },
+            error: function (data, status, err) {
+                console.log("error: " + data + " status: " + status + " err:" + err);
+            }
+        });
+    };
+    // First load, call this function
+    plantProductionLosses.getAllFactories();
+
+    // When the factory select box is changed, so we need to query the lines
+    $(document).on('change','select.selFactory',function(){
+
+        plantProductionLosses.getAllLinesName($("#"+this.id + " option:selected").val());
+
+
+    });
+
+    plantProductionLosses.getAllLinesName = function(fid){
+        $.ajax({
+            url: "/v3/api/fukoku/line/factory/" +  fid ,
+            type: 'GET',
+            dataType: 'JSON',
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function(response) {
                 $('#selectLine').empty();
-
                 $("#selectLine").append("<option value=''>라인</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectLine").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#selectLine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
                 }
-
             },
             error:function(data,status,err) {
                 console.log("error: "+data+" status: "+status+" err:"+err);
@@ -40,12 +88,13 @@ $(function() {
 
     plantProductionLosses.getAllProductName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/product/select-box",
+            url: "/v3/api/fukoku/product/distinct",
             type: 'GET',
             dataType: 'JSON',
             data: {
-                "line"         :       $("#selectLine").val()
+
             },
+            headers: { "Content-Type": "application/json" },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
@@ -54,9 +103,9 @@ $(function() {
                 $('#selectProduct').empty();
                 $("#selectProduct").append("<option value=''>품종</option>");
                 $("#selectProduct").append("<option value=''>모든</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectProduct").append("<option value='"+value.NAME+"'>"+value.NAME+"</option>");
+                if(response.code == "200"){
+                    $.each(response.data, function(key, value){
+                        $("#selectProduct").append("<option value='"+value.name+"'>"+value.name+"</option>");
                     });
                 }
             },
@@ -66,7 +115,7 @@ $(function() {
         });
     };
 
-    plantProductionLosses.getAllLinesName();
+    // plantProductionLosses.getAllLinesName();
 
     $("#selectLine").change(function(){
         plantProductionLosses.getAllProductName();
@@ -129,7 +178,7 @@ $(function() {
         if($("#txtEndDate").val() ==""){ alert("Please select date!"); return ; }
         openLoading();
         $.ajax({
-            url: "/v1/api/fukoku/process-analysis",
+            url: "/v3/api/fukoku/process-analysis",
             type: 'GET',
             dataType: 'JSON',
             data:{

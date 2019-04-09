@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>일일생산총계</title>
+    <style>
+        body {
+            font: 10px arial;
+        }
+
+        table {
+            font-size: 12pt;
+        }
+
+        table thead th {
+            text-align: center;
+        }
+
+        table tbody tr {
+            text-align: center;
+            height: 50px;
+        }
+
+        table.table-bordered {
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+
+        table.table-bordered > thead > tr > th {
+            border: 2px solid black;
+            vertical-align: middle;
+            width: 100px;
+        }
+
+        table.table-bordered > tbody > tr > td {
+            border: 2px solid black;
+            vertical-align: middle;
+            width: 100px;
+        }
+
+
+        .d3-tip {
+            line-height: 1;
+            font-weight: bold;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border-radius: 2px;
+        }
+
+        /* Creates a small triangle extender for the tooltip */
+        .d3-tip:after {
+            box-sizing: border-box;
+            display: inline;
+            font-size: 12px;
+            width: 100%;
+            line-height: 1;
+            color: rgba(0, 0, 0, 0.8);
+            content: "\25BC";
+            position: absolute;
+            text-align: center;
+        }
+
+        /* Style northward tooltips differently */
+        .d3-tip.n:after {
+            margin: -1px 0 0 0;
+            top: 100%;
+            left: 0;
+        }
+
+        .toolTip {
+            position: absolute;
+            display: none;
+            min-width: 80px;
+            height: auto;
+            background: none repeat scroll 0 0 #ffffff;
+            border: 1px solid #6F257F;
+            padding: 14px;
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <h1>
+            일일생산총계
+        </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 10px;"
+                                 id="div-product-line-canvas">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="font-size: 10pt;">라인별생산량</div>
+                                    <div class="panel-body">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group'  style="width:100%;">
+                                                            <select class="form-control" id="selectLine">
+
+                                                            </select>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date startTimeClass' id='lineStartTime'>
+                                                            <input type='text' class="form-control"
+                                                                   id="txtLineStartTime" />
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <button th:type="button" class="btn btn-primary"
+                                                                id="btnGetLine">검색
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div id="product-line-group-barchart">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 10px;"
+                                 id="div-product-machine-canvas">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="font-size: 10pt;">설비별 생산량
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group' style="width:100%;">
+                                                            <select class="form-control" id="selectMachine">
+
+                                                            </select>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date startTimeClass' id='startDate'>
+                                                            <input type='text' class="form-control" id="txtStartTime"
+                                                                   />
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group">
+                                                        <button th:type="button" class="btn btn-primary"
+                                                                id="btnGetMachine">검색
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div id="product-machine-group-barchart">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <!--<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">-->
+                                <!--<div class="panel panel-default">-->
+                                    <!--<div class="panel-heading" style="font-size: 10pt;">양품생산량</div>-->
+                                    <!--<div class="panel-body">-->
+                                        <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                                            <!--<br/>-->
+                                            <!--<div class="row">-->
+                                                <!--<div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">-->
+                                                    <!--<div class="form-group">-->
+                                                        <!--<div class='input-group date startTimeClass' id='startTimeOK'>-->
+                                                            <!--<input type='text' class="form-control" id="txtStartTimeOK"-->
+                                                                   <!--/>-->
+                                                            <!--<span class="input-group-addon">-->
+                                                        <!--<span class="glyphicon glyphicon-calendar"></span>-->
+                                                    <!--</span>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+
+                                                <!--<div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">-->
+                                                    <!--<div class="form-group">-->
+                                                        <!--<button th:type="button" class="btn btn-primary"-->
+                                                                <!--id="btnOKProduct">검색-->
+                                                        <!--</button>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                                <!--<div style="text-align: center">-->
+                                                    <!--<span id="product-pie-ok"></span>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">-->
+                                <!--<div class="panel panel-default">-->
+                                    <!--<div class="panel-heading" style="font-size: 10pt;">NG 생산량, 불량생산량-->
+                                    <!--</div>-->
+                                    <!--<div class="panel-body">-->
+                                        <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                                            <!--<br/>-->
+                                            <!--<div class="row">-->
+                                                <!--<div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">-->
+                                                    <!--<div class="form-group">-->
+                                                        <!--<div class='input-group date startTimeClass' id='ngStartTime'>-->
+                                                            <!--<input type='text' class="form-control" id="txtNGStartTime"/>-->
+                                                            <!--<span class="input-group-addon">-->
+                                                        <!--<span class="glyphicon glyphicon-calendar"></span>-->
+                                                    <!--</span>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+
+                                                <!--<div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">-->
+                                                    <!--<div class="form-group">-->
+                                                        <!--<button th:type="button" class="btn btn-primary" id="btnNG">검색</button>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                                <!--<div style="text-align: center">-->
+                                                    <!--<span id="product-pie-ng"></span>-->
+                                                    <!--<span id="product-pie-df"></span>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <th:block layout:fragment="script">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+
+    <script src="/static/admin/javascripts/d3/piechart.js"></script>
+    <script src="/static/admin/javascripts/d3/group-barchart-optimized-tooltip.js"></script>
+    <script src="/static/admin/javascripts/product-summarization.js"></script>
+    <script>
+        function formatNumber(number) {
+            return (number < 10 ? '0' : '') + number;
+        }
+        $(document).ready(function () {
+            $(function () {
+
+                var d1 = new Date();
+
+
+                var current_h_m = parseInt((d1.getHours()+""+formatNumber(d1.getMinutes())));
+
+                if( current_h_m < 800 ){
+                    d1.setDate(d1.getDate() -1 );
+                }else{
+                    d1.setDate(d1.getDate());
+                }
+
+
+                $('#startDate').datetimepicker({
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#lineStartTime').datetimepicker({
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+
+                // $('#startTimeOK').datetimepicker({
+                //     format: 'YYYY-MM-DD',
+                //     defaultDate: new Date()
+                // });
+                // $('#ngStartTime').datetimepicker({
+                //     format: 'YYYY-MM-DD',
+                //     defaultDate: new Date()
+                // });
+            });
+        });
+    </script>
+
+
+    </th:block>
+</div>
+</body>
+</html>

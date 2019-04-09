@@ -60,6 +60,11 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/dashboard2").setViewName("/admin/dashboard2");
 		registry.addViewController("/admin/dashboard-table").setViewName("/admin/dashboard-table");
 		registry.addViewController("/admin/line-chart").setViewName("/admin/line-chart");
+        registry.addViewController("/admin/production-status-new").setViewName("/admin/production-status-new");
+		registry.addViewController("/admin/plant-production-losses").setViewName("/admin/plant-production-losses");
+		registry.addViewController("/admin/calendar-heatmap").setViewName("/admin/calendar-heatmap");
+		registry.addViewController("/admin/product-summarization").setViewName("/admin/product-summarization");
+		registry.addViewController("/admin/new-equipment-ca").setViewName("/admin/new-equipment-ca");
 
 		//integrated_visualization
 		registry.addViewController("/admin/integrated_visualization").setViewName("/admin/integrated_visualization");

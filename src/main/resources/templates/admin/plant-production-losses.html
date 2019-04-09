@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+
+<head>
+
+    <title>라인별설비 생산누적</title>
+    <style type="text/css">
+        table{
+            font-size: 12pt;
+        }
+        .table-head{
+            background-color: #3c8dbc;
+            color: white;
+        }
+        table thead th{
+            text-align: center;
+        }
+        table tbody tr{
+            text-align: center;
+        }
+        td, th{
+            text-align: center;
+            vertical-align: middle!important;
+        }
+    </style>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <section class="content-header">
+        <h1>
+            라인별설비 생산누적
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <select class="form-control selFactory" name="selFactory" id="selFactory">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <select class="form-control" id="selectLine">
+                                        <option value="">라인</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <select class="form-control" id="selectProduct">
+                                        <option value="">폼종</option>
+                                    </select>
+                                </div>
+                            </div>-->
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <div class='input-group date' id='startDate'>
+                                        <input type='text' class="form-control" id="txtStartDate" placeholder="시작날짜"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <div class='input-group date' id='endDate'>
+                                        <input type='text' class="form-control" id="txtEndDate" placeholder="완료날짜"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                <button type="button" class="btn btn-primary" id="btnQuery">검색</button>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <table class="table">
+                                    <thead class="thead-inverse table-head">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>라인</th>
+                                        <th>설비</th>
+                                        <th>일</th>
+                                        <th>부하시간(h)</th>
+                                        <th>가동시간(h)</th>
+
+                                        <th>부하비가동시간(h)</th>
+                                        <th>가동율(%)</th>
+
+                                        <th>비가동욜(%)</th>
+                                        <th>UPH</th>
+                                        <th>생산수량</th>
+                                        <th>양폼수(개)</th>
+                                        <th>양품율(%)</th>
+                                        <th>불량수량(개)</th>
+                                        <th>불량율(%)</th>
+                                        <th>이론목표수량(개)</th>
+                                        <th>목표수량(개)</th>
+                                        <th>이론사이클타임(초)</th>
+                                        <th>공정사이클타임(초)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="PRODUCTION_BY_LINE">
+                                    <tr role="row" class="odd" style="text-align:center;font-weight:bold;">
+                                        <td colspan="19">콘텐츠 없음</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="/static/admin/javascripts/plant-production-losses.js"></script>
+    <script id="PRODUCTION_BY_LINE_TEMPLATE" type="text/x-jquery-tmpl">
+        <tr>
+            <td><strong>{{= ROW_NUM}}</strong></td>
+            <td><strong>{{= LINE}}</strong></td>
+            <td><strong>{{= MACHINE}}</strong></td>
+            <td><strong>{{= WORK_DATE}}</strong></td>
+            <td><strong>{{= (WORKING_TIME_H).toFixed(2) }}</strong></td>
+            <td><strong>{{= (ACTIVE_TIME_H).toFixed(2) }}</strong></td>
+
+            <td><strong>{{= (WORKING_NONACTIVE_TIME_H).toFixed(2) }}</strong></td>
+
+            <td><strong>{{= (TIME_OPERATION_RATE).toFixed(2) }}</strong></td>
+
+            <td><strong>{{= (WORKING_NONACTIVE_TIME_RATE).toFixed(2) }}</strong></td>
+            <td><strong>{{= (UPH).toFixed(2) }}</strong></td>
+            <td><strong>{{= TOTAL_PRODUCT}}</strong></td>
+            <td><strong>{{= OK_PRODUCT}}</strong></td>
+            <td><strong>{{= (OK_PRODUCT_RATE).toFixed(2) }}</strong></td>
+            <td><strong>{{= NG_PRODUCT}}</strong></td>
+            <td><strong>{{= (NG_PRODUCT_RATE).toFixed(2)  }}</strong></td>
+            <td><strong>{{= (THEORETICAL_PRODUCT_QTY).toFixed(0) }}</strong></td>
+            <td><strong>{{= TARGET_PRODUCT_QTY}}</strong></td>
+            <td><strong>{{= (THEORETICAL_CYCLE_TIME_S).toFixed(2) }}</strong></td>
+            <td><strong>{{= (PROCESS_CYCLE_TIME_S).toFixed(2) }}</strong></td>
+        </tr>
+    </script>
+</div>
+<th:block layout:fragment="script">
+    <script>
+        $(document).ready(function () {
+
+            var startDateYesterDay = new Date();
+            startDateYesterDay.setDate(startDateYesterDay.getDate() - 30);
+            $('#startDate').datetimepicker({
+                // format: 'YYYY-MM-DD HH:mm',
+                //defaultDate: new Date().setHours(08, 00)
+                format: 'YYYY-MM-DD',
+                defaultDate: startDateYesterDay
+            });
+
+            $('#txtStartDate').val(startDateYesterDay.toISOString().substring(0, 10));
+
+            $('#endDate').datetimepicker({
+                // format: 'YYYY-MM-DD HH:mm',
+                // defaultDate: new Date()
+                format: 'YYYY-MM-DD',
+                defaultDate: new Date()
+            });
+            var today = new Date();
+            $('#txtEndDate').val(today.toISOString().substring(0, 10));
+
+        });
+    </script>
+</th:block>
+</body>
+</html>
