@@ -48,269 +48,10 @@
 
     </style>
     <script src="../../static/admin/sweet_alert/sweetalert.min-new.js"></script>
-    <script src="../../static/admin/javascripts/libraries/jquery-dateFormat.js"></script>
+
     <script src="https://d3js.org/d3.v2.min.js"></script>
     <script type="text/javascript" src="/static/admin/javascripts/d3/gauge.js"></script>
-    <script>
-        var gauges = [];
 
-
-        function createGauge(name, label, min, max) {
-            var config =
-                {
-                    size: 220,
-                    label: label,
-                    min: undefined != min ? min : 0,
-                    max: undefined != max ? max : 100,
-                    minorTicks: 5
-                }
-
-            var range = config.max - config.min;
-            config.redZones = [{from: 0, to: 40}];
-            config.yellowZones = [{from: 40, to: 80}];
-            config.greenZones = [{from: 80, to: 100}];
-
-            gauges[name] = new Gauge(name + "GaugeContainer", config);
-            gauges[name].render();
-        }
-
-        function createGauges() {
-            createGauge("totalFacilityEfficiency", "설비종합효율");  // Total equipment efficiency
-            createGauge("timeOperationRate", "시간가동율"); // Time operation rate
-            createGauge("performanceStartupRate", "성능가동율"); // Production efficiency
-            createGauge("yieldRate", "양품율"); // Yield rate
-
-            createGauge("totalFacilityEfficiency1", "설비종합효율");
-            createGauge("timeOperationRate1", "시간가동율");
-            createGauge("performanceStartupRate1", "성능가동율");
-            createGauge("yieldRate1", "양품율");
-
-            createGauge("totalFacilityEfficiency2", "설비종합효율");
-            createGauge("timeOperationRate2", "시간가동율");
-            createGauge("performanceStartupRate2", "성능가동율");
-            createGauge("yieldRate2", "양품율");
-
-            createGauge("totalFacilityEfficiency3", "설비종합효율");
-            createGauge("timeOperationRate3", "시간가동율");
-            createGauge("performanceStartupRate3", "성능가동율");
-            createGauge("yieldRate3", "양품율");
-
-            createGauge("totalFacilityEfficiency4", "설비종합효율");
-            createGauge("timeOperationRate4", "시간가동율");
-            createGauge("performanceStartupRate4", "성능가동율");
-            createGauge("yieldRate4", "양품율");
-
-            createGauge("totalFacilityEfficiency5", "설비종합효율");
-            createGauge("timeOperationRate5", "시간가동율");
-            createGauge("performanceStartupRate5", "성능가동율");
-            createGauge("yieldRate5", "양품율");
-        }
-
-        function updateGauges() {
-            for (var key in gauges) {
-                var value = getRandomValue(gauges[key])
-                //console.log(key);
-                gauges[key].redraw(value);
-            }
-        }
-
-        function getRandomValue(gauge) {
-            var overflow = 0; //10;
-            return gauge.config.min - overflow + (gauge.config.max - gauge.config.min + overflow * 2) * Math.random();
-        }
-
-        function setUpdateGauges(mkey, value) {
-            for (var key in gauges) {
-                if (key == mkey) {
-                    gauges[key].redraw(value);
-                }
-            }
-        }
-
-        function initialize() {
-
-            createGauges();
-            reloadData();
-            // console.log("RELOAD DATA ===================== ");
-            setInterval(reloadData, 15000);
-
-        }
-
-        function formatNumber(number) {
-            return (number < 10 ? '0' : '') + number;
-        }
-
-        function reloadData() {
-            var parentIB = $('#selectIBMachine').closest('.panel-body');
-            var parentHC = $('#selectHCMachine').closest('.panel-body');
-            var parentHD = $('#selectHDMachine').closest('.panel-body');
-            var parentPD = $('#selectPDMachine').closest('.panel-body');
-            var parentHA = $('#selectHAMachine').closest('.panel-body');
-            var parentHB = $('#selectHBMachine').closest('.panel-body');
-            var currentTime = new Date();
-            var endTime = jQuery.format.date(currentTime,'yyyy-MM-dd HH:mm');
-
-            dashboard.getGaugesData("selectIBMachine", "IB", $("#selectIBMachine").val(), parentIB.find('.startTimeClass input').val(), endTime);
-            dashboard.getGaugesData("selectHCMachine", "HC", $("#selectHCMachine").val(), parentHC.find('.startTimeClass input').val(), endTime);
-            dashboard.getGaugesData("selectHDMachine", "HD", $("#selectHDMachine").val(), parentHD.find('.startTimeClass input').val(), endTime);
-            dashboard.getGaugesData("selectPDMachine", "PD", $("#selectPDMachine").val(), parentPD.find('.startTimeClass input').val(), endTime);
-            dashboard.getGaugesData("selectHAMachine", "HA", $("#selectHAMachine").val(), parentHA.find('.startTimeClass input').val(), endTime);
-            dashboard.getGaugesData("selectHBMachine", "HB", $("#selectHBMachine").val(), parentHB.find('.startTimeClass input').val(), endTime);
-            parentIB.find('.endTimeClass input').val(endTime);
-            parentHC.find('.endTimeClass input').val(endTime);
-            parentHD.find('.endTimeClass input').val(endTime);
-            parentHA.find('.endTimeClass input').val(endTime);
-            parentHB.find('.endTimeClass input').val(endTime);
-        }
-
-        $(document).ready(function () {
-            $(function () {
-
-                var d1 = new Date();
-                var d2 = new Date();
-
-
-                var current_h_m = parseInt((d1.getHours()+""+formatNumber(d1.getMinutes())));
-
-
-
-                if( current_h_m < 800 ){
-                    d1.setDate(d1.getDate() -1 );
-                }else{
-                    d1.setDate(d1.getDate());
-                }
-
-
-
-                d1.setHours(8,0,0);
-
-                $('#startTime').datetimepicker({
-                    // format: 'YYYY-MM-DD HH:mm',
-                    // defaultDate: new Date().setHours(08, 00)
-                    format: 'YYYY-MM-DD',
-                    defaultDate: d1
-                });
-                $('#endTime').datetimepicker({
-                    // format: 'YYYY-MM-DD HH:mm',
-                    // defaultDate: new Date()
-                    format: 'YYYY-MM-DD HH:mm',
-                    defaultDate: new Date()
-                });
-
-                $('#startTime1').datetimepicker({
-                    // format: 'YYYY-MM-DD HH:mm',
-                    // defaultDate: new Date().setHours(08, 00)
-                    format: 'YYYY-MM-DD',
-                    defaultDate: d1
-                });
-                $('#endTime1').datetimepicker({
-                    // format: 'YYYY-MM-DD HH:mm',
-                    // defaultDate: new Date()
-                    format: 'YYYY-MM-DD HH:mm',
-                    defaultDate: new Date()
-                });
-
-                $('#startTime2').datetimepicker({
-                    // format: 'YYYY-MM-DD HH:mm',
-                    // defaultDate: new Date().setHours(08, 00)
-                    format: 'YYYY-MM-DD',
-                    defaultDate: d1
-                });
-                $('#endTime2').datetimepicker({
-                    // format: 'YYYY-MM-DD HH:mm',
-                    // defaultDate: new Date()
-                    format: 'YYYY-MM-DD HH:mm',
-                    defaultDate: new Date()
-                });
-
-                $('#startTime3').datetimepicker({
-                    // format: 'YYYY-MM-DD HH:mm',
-                    // defaultDate: new Date().setHours(08, 00)
-                    format: 'YYYY-MM-DD',
-                    defaultDate: d1
-                });
-                $('#endTime3').datetimepicker({
-                    // format: 'YYYY-MM-DD HH:mm',
-                    // defaultDate: new Date()
-                    format: 'YYYY-MM-DD HH:mm',
-                    defaultDate: new Date()
-                });
-
-                $('#startTime4').datetimepicker({
-                    // format: 'YYYY-MM-DD HH:mm',
-                    // defaultDate: new Date().setHours(08, 00)
-                    format: 'YYYY-MM-DD',
-                    defaultDate: d1
-                });
-                $('#endTime4').datetimepicker({
-                    // format: 'YYYY-MM-DD HH:mm',
-                    // defaultDate: new Date()
-                    format: 'YYYY-MM-DD HH:mm',
-                    defaultDate: new Date()
-                });
-
-                $('#startTime5').datetimepicker({
-                    // format: 'YYYY-MM-DD HH:mm',
-                    // defaultDate: new Date().setHours(08, 00)
-                    format: 'YYYY-MM-DD',
-                    defaultDate: d1
-                });
-                $('#endTime5').datetimepicker({
-                    // format: 'YYYY-MM-DD HH:mm',
-                    // defaultDate: new Date()
-                    format: 'YYYY-MM-DD HH:mm',
-                    defaultDate: new Date()
-                });
-
-                $("#endTime").on("dp.change", function (e) {
-                    changeEndTime("");
-                });
-                $("#endTime1").on("dp.change", function (e) {
-                    changeEndTime("1");
-                });
-                $("#endTime2").on("dp.change", function (e) {
-                    changeEndTime("2");
-                });
-                $("#endTime3").on("dp.change", function (e) {
-                    changeEndTime("3");
-                });
-                $("#endTime4").on("dp.change", function (e) {
-                    changeEndTime("4");
-                });
-                $("#endTime5").on("dp.change", function (e) {
-                    changeEndTime("5");
-                });
-
-                function changeEndTime(id){
-                    var selectedDate = new Date($("#endTime"+id).find("input").val());
-                    var today = new Date();
-                    var selectDateDDMMYY = frmDate(selectedDate);
-                    today = Date.parse(frmDate(today)) /1000;
-                    selectedDate = Date.parse(frmDate(selectedDate))/1000;
-                    console.log(today);
-                    console.log(selectedDate);
-                    if(today > selectedDate ){
-                        console.log(selectDateDDMMYY+" 08:00:00");
-                        $("#endTime"+id).find("input").val(selectDateDDMMYY+" 08:00:00")
-                    }
-                }
-
-                function frmDate(date) {
-                    var d = new Date(date),
-                        month = '' + (d.getMonth() + 1),
-                        day = '' + d.getDate(),
-                        year = d.getFullYear();
-
-                    if (month.length < 2) month = '0' + month;
-                    if (day.length < 2) day = '0' + day;
-
-                    return [year, month, day].join('-');
-                }
-
-
-            });
-        });
-    </script>
 
 
 
@@ -883,5 +624,270 @@
 		<!--</tr>-->
     <!--</script>-->
 </div>
+
+<th:block layout:fragment="script">
+
+    <script>
+        var gauges = [];
+
+
+        function createGauge(name, label, min, max) {
+            var config =
+                {
+                    size: 220,
+                    label: label,
+                    min: undefined != min ? min : 0,
+                    max: undefined != max ? max : 100,
+                    minorTicks: 5
+                }
+
+            var range = config.max - config.min;
+            config.redZones = [{from: 0, to: 40}];
+            config.yellowZones = [{from: 40, to: 80}];
+            config.greenZones = [{from: 80, to: 100}];
+
+            gauges[name] = new Gauge(name + "GaugeContainer", config);
+            gauges[name].render();
+        }
+
+        function createGauges() {
+            createGauge("totalFacilityEfficiency", "설비종합효율");  // Total equipment efficiency
+            createGauge("timeOperationRate", "시간가동율"); // Time operation rate
+            createGauge("performanceStartupRate", "성능가동율"); // Production efficiency
+            createGauge("yieldRate", "양품율"); // Yield rate
+
+            createGauge("totalFacilityEfficiency1", "설비종합효율");
+            createGauge("timeOperationRate1", "시간가동율");
+            createGauge("performanceStartupRate1", "성능가동율");
+            createGauge("yieldRate1", "양품율");
+
+            createGauge("totalFacilityEfficiency2", "설비종합효율");
+            createGauge("timeOperationRate2", "시간가동율");
+            createGauge("performanceStartupRate2", "성능가동율");
+            createGauge("yieldRate2", "양품율");
+
+            createGauge("totalFacilityEfficiency3", "설비종합효율");
+            createGauge("timeOperationRate3", "시간가동율");
+            createGauge("performanceStartupRate3", "성능가동율");
+            createGauge("yieldRate3", "양품율");
+
+            createGauge("totalFacilityEfficiency4", "설비종합효율");
+            createGauge("timeOperationRate4", "시간가동율");
+            createGauge("performanceStartupRate4", "성능가동율");
+            createGauge("yieldRate4", "양품율");
+
+            createGauge("totalFacilityEfficiency5", "설비종합효율");
+            createGauge("timeOperationRate5", "시간가동율");
+            createGauge("performanceStartupRate5", "성능가동율");
+            createGauge("yieldRate5", "양품율");
+        }
+
+        function updateGauges() {
+            for (var key in gauges) {
+                var value = getRandomValue(gauges[key])
+                //console.log(key);
+                gauges[key].redraw(value);
+            }
+        }
+
+        function getRandomValue(gauge) {
+            var overflow = 0; //10;
+            return gauge.config.min - overflow + (gauge.config.max - gauge.config.min + overflow * 2) * Math.random();
+        }
+
+        function setUpdateGauges(mkey, value) {
+            for (var key in gauges) {
+                if (key == mkey) {
+                    gauges[key].redraw(value);
+                }
+            }
+        }
+
+        function initialize() {
+
+            createGauges();
+            reloadData();
+            // console.log("RELOAD DATA ===================== ");
+            setInterval(reloadData, 15000);
+
+        }
+
+        function formatNumber(number) {
+            return (number < 10 ? '0' : '') + number;
+        }
+
+        function reloadData() {
+            var parentIB = $('#selectIBMachine').closest('.panel-body');
+            var parentHC = $('#selectHCMachine').closest('.panel-body');
+            var parentHD = $('#selectHDMachine').closest('.panel-body');
+            var parentPD = $('#selectPDMachine').closest('.panel-body');
+            var parentHA = $('#selectHAMachine').closest('.panel-body');
+            var parentHB = $('#selectHBMachine').closest('.panel-body');
+            var currentTime = new Date();
+            var endTime = jQuery.format.date(currentTime,'yyyy-MM-dd HH:mm');
+
+            dashboard.getGaugesData("selectIBMachine", "IB", $("#selectIBMachine").val(), parentIB.find('.startTimeClass input').val(), endTime);
+            dashboard.getGaugesData("selectHCMachine", "HC", $("#selectHCMachine").val(), parentHC.find('.startTimeClass input').val(), endTime);
+            dashboard.getGaugesData("selectHDMachine", "HD", $("#selectHDMachine").val(), parentHD.find('.startTimeClass input').val(), endTime);
+            dashboard.getGaugesData("selectPDMachine", "PD", $("#selectPDMachine").val(), parentPD.find('.startTimeClass input').val(), endTime);
+            dashboard.getGaugesData("selectHAMachine", "HA", $("#selectHAMachine").val(), parentHA.find('.startTimeClass input').val(), endTime);
+            dashboard.getGaugesData("selectHBMachine", "HB", $("#selectHBMachine").val(), parentHB.find('.startTimeClass input').val(), endTime);
+            parentIB.find('.endTimeClass input').val(endTime);
+            parentHC.find('.endTimeClass input').val(endTime);
+            parentHD.find('.endTimeClass input').val(endTime);
+            parentHA.find('.endTimeClass input').val(endTime);
+            parentHB.find('.endTimeClass input').val(endTime);
+        }
+
+        $(document).ready(function () {
+            $(function () {
+
+                var d1 = new Date();
+                var d2 = new Date();
+
+
+                var current_h_m = parseInt((d1.getHours()+""+formatNumber(d1.getMinutes())));
+
+
+
+                if( current_h_m < 800 ){
+                    d1.setDate(d1.getDate() -1 );
+                }else{
+                    d1.setDate(d1.getDate());
+                }
+
+
+
+                d1.setHours(8,0,0);
+
+                $('#startTime').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endTime').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD HH:mm',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime1').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endTime1').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD HH:mm',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime2').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endTime2').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD HH:mm',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime3').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endTime3').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD HH:mm',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime4').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endTime4').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD HH:mm',
+                    defaultDate: new Date()
+                });
+
+                $('#startTime5').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endTime5').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD HH:mm',
+                    defaultDate: new Date()
+                });
+
+                $("#endTime").on("dp.change", function (e) {
+                    changeEndTime("");
+                });
+                $("#endTime1").on("dp.change", function (e) {
+                    changeEndTime("1");
+                });
+                $("#endTime2").on("dp.change", function (e) {
+                    changeEndTime("2");
+                });
+                $("#endTime3").on("dp.change", function (e) {
+                    changeEndTime("3");
+                });
+                $("#endTime4").on("dp.change", function (e) {
+                    changeEndTime("4");
+                });
+                $("#endTime5").on("dp.change", function (e) {
+                    changeEndTime("5");
+                });
+
+                function changeEndTime(id){
+                    var selectedDate = new Date($("#endTime"+id).find("input").val());
+                    var today = new Date();
+                    var selectDateDDMMYY = frmDate(selectedDate);
+                    today = Date.parse(frmDate(today)) /1000;
+                    selectedDate = Date.parse(frmDate(selectedDate))/1000;
+                    console.log(today);
+                    console.log(selectedDate);
+                    if(today > selectedDate ){
+                        console.log(selectDateDDMMYY+" 08:00:00");
+                        $("#endTime"+id).find("input").val(selectDateDDMMYY+" 08:00:00")
+                    }
+                }
+
+                function frmDate(date) {
+                    var d = new Date(date),
+                        month = '' + (d.getMonth() + 1),
+                        day = '' + d.getDate(),
+                        year = d.getFullYear();
+
+                    if (month.length < 2) month = '0' + month;
+                    if (day.length < 2) day = '0' + day;
+
+                    return [year, month, day].join('-');
+                }
+
+
+            });
+        });
+    </script>
+    <script src="../../static/admin/javascripts/libraries/jquery-dateFormat.js"></script>
+</th:block>
 </body>
 </html>
