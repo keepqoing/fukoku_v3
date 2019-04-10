@@ -223,13 +223,13 @@ app.controller('MainCtrl', function($scope, $http, $filter) {
         var buttMinus = document.createElement('button'); // create a button
         buttMinus.setAttribute('type','button'); // set attributes ...
         buttMinus.setAttribute('data-id', dataID);
-        buttMinus.setAttribute('class',"add-house btn btn-danger btn-xs fa fa-trash");
+        buttMinus.setAttribute('class',"btnRemove add-house btn btn-danger btn-xs fa fa-trash");
         buttMinus.setAttribute('style','float:left');
-        buttMinus.setAttribute('onclick', "removeStage(this)");
+        // buttMinus.setAttribute('onclick', "removeStage(this)");
         return buttMinus;
     }
 
-    function removeStage(btnObj){
+    $(document).on('click', '.btnRemove', function() {
 
         swal({
                 title: "삭제하시겠습니까?",
@@ -247,13 +247,12 @@ app.controller('MainCtrl', function($scope, $http, $filter) {
                 if (isConfirm ) {
                     // Remove the whole column
                     // $(this).attr("data-id")
-                    $("[data-id='" + $(btnObj).attr("data-id") + "']").remove();
+                    $("[data-id='" + $(this).attr("data-id") + "']").remove();
                     return true;
                 }else {
                     return false;
                 }
             });
-    }
-
+    });
 });
 

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout" ng-app="fukoku">
+<head>
+    <title>공정사이클타임분석</title>
+
+
+    <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
+    <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/d3/d3.min.js}" charset="utf-8"></script>
+    <script th:src="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/angular-nvd3/dist/angular-nvd3.js}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-sanitize.js"></script>
+
+
+    <script th:src="@{/static/admin/javascript_v3/defectuve-product-list-v2.js}"></script>
+    
+   
+
+
+
+</head>
+<body ng-controller="MainCtrl">
+
+
+
+<div layout:fragment="content">
+
+
+   <section class="content-header">
+        <h1>
+            불량제품목록
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        
+                         <br/>
+                        <div class="row">
+                        
+                        
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+								<table  class="table table-bordered table-striped" id="dtTable">
+                                    <thead class="table-head">
+                                    <tr>
+                                    	<th>순번<i class="fa fa-fw fa-sort" ></i></th>
+                                        <th>발생일자<i class="fa fa-fw fa-sort" ></i></th>
+                                        <th>생산라인 <i class="fa fa-fw fa-sort" ng-click="btOrder('name')" ></i></th> <!-- name -->
+                                        <th>차 종 </th> <!-- ref factory -->
+                                         <th>수량</th> <!-- product type -->
+                             
+                                        <th>불량유형 <i class="fa fa-fw fa-sort" ng-click="btOrder('layout_name')" ></i></th> <!-- layout name -->
+                                        <th>발생장소 <i class="fa fa-fw fa-sort" ng-click="btOrder('start_date')" ></i></th> <!-- start date -->
+                                        <th>불량원인 <i class="fa fa-fw fa-sort" ng-click="btOrder('end_date')" ></i></th> <!-- end date -->
+                                        <th>조립상태 <i class="fa fa-fw fa-sort" ng-click="btOrder('remark')" ></i></th>
+                                        <th>불량 상세</th>
+                                        <th>중요도</th>
+                                        <th>관련파일</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+	                                    <tr  ng-repeat="f in products">
+	                                    	<td>{{f.id}}</td>
+	                                    	<td>{{f.date}}</td>
+	                                    	<td>{{f.line}}</td>
+	                                    	<td>{{f.product_name}}</td>
+	                                    	<td>{{f.amount}}</td>
+	                                    	<td>{{f.type}}</td>
+	                                    	<td>{{f.machine}}</td>
+	                                    	<td>{{f.reason}}</td>
+	                                    	<td>{{f.assembly_state}}</td>
+	                                    	<td>{{f.detail}}</td>
+	                                    	<td>{{f.important}}</td>
+	                                    	<td>{{f.related_file}}</td>
+	                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    
+
+</div>
+
+
+
+
+
+<th:block layout:fragment="script">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#dtTable').DataTable();
+    });
+</script>
+
+
+
+
+</th:block>
+
+
+
+</body>
+</html>
