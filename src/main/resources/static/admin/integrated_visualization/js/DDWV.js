@@ -1031,9 +1031,9 @@
                         })
                         domEvents.addEventListener(cubeData.cube, 'contextmenu', event => {
                             e = window.event;
-
-                            var pageX = e.pageX;
-                            var pageY = e.pageY;
+                            //console.log(container.position());
+                            var pageX = e.pageX - document.body.scrollLeft - document.documentElement.scrollLeft;
+                            var pageY = e.pageY - document.body.scrollTop - document.documentElement.scrollTop;
 
                             // IE 8
                             if (pageX === undefined) {
@@ -1085,6 +1085,16 @@
                     //update();                   
                 };
                 render();
+                window.addEventListener( 'resize', onWindowResize, false );
+
+                function onWindowResize(){
+
+                    camera.aspect = getAspect();
+                    camera.updateProjectionMatrix();
+
+                    renderer.setSize( container.clientWidth, container.clientHeight);
+
+                }
 
             }
         }

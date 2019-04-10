@@ -18,26 +18,35 @@ select:disabled{
     -webkit-transform: rotate(-90deg); /* Safari 3-8 */
     transform: rotate(-90deg);
 }
+
+.header-div > div{
+    display: inline-block;
+    vertical-align: middle;
+}
 .chips{
-    margin: 10px;
     display: inline-block;
     vertical-align: middle;
     background-color: rgba(245, 245, 245, 1);
     border-radius: 20px;
     padding-right: 10px;
-    font-weight: bold; 
+    font-weight: bold;
     font-size: 14px;
+    margin: 0 10px 10px 0;
 }
 .chips > div {
     display: inline-block;
     font-size: 14px;
 }
-
+.date-div > div {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 10px 10px 0;
+}
 .company-chips{
     display: inline-block;
     background-color: dodgerblue;
     border-radius: 20px;
-    padding: 5px 10px; 
+    padding: 5px 10px;
     color: white;
     font-weight: normal;
 }
@@ -46,7 +55,7 @@ select:disabled{
     display: inline-block;
     background-color: #17A2B8;
     border-radius: 20px;
-    padding: 5px 10px; 
+    padding: 5px 10px;
     color: white;
     font-weight: normal;
 }
@@ -55,7 +64,7 @@ select:disabled{
     display: inline-block;
     background-color: lightseagreen;
     border-radius: 20px;
-    padding: 5px 10px; 
+    padding: 5px 10px;
     color: white;
     font-weight: normal;
 }
@@ -64,7 +73,7 @@ select:disabled{
     display: inline-block;
     background-color: skyblue;
     border-radius: 20px;
-    padding: 5px 10px; 
+    padding: 5px 10px;
     color: white;
     font-weight: normal;
 }
@@ -73,7 +82,7 @@ select:disabled{
     display: inline-block;
     background-color: steelblue;
     border-radius: 20px;
-    padding: 5px 10px; 
+    padding: 5px 10px;
     color: white;
     font-weight: normal;
 }
@@ -82,7 +91,7 @@ select:disabled{
     display: inline-block;
     background-color: steelblue;
     border-radius: 20px;
-    padding: 5px 10px; 
+    padding: 5px 10px;
     color: white;
     font-weight: normal;
 }
@@ -105,8 +114,8 @@ select:disabled{
 }
 
 .z-axis{
-    border-radius: 0; 
-    font-weight: 700; 
+    border-radius: 0;
+    font-weight: 700;
     font-size: 14px;
     color: #555;
     background-color: #eee;
@@ -129,7 +138,7 @@ select:disabled{
     border-width: 0.5px; */
     border-color: rgba(245, 245, 245, 1);
     /* background-color: rgba(245, 245, 245, 1); */
-    font-weight: bold; 
+    font-weight: bold;
     font-size: 0.875rem;
     border-width: 0px;
     height: 100%;

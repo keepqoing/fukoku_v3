@@ -27,16 +27,14 @@
         </h1>
     </section>
 
-
-
     <section class="content">
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="box box-primary">
-                    <div class="box-body" style="position: relative; overflow: auto;">
-                        <div class="container" style="min-width: 1320px;">
-                            <div style="padding: 10px 0;">
-                                <div style="display: inline-block; vertical-align: middle;">
+                    <div class="box-body">
+                        <div style="width: 100%; padding: 10px 20px;">
+                            <div class="header-div">
+                                <div style="margin: 0 10px 10px 0;">
                                     <div class="input-group">
                                         <div class="input-group-addon" style="width: min-content;">
                                             <label class="input-group-text">공장관리</label>
@@ -44,59 +42,63 @@
                                         <select class="form-control custom-select" id="selectCompany"></select>
                                     </div>
                                 </div>
-                                <div class="chips">
-                                    <div class="line-chips">라인</div>
-                                    <div id="line"></div>
-                                </div>
-                                <div class="chips">
-                                    <div class="line-chips">설비</div>
-                                    <div id="machine"></div>
-                                </div>
-                                <div class="chips">
-                                    <div class="line-chips">년</div>
-                                    <div id="year"></div>
-                                </div>
-                                <div style="display: inline-block; vertical-align: middle;">
-                                    <div class="input-group date" id="startDate">
-                                        <div class="input-group-addon" style="width: min-content;">
-                                            <label class="input-group-text">시작일</label>
-                                        </div>
-                                        <input class="form-control" id="txtStartDate" name="txtStartDate" type="text">
-                                        <span class="input-group-addon" style="width: min-content;">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
+                                <div>
+                                    <div class="chips">
+                                        <div class="line-chips">라인</div>
+                                        <div id="line"></div>
+                                    </div>
+                                    <div class="chips">
+                                        <div class="line-chips">설비</div>
+                                        <div id="machine"></div>
+                                    </div>
+                                    <div class="chips">
+                                        <div class="line-chips">년</div>
+                                        <div id="year"></div>
                                     </div>
                                 </div>
-                                <div style="display: inline-block; vertical-align: middle;">
-                                    <div class="input-group date" id="endDate">
-                                        <div class="input-group-addon" style="width: min-content;">
-                                            <label class="input-group-text">종료일</label>
+                                <div class="date-div">
+                                    <div>
+                                        <div class="input-group date" id="startDate">
+                                            <div class="input-group-addon" style="width: min-content;">
+                                                <label class="input-group-text">시작일</label>
+                                            </div>
+                                            <input class="form-control" id="txtStartDate" name="txtStartDate" type="text">
+                                            <span class="input-group-addon" style="width: min-content;">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
                                         </div>
-                                        <input class="form-control" id="txtEndDate" name="txtEndDate" type="text">
-                                        <span class="input-group-addon" style="width: min-content;">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
+                                    </div>
+                                    <div>
+                                        <div class="input-group date" id="endDate">
+                                            <div class="input-group-addon" style="width: min-content;">
+                                                <label class="input-group-text">종료일</label>
+                                            </div>
+                                            <input class="form-control" id="txtEndDate" name="txtEndDate" type="text">
+                                            <span class="input-group-addon" style="width: min-content;">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <ul class="nav nav-tabs">
+                                <ul class="nav nav-tabs" id="navStates">
                                     <li class="z-axis">데이터(Z-axis)</li>
-                                    <li class="active"><a data-toggle="tab" href="#nav-equipment"  style="font-weight: 700;">설비</a></li>
-                                    <li><a data-toggle="tab" href="#nav-production" style="font-weight: 700;">생산</a></li>
-                                    <li><a data-toggle="tab" href="#nav-product" style="font-weight: 700;">제품</a></li>
+                                    <li class="active" id="liMachine"><a data-toggle="tab" href="#nav-machine"  style="font-weight: 700;">설비</a></li>
+                                    <li id="liProduction"><a data-toggle="tab" href="#nav-production" style="font-weight: 700;">생산</a></li>
+                                    <!-- <li><a data-toggle="tab" href="#nav-product" style="font-weight: 700;">제품</a></li> -->
                                 </ul>
 
                                 <div class="tab-content">
-                                    <div id="nav-equipment" class="tab-pane fade in active">
+                                    <div id="nav-machine" class="tab-pane fade in active">
                                         <div id="zAxisBox1" style="padding: 16px 0;"></div>
                                     </div>
                                     <div id="nav-production" class="tab-pane fade">
                                         <div id="zAxisBox2" style="padding: 16px 0;"></div>
                                     </div>
-                                    <div id="nav-product" class="tab-pane fade">
+                                    <!-- <div id="nav-product" class="tab-pane fade">
                                         <div id="zAxisBox3" style="padding: 16px 0;"></div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="row" style="margin: 0;" >
@@ -117,40 +119,39 @@
                                     <div id="chartContainer" style=" width: 100%; height: 100%;"></div>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding: 0 0 0 10px;">
-                                    <div>
-                                        <div style="width: 100%; border-bottom: 1px solid #ccc">
-                                            <p class="z-axis" style="border-bottom: 0; margin:0; width: 120px;">수평값(X-axis)</p>
-                                        </div>
+                                    <div style="width: 100%; border-bottom: 1px solid #ccc">
+                                        <p class="z-axis" style="border-bottom: 0; margin:0; width: 120px;">수평값(X-axis)</p>
                                     </div>
-                                    <div style="padding: 10px 0;">
-                                        <div class='input-group' style='vertical-align: middle;'>
-                                                <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
-                                                    <input type="radio" name="rbHorizontal" id="rbHorizontalLine" value="line" style="vertical-align: middle;" checked>
-                                                </span>
-                                            <div class="input-group-addon"  style="width: 53px; text-align: left; background-color: #fff; width: 50px; border-right: 0;">
+                                    <div style="width: 100%;  padding: 10px 0;">
+                                        <div class='input-group' style='width: 100%; vertical-align: middle;'>
+                        <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
+                            <input type="radio" name="rbHorizontal" id="rbHorizontalLine" value="line" style="vertical-align: middle;" checked>
+                        </span>
+                                            <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
                                                 <label class="input-group-text" id="rblHorizontalLine" style="vertical-align: middle;">라인</label>
                                             </div>
-                                            <select class="form-control custom-select" style="width: 221px;" id="selectHorizontalLine"></select>
+                                            <select class="form-control custom-select" id="selectHorizontalLine"></select>
                                         </div>
-                                        <div class='input-group' style='vertical-align: middle; margin-top: 5px;'>
-                                                <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
-                                                    <input type="radio" name="rbHorizontal" id="rbHorizontalMachine" value="line" style="vertical-align: middle;">
-                                                </span>
-                                            <div class="input-group-addon"  style="width: 53px; text-align: left; background-color: #fff; width: 50px; border-right: 0;">
+                                        <div class='input-group' style='width: 100%; vertical-align: middle; margin-top: 5px;'>
+                        <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
+                            <input type="radio" name="rbHorizontal" id="rbHorizontalMachine" value="line" style="vertical-align: middle;">
+                        </span>
+                                            <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
                                                 <label class="input-group-text radio-button-label-disabled" id="rblHorizontalMachine" style="vertical-align: middle;">설비</label>
                                             </div>
-                                            <select class="form-control custom-select" style="width: 221px;" id="selectHorizontalMachine" disabled></select>
+                                            <select class="form-control custom-select" id="selectHorizontalMachine" disabled></select>
                                         </div>
-                                        <div class='input-group' style='vertical-align: middle; margin-top: 5px;'>
-                                                <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
-                                                    <input type="radio" name="rbHorizontal" id="rbHorizontalDate" value="line" style="vertical-align: middle;">
-                                                </span>
-                                            <div class="input-group-addon"  style="width: 53px; text-align: left; background-color: #fff; width: 50px; border-right: 0;">
+                                        <div class='input-group' style='width: 100%; vertical-align: middle; margin-top: 5px;'>
+                            <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
+                                <input type="radio" name="rbHorizontal" id="rbHorizontalDate" value="line" style="vertical-align: middle;">
+                            </span>
+                                            <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
                                                 <label class="input-group-text radio-button-label-disabled" id="rblHorizontalDate" style="vertical-align: middle;">설비</label>
                                             </div>
-                                            <select class="form-control custom-select" style="width: 70px; border-right: 0;" id="selectHorizontalYear" disabled></select>
-                                            <select class="form-control custom-select" style="width: 90px; border-right: 0;" id="selectHorizontalMonth" disabled></select>
-                                            <select class="form-control custom-select" style="width: 61px;" id="selectHorizontalDay" disabled></select>
+                                            <select class="form-control custom-select" style="width: 35%; border-right: 0;" id="selectHorizontalYear" disabled></select>
+                                            <select class="form-control custom-select" style="width: 40%; border-right: 0;" id="selectHorizontalMonth" disabled></select>
+                                            <select class="form-control custom-select" style="width: 25%;" id="selectHorizontalDay" disabled></select>
+
                                         </div>
                                     </div>
 
@@ -160,40 +161,39 @@
                                         </div>
                                     </div>
                                     <div style="padding: 10px 0;">
-                                        <div class='input-group' style='vertical-align: middle;'>
-                                                <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
-                                                    <input type="radio" name="rbVertical" id="rbVerticalLine" value="line" style="vertical-align: middle;" disabled>
-                                                </span>
-                                            <div class="input-group-addon"  style="width: 53px; text-align: left; background-color: #fff; width: 50px; border-right: 0;">
+                                        <div class='input-group' style='width:100%; vertical-align: middle;'>
+                            <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
+                                <input type="radio" name="rbVertical" id="rbVerticalLine" value="line" style="vertical-align: middle;" disabled>
+                            </span>
+                                            <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
                                                 <label class="input-group-text radio-button-label-disabled" id="rblVerticalle=" style="vertical-align: middle;">라인</label>
                                             </div>
-                                            <select class="form-control custom-select" style="width: 221px;" id="selectVerticalLine" disabled></select>
+                                            <select class="form-control custom-select" id="selectVerticalLine" disabled></select>
                                         </div>
-                                        <div class='input-group' style='vertical-align: middle; margin-top: 5px;'>
-                                                <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
-                                                    <input type="radio" name="rbVertical" id="rbVerticalMachine" value="line" style="vertical-align: middle;">
-                                                </span>
-                                            <div class="input-group-addon"  style="width: 53px; text-align: left; background-color: #fff; width: 50px; border-right: 0;">
+                                        <div class='input-group' style='width: 100%; vertical-align: middle; margin-top: 5px;'>
+                            <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
+                                <input type="radio" name="rbVertical" id="rbVerticalMachine" value="line" style="vertical-align: middle;">
+                            </span>
+                                            <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
                                                 <label class="input-group-text radio-button-label-disabled" id="rblVerticalMachine" style="vertical-align: middle;">설비</label>
                                             </div>
-                                            <select class="form-control custom-select" style="width: 221px;" id="selectVerticalMachine" disabled></select>
+                                            <select class="form-control custom-select" id="selectVerticalMachine" disabled></select>
                                         </div>
-                                        <div class='input-group' style='vertical-align: middle; margin-top: 5px;'>
-                                                <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
-                                                    <input type="radio" name="rbVertical" id="rbVerticalDate" value="line" style="vertical-align: middle;" checked>
-                                                </span>
-                                            <div class="input-group-addon"  style="width: 53px; text-align: left; background-color: #fff; width: 50px; border-right: 0;">
+                                        <div class='input-group' style='width: 100%; vertical-align: middle; margin-top: 5px;'>
+                            <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
+                                <input type="radio" name="rbVertical" id="rbVerticalDate" value="line" style="vertical-align: middle;" checked>
+                            </span>
+                                            <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
                                                 <label class="input-group-text" id="rblVerticalDate" style="vertical-align: middle;">설비</label>
                                             </div>
-                                            <select class="form-control custom-select" style="width: 70px; border-right: 0;" id="selectVerticalYear"></select>
-                                            <select class="form-control custom-select" style="width: 90px; border-right: 0;" id="selectVerticalMonth" disabled></select>
-                                            <select class="form-control custom-select" style="width: 61px;" id="selectVerticalDay" disabled></select>
+                                            <select class="form-control custom-select" style="width: 35%; border-right: 0;" id="selectVerticalYear"></select>
+                                            <select class="form-control custom-select" style="width: 40%; border-right: 0;" id="selectVerticalMonth" disabled></select>
+                                            <select class="form-control custom-select" style="width: 25%;" id="selectVerticalDay" disabled></select>
                                         </div>
                                     </div>
                                     <button type="button" onclick="sendRequest()" style="width: 100%;" class="btn btn-info">결과보기</button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
