@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout" ng-app="fukoku">
+<head>
+    <title>이상조치관리설계</title>
+    <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
+    <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/d3/d3.min.js}" charset="utf-8"></script>
+    <script th:src="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/angular-nvd3/dist/angular-nvd3.js}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-sanitize.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+
+</head>
+<body ng-controller="MainCtrl">
+<div layout:fragment="content">
+    <section class="content-header">
+        <h1>
+            이상조치관리설계
+        </h1>
+
+    </section>
+    <section class="content">
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-xs-12" >
+                                <div class="form-group">
+                                    <label for="selectOptFactory">공장</label>
+                                    <select class="form-control" id="selectOptFactory" ng-model="selectCtrl.selectedValue"  ng-change="selectByFactory()">
+
+                                        <option ng-repeat="o in factories"  value="{{o.id}}">{{o.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-xs-12" >
+
+                                <label for="selectOptDepartment">부서</label>
+                                <select class="form-control" id="selectOptDepartment" ng-model="selectCtrl.selectedValue"  ng-change="selectByDepartment()">
+                                    <!-- <option value="0">All</option>  -->
+                                    <option ng-repeat="o in departments"  value="{{o.id}}">{{o.name}}</option>
+                                </select>
+                            </div>
+
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-xs-12" >
+
+                                <div class="form-group">
+                                    <label for="selectOptDepartment">부서</label>
+                                    <select class="form-control" id="selectOptDepartment" ng-model="selectCtrl.selectedValue"  ng-change="selectByDepartment()">
+                                        <!-- <option value="0">All</option>  -->
+                                        <option ng-repeat="o in departments"  value="{{o.id}}">{{o.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-2 col-sm-6 col-xs-12" >
+
+                                <div class="form-group">
+                                    <!--<button class="btn btn-success" id="btnImport" type="button" ><span class="fa fa-angle-double-down" ></span> Import</button>-->
+                                    <form id="fileUploadForm"  class="btn btn-success btn-file"><span class="fa fa-angle-double-down" ></span> 소입 <input type="file" id="btnImport" name="file" onchange="importFile()"> </form>
+
+
+                                    <button class="btn btn-primary" id="btnSearchLine" type="button" >검색</button>
+                                    <button class="btn btn-success" id="btnSaveAll" type="button" ><span class="fa fa-save"></span> 저장</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-4 col-xs-12">
+                                <div class="form-group">
+
+                                    <button class="btn btn-success" id="btnTest" type="button" style="display:none" ><span class="fa fa-save" ></span> Test</button>
+                                    <button class="btn btn-success" id="btnHidden" type="button" style="display:none" ><span class="fa fa-save"></span> Hidden</button>
+                                </div>
+                            </div>
+                            <input type="text" id="txtTempMainProcess" style="display:none;"/>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12  table-responsive">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                        <table class="table" id="mainTable">
+                                            <thead class="thead-inverse table-head" id="tableHeader">
+                                            <!--<tr id="firstHeader">-->
+                                            <!--<th>라인</th>-->
+                                            <!--</tr>-->
+                                            </thead>
+                                            <tbody id="abnormalTable">
+                                            <!--<tr id="firstRow">-->
+                                            <!--<td id="lineName">IB <br/>-->
+                                            <!--<button type="button" class="btn btn-primary" onclick="addColumn()">제품추가<br>-->
+                                            <!--(체인)</button>-->
+                                            <!--</td>-->
+                                            <!--</tr>-->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Model will pop up when the user clicks on the alarm name -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1"   role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalMapping">
+        <div class="modal-dialog modal-lg" style="width:90%;">
+            <div class="modal-content" style="max-height: calc(100vh - 0px);overflow-y: auto;">
+                <div class="box box-primary modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            style="font-weight: bold; font-size: 18pt;"
+                            aria-hidden="true">X</span></button>
+                    <h4 class="modal-title">이상항목 매핑</h4>
+                </div>
+                <div class="row"></div>
+                <div class="modal-body">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                        <table class="table table-bordered">
+                            <tbody id="SUMMARY_MAPPING">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        var design = {};
+        var lineArr = []; // for Line
+
+    </script>
+
+    <script id="SUMMARY_MAPPING_TEMPLATE" type="text/x-jquery-tmpl">
+            {{each(a, b) DATA}}
+                    {{if a != 0}}
+                    <tr style="text-align:center;">
+                        {{each(i,v) E}}
+                            {{if i!=0}}
+                                <td>
+                                    {{if NAME != null}}
+                                        <span><input type="checkbox" checked class="chk" data-id='${v.DETAIL_ID}'/></span>
+                                    {{else}}
+                                        <span><input type="checkbox" class="chk"/></span>
+                                    {{/if}}
+                                </td>
+                            {{else}}
+                                <td style="text-align:center;background-color: #3c8dbc;color: white;"  data-id='${v.ID}'>
+                                    ${v.NAME}
+                                </td>
+                            {{/if}}
+                        {{/each}}
+                    {{else}}
+                    <tr style="text-align:center;background-color: #3c8dbc;color: white;">
+                        {{each(i,v) E}}
+                            <td data-id='${v.ID}'>
+                                {{if NAME != null}}
+                                    ${v.NAME}
+                                {{/if}}
+                            </td>
+                        {{/each}}
+                    {{/if}}
+                </tr>
+            {{/each}}
+    </script>
+
+    <script src="/static/admin/javascript_v3/abnormal-mgt-design.js"></script>
+
+</div>
+<th:block layout:fragment="script">
+
+</th:block>
+
+</body>
+</html>
