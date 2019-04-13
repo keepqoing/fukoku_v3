@@ -83,7 +83,7 @@
                             </div>
                             <div>
                                 <ul class="nav nav-tabs" id="navStates">
-                                    <li class="z-axis">데이터(Z-axis)</li>
+                                    <li class="z-axis">데이터(Z-축)</li>
                                     <li class="active" id="liMachine"><a data-toggle="tab" href="#nav-machine"  style="font-weight: 700;">설비</a></li>
                                     <li id="liProduction"><a data-toggle="tab" href="#nav-production" style="font-weight: 700;">생산</a></li>
                                     <!-- <li><a data-toggle="tab" href="#nav-product" style="font-weight: 700;">제품</a></li> -->
@@ -116,11 +116,13 @@
                                             </li>
                                         </ul>
                                     </nav>
+                                    <img class="back-btn" th:src="@{/static/admin/integrated_visualization/images/left-arrow.svg}" alt="back" width="42" height="42" onclick="backButtonOnClicked()" >
+
                                     <div id="chartContainer" style=" width: 100%; height: 100%;"></div>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding: 0 0 0 10px;">
                                     <div style="width: 100%; border-bottom: 1px solid #ccc">
-                                        <p class="z-axis" style="border-bottom: 0; margin:0; width: 120px;">수평값(X-axis)</p>
+                                        <p class="z-axis" style="border-bottom: 0; margin:0; width: 120px;">X-축</p>
                                     </div>
                                     <div style="width: 100%;  padding: 10px 0;">
                                         <div class='input-group' style='width: 100%; vertical-align: middle;'>
@@ -146,7 +148,7 @@
                                 <input type="radio" name="rbHorizontal" id="rbHorizontalDate" value="line" style="vertical-align: middle;">
                             </span>
                                             <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
-                                                <label class="input-group-text radio-button-label-disabled" id="rblHorizontalDate" style="vertical-align: middle;">설비</label>
+                                                <label class="input-group-text radio-button-label-disabled" id="rblHorizontalDate" style="vertical-align: middle;">날짜</label>
                                             </div>
                                             <select class="form-control custom-select" style="width: 35%; border-right: 0;" id="selectHorizontalYear" disabled></select>
                                             <select class="form-control custom-select" style="width: 40%; border-right: 0;" id="selectHorizontalMonth" disabled></select>
@@ -157,7 +159,7 @@
 
                                     <div>
                                         <div style="width: 100%; border-bottom: 1px solid #ccc">
-                                            <p class="z-axis" style="border-bottom: 0; margin:0; width: 120px;">수직값(Y-axis)</p>
+                                            <p class="z-axis" style="border-bottom: 0; margin:0; width: 120px;">Y-축</p>
                                         </div>
                                     </div>
                                     <div style="padding: 10px 0;">
@@ -184,7 +186,7 @@
                                 <input type="radio" name="rbVertical" id="rbVerticalDate" value="line" style="vertical-align: middle;" checked>
                             </span>
                                             <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
-                                                <label class="input-group-text" id="rblVerticalDate" style="vertical-align: middle;">설비</label>
+                                                <label class="input-group-text" id="rblVerticalDate" style="vertical-align: middle;">날짜</label>
                                             </div>
                                             <select class="form-control custom-select" style="width: 35%; border-right: 0;" id="selectVerticalYear"></select>
                                             <select class="form-control custom-select" style="width: 40%; border-right: 0;" id="selectVerticalMonth" disabled></select>

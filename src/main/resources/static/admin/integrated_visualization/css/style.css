@@ -133,7 +133,7 @@ select:disabled{
 }
 
 .date-input{
-    /* border-radius: 1rem; 
+    /* border-radius: 1rem;
     border-color: rgba(0,0,0,0.125);
     border-width: 0.5px; */
     border-color: rgba(245, 245, 245, 1);
@@ -149,4 +149,16 @@ select:disabled{
 
 .input-group-addon{
     width:0;
+}
+
+.back-btn{
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    padding: 5px;
+}
+
+.back-btn:hover{
+    border: 1px solid #d3d3d3
 }

@@ -1,40 +1,40 @@
 (function (){
     var DDWV = function (containerId) {
-        
+
         //installing empty scene
         const scene = new THREE.Scene();
 
         let container = document.getElementById(containerId);
         let width = container.clientWidth;
         let height = container.clientHeight;
-        
+
         let xAxisLabelIsEnabled = true;
         let xAxisLabelSize = 16;
         let xAxisLabelColor = "#ff0000";
-        
+
         let yAxisLabelIsEnabled = true;
         let yAxisLabelSize = 16;
         let yAxisLabelColor = "#0000ff";
-        
+
         let barLabelIsEnabled = true;
         let barLabelIsVisible = false;
         let barLabelOnMouseHoverIsEnabled = true;
         let barLabelSize = 16;
         let barLabelColor = "#000000";
-        
+
         let scaleLabelIsEnabled = true;
         let scaleLabelSize = 16;
         let scaleLabelColor = "#000000";
-        
+
         let distanceBetweenChildBoxes = 10;
-        
+
         let loadingText = "LOADING...";
-        
+
         let barWidth = 100;
         let barLength = 100;
         let padding = 20;
         let paddingTotal = 50;
-        
+
         const cubes = [];
         const barLabels = [];
         const fullBarLabels = [];
@@ -56,8 +56,6 @@
         let endOfGridHelperIsEnabled = true;
         let gridHelperType = true;
 
-        let sizeAutoChangeableIsEnabled = false;
-
         let opacity = 0.8;
         //x Axis
         //===========================================================================================//
@@ -77,7 +75,7 @@
             });
             return xAxis;
         }
-        
+
         //y Axis
         //===========================================================================================//
         function getBarHeight(barData){
@@ -116,9 +114,9 @@
         //aspect: calculating aspect of camera
         //===========================================================================================//
         function getAspect(){
-            return (window.innerWidth > window.innerHeight) 
-                        ? (window.innerWidth / window.innerHeight) 
-                        : (window.innerHeight / window.innerWidth);
+            return (window.innerWidth > window.innerHeight)
+                ? (window.innerWidth / window.innerHeight)
+                : (window.innerHeight / window.innerWidth);
         }
         //camera
         //===========================================================================================//
@@ -137,37 +135,43 @@
             for (var i=0; i<yAxis; i++) {
                 const yAxisItem = barData.data[i];
                 const xAxisItems = yAxisItem.values;
-                
+
                 xAxisItems.forEach(function(childItems, j) {
                     const numberOfChildren = childItems.length;
                     const numberOfChildXAxises = Math.ceil(Math.sqrt(numberOfChildren));
                     const numberOfChildYAxises = Math.ceil(numberOfChildren/numberOfChildXAxises);
                     const childBoxWidth = (barWidth-(numberOfChildYAxises-1)*distanceBetweenChildBoxes)/numberOfChildYAxises;
                     const childBoxLength = (barLength-(numberOfChildXAxises-1)*distanceBetweenChildBoxes)/numberOfChildXAxises;
-                    
+
                     childItems.forEach(function(childItem, index){
                         let p = Math.floor(index/numberOfChildXAxises);
                         let q = index%numberOfChildXAxises;
                         let height = childItem.value/mult;
-                        let geometry = new THREE.BoxGeometry( childBoxWidth, height, childBoxLength);
-                        let material = new THREE.MeshPhongMaterial( { color: childItem.color, transparent: true } );
-                        material.opacity = opacity;
-                        let cube = new THREE.Mesh( geometry, material );
-                        cube.receiveShadow = true;
-                        cube.castShadow = true;
-                        cube.position.y = height/2 - maxHeight/2;
-                        cube.position.x = -1 * (barLength/2 + padding + j * (barLength + 2 * padding) - maxLength/2 + (p - (numberOfChildYAxises-1)/2) * (childBoxWidth + distanceBetweenChildBoxes));  
-                        cube.position.z = -1 * (barWidth/2 + padding + i * (barWidth + 2 * padding) - maxWidth/2 + (q - (numberOfChildXAxises-1)/2) * (childBoxLength + distanceBetweenChildBoxes)); 
-                        scene.add( cube );
-                        const info = new Object();                        
-                        info[barData.xAxis] = barData.labels[j];
-                        info[barData.yAxis] = barData.data[i].label;
-                        info["항목"] = childItem.label;
-                        info["데이터값"] = `${childItem.value} (${childItem.unit})`;
-                        fullBarLabels.push(info);
-                        
-                        
-                        cubes.push( { cube: cube, color: childItem.color, value: childItem.value } );    
+                        let color = childItem.color;
+                        if (height > 0) {
+                            let geometry = new THREE.BoxGeometry( childBoxWidth, height, childBoxLength);
+                            let material = new THREE.MeshPhongMaterial( { color: color, transparent: true } );
+                            material.opacity = opacity;
+                            let cube = new THREE.Mesh( geometry, material );
+                            cube.receiveShadow = true;
+                            cube.castShadow = true;
+                            cube.position.y = height/2 - maxHeight/2;
+                            cube.position.x = -1 * (barLength/2 + padding + j * (barLength + 2 * padding) - maxLength/2 + (p - (numberOfChildYAxises-1)/2) * (childBoxWidth + distanceBetweenChildBoxes));
+                            cube.position.z = -1 * (barWidth/2 + padding + i * (barWidth + 2 * padding) - maxWidth/2 + (q - (numberOfChildXAxises-1)/2) * (childBoxLength + distanceBetweenChildBoxes));
+                            scene.add( cube );
+                            const info = new Object();
+                            info[barData.xAxis] = barData.labels[j];
+                            info[barData.yAxis] = barData.data[i].label;
+                            info["항목"] = childItem.label;
+                            info["데이터값"] = `${childItem.value} (${childItem.unit})`;
+                            fullBarLabels.push({
+                                type: 'simple',
+                                xAxis: barData.labels[j],
+                                yAxis: barData.data[i].label,
+                                info: info
+                            });
+                            cubes.push( { cube: cube, color: color, value: childItem.value } );
+                        }
                     });
                 });
             }
@@ -268,9 +272,9 @@
                                 count: 1,
                                 value: parseFloat(childItem.value),
                                 label: childItem.label,
-                                unit: childItem.unit 
+                                unit: childItem.unit
                             }
-                        }    
+                        }
                     });
                 });
             }
@@ -286,34 +290,42 @@
                 const numberOfChildYAxises = Math.ceil(numberOfChildren/numberOfChildXAxises);
                 const childBoxWidth = (barWidth-(numberOfChildYAxises-1)*distanceBetweenChildBoxes)/numberOfChildYAxises;
                 const childBoxLength = (barLength-(numberOfChildXAxises-1)*distanceBetweenChildBoxes)/numberOfChildXAxises;
-                
-                Object.keys(yAxisTotalObject).forEach(function(key, index){       
+
+                Object.keys(yAxisTotalObject).forEach(function(key, index){
                     let p = Math.floor(index/numberOfChildXAxises);
                     let q = index%numberOfChildXAxises;
                     let height = (averageIsShown) ? yAxisTotalObject[key].value/yAxisTotalObject[key].count : yAxisTotalObject[key].value;
                     height = height/mult;
-                    var geometry = new THREE.BoxGeometry( childBoxWidth, height, childBoxLength);
-                    var material = new THREE.MeshPhongMaterial( { color: yAxisTotalObject[key].color, transparent: true } );
-                    material.opacity = opacity;
-                    var cube = new THREE.Mesh( geometry, material );
-                    cube.receiveShadow = true;
-                    cube.castShadow = true;
-                    let distance = (endOfGridHelperIsEnabled)
-                                ? ((maxWidth > maxLength) ? maxWidth : maxLength)
-                                : maxLength; 
-                    cube.position.y = height/2 - maxHeight/2;
-                    cube.position.x = (- barLength/2 - paddingTotal - distance/2 - (p - (numberOfChildYAxises-1)/2) * (childBoxWidth + distanceBetweenChildBoxes));  
-                    cube.position.z = (- barWidth/2 - padding - i * (barWidth + 2 * padding) + maxWidth/2 - (q - (numberOfChildXAxises-1)/2) * (childBoxLength + distanceBetweenChildBoxes)); 
-                    scene.add( cube );
-                    
-                    const info = new Object();
-                    info[barData.yAxis] = yAxisTotalObject[key].yAxis;
-                    info["항목"] = yAxisTotalObject[key].label;
-                    info["합계"] = `${yAxisTotalObject[key].value.toFixed(1)} (${yAxisTotalObject[key].unit})`;
-                    if (averageIsShown) info["평균"] = `${(yAxisTotalObject[key].value/yAxisTotalObject[key].count).toFixed(1)} (${yAxisTotalObject[key].unit})`;
-                    fullBarLabels.push(info);
+                    let color = yAxisTotalObject[key].color;
+                    if (height > 0) {
+                        var geometry = new THREE.BoxGeometry( childBoxWidth, height, childBoxLength);
+                        var material = new THREE.MeshPhongMaterial( { color: color, transparent: true } );
+                        material.opacity = opacity;
+                        var cube = new THREE.Mesh( geometry, material );
+                        cube.receiveShadow = true;
+                        cube.castShadow = true;
+                        let distance = (endOfGridHelperIsEnabled)
+                            ? ((maxWidth > maxLength) ? maxWidth : maxLength)
+                            : maxLength;
+                        cube.position.y = height/2 - maxHeight/2;
+                        cube.position.x = (- barLength/2 - paddingTotal - distance/2 - (p - (numberOfChildYAxises-1)/2) * (childBoxWidth + distanceBetweenChildBoxes));
+                        cube.position.z = (- barWidth/2 - padding - i * (barWidth + 2 * padding) + maxWidth/2 - (q - (numberOfChildXAxises-1)/2) * (childBoxLength + distanceBetweenChildBoxes));
+                        scene.add( cube );
 
-                    cubes.push( { cube: cube, color: yAxisTotalObject[key].color, value: height } );
+                        const info = new Object();
+                        info[barData.yAxis] = yAxisTotalObject[key].yAxis;
+                        info["항목"] = yAxisTotalObject[key].label;
+                        info["합계"] = `${yAxisTotalObject[key].value.toFixed(1)} (${yAxisTotalObject[key].unit})`;
+                        if (averageIsShown) info["평균"] = `${(yAxisTotalObject[key].value/yAxisTotalObject[key].count).toFixed(1)} (${yAxisTotalObject[key].unit})`;
+                        fullBarLabels.push({
+                            type: 'total',
+                            xAxis: '',
+                            yAxis: yAxisTotalObject[key].yAxis,
+                            info: info
+                        });
+
+                        cubes.push( { cube: cube, color: color, value: height } );
+                    }
                 });
             });
         }
@@ -322,38 +334,46 @@
         //===============================================================================================//
         function drawBarChartXAxisTotal(xAxisTotal, barData){
             xAxisTotal.forEach(function(xAxisTotalObject, j){
-                const numberOfChildren = Object.keys(xAxisTotalObject).length; 
+                const numberOfChildren = Object.keys(xAxisTotalObject).length;
                 const numberOfChildXAxises = Math.ceil(Math.sqrt(numberOfChildren));
                 const numberOfChildYAxises = Math.ceil(numberOfChildren/numberOfChildXAxises);
                 const childBoxWidth = (barWidth-(numberOfChildYAxises-1)*distanceBetweenChildBoxes)/numberOfChildYAxises;
                 const childBoxLength = (barLength-(numberOfChildXAxises-1)*distanceBetweenChildBoxes)/numberOfChildXAxises;
-                Object.keys(xAxisTotalObject).forEach(function(key, index){       
+                Object.keys(xAxisTotalObject).forEach(function(key, index){
                     let p = Math.floor(index/numberOfChildXAxises);
                     let q = index%numberOfChildXAxises;
                     let height = (averageIsShown) ? xAxisTotalObject[key].value/xAxisTotalObject[key].count : xAxisTotalObject[key].value;
                     height = height/mult;
-                    var geometry = new THREE.BoxGeometry( childBoxWidth, height, childBoxLength);
-                    var material = new THREE.MeshPhongMaterial( { color: xAxisTotalObject[key].color, transparent: true } );
-                    material.opacity = opacity;
-                    var cube = new THREE.Mesh( geometry, material );
-                    cube.receiveShadow = true;
-                    cube.castShadow = true;
-                    let distance = (endOfGridHelperIsEnabled)
-                                ? ((maxWidth > maxLength) ? maxWidth : maxLength)
-                                : maxWidth; 
+                    let color = xAxisTotalObject[key].color;
+                    if (height > 0) {
+                        var geometry = new THREE.BoxGeometry( childBoxWidth, height, childBoxLength);
+                        var material = new THREE.MeshPhongMaterial( { color: color, transparent: true } );
+                        material.opacity = opacity;
+                        var cube = new THREE.Mesh( geometry, material );
+                        cube.receiveShadow = true;
+                        cube.castShadow = true;
+                        let distance = (endOfGridHelperIsEnabled)
+                            ? ((maxWidth > maxLength) ? maxWidth : maxLength)
+                            : maxWidth;
 
-                    cube.position.y = height/2 - maxHeight/2;
-                    cube.position.x = ( - barLength/2 - padding - j * (barLength + 2 * padding) + maxLength/2 - (p - (numberOfChildYAxises-1)/2) * (childBoxWidth + distanceBetweenChildBoxes));  
-                    cube.position.z = (- barWidth/2 - paddingTotal - distance/2 - (q - (numberOfChildXAxises-1)/2) * (childBoxLength + distanceBetweenChildBoxes)); 
-                    
-                    scene.add( cube );
-                    const info = new Object();
-                    info[barData.xAxis] = xAxisTotalObject[key].xAxis;
-                    info["항목"] = xAxisTotalObject[key].label;
-                    info["합계"] = `${xAxisTotalObject[key].value.toFixed(1)} (${xAxisTotalObject[key].unit})`;
-                    if (averageIsShown) info["평균"] = `${(xAxisTotalObject[key].value/xAxisTotalObject[key].count).toFixed(1)} (${xAxisTotalObject[key].unit})`;
-                    fullBarLabels.push(info);
-                    cubes.push( {cube: cube, color: xAxisTotalObject[key].color, value: height } );
+                        cube.position.y = height/2 - maxHeight/2;
+                        cube.position.x = ( - barLength/2 - padding - j * (barLength + 2 * padding) + maxLength/2 - (p - (numberOfChildYAxises-1)/2) * (childBoxWidth + distanceBetweenChildBoxes));
+                        cube.position.z = (- barWidth/2 - paddingTotal - distance/2 - (q - (numberOfChildXAxises-1)/2) * (childBoxLength + distanceBetweenChildBoxes));
+
+                        scene.add( cube );
+                        const info = new Object();
+                        info[barData.xAxis] = xAxisTotalObject[key].xAxis;
+                        info["항목"] = xAxisTotalObject[key].label;
+                        info["합계"] = `${xAxisTotalObject[key].value.toFixed(1)} (${xAxisTotalObject[key].unit})`;
+                        if (averageIsShown) info["평균"] = `${(xAxisTotalObject[key].value/xAxisTotalObject[key].count).toFixed(1)} (${xAxisTotalObject[key].unit})`;
+                        fullBarLabels.push({
+                            type: 'total',
+                            xAxis: xAxisTotalObject[key].xAxis,
+                            yAxis: '',
+                            info: info
+                        });
+                        cubes.push( {cube: cube, color: color, value: height } );
+                    }
                 });
             });
         }
@@ -369,14 +389,14 @@
                 });
                 var material = new THREE.MeshPhongMaterial( { color: yAxisLabelColor } );
                 var text = new THREE.Mesh(geometry, material);
-                text.rotateX(-Math.PI/2);        
+                text.rotateX(-Math.PI/2);
                 var box = new THREE.Box3().setFromObject( text );
                 var size = new THREE.Vector3();
-                                            
+
                 text.position.y = -maxHeight/2;
                 let distance = (endOfGridHelperIsEnabled)
-                                ? ((maxWidth > maxLength) ? maxWidth : maxLength)
-                                : maxLength; 
+                    ? ((maxWidth > maxLength) ? maxWidth : maxLength)
+                    : maxLength;
                 text.position.x = distance/2 + padding;
                 text.position.z = -1 * (- maxWidth/2 + padding + i * (barWidth + 2 * padding) + barWidth/2) + box.getSize(size).z/2;
                 scene.add(text);
@@ -395,12 +415,12 @@
             var material = new THREE.MeshPhongMaterial( { color: yAxisLabelColor } );
             var text = new THREE.Mesh(geometry, material);
             text.rotateX(-Math.PI/2);
-            text.rotateZ(Math.PI/2); 
+            text.rotateZ(Math.PI/2);
             var box = new THREE.Box3().setFromObject( text );
             var size = new THREE.Vector3();
             let distance = (endOfGridHelperIsEnabled)
-                                ? ((maxWidth > maxLength) ? maxWidth : maxLength)
-                                : maxLength; 
+                ? ((maxWidth > maxLength) ? maxWidth : maxLength)
+                : maxLength;
             text.position.y = -maxHeight/2;
             text.position.x =  - barLength/2 - paddingTotal - distance/2 - box.getSize(size).x/2 + xAxisLabelSize;
             text.position.z = maxWidth/2 + padding + box.getSize(size).z;
@@ -424,8 +444,8 @@
                 var box = new THREE.Box3().setFromObject( text );
                 var size = new THREE.Vector3();
                 let distance = (endOfGridHelperIsEnabled)
-                                ? ((maxWidth > maxLength) ? maxWidth : maxLength)
-                                : maxWidth; 
+                    ? ((maxWidth > maxLength) ? maxWidth : maxLength)
+                    : maxWidth;
                 text.position.y = -maxHeight/2;
                 text.position.x = -1 * (barLength/2 + padding + i * (barWidth + 2 * padding) - maxLength/2) + box.getSize(size).x/2;
                 text.position.z = distance/2 + padding + box.getSize(size).z;
@@ -435,7 +455,7 @@
 
         //drawXAxisTotalLabel: drawing the label of the total sum of xAxis values
         //===============================================================================================//
-        function drawXAxisTotalLabel(font){            
+        function drawXAxisTotalLabel(font){
             let label = (averageIsShown) ? "평균 \n(합계)" : "합계"
             var geometry = new THREE.TextGeometry( label, {
                 font: font,
@@ -444,12 +464,12 @@
             });
             var material = new THREE.MeshPhongMaterial( { color: xAxisLabelColor } );
             var text = new THREE.Mesh(geometry, material);
-            text.rotateX(-Math.PI/2);       
+            text.rotateX(-Math.PI/2);
             var box = new THREE.Box3().setFromObject( text );
             var size = new THREE.Vector3();
             let distance = (endOfGridHelperIsEnabled)
-                                ? ((maxWidth > maxLength) ? maxWidth : maxLength)
-                                : maxWidth; 
+                ? ((maxWidth > maxLength) ? maxWidth : maxLength)
+                : maxWidth;
             text.position.y = -maxHeight/2;
             text.position.x = maxLength/2 + padding;
             text.position.z = - distance/2 - paddingTotal - barWidth/2 - box.getSize(size).z/2 + yAxisLabelSize;
@@ -462,24 +482,24 @@
             for (var i=0; i<yAxis; i++) {
                 const yAxisItem = barData.data[i];
                 const xAxisItems = yAxisItem.values;
-                
+
                 xAxisItems.forEach(function(childItems, j) {
                     const numberOfChildren = childItems.length;
                     const numberOfChildXAxises = Math.ceil(Math.sqrt(numberOfChildren));
                     const numberOfChildYAxises = Math.ceil(numberOfChildren/numberOfChildXAxises);
                     const childBoxWidth = (barWidth-(numberOfChildYAxises-1)*distanceBetweenChildBoxes)/numberOfChildYAxises;
                     const childBoxLength = (barLength-(numberOfChildXAxises-1)*distanceBetweenChildBoxes)/numberOfChildXAxises;
-                    
+
                     childItems.forEach(function(childItem, index){
                         let p = Math.floor(index/numberOfChildXAxises);
                         let q = index%numberOfChildXAxises;
-                        
+
                         var geometry = new THREE.TextGeometry( childItem.value.toString(), {
                             font: font,
                             size: barLabelSize,
                             height: 0.1
                         });
-                        
+
                         var material = new THREE.MeshPhongMaterial( { color: barLabelColor } );
                         var text = new THREE.Mesh(geometry, material);
 
@@ -504,7 +524,7 @@
                 if (parseFloat(maxHeight*mult/scaleInterval) <= 10) {
                     interval = scaleInterval;
                     break;
-                }                            
+                }
             };
             for (var i=interval; i <= (parseFloat(maxHeight*mult) + interval); i+=interval) {
                 var geometry = new THREE.TextGeometry( (i).toString(), {
@@ -531,13 +551,12 @@
                 if (parseFloat((maxHeight*mult)/scaleInterval) <= 10) {
                     interval = scaleInterval;
                     break;
-                }                            
+                }
             };
             for (var i=interval; i <= (parseFloat(maxHeight*mult) + interval); i+=interval) {
                 var material = new THREE.LineBasicMaterial( { color: "#000000" } );
                 var geometry = new THREE.Geometry();
-                console.log(i);
-                
+
                 geometry.vertices.push(new THREE.Vector3( maxLength/2, - maxHeight/2 + i/mult, -maxWidth/2 ) );
                 geometry.vertices.push(new THREE.Vector3( - maxLength/2, - maxHeight/2 + i/mult, -maxWidth/2 ) );
                 geometry.vertices.push(new THREE.Vector3( - maxLength/2, - maxHeight/2 + i/mult, maxWidth/2 ) );
@@ -548,21 +567,21 @@
         }
 
         //drawBarChartLabelYAxisTotal: drawing a label of total sum of yAxis values to each bar chart
-        //================================================================================================// 
+        //================================================================================================//
         function drawBarChartLabelYAxisTotal(yAxisTotal, font){
             yAxisTotal.forEach(function(yAxisTotalObject, i){
 
                 const numberOfChildren = Object.keys(yAxisTotalObject).length;
-                
+
                 const numberOfChildXAxises = Math.ceil(Math.sqrt(numberOfChildren));
                 const numberOfChildYAxises = Math.ceil(numberOfChildren/numberOfChildXAxises);
                 const childBoxWidth = (barWidth-(numberOfChildYAxises-1)*distanceBetweenChildBoxes)/numberOfChildYAxises;
                 const childBoxLength = (barLength-(numberOfChildXAxises-1)*distanceBetweenChildBoxes)/numberOfChildXAxises;
-                
-                Object.keys(yAxisTotalObject).forEach(function(key, index){       
+
+                Object.keys(yAxisTotalObject).forEach(function(key, index){
                     let p = Math.floor(index/numberOfChildXAxises);
                     let q = index%numberOfChildXAxises;
-                    let label = (averageIsShown) 
+                    let label = (averageIsShown)
                         ? `${(yAxisTotalObject[key].value/yAxisTotalObject[key].count).toFixed(1)}\n(${yAxisTotalObject[key].value.toFixed(1)})`
                         : yAxisTotalObject[key].value.toFixed(1);
                     var geometry = new THREE.TextGeometry( label, {
@@ -577,13 +596,13 @@
                     let height = (averageIsShown) ? yAxisTotalObject[key].value/yAxisTotalObject[key].count : yAxisTotalObject[key].value;
                     height = height/mult;
                     let distance = (endOfGridHelperIsEnabled)
-                                ? ((maxWidth > maxLength) ? maxWidth : maxLength)
-                                : maxLength; 
-            
+                        ? ((maxWidth > maxLength) ? maxWidth : maxLength)
+                        : maxLength;
+
                     text.position.y = height - maxHeight/2 + box.getSize(size).y;
-                    text.position.x = (-box.getSize(size).x/2 - barLength/2 - paddingTotal - distance/2 - (p - (numberOfChildYAxises-1)/2) * (childBoxWidth + distanceBetweenChildBoxes));  
-                    text.position.z = (- barWidth/2 - padding - i * (barWidth + 2 * padding) + maxWidth/2 - (q - (numberOfChildXAxises-1)/2) * (childBoxLength + distanceBetweenChildBoxes)); 
-                
+                    text.position.x = (-box.getSize(size).x/2 - barLength/2 - paddingTotal - distance/2 - (p - (numberOfChildYAxises-1)/2) * (childBoxWidth + distanceBetweenChildBoxes));
+                    text.position.z = (- barWidth/2 - padding - i * (barWidth + 2 * padding) + maxWidth/2 - (q - (numberOfChildXAxises-1)/2) * (childBoxLength + distanceBetweenChildBoxes));
+
                     text.visible = false;
                     barLabels.push(text);
                     scene.add(text);
@@ -591,24 +610,24 @@
             });
         }
 
-        
+
         //drawBarChartLabelXAxisTotal: drawing a label of total sum of xAxis values to each bar chart
-        //================================================================================================// 
+        //================================================================================================//
         function drawBarChartLabelXAxisTotal(xAxisTotal, font){
-            
+
             xAxisTotal.forEach(function(xAxisTotalObject, j){
-    
+
                 const numberOfChildren = Object.keys(xAxisTotalObject).length;
-                
+
                 const numberOfChildXAxises = Math.ceil(Math.sqrt(numberOfChildren));
                 const numberOfChildYAxises = Math.ceil(numberOfChildren/numberOfChildXAxises);
                 const childBoxWidth = (barWidth-(numberOfChildYAxises-1)*distanceBetweenChildBoxes)/numberOfChildYAxises;
                 const childBoxLength = (barLength-(numberOfChildXAxises-1)*distanceBetweenChildBoxes)/numberOfChildXAxises;
-                
-                Object.keys(xAxisTotalObject).forEach(function(key, index){       
+
+                Object.keys(xAxisTotalObject).forEach(function(key, index){
                     let p = Math.floor(index/numberOfChildXAxises);
                     let q = index%numberOfChildXAxises;
-                    let label = (averageIsShown) 
+                    let label = (averageIsShown)
                         ? `${(xAxisTotalObject[key].value/xAxisTotalObject[key].count).toFixed(1)}\n(${xAxisTotalObject[key].value.toFixed(1)})`
                         : xAxisTotalObject[key].value.toFixed(1);
                     var geometry = new THREE.TextGeometry( label, {
@@ -623,12 +642,12 @@
                     let height = (averageIsShown) ? xAxisTotalObject[key].value/xAxisTotalObject[key].count : xAxisTotalObject[key].value;
                     height = height/mult;
                     let distance = (endOfGridHelperIsEnabled)
-                                ? ((maxWidth > maxLength) ? maxWidth : maxLength)
-                                : maxWidth; 
+                        ? ((maxWidth > maxLength) ? maxWidth : maxLength)
+                        : maxWidth;
                     text.position.y = height - maxHeight/2 + box.getSize(size).y;
-                    text.position.x = (- box.getSize(size).x/2 - barLength/2 - padding - j * (barLength + 2 * padding) + maxLength/2 - (p - (numberOfChildYAxises-1)/2) * (childBoxWidth + distanceBetweenChildBoxes));  
-                    text.position.z = (- barWidth/2 - paddingTotal - distance/2 - (q - (numberOfChildXAxises-1)/2) * (childBoxLength + distanceBetweenChildBoxes)); 
-                    
+                    text.position.x = (- box.getSize(size).x/2 - barLength/2 - padding - j * (barLength + 2 * padding) + maxLength/2 - (p - (numberOfChildYAxises-1)/2) * (childBoxWidth + distanceBetweenChildBoxes));
+                    text.position.z = (- barWidth/2 - paddingTotal - distance/2 - (q - (numberOfChildXAxises-1)/2) * (childBoxLength + distanceBetweenChildBoxes));
+
                     text.visible = false;
                     barLabels.push(text);
                     scene.add(text);
@@ -652,6 +671,7 @@
                 loading.style.width = "100%";
                 loading.style.height = "100%";
                 loading.style.backgroundColor = "#ffffff";
+                loading.style.opacity = 0.8;
                 let loadingMessage = document.createElement("h4");
                 loadingMessage.textContent = loadingText;
                 loading.appendChild(loadingMessage);
@@ -663,7 +683,7 @@
 
         //showLoading: controlling visibility of loading screen
         //=================================================================================================//
-        function showLoading(isVisible){                    
+        function showLoading(isVisible){
             if (isVisible){
                 document.getElementById("loading").style.display = "flex";
             } else {
@@ -678,8 +698,6 @@
                 let info = document.createElement("div");
                 info.setAttribute("id", "infoScreen");
                 info.style.display = "none";
-                info.style.justifyContent = "top";
-                info.style.alignItems = "left";
                 info.style.position = "absolute";
                 info.style.top = "0";
                 info.style.left = "0";
@@ -705,12 +723,12 @@
             Object.keys(message).forEach(function(key){
                 inner += `<b>${key}:</b> ${message[key]}<br>`;
             });
-            document.getElementById("infoMessage").innerHTML = inner;    
+            document.getElementById("infoMessage").innerHTML = inner;
         }
 
         //showinfoScreen: controlling visibility of info screen
         //=================================================================================================//
-        function showInfoScreen(isVisible){                    
+        function showInfoScreen(isVisible){
             if (isVisible){
                 document.getElementById("infoScreen").style.display = "flex";
             } else {
@@ -719,15 +737,13 @@
         }
 
 
-         //initErrorScreen: Initialization of error screen
+        //initErrorScreen: Initialization of error screen
         //==============================================================================================//
         function initErrorScreen(){
             if (!container.querySelector("[id='errorScreen'")){
                 let error = document.createElement("div");
                 error.setAttribute("id", "errorScreen");
                 error.style.display = "none";
-                error.style.justifyContent = "top";
-                error.style.alignItems = "right";
                 error.style.position = "absolute";
                 error.style.top = "0";
                 error.style.right = "0";
@@ -759,7 +775,7 @@
 
         //showErrorScreen: controlling visibility of error screen
         //=================================================================================================//
-        function showErrorScreen(isVisible){                    
+        function showErrorScreen(isVisible){
             if (isVisible){
                 document.getElementById("errorScreen").style.display = "flex";
             } else {
@@ -770,7 +786,8 @@
 
 
 
-        const scaleIntervals = [1,3,5,10,20,50,100,200,500,1000,2000,5000,10000,20000,50000,100000];
+        const scaleIntervals = [1,3,5,10,20,50,100,200,500,1000,2000,5000,10000,20000,50000,100000, 200000, 500000, 1000000, 2000000, 50000000, 10000000];
+
         return {
             setWidth: function(width){
                 width = width;
@@ -835,7 +852,7 @@
             setPaddingTotal: function(paddingTotal){
                 paddingTotal = paddingTotal;
             },
-            
+
             //begin:camera
             setCameraFov: function(fov){
                 fov = fov;
@@ -847,7 +864,7 @@
                 far = far;
             },
             //end:camera
-            
+
             setTotalYAxisEnabled: function(boolean){
                 totalYAxisEnabled = boolean;
             },
@@ -863,40 +880,41 @@
             setGridHelperType: function(boolean){
                 gridHelperType = boolean;
             },
-            setSizeAutoChangeableIsEnabled: function(boolean){
-                sizeAutoChangeableIsEnabled = boolean;
-            },
             setOpacity: function(value){
                 opacity = value;
             },
             barChart: function(barData){
-                
+
                 //getting xAxis, yAxis and barHeight
-                
+
                 var yAxis = getYAxisLength(barData);
                 var xAxis = getXAxisLength(barData);
                 var barHeight = getBarHeight(barData);
 
-                mult = (barHeight > 500) ? barHeight/500 : barHeight;
-                console.log(mult);
-                
-                if (sizeAutoChangeableIsEnabled){
-                    let mult = barHeight/500;
-                    barLength *= mult;
-                    barWidth *= mult;
-                    padding *= mult;
-                    distanceBetweenChildBoxes *= mult;
-                    paddingTotal *= mult;
-                    yAxisLabelSize *= mult;
-                    barLabelSize *= mult;
-                    xAxisLabelSize *= mult;
-                    scaleLabelSize *= mult;
+                //mult = (barHeight > 500) ? barHeight/500 : barHeight;
+                //let mult = 1;
+                if (barHeight > 500){
+                    mult = barHeight/500;
+
+                    barHeight /= mult;
+                } else {
+                    let m = barHeight/500;
+                    barLength *= m;
+                    barWidth *= m;
+                    padding *= m;
+                    distanceBetweenChildBoxes *= m;
+                    paddingTotal *= m;
+                    yAxisLabelSize *= m;
+                    barLabelSize *= m;
+                    xAxisLabelSize *= m;
+                    scaleLabelSize *= m;
                 }
+
 
                 //setting maxWidth, maxLength, maxHeight
                 setMaxWidth(yAxis);
                 setMaxLength(xAxis);
-                setMaxHeight(barHeight/mult);
+                setMaxHeight(barHeight);
 
                 //installing camera
                 const camera = getCamera();
@@ -937,7 +955,7 @@
                 });
 
                 // Append Renderer to DOM
-                
+
                 while (container.firstChild){
                     container.removeChild(container.firstChild);
                 }
@@ -946,42 +964,40 @@
                 initErrorScreen();
                 const loadingManager = new THREE.LoadingManager( () => {
                     showLoading(false);
-                });
+            });
                 container.appendChild(renderer.domElement);
-                
-                
-                console.log(barData);
-                
+
+
                 //Drawing BarChart
                 drawBarChart(barData, yAxis);
                 const yAxisTotal = getYAxisTotal(barData, yAxis);
                 const xAxisTotal = getXAxisTotal(barData, yAxis);
-                
-                
+
+
                 if (totalYAxisEnabled){
                     drawBarChartYAxisTotal(yAxisTotal, barData);
                 }
                 if (totalXAxisEnabled){
                     drawBarChartXAxisTotal(xAxisTotal, barData);
                 }
-                
+
                 var loader = new THREE.FontLoader(loadingManager);
                 loader.load('/static/admin/integrated_visualization/fonts/Malgun Gothic_Regular.json',
-                
+
                     function(font){
                         showErrorScreen(false);
                         if (yAxisLabelIsEnabled) {
                             drawYAxisLabel(barData, yAxis, font);
                         }
-                        
+
                         if (xAxisLabelIsEnabled){
                             drawXAxisLabel(barData, xAxis, font);
-                        }  
+                        }
 
                         if (barLabelIsEnabled) {
                             drawBarChartLabel(barData, yAxis, font);
                         }
-                        
+
                         if (scaleLabelIsEnabled){
                             drawScaleLabel(font);
                         }
@@ -994,11 +1010,11 @@
                         if (totalXAxisEnabled){
                             drawXAxisTotalLabel(font);
                             drawBarChartLabelXAxisTotal(xAxisTotal, font);
-                        } 
+                        }
                     },
                     // onProgress callback
                     function ( xhr ) {
-                        console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+                        //console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
                     },
                     // onError callback
                     function(err) {
@@ -1008,44 +1024,43 @@
                         showErrorScreen(true);
                     }
                 );
-                
+
                 const domEvents = new THREEx.DomEvents(camera, renderer.domElement);
-                let startAnimation = false;
                 if (barLabelOnMouseHoverIsEnabled){
-                    cubes.forEach(function(cubeData, i) {    
+                    cubes.forEach(function(cubeData, i) {
                         domEvents.addEventListener(cubeData.cube, 'mouseover', event => {
                             cubeData.cube.material.color.set("#ff0000");
-                            if (document.getElementById("infoScreen").style.display == 'none') {
-                                document.getElementById("infoScreen").style.display = 'flex';
-                            }
-                            setTextToInfoScreen(fullBarLabels[i]);
-                            if (barLabelIsEnabled) barLabels[i].visible = !barLabelIsVisible;
-                        });
+                        if (document.getElementById("infoScreen").style.display == 'none') {
+                            document.getElementById("infoScreen").style.display = 'flex';
+                        }
+                        setTextToInfoScreen(fullBarLabels[i].info);
+                        if (barLabelIsEnabled) barLabels[i].visible = !barLabelIsVisible;
+                    });
                         domEvents.addEventListener(cubeData.cube, 'mouseout', event => {
                             cubeData.cube.material.color.set(cubeData.color);
-                            if (barLabelIsEnabled) barLabels[i].visible = barLabelIsVisible;
-                        });
+                        if (barLabelIsEnabled) barLabels[i].visible = barLabelIsVisible;
+                    });
                         domEvents.addEventListener(cubeData.cube, 'click', event => {
-                            console.log(fullBarLabels[i]);
-                            boxWasClicked();
-                        })
+                            boxWasClicked(fullBarLabels[i]);
+                    })
                         domEvents.addEventListener(cubeData.cube, 'contextmenu', event => {
                             e = window.event;
-                            //console.log(container.position());
-                            var pageX = e.pageX - document.body.scrollLeft - document.documentElement.scrollLeft;
-                            var pageY = e.pageY - document.body.scrollTop - document.documentElement.scrollTop;
 
-                            // IE 8
-                            if (pageX === undefined) {
-                                pageX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-                                pageY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-                            }
+                        var pageX = e.pageX - document.body.scrollLeft - document.documentElement.scrollLeft;
+                        var pageY = e.pageY - document.body.scrollTop - document.documentElement.scrollTop;
 
-                            pageX -= Math.floor(container.getBoundingClientRect().left);
-                            pageY -= Math.floor(container.getBoundingClientRect().top);
 
-                            boxContextMenuWasCalled(pageX, pageY);
-                        });    
+                        // IE 8
+                        if (pageX === undefined) {
+                            pageX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+                            pageY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+                        }
+
+                        pageX -= Math.floor(container.getBoundingClientRect().left);
+                        pageY -= Math.floor(container.getBoundingClientRect().top);
+
+                        boxContextMenuWasCalled(pageX, pageY);
+                    });
                     });
                 }
 
@@ -1066,9 +1081,9 @@
                             gridHelper.position.x = (j + 0.5) * (barWidth + 2*padding) - maxLength/2;
                             scene.add(gridHelper);
                         }
-                    }    
+                    }
                 }
-                
+
                 drawScaleLine();
 
                 var geo = new THREE.PlaneBufferGeometry(maxWidth, maxLength);
@@ -1082,9 +1097,10 @@
                     requestAnimationFrame( render );
                     // Render the scene
                     renderer.render(scene, camera);
-                    //update();                   
+                    //update();
                 };
                 render();
+
                 window.addEventListener( 'resize', onWindowResize, false );
 
                 function onWindowResize(){
@@ -1095,7 +1111,6 @@
                     renderer.setSize( container.clientWidth, container.clientHeight);
 
                 }
-
             }
         }
     };

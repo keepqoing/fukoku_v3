@@ -45,7 +45,7 @@ let chipsEnd = $j(`#end`);
 
 const machineStates = new Object();
 machineStates['ACTIVE_TIME_H'] = {
-    label: '부하시간',
+    label: '가동시간',
     color: '#32CD32',
     unit: 'H',
     isChecked: true
@@ -204,6 +204,8 @@ productionStates['PROCESS_CYCLE_TIME_S'] = {
     isChecked: false
 };
 
+let machineActions = [];
+let productionActions = [];
 
 function setLines(lines){
     currentLines = lines;
@@ -294,9 +296,7 @@ function setStates(){
 }
 
 function setCompany(){
-    console.log(selectCompany);
     companies.forEach(function(company, index){
-        console.log(company);
         selectCompany.append(`<option value="${index + 1}">${company}</option>`);
     });
 }
@@ -598,31 +598,94 @@ async function drawChart(xAxis, yAxis, stringStartDate, stringEndDate, lineLabel
     }
 
     if (xAxis == "line" && yAxis == "date"){
+        console.log(jsonData);
+
         let startDate = new Date(stringStartDate);
         let endDate = new Date(stringEndDate);
         let values = new Object();
+        let interval = 'year';
+        if (endDate.getFullYear() - startDate.getFullYear() > 0){
+            interval = 'year';
+        } else {
+            if (endDate.getMonth() - startDate.getMonth() > 0){
+                interval = 'month';
+            } else {
+                interval = 'day';
+            }
+        }
+
         lines.forEach(function(line){
             let dateValues = new Object();
-            for (let year = startDate.getFullYear(); year<=endDate.getFullYear(); year++){
-                let stateValues = new Object();
-                Object.keys(selectedStates).forEach(function(state){
-                    if ($j(`#chb_${state}`).is(':checked')){
-                        stateValues[state] = 0;
+            switch(interval){
+                case 'year':
+                    for (let year = startDate.getFullYear(); year<=endDate.getFullYear(); year++){
+                        let stateValues = new Object();
+                        Object.keys(selectedStates).forEach(function(state){
+                            if ($j(`#chb_${state}`).is(':checked')){
+                                stateValues[state] = 0;
+                            }
+                        });
+                        dateValues[year.toString()] = stateValues;
                     }
-                });
-                dateValues[year.toString()] = stateValues;
+                    break;
+                case 'month':
+                    for (let month = startDate.getMonth() + 1; month<=endDate.getMonth() + 1; month++){
+                        let stateValues = new Object();
+                        Object.keys(selectedStates).forEach(function(state){
+                            if ($j(`#chb_${state}`).is(':checked')){
+                                stateValues[state] = 0;
+                            }
+                        });
+                        dateValues[months[month-1]] = stateValues;
+                    }
+                    break;
+                case 'day':
+                    for (let day = startDate.getDate(); day<=endDate.getDate(); day++){
+                        console.log(day);
+
+                        let stateValues = new Object();
+                        Object.keys(selectedStates).forEach(function(state){
+                            if ($j(`#chb_${state}`).is(':checked')){
+                                stateValues[state] = 0;
+                            }
+                        });
+                        dateValues[day.toString()] = stateValues;
+                    }
+                    break;
             }
+
             values[line] = dateValues;
         });
+        console.log(values);
+
 
         jsonData.forEach(function(data){
             if (lines.includes(data.LINE) && startDate<=new Date(data.WORK_DATE) && endDate>=new Date(data.WORK_DATE)){
                 const dateValues = values[data.LINE];
-                const stateValues = dateValues[new Date(data.WORK_DATE).getFullYear().toString()];
-                Object.keys(stateValues).forEach(function(state){
-                    stateValues[state] += parseFloat(data[state]);
-                });
-                dateValues[new Date(data.WORK_DATE).getFullYear().toString()] = stateValues;
+                let stateValues = new Object();
+                switch(interval){
+                    case 'year':
+                        stateValues = dateValues[new Date(data.WORK_DATE).getFullYear().toString()];
+                        Object.keys(stateValues).forEach(function(state){
+                            stateValues[state] += parseFloat(data[state]);
+                        });
+                        dateValues[new Date(data.WORK_DATE).getFullYear().toString()] = stateValues;
+                        break;
+                    case 'month':
+                        stateValues = dateValues[months[new Date(data.WORK_DATE).getMonth()]];
+                        Object.keys(stateValues).forEach(function(state){
+                            stateValues[state] += parseFloat(data[state]);
+                        });
+                        dateValues[months[new Date(data.WORK_DATE).getMonth()]] = stateValues;
+                        break;
+                    case 'day':
+                        stateValues = dateValues[new Date(data.WORK_DATE).getDate().toString()];
+                        Object.keys(stateValues).forEach(function(state){
+                            stateValues[state] += parseFloat(data[state]);
+                        });
+                        dateValues[new Date(data.WORK_DATE).getDate().toString()] = stateValues;
+                        break;
+                }
                 values[data.LINE] = dateValues;
             }
         });
@@ -662,7 +725,6 @@ async function drawChart(xAxis, yAxis, stringStartDate, stringEndDate, lineLabel
                 values: childData
             })
         });
-
     }
 
     if (xAxis == "date" && yAxis == "line"){
@@ -872,7 +934,6 @@ async function drawChart(xAxis, yAxis, stringStartDate, stringEndDate, lineLabel
     ddwv.setScaleLabelSize(30);
     ddwv.setGridHelperType(false);
     ddwv.setEndOfGridHelperIsEnabled(false);
-    ddwv.setSizeAutoChangeableIsEnabled(false);
     //Setting bar label color. Default color is green("#00ff00")
     ddwv.setFont
     ddwv.setBarLabelColor("#000000");
@@ -961,6 +1022,15 @@ function sendRequest(){
 }
 
 function getMachineAnalysis(xAxis, yAxis, lineLabel, machineLabel, startDate, endDate){
+
+    machineActions.push({
+        xAxis: xAxis,
+        yAxis: yAxis,
+        lineLabel: lineLabel,
+        machineLabel: machineLabel,
+        startDate: startDate,
+        endDate: endDate
+    });
     const line = (lineLabel == 'All') ? "ALL" : lineLabel;
     const machine = (machineLabel == 'All') ? "ALL" : machinesName[machineLabel];
     $.ajax({
@@ -984,8 +1054,18 @@ function getMachineAnalysis(xAxis, yAxis, lineLabel, machineLabel, startDate, en
     });
 }
 function getProductionAnalysis(xAxis, yAxis, lineLabel, machineLabel, startDate, endDate){
+    productionActions.push({
+        xAxis: xAxis,
+        yAxis: yAxis,
+        lineLabel: lineLabel,
+        machineLabel: machineLabel,
+        startDate: startDate,
+        endDate: endDate
+    });
+
     const line = (lineLabel == 'All') ? "ALL" : lineLabel;
     const machine = (machineLabel == 'All') ? "ALL" : machinesName[machineLabel];
+
     $.ajax({
         headers: {
             'Access-Control-Allow-Headers': '*',
@@ -994,29 +1074,6 @@ function getProductionAnalysis(xAxis, yAxis, lineLabel, machineLabel, startDate,
         type: 'GET',
         crossDomain: true,
         url: `http://113.198.137.142:8080/v1/api/fukoku/production-analysis-api?line=${line}&machine=${machine}&start_date=${startDate}&end_date=${endDate}`,
-        success: function(jsonData){
-            switch(jsonData.CODE){
-                case "7777":
-                    drawChart(xAxis, yAxis, startDate, endDate, lineLabel, machineLabel, jsonData.DATA);
-                    break;
-                default:
-                    console.log("Result has been not found!");
-                    break;
-            }
-        }
-    });
-}
-function getAllDatas(xAxis, yAxis, lineLabel, machineLabel, startDate, endDate){
-    const line = (lineLabel == 'All') ? "ALL" : lineLabel;
-    const machine = (machineLabel == 'All') ? "ALL" : machinesName[machineLabel];
-    $.ajax({
-        headers: {
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Origin':'*'
-        },
-        type: 'GET',
-        crossDomain: true,
-        url: `http://113.198.137.142:8080/v1/api/fukoku/process-analysis?line=${line}&machine=${machine}&start_date=${startDate}&end_date=${endDate}`,
         success: function(jsonData){
             switch(jsonData.CODE){
                 case "7777":
@@ -1049,36 +1106,6 @@ async function getAllLineNames(){
     currentLines = lines;
     return lines;
 }
-
-// async function getAllStates(){
-//     const states = new Object();
-//     await $.ajax({
-//         headers: {
-//             'Access-Control-Allow-Headers': '*',
-//             'Access-Control-Allow-Origin':'*'
-//         },
-//         type: 'GET',
-//         crossDomain: true,
-//         url: `http://113.198.137.181:8080/v3/api/fukoku/state-name/find`,
-//         success: function(jsonData){
-//             if (Array.isArray(jsonData.data))
-//                 jsonData.data.forEach(function(state){
-//                     if (state.api_field_name != null){
-//                         states[state.api_field_name] = {
-//                             label: state.korean_name,
-//                             color: state.color,
-//                             unit: state.unit,
-//                             isChecked: (state.status == 1)
-//                         }
-//                     }
-//                 });
-//         } 
-//     });
-//     console.log(states);
-
-//     return states;
-// }
-
 
 async function getMachinesByLineName(line){
     const machines = [];
@@ -1124,14 +1151,59 @@ async function getAllMachineNames(){
     return machines;
 }
 
-function boxWasClicked(){
-    getAllDatas("line", "machine", "HB", "All", startDateOfDatabase, new Date().toISOString().slice(0,10));
+function boxWasClicked(fullBarLabels){
+
+    console.log(`xAxis: ${fullBarLabels.xAxis}`);
+    console.log(`yAxis: ${fullBarLabels.yAxis}`);
+
+    $('.back-btn').css('display', 'flex');
+
+    if ($("#navStates li.active").attr('id') == 'liMachine'){
+        if (machineActions.length > 0){
+            getMachineAnalysis(
+                machineActions[machineActions.length - 1].xAxis,
+                machineActions[machineActions.length - 1].yAxis,
+                fullBarLabels.xAxis,
+                'All',
+                machineActions[machineActions.length - 1].startDate,
+                machineActions[machineActions.length - 1].endDate
+            );
+        }
+    };
+
+    if ($("#navStates li.active").attr('id') == 'liProduction'){
+
+    };
+
+
+    //getAllDatas("line", "machine", "HB", "All", startDateOfDatabase, new Date().toISOString().slice(0,10));
 
 }
 
-// $(document).ready(function(){
-//     console.log('jquery 2.1.4');
-// })
+function backButtonOnClicked(){
+
+    if ($("#navStates li.active").attr('id') == 'liMachine'){
+        machineActions.pop();
+        if (machineActions.length > 0){
+            let previousMachineAction = machineActions[machineActions.length - 1];
+            machineActions.pop();
+            if (machineActions.length == 0){
+                $('.back-btn').css('display', 'none');
+            }
+            getMachineAnalysis(previousMachineAction.xAxis,
+                previousMachineAction.yAxis,
+                previousMachineAction.lineLabel,
+                previousMachineAction.machineLabel,
+                previousMachineAction.startDate,
+                previousMachineAction.endDate)
+        }
+    };
+
+    if ($("#navStates li.active").attr('id') == 'liProduction'){
+
+    };
+
+}
 
 $j(document).ready(async function(){
 
@@ -1345,9 +1417,7 @@ $j(document).ready(async function(){
     });
 
 
-    console.log('jquery 3.3.1');
     const lines = await getAllLineNames();
-    console.log(lines);
     if (lines.length < 1) return;
     setLines(lines);
     const machines = await getAllMachineNames()
@@ -1355,7 +1425,7 @@ $j(document).ready(async function(){
     setStates();
     setCompany();
     setDate();
-    getAllDatas("line", "date", "All", "All", startDateOfDatabase, new Date().toISOString().slice(0,10));
+    sendRequest();
     console.log('send data');
     $('#startDate').datetimepicker({
         format: 'YYYY-MM-DD'
