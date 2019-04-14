@@ -29,6 +29,7 @@
         let distanceBetweenChildBoxes = 10;
 
         let loadingText = "LOADING...";
+        let fullScreenInfoText = "Item values are equal to zero or less than 0.1";
 
         let barWidth = 100;
         let barLength = 100;
@@ -655,6 +656,42 @@
             });
         }
 
+        //initFullScreenInfo: Initialization of Full screen info
+        //==============================================================================================//
+        function initFullScreenInfo(){
+            if (!container.querySelector("[id='fullScreenInfo'")){
+                let fullScreenInfo = document.createElement("div");
+                fullScreenInfo.setAttribute("id", "fullScreenInfo");
+                fullScreenInfo.style.display = "flex";
+                fullScreenInfo.style.justifyContent = "center";
+                fullScreenInfo.style.alignItems = "center";
+                fullScreenInfo.style.position = "absolute";
+                fullScreenInfo.style.top = "0";
+                fullScreenInfo.style.left = "0";
+                fullScreenInfo.style.zIndex = "100";
+                fullScreenInfo.style.width = "100%";
+                fullScreenInfo.style.height = "100%";
+                fullScreenInfo.style.backgroundColor = "#ffffff";
+                fullScreenInfo.style.opacity = 1;
+                let fullScreenInfoMessage = document.createElement("h4");
+                fullScreenInfoMessage.textContent = fullScreenInfoText;
+                fullScreenInfo.appendChild(fullScreenInfoMessage);
+                container.appendChild(fullScreenInfo);
+            } else {
+                showFullScreenInfo(true);
+            }
+        }
+
+        //showFullScreenInfo: controlling visibility of full screen info
+        //=================================================================================================//
+        function showFullScreenInfo(isVisible){
+            if (isVisible){
+                document.getElementById("fullScreenInfo").style.display = "flex";
+            } else {
+                document.getElementById("fullScreenInfo").style.display = "none";
+            }
+        }
+
         //initLoading: Initialization of Loading screen
         //==============================================================================================//
         function initLoading(){
@@ -890,6 +927,14 @@
                 var yAxis = getYAxisLength(barData);
                 var xAxis = getXAxisLength(barData);
                 var barHeight = getBarHeight(barData);
+
+                initFullScreenInfo();
+                if (barHeight > 0){
+                    showFullScreenInfo(false);
+                } else {
+                    showFullScreenInfo(true);
+                    return;
+                }
 
                 //mult = (barHeight > 500) ? barHeight/500 : barHeight;
                 //let mult = 1;
