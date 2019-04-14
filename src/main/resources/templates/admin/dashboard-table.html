@@ -119,20 +119,197 @@
                                                 </thead>
                                                 <tbody id="DASHBOARD">
 
+
+                                                <!-- ============ HC ==================== -->
+                                                <tr>
+                                                    <td>HC
+                                                        <button th:type="button" class="btn btn-success btnDetail"
+                                                                id="btnHCDetail">세부
+                                                        </button>
+                                                    </td>
+                                                    <td><div class="form-group">
+                                                        <select class="form-control" id="hcSelectMachine">
+                                                            <option>설비</option>
+                                                        </select>
+                                                    </div></td>
+                                                    <td style="font-weight:bold;" colspan="2" id="hcMachineEfficiencyRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hcTimeOperationRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hcTotalProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hcNetOperatingTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hcOperatingSpeedRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hcOkProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hcUPH"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hcTheoreticalCycleTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hcProcessCycleTime"></td>
+                                                </tr>
+
+                                                <tr class="hcPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
+
+                                                    <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
+                                                    <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
+
+                                                    <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
+                                                    <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
+
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">UPH = 생산수량 / 부하시간</td>
+                                                    <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
+                                                    <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
+                                                </tr>
+
+                                                <tr class="hcPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                </tr>
+
+                                                <tr class="hcPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>사간가동율</td>
+                                                    <td class="hcTimeOperationRate"></td>
+                                                    <td >부하시간</td>
+                                                    <td class="hcWorkingTime"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="hcTotalProduct"></td>
+
+                                                    <td >공정사이클타임</td>
+                                                    <td class="hcProcessCycleTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="hcTheoreticalCycleTime"></td>
+
+                                                    <td>직행수량</td>
+                                                    <td id="hcOkProduct"></td>
+
+                                                    <td>생산수량</td>
+                                                    <td class="hcTotalProduct"></td>
+
+                                                    <td>목표부하시간</td>
+                                                    <td class="hcTargetWorkingTime"></td>
+                                                    <td>부하시간</td>
+                                                    <td class="hcWorkingTime"></td>
+                                                </tr>
+
+                                                <tr class="hcPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>성능가동율</td>
+                                                    <td class="hcTotalProductRate"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="hcWkNonActiveTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="hcTheoreticalCycleTime"></td>
+
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="hcTotalProduct"></td>
+                                                    <td >공정사이클타임</td>
+                                                    <td class="hcProcessCycleTime"></td>
+
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="hcTotalProduct"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="hcWorkingTimeHour"></td>
+
+                                                    <td>목표수량</td>
+                                                    <td class="hcTargetProductQty"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="hcTotalProduct"></td>
+                                                </tr>
+
+
+                                                <tr class="hcPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>직행율</td>
+                                                    <td class="hcOkProductRate"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하시간</td>
+                                                    <td class="hcWorkingTime"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="hcWorkingTimeSecond"></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr class="hcPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="hcWkNonActiveTime"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="hcWkNonActiveTimeSecond"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
                                                 <!-- ============ IB ==================== -->
                                                 <tr>
-                                                    <td>IB
+
+                                                    <td>IB<BR>
                                                         <button th:type="button" class="btn btn-success btnDetail"
                                                                 id="btnIBDetail">세부
                                                         </button>
                                                     </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <select class="form-control" id="ibSelectMachine">
-                                                                <option>설비</option>
-                                                            </select>
-                                                        </div>
-                                                    </td>
+                                                    <td><div class="form-group">
+                                                        <select class="form-control" id="ibSelectMachine">
+                                                            <option>설비</option>
+                                                        </select>
+                                                    </div></td>
+
+
+
+
+
                                                     <td style="font-weight:bold;" colspan="2" id="ibMachineEfficiencyRate"></td>
                                                     <td style="font-weight:bold;" colspan="2" class="ibTimeOperationRate"></td>
                                                     <td style="font-weight:bold;" colspan="2" class="ibTotalProductRate"></td>
@@ -462,349 +639,10 @@
 
 
 
-                                                <!-- ============ HB ==================== -->
-                                                <tr>
-                                                    <td>HB
-                                                        <button th:type="button" class="btn btn-success btnDetail"
-                                                                id="btnHBDetail">세부
-                                                        </button>
-                                                    </td>
-                                                    <td><div class="form-group">
-                                                        <select class="form-control" id="hbSelectMachine">
-                                                            <option>설비</option>
-                                                        </select>
-                                                    </div></td>
-                                                    <td style="font-weight:bold;" colspan="2" id="hbMachineEfficiencyRate"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hbTimeOperationRate"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hbTotalProductRate"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hbNetOperatingTime"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hbOperatingSpeedRate"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hbOkProductRate"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hbUPH"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hbTheoreticalCycleTime"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hbProcessCycleTime"></td>
-                                                </tr>
-
-
-                                                <tr class="hbPane">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
-                                                    <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
-                                                    <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
-
-                                                    <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
-                                                    <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
-
-                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
-                                                    <td colspan="2">UPH = 생산수량 / 부하시간</td>
-                                                    <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
-                                                    <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
-                                                </tr>
-
-                                                <tr class="hbPane">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                </tr>
-
-                                                <tr class="hbPane">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>사간가동율</td>
-                                                    <td class="hbTimeOperationRate"></td>
-                                                    <td >부하시간</td>
-                                                    <td class="hbWorkingTime"></td>
-                                                    <td>생산수량</td>
-                                                    <td class="hbTotalProduct"></td>
-
-                                                    <td >공정사이클타임</td>
-                                                    <td class="hbProcessCycleTime"></td>
-                                                    <td>이론사이클타임</td>
-                                                    <td class="hbTheoreticalCycleTime"></td>
-
-
-                                                    <td>직행수량</td>
-                                                    <td id="hbOkProduct"></td>
-
-
-                                                    <td>생산수량</td>
-                                                    <td class="hbTotalProduct"></td>
-
-                                                    <td>목표부하시간</td>
-                                                    <td class="hbTargetWorkingTime"></td>
-                                                    <td>부하시간</td>
-                                                    <td class="hbWorkingTime"></td>
-                                                </tr>
-
-                                                <tr class="hbPane">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>성능가동율</td>
-                                                    <td class="hbTotalProductRate"></td>
-                                                    <td>부하비가동시간</td>
-                                                    <td class="hbWkNonActiveTime"></td>
-                                                    <td>이론사이클타임</td>
-                                                    <td class="hbTheoreticalCycleTime"></td>
-
-                                                    <td>생산수량</td>
-                                                    <td class="hbTotalProduct"></td>
-                                                    <td >공정사이클타임</td>
-                                                    <td class="hbProcessCycleTime"></td>
-
-
-                                                    <td>생산수량</td>
-                                                    <td class="hbTotalProduct"></td>
-
-                                                    <td>부하시간</td>
-                                                    <td class="hbWorkingTimeHour"></td>
-
-                                                    <td>목표수량</td>
-                                                    <td class="hbTargetProductQty"></td>
-                                                    <td>생산수량</td>
-                                                    <td class="hbTotalProduct"></td>
-                                                </tr>
-
-
-                                                <tr class="hbPane">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>직행율</td>
-                                                    <td class="hbOkProductRate"></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>부하시간</td>
-                                                    <td class="hbWorkingTime"></td>
-
-                                                    <td>부하시간</td>
-                                                    <td class="hbWorkingTimeSecond"></td>
-
-                                                    <td></td>
-                                                    <td></td>
-
-                                                    <td></td>
-                                                    <td></td>
-
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-
-                                                <tr class="hbPane">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>부하비가동시간</td>
-                                                    <td class="hbWkNonActiveTime"></td>
-                                                    <td>부하비가동시간</td>
-                                                    <td class="hbWkNonActiveTimeSecond"></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-
-
-                                                <!-- ============ HC ==================== -->
-                                                <tr>
-                                                    <td>HC
-                                                        <button th:type="button" class="btn btn-success btnDetail"
-                                                                id="btnHCDetail">세부
-                                                        </button>
-                                                    </td>
-                                                    <td><div class="form-group">
-                                                        <select class="form-control" id="hcSelectMachine">
-                                                            <option>설비</option>
-                                                        </select>
-                                                    </div></td>
-                                                    <td style="font-weight:bold;" colspan="2" id="hcMachineEfficiencyRate"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hcTimeOperationRate"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hcTotalProductRate"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hcNetOperatingTime"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hcOperatingSpeedRate"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hcOkProductRate"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hcUPH"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hcTheoreticalCycleTime"></td>
-                                                    <td style="font-weight:bold;" colspan="2" class="hcProcessCycleTime"></td>
-                                                </tr>
-
-                                                <tr class="hcPane">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
-
-                                                    <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
-                                                    <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
-
-                                                    <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
-                                                    <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
-
-                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
-                                                    <td colspan="2">UPH = 생산수량 / 부하시간</td>
-                                                    <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
-                                                    <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
-                                                </tr>
-
-                                                <tr class="hcPane">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                    <td class="subTitle">요소명</td>
-                                                    <td class="subTitle">값</td>
-                                                </tr>
-
-                                                <tr class="hcPane">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>사간가동율</td>
-                                                    <td class="hcTimeOperationRate"></td>
-                                                    <td >부하시간</td>
-                                                    <td class="hcWorkingTime"></td>
-                                                    <td>생산수량</td>
-                                                    <td class="hcTotalProduct"></td>
-
-                                                    <td >공정사이클타임</td>
-                                                    <td class="hcProcessCycleTime"></td>
-                                                    <td>이론사이클타임</td>
-                                                    <td class="hcTheoreticalCycleTime"></td>
-
-                                                    <td>직행수량</td>
-                                                    <td id="hcOkProduct"></td>
-
-                                                    <td>생산수량</td>
-                                                    <td class="hcTotalProduct"></td>
-
-                                                    <td>목표부하시간</td>
-                                                    <td class="hcTargetWorkingTime"></td>
-                                                    <td>부하시간</td>
-                                                    <td class="hcWorkingTime"></td>
-                                                </tr>
-
-                                                <tr class="hcPane">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>성능가동율</td>
-                                                    <td class="hcTotalProductRate"></td>
-                                                    <td>부하비가동시간</td>
-                                                    <td class="hcWkNonActiveTime"></td>
-                                                    <td>이론사이클타임</td>
-                                                    <td class="hcTheoreticalCycleTime"></td>
 
 
 
-                                                    <td>생산수량</td>
-                                                    <td class="hcTotalProduct"></td>
-                                                    <td >공정사이클타임</td>
-                                                    <td class="hcProcessCycleTime"></td>
 
-
-
-                                                    <td>생산수량</td>
-                                                    <td class="hcTotalProduct"></td>
-
-                                                    <td>부하시간</td>
-                                                    <td class="hcWorkingTimeHour"></td>
-
-                                                    <td>목표수량</td>
-                                                    <td class="hcTargetProductQty"></td>
-                                                    <td>생산수량</td>
-                                                    <td class="hcTotalProduct"></td>
-                                                </tr>
-
-
-                                                <tr class="hcPane">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>직행율</td>
-                                                    <td class="hcOkProductRate"></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>부하시간</td>
-                                                    <td class="hcWorkingTime"></td>
-
-                                                    <td>부하시간</td>
-                                                    <td class="hcWorkingTimeSecond"></td>
-
-                                                    <td></td>
-                                                    <td></td>
-
-                                                    <td></td>
-                                                    <td></td>
-
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-
-                                                <tr class="hcPane">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>부하비가동시간</td>
-                                                    <td class="hcWkNonActiveTime"></td>
-                                                    <td>부하비가동시간</td>
-                                                    <td class="hcWkNonActiveTimeSecond"></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
 
                                                 <!-- ============ HD ==================== -->
                                                 <tr>
@@ -1146,7 +984,176 @@
                                                     <td></td>
                                                 </tr>
 
+                                                <!-- ============ HB ==================== -->
+                                                <tr>
+                                                    <td>HB
+                                                        <button th:type="button" class="btn btn-success btnDetail"
+                                                                id="btnHBDetail">세부
+                                                        </button>
+                                                    </td>
+                                                    <td><div class="form-group">
+                                                        <select class="form-control" id="hbSelectMachine">
+                                                            <option>설비</option>
+                                                        </select>
+                                                    </div></td>
+                                                    <td style="font-weight:bold;" colspan="2" id="hbMachineEfficiencyRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hbTimeOperationRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hbTotalProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hbNetOperatingTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hbOperatingSpeedRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hbOkProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hbUPH"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hbTheoreticalCycleTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="hbProcessCycleTime"></td>
+                                                </tr>
 
+
+                                                <tr class="hbPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
+                                                    <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
+                                                    <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
+
+                                                    <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
+                                                    <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
+
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">UPH = 생산수량 / 부하시간</td>
+                                                    <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
+                                                    <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
+                                                </tr>
+
+                                                <tr class="hbPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                </tr>
+
+                                                <tr class="hbPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>사간가동율</td>
+                                                    <td class="hbTimeOperationRate"></td>
+                                                    <td >부하시간</td>
+                                                    <td class="hbWorkingTime"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="hbTotalProduct"></td>
+
+                                                    <td >공정사이클타임</td>
+                                                    <td class="hbProcessCycleTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="hbTheoreticalCycleTime"></td>
+
+
+                                                    <td>직행수량</td>
+                                                    <td id="hbOkProduct"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="hbTotalProduct"></td>
+
+                                                    <td>목표부하시간</td>
+                                                    <td class="hbTargetWorkingTime"></td>
+                                                    <td>부하시간</td>
+                                                    <td class="hbWorkingTime"></td>
+                                                </tr>
+
+                                                <tr class="hbPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>성능가동율</td>
+                                                    <td class="hbTotalProductRate"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="hbWkNonActiveTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="hbTheoreticalCycleTime"></td>
+
+                                                    <td>생산수량</td>
+                                                    <td class="hbTotalProduct"></td>
+                                                    <td >공정사이클타임</td>
+                                                    <td class="hbProcessCycleTime"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="hbTotalProduct"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="hbWorkingTimeHour"></td>
+
+                                                    <td>목표수량</td>
+                                                    <td class="hbTargetProductQty"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="hbTotalProduct"></td>
+                                                </tr>
+
+
+                                                <tr class="hbPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>직행율</td>
+                                                    <td class="hbOkProductRate"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하시간</td>
+                                                    <td class="hbWorkingTime"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="hbWorkingTimeSecond"></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr class="hbPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="hbWkNonActiveTime"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="hbWkNonActiveTimeSecond"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
                                                 <!--<tr role="row" class="odd" style="text-align:center;font-weight:bold;">-->
                                                 <!--<td colspan="10">콘텐츠 없음</td>-->
                                                 <!--</tr>-->
