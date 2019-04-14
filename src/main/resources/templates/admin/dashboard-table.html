@@ -104,12 +104,13 @@
                                                 <tr>
                                                     <th>라인</th>
                                                     <th>설비</th>
-                                                    <th​​​ colspan="2">설비종합효율</th>
-                                                    <th​​ colspan="2">시간가동율</th>
+
+                                                    <th colspan="2">설비종합효율</th>
+                                                    <th colspan="2">시간가동율</th>
                                                     <th colspan="2">성능가동율</th>
                                                     <th colspan="2">정미가동율 </th>
                                                     <th colspan="2">속도가동율  </th>
-                                                    <th colspan="2">양품율</th>
+                                                    <th colspan="2">직행율</th>
                                                     <th colspan="2">UPH</th>
                                                     <th colspan="2">이론사이클타임</th>
                                                     <th colspan="2">공정 사이클타임</th>
@@ -146,14 +147,14 @@
                                                 <tr class="ibPane">
                                                     <td></td>
                                                     <td></td>
-                                                    <td​ colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 양품율 </td>
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
                                                     <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
                                                     <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
 
                                                     <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
                                                     <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
 
-                                                    <td colspan="2">양품율 = 양품수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
 
                                                     <td colspan="2">UPH = 생산수량 / 부하시간</td>
 
@@ -199,7 +200,7 @@
                                                     <td>이론사이클타임</td>
                                                     <td class="ibTheoreticalCycleTime"></td>
 
-                                                    <td>양품수량</td>
+                                                    <td>직행수량</td>
                                                     <td id="ibOkProduct"></td>
 
                                                     <td>생산수량</td>
@@ -246,7 +247,7 @@
                                                 <tr class="ibPane">
                                                     <td></td>
                                                     <td></td>
-                                                    <td>양품율</td>
+                                                    <td>직행율</td>
                                                     <td class="ibOkProductRate"></td>
                                                     <td></td>
                                                     <td></td>
@@ -319,12 +320,12 @@
                                                 <tr class="haPane">
                                                     <td></td>
                                                     <td></td>
-                                                    <td​ colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 양품율 </td>
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
                                                     <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
                                                     <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
                                                     <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
                                                     <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
-                                                    <td colspan="2">양품율 = 양품수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
                                                     <td colspan="2">UPH = 생산수량 / 부하시간</td>
                                                     <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
                                                     <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
@@ -370,7 +371,7 @@
                                                     <td class="haTheoreticalCycleTime"></td>
 
 
-                                                    <td>양품수량</td>
+                                                    <td>직행수량</td>
                                                     <td id="haOkProduct"></td>
                                                     <td>생산수량</td>
                                                     <td class="haTotalProduct"></td>
@@ -412,7 +413,7 @@
                                                 <tr class="haPane">
                                                     <td></td>
                                                     <td></td>
-                                                    <td>양품율</td>
+                                                    <td>직행율</td>
                                                     <td class="haOkProductRate"></td>
                                                     <td></td>
                                                     <td></td>
@@ -488,14 +489,14 @@
                                                 <tr class="hbPane">
                                                     <td></td>
                                                     <td></td>
-                                                    <td​ colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 양품율 </td>
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
                                                     <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
                                                     <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
 
                                                     <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
                                                     <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
 
-                                                    <td colspan="2">양품율 = 양품수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
                                                     <td colspan="2">UPH = 생산수량 / 부하시간</td>
                                                     <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
                                                     <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
@@ -540,7 +541,7 @@
                                                     <td class="hbTheoreticalCycleTime"></td>
 
 
-                                                    <td>양품수량</td>
+                                                    <td>직행수량</td>
                                                     <td id="hbOkProduct"></td>
 
 
@@ -585,7 +586,7 @@
                                                 <tr class="hbPane">
                                                     <td></td>
                                                     <td></td>
-                                                    <td>양품율</td>
+                                                    <td>직행율</td>
                                                     <td class="hbOkProductRate"></td>
                                                     <td></td>
                                                     <td></td>
@@ -659,14 +660,15 @@
                                                 <tr class="hcPane">
                                                     <td></td>
                                                     <td></td>
-                                                    <td​ colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 양품율 </td>
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
+
                                                     <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
                                                     <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
 
                                                     <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
                                                     <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
 
-                                                    <td colspan="2">양품율 = 양품수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
                                                     <td colspan="2">UPH = 생산수량 / 부하시간</td>
                                                     <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
                                                     <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
@@ -710,7 +712,7 @@
                                                     <td>이론사이클타임</td>
                                                     <td class="hcTheoreticalCycleTime"></td>
 
-                                                    <td>양품수량</td>
+                                                    <td>직행수량</td>
                                                     <td id="hcOkProduct"></td>
 
                                                     <td>생산수량</td>
@@ -757,7 +759,7 @@
                                                 <tr class="hcPane">
                                                     <td></td>
                                                     <td></td>
-                                                    <td>양품율</td>
+                                                    <td>직행율</td>
                                                     <td class="hcOkProductRate"></td>
                                                     <td></td>
                                                     <td></td>
@@ -830,14 +832,15 @@
                                                 <tr class="hdPane">
                                                     <td></td>
                                                     <td></td>
-                                                    <td​ colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 양품율 </td>
+
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
                                                     <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
                                                     <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
 
                                                     <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
                                                     <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
 
-                                                    <td colspan="2">양품율 = 양품수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
 
                                                     <td colspan="2">UPH = 생산수량 / 부하시간</td>
 
@@ -885,7 +888,7 @@
 
 
 
-                                                    <td>양품수량</td>
+                                                    <td>직행수량</td>
                                                     <td id="hdOkProduct"></td>
 
                                                     <td>생산수량</td>
@@ -930,7 +933,7 @@
                                                 <tr class="hdPane">
                                                     <td></td>
                                                     <td></td>
-                                                    <td>양품율</td>
+                                                    <td>직행율</td>
                                                     <td class="hdOkProductRate"></td>
                                                     <td></td>
                                                     <td></td>
@@ -1000,7 +1003,8 @@
                                                 <tr class="pdPane">
                                                     <td></td>
                                                     <td></td>
-                                                    <td​ colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 양품율 </td>
+
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
                                                     <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
                                                     <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
 
@@ -1008,7 +1012,7 @@
                                                     <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
 
 
-                                                    <td colspan="2">양품율 = 양품수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
                                                     <td colspan="2">UPH = 생산수량 / 부하시간</td>
                                                     <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
                                                     <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
@@ -1054,7 +1058,7 @@
                                                     <td class="pdTheoreticalCycleTime"></td>
 
 
-                                                    <td>양품수량</td>
+                                                    <td>직행수량</td>
                                                     <td id="pdOkProduct"></td>
 
                                                     <td>생산수량</td>
@@ -1099,7 +1103,7 @@
                                                 <tr class="pdPane">
                                                     <td></td>
                                                     <td></td>
-                                                    <td>양품율</td>
+                                                    <td>직행율</td>
                                                     <td class="pdOkProductRate"></td>
                                                     <td></td>
                                                     <td></td>
