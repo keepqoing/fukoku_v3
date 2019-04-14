@@ -71,6 +71,63 @@
                 <div class="box box-primary">
                     <div class="box-body">
                         <div class="row">
+                            <!--            HC Line                -->
+                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="font-size: 10pt;">HC LINE</div>
+                                    <div class="panel-body">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <select class="form-control" id="selectHCMachine">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date startTimeClass' id='startTime1'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date endTimeClass' id='endTime1'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                                    </div>
+                                                </div>
+                                                <div class="hiddenInput"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                     style="text-align: center">
+                                                    <span class="totalFacilityRate" id="totalFacilityEfficiency1GaugeContainer"></span>
+                                                    <span class="totalOperatingTimeRate" id="timeOperationRate1GaugeContainer"></span>
+                                                    <span class="totalStartupRate" id="performanceStartupRate1GaugeContainer"></span>
+                                                    <span class="totalYieldRateRate" id="yieldRate1GaugeContainer"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--            IB Line                -->
                             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
                                 <div class="panel panel-default">
                                     <div class="panel-heading" style="font-size: 10pt;">IB LINE</div>
@@ -126,168 +183,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" style="font-size: 10pt;">HC LINE</div>
-                                    <div class="panel-body">
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            <br/>
-                                            <div class="row">
-                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <select class="form-control" id="selectHCMachine">
 
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <div class='input-group date startTimeClass' id='startTime1'>
-                                                            <input type='text' class="form-control"/>
-                                                            <span class="input-group-addon">
-                                                        <span class="glyphicon glyphicon-calendar"></span>
-                                                    </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <div class='input-group date endTimeClass' id='endTime1'>
-                                                            <input type='text' class="form-control"/>
-                                                            <span class="input-group-addon">
-                                                        <span class="glyphicon glyphicon-calendar"></span>
-                                                    </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
-                                                    </div>
-                                                </div>
-                                                <div class="hiddenInput"></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                                     style="text-align: center">
-                                                    <span class="totalFacilityRate" id="totalFacilityEfficiency1GaugeContainer"></span>
-                                                    <span class="totalOperatingTimeRate" id="timeOperationRate1GaugeContainer"></span>
-                                                    <span class="totalStartupRate" id="performanceStartupRate1GaugeContainer"></span>
-                                                    <span class="totalYieldRateRate" id="yieldRate1GaugeContainer"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" style="font-size: 10pt;">HD LINE</div>
-                                    <div class="panel-body">
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            <br/>
-                                            <div class="row">
-                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <select class="form-control" id="selectHDMachine">
-
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <div class='input-group date startTimeClass' id='startTime2'>
-                                                            <input type='text' class="form-control"/>
-                                                            <span class="input-group-addon">
-                                                        <span class="glyphicon glyphicon-calendar"></span>
-                                                    </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <div class='input-group date endTimeClass' id='endTime2'>
-                                                            <input type='text' class="form-control"/>
-                                                            <span class="input-group-addon">
-                                                                <span class="glyphicon glyphicon-calendar"></span>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
-                                                    </div>
-                                                </div>
-                                                <div class="hiddenInput"></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                                     style="text-align: center">
-                                                    <span class="totalFacilityRate" id="totalFacilityEfficiency2GaugeContainer"></span>
-                                                    <span class="totalOperatingTimeRate" id="timeOperationRate2GaugeContainer"></span>
-                                                    <span class="totalStartupRate" id="performanceStartupRate2GaugeContainer"></span>
-                                                    <span class="totalYieldRateRate" id="yieldRate2GaugeContainer"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" style="font-size: 10pt;">PD LINE</div>
-                                    <div class="panel-body">
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            <br/>
-                                            <div class="row">
-                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <select class="form-control" id="selectPDMachine">
-
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <div class='input-group date startTimeClass' id='startTime3'>
-                                                            <input type='text' class="form-control"/>
-                                                            <span class="input-group-addon">
-                                                        <span class="glyphicon glyphicon-calendar"></span>
-                                                    </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <div class='input-group date endTimeClass' id='endTime3'>
-                                                            <input type='text' class="form-control"/>
-                                                            <span class="input-group-addon">
-                                                        <span class="glyphicon glyphicon-calendar"></span>
-                                                    </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
-                                                    </div>
-                                                </div>
-                                                <div class="hiddenInput"></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                                     style="text-align: center">
-                                                    <span class="totalFacilityRate" id="totalFacilityEfficiency3GaugeContainer"></span>
-                                                    <span class="totalOperatingTimeRate" id="timeOperationRate3GaugeContainer"></span>
-                                                    <span class="totalStartupRate" id="performanceStartupRate3GaugeContainer"></span>
-                                                    <span class="totalYieldRateRate" id="yieldRate3GaugeContainer"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!--            HA Line                -->
                             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
                                 <div class="panel panel-default">
                                     <div class="panel-heading" style="font-size: 10pt;">HA LINE</div>
@@ -342,6 +239,121 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!--            HD Line                -->
+                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="font-size: 10pt;">HD LINE</div>
+                                    <div class="panel-body">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <select class="form-control" id="selectHDMachine">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date startTimeClass' id='startTime2'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date endTimeClass' id='endTime2'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                                    </div>
+                                                </div>
+                                                <div class="hiddenInput"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                     style="text-align: center">
+                                                    <span class="totalFacilityRate" id="totalFacilityEfficiency2GaugeContainer"></span>
+                                                    <span class="totalOperatingTimeRate" id="timeOperationRate2GaugeContainer"></span>
+                                                    <span class="totalStartupRate" id="performanceStartupRate2GaugeContainer"></span>
+                                                    <span class="totalYieldRateRate" id="yieldRate2GaugeContainer"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--            PD Line                -->
+                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="font-size: 10pt;">PD LINE</div>
+                                    <div class="panel-body">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <select class="form-control" id="selectPDMachine">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date startTimeClass' id='startTime3'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date endTimeClass' id='endTime3'>
+                                                            <input type='text' class="form-control"/>
+                                                            <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <button th:type="button" class="btn btn-secondary btnSearch">검색</button>
+                                                    </div>
+                                                </div>
+                                                <div class="hiddenInput"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                     style="text-align: center">
+                                                    <span class="totalFacilityRate" id="totalFacilityEfficiency3GaugeContainer"></span>
+                                                    <span class="totalOperatingTimeRate" id="timeOperationRate3GaugeContainer"></span>
+                                                    <span class="totalStartupRate" id="performanceStartupRate3GaugeContainer"></span>
+                                                    <span class="totalYieldRateRate" id="yieldRate3GaugeContainer"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!--            HB Line                -->
                             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
                                 <div class="panel panel-default">
                                     <div class="panel-heading" style="font-size: 10pt;">HB LINE</div>
