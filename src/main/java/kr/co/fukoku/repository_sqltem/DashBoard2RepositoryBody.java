@@ -105,7 +105,8 @@ public class DashBoard2RepositoryBody implements DashBoard2Repository {
                 d.setTotal_product(rs.getString("total_product"));
                 d.setOk_product(rs.getString("ok_product"));
                 d.setNg_product(rs.getString("ng_product"));
-
+                d.setBypassed_product(rs.getString("bypassed_product"));
+                d.setBypassed_product_rate(rs.getString("bypassed_product_rate"));
 
                 return d;
             };

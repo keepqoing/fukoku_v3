@@ -16,13 +16,13 @@ $(function () {
                 json: jsonData,
                 keys: {
                     x: xAxisValue, // it's possible to specify 'x' when category axis
-                    value: ['EFFICIENCY_RATE', 'TIME_OPERATION_RATE','TOTAL_PRODUCT_RATE','OK_PRODUCT_RATE']
+                    value: ['EFFICIENCY_RATE', 'TIME_OPERATION_RATE','TOTAL_PRODUCT_RATE','BYPASSED_PRODUCT_RATE']
                 },
                 names:{
                     EFFICIENCY_RATE:"설비종합효율",
                     TIME_OPERATION_RATE:"시간가동율",
                     TOTAL_PRODUCT_RATE:"성능가동율",
-                    OK_PRODUCT_RATE:"양품율"
+                    BYPASSED_PRODUCT_RATE:"직행율"
                 }
             },
             axis: {
@@ -30,7 +30,7 @@ $(function () {
                     type: 'timeseries',
                     tick: {
                         format: '%Y-%m-%d',
-                        rotate:30,
+                        rotate:90,
                         culling: false
                     }
                 }
@@ -50,20 +50,20 @@ $(function () {
                 json: jsonData,
                 keys: {
                     x: xAxisValue, // it's possible to specify 'x' when category axis
-                    value: ['TOTAL_PRODUCT_RATE', 'TIME_OPERATION_RATE','OK_PRODUCT_RATE','EFFICIENCY_RATE']
+                    value: ['TOTAL_PRODUCT_RATE', 'TIME_OPERATION_RATE','BYPASSED_PRODUCT_RATE','EFFICIENCY_RATE']
                 },
                 names:{
                     EFFICIENCY_RATE:"설비종합효율",
                     TIME_OPERATION_RATE:"시간가동율",
                     TOTAL_PRODUCT_RATE:"성능가동율",
-                    OK_PRODUCT_RATE:"양품율"
+                    BYPASSED_PRODUCT_RATE:"직행율"
                 }
             },
             axis: {
                 x: {
                     type: 'category',
                     tick: {
-                        rotate:30,
+                        rotate:90,
                         culling: false
                     }
                 }
@@ -159,7 +159,7 @@ $(function () {
                             response.daily_mstate_analysis[key]["EFFICIENCY_RATE"] = parseFloat(value.machine_efficiency_rate)	;
                             response.daily_mstate_analysis[key]["TIME_OPERATION_RATE"] = parseFloat(value.time_operation_rate)	;
                             response.daily_mstate_analysis[key]["TOTAL_PRODUCT_RATE"] = parseFloat(value.total_product_rate)	;
-                            response.daily_mstate_analysis[key]["OK_PRODUCT_RATE"] = parseFloat(value.ok_product_rate)	;
+                            response.daily_mstate_analysis[key]["BYPASSED_PRODUCT_RATE"] = parseFloat(value.bypassed_product_rate)	;
                             response.daily_mstate_analysis[key]["START_TIME"] = value.start_date	;
                             response.daily_mstate_analysis[key]["END_TIME"] = value.end_date	;
                             response.daily_mstate_analysis[key]["TIME"] = "08:00";
@@ -275,7 +275,7 @@ $(function () {
                             response.daily_mstate_analysis[key]["EFFICIENCY_RATE"] = parseFloat(value.machine_efficiency_rate)	;
                             response.daily_mstate_analysis[key]["TIME_OPERATION_RATE"] = parseFloat(value.time_operation_rate)	;
                             response.daily_mstate_analysis[key]["TOTAL_PRODUCT_RATE"] = parseFloat(value.total_product_rate)	;
-                            response.daily_mstate_analysis[key]["OK_PRODUCT_RATE"] = parseFloat(value.ok_product_rate)	;
+                            response.daily_mstate_analysis[key]["BYPASSED_PRODUCT_RATE"] = parseFloat(value.bypassed_product_rate)	;
                             response.daily_mstate_analysis[key]["START_TIME"] = value.start_date	;
                             response.daily_mstate_analysis[key]["END_TIME"] = value.end_date	;
                             response.daily_mstate_analysis[key]["TIME"] = "08:00";

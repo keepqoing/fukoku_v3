@@ -40,18 +40,18 @@ $(function () {
                         // console.log("machine : " + parseFloat(response.DATA[0].machine_efficiency_rate).toFixed(2));
                         // console.log("time operation : " + parseFloat(response.DATA[0].time_operation_rate).toFixed(2));
                         // console.log("total product : " + parseFloat(response.DATA[0].total_product_rate).toFixed(2));
-                        // console.log("ok product : " + parseFloat(response.DATA[0].ok_product_rate).toFixed(2));
+                        // console.log("ok product : " + parseFloat(response.DATA[0].bypassed_product_rate).toFixed(2));
                              line_name = lineId.toLowerCase();
                             $('#'+line_name+'MachineEfficiencyRate').html(parseFloat(response.DATA[0].machine_efficiency_rate).toFixed(2) + "%");
                             $('.'+line_name+'TimeOperationRate').html(parseFloat(response.DATA[0].time_operation_rate).toFixed(2) + "%");
                             $('.'+line_name+'TotalProductRate').html(parseFloat(response.DATA[0].total_product_rate).toFixed(2) + "%");
-                            $('.'+line_name+'OkProductRate').html(parseFloat(response.DATA[0].ok_product_rate).toFixed(2) + "%");
+                            $('.'+line_name+'BypassedProductRate').html(parseFloat(response.DATA[0].bypassed_product_rate).toFixed(2) + "%");
 
                             $('.'+line_name+'WorkingTime').html((parseFloat(response.DATA[0].working_time_s) / 60).toFixed(2) + " 분");
                             $('.'+line_name+'WkNonActiveTime').html((parseFloat(response.DATA[0].working_nonactive_time_s) / 60).toFixed(2) + " 분");
 
                             $('.'+line_name+'TotalProduct').html(response.DATA[0].total_product + " 개");
-                            $('#'+line_name+'OkProduct').html(response.DATA[0].ok_product + " 개");
+                            $('#'+line_name+'OkProduct').html(response.DATA[0].bypassed_product + " 개");
                             $('.'+line_name+'TargetProductQty').html(response.DATA[0].target_product_qty + " 개");
 
 
@@ -106,7 +106,7 @@ $(function () {
                              $('#'+line_name+'MachineEfficiencyRate').html("");
                              $('.'+line_name+'TimeOperationRate').html("");
                              $('.'+line_name+'TotalProductRate').html("");
-                             $('.'+line_name+'OkProductRate').html("");
+                             $('.'+line_name+'BypassedProductRate').html("");
 
                              $('.'+line_name+'WorkingTime').html("");
                              $('.'+line_name+'WkNonActiveTime').html("");
@@ -171,14 +171,14 @@ $(function () {
 
     function loadData(startTime, endTime){
         // Example getAllDashboard is the ajax Requesst Function so it will be asynchronous I added the callback function         // It is callback function
-        dashboardTable.getAllDashBoard("IB",$("#ibSelectMachine").val(),startTime, endTime.substring(0, 10), endTime.substring(11), function(){
+        dashboardTable.getAllDashBoard("HC",$("#ibSelectMachine").val(),startTime, endTime.substring(0, 10), endTime.substring(11), function(){
             // Body of this callback call the getAllDashboard
-            dashboardTable.getAllDashBoard("HA",$("#haSelectMachine").val(),startTime, endTime.substring(0, 10), endTime.substring(11), function(){
+            dashboardTable.getAllDashBoard("IB",$("#haSelectMachine").val(),startTime, endTime.substring(0, 10), endTime.substring(11), function(){
                 // Body of another callback function call the getAllDash..
-                dashboardTable.getAllDashBoard("HB",$("#hbSelectMachine").val(),startTime, endTime.substring(0, 10), endTime.substring(11), function(){
-                    dashboardTable.getAllDashBoard("HC",$("#hcSelectMachine").val(),startTime, endTime.substring(0, 10), endTime.substring(11), function(){
-                        dashboardTable.getAllDashBoard("HD",$("#hdSelectMachine").val(),startTime, endTime.substring(0, 10), endTime.substring(11), function(){
-                            dashboardTable.getAllDashBoard("PD",$("#pdSelectMachine").val(),startTime, endTime.substring(0, 10), endTime.substring(11), function(){
+                dashboardTable.getAllDashBoard("HA",$("#hbSelectMachine").val(),startTime, endTime.substring(0, 10), endTime.substring(11), function(){
+                    dashboardTable.getAllDashBoard("HD",$("#hcSelectMachine").val(),startTime, endTime.substring(0, 10), endTime.substring(11), function(){
+                        dashboardTable.getAllDashBoard("PD",$("#hdSelectMachine").val(),startTime, endTime.substring(0, 10), endTime.substring(11), function(){
+                            dashboardTable.getAllDashBoard("HB",$("#pdSelectMachine").val(),startTime, endTime.substring(0, 10), endTime.substring(11), function(){
                                 // Finally Body of another callback function call the closeLoading because it is the last one and we want to close the Loading
                                 // That's all major. Thank so much,teacher Do you understand or not? Yes, I do. Thank so much It is a little bit slow but it ccan help to solve that problem
                                 // Because we change from asynchronous to synchronous
@@ -196,14 +196,14 @@ $(function () {
 
     function loadDataForFirstTime(startTime, endTime){
         // Example getAllDashboard is the ajax Requesst Function so it will be asynchronous I added the callback function         // It is callback function
-        dashboardTable.getAllDashBoard("IB","IB_Runout",startTime, endTime.substring(0, 10), endTime.substring(11), function(){
+        dashboardTable.getAllDashBoard("HC","HC_TP",startTime, endTime.substring(0, 10), endTime.substring(11), function(){
             // Body of this callback call the getAllDashboard
-            dashboardTable.getAllDashBoard("HA","HA_Runout",startTime, endTime.substring(0, 10), endTime.substring(11), function(){
+            dashboardTable.getAllDashBoard("IB","IB_Runout",startTime, endTime.substring(0, 10), endTime.substring(11), function(){
                 // Body of another callback function call the getAllDash..
-                dashboardTable.getAllDashBoard("HB","HB_Tmarker",startTime, endTime.substring(0, 10), endTime.substring(11), function(){
-                    dashboardTable.getAllDashBoard("HC","HC_TP",startTime, endTime.substring(0, 10), endTime.substring(11), function(){
-                        dashboardTable.getAllDashBoard("HD","HD_Runout",startTime, endTime.substring(0, 10), endTime.substring(11), function(){
-                            dashboardTable.getAllDashBoard("PD","PD_Pnt",startTime, endTime.substring(0, 10), endTime.substring(11), function(){
+                dashboardTable.getAllDashBoard("HA","HA_Runout",startTime, endTime.substring(0, 10), endTime.substring(11), function(){
+                    dashboardTable.getAllDashBoard("HD","HD_Runout",startTime, endTime.substring(0, 10), endTime.substring(11), function(){
+                        dashboardTable.getAllDashBoard("PD","PD_Pnt",startTime, endTime.substring(0, 10), endTime.substring(11), function(){
+                            dashboardTable.getAllDashBoard("HB","HB_Tmarker",startTime, endTime.substring(0, 10), endTime.substring(11), function(){
                                 // Finally Body of another callback function call the closeLoading because it is the last one and we want to close the Loading
                                 // That's all major. Thank so much,teacher Do you understand or not? Yes, I do. Thank so much It is a little bit slow but it ccan help to solve that problem
                                 // Because we change from asynchronous to synchronous
@@ -315,14 +315,16 @@ $(function () {
     // HIDE AND SHOW PANE OF LINE DETAILS
     $(function() {
 
+        dashboardTable.getAllMachineNameByLineName("HC");
         dashboardTable.getAllMachineNameByLineName("IB");
         dashboardTable.getAllMachineNameByLineName("HA");
-        dashboardTable.getAllMachineNameByLineName("HB");
-        dashboardTable.getAllMachineNameByLineName("HC");
         dashboardTable.getAllMachineNameByLineName("HD");
         dashboardTable.getAllMachineNameByLineName("PD");
+        dashboardTable.getAllMachineNameByLineName("HB");
 
-
+        $('#btnHCDetail').click(function() {
+            $('.hcPane').toggle();
+        });
 
         $('#btnIBDetail').click(function() {
             $('.ibPane').toggle();
@@ -330,14 +332,6 @@ $(function () {
 
         $('#btnHADetail').click(function() {
             $('.haPane').toggle();
-        });
-
-        $('#btnHBDetail').click(function() {
-            $('.hbPane').toggle();
-        });
-
-        $('#btnHCDetail').click(function() {
-            $('.hcPane').toggle();
         });
 
         $('#btnHDDetail').click(function() {
@@ -348,18 +342,21 @@ $(function () {
             $('.pdPane').toggle();
         });
 
+        $('#btnHBDetail').click(function() {
+            $('.hbPane').toggle();
+        });
 
         openLoading();
         loadDataForFirstTime($("#txtStartTime").val(), $("#txtEndTime").val());
     });
 
 
+    $('.hcPane').toggle();
     $('.ibPane').toggle();
     $('.haPane').toggle();
-    $('.hbPane').toggle();
-    $('.hcPane').toggle();
     $('.hdPane').toggle();
     $('.pdPane').toggle();
+    $('.hbPane').toggle();
 
 
 });

@@ -43,7 +43,9 @@ public class DailyMstateAnalysisRepoSQLBuilder {
                 "\ttheoretical_product_qty,\n" +
                 "\ttotal_product,\n" +
                 "\tok_product,\n" +
-                "\tng_product"+
+                "\tng_product,\n"+
+                "\tbypassed_product,\n"+
+                "\tbypassed_product_rate * 100 bypassed_product_rate"+
                 " from fukoku_v2.daily_mstate_analysis_"+filter.getLine().toLowerCase() +" WHERE ");
         if(!filter.getLine().equalsIgnoreCase("")){
             buffer.append(" line=#{f.line} ");
