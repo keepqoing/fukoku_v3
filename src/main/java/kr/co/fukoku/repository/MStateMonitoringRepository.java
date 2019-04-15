@@ -102,8 +102,8 @@ public interface MStateMonitoringRepository {
 	Map<String, Object> findLastMStateV2(@Param("ref_machine") String refMachine );
 	
 	
-	@Select("select pi_ds,pi_m from monitoring_workpiece_tmp where \r\n" + 
-			"mi_mn=(select ref_machine from process_chain_machine  where SUBSTRING_INDEX(ref_machine,'_',1) = #{line} order by seq desc limit 1) \r\n" + 
+	@Select("select daily_seq as pi_ds,  product_name as pi_m from monitoring_workpiece_amount_tmp where \r\n" + 
+			"machine_name=(select ref_machine from process_chain_machine  where SUBSTRING_INDEX(ref_machine,'_',1) = #{line} order by seq desc limit 1) \r\n" + 
 			"order by id desc limit 1;")
 	Map<String, Object> findLastDailySeqV2(@Param("line") String refMachine );
 	
