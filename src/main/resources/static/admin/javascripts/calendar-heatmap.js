@@ -138,7 +138,7 @@ $(function () {
                             option.text = response.data[i].name; // show factory name
                             sel.appendChild(option);
                         }
-                        // $("#selFactory").prop("selectedIndex",1).change();
+                        $("#selFactory").prop("selectedIndex",1).change();
 
 
                     }
@@ -149,8 +149,7 @@ $(function () {
             }
         });
     };
-    // First load, call this function
-    calHeatmap.getAllFactories();
+
 
 
     // When the factory select box is changed, so we need to query the lines
@@ -178,6 +177,8 @@ $(function () {
                     $.each(response.data, function(key, value){
                         $("#select-line").append("<option value="+value.name+">"+value.name+"</option>");
                     });
+
+                    $("#select-line").prop("selectedIndex",0).change();
                 }
             },
             error:function(data,status,err) {
@@ -205,6 +206,8 @@ $(function () {
                     $.each(response.data, function(key, value){
                         $("#select-machine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
+
+                    $("#select-machine").prop("selectedIndex",0).change();
                 }
             },
             error:function(data,status,err) {
@@ -215,7 +218,7 @@ $(function () {
 
     // calHeatmap.getAllLinesName();
     // calHeatmap.getAllMachineNameByLineName('ALL');
-    $('#select-line').on('click', function () {
+    $('#select-line').on('change', function () {
         calHeatmap.getAllMachineNameByLineName();
     });
 
@@ -394,10 +397,41 @@ $(function () {
         });
     };
 
-    // calHeatmap.getCountTT();
 
 
-    $('#btnSearch').click(function () {
-       calHeatmap.getCountTT();
+
+
+    $(document).ready(function () {
+        // First load, call this function
+        calHeatmap.getAllFactories();
+
+        $(function(){
+           $('#year').datetimepicker({
+               format: 'YYYY'
+           });
+        });
+
+        $('#txtYear').val(new Date().getFullYear());
+
+
+        calHeatmap.getCountTT();
+
+        $(function() {
+            $('#btnSearch').click(function () {
+                calHeatmap.getCountTT();
+            });
+        });
+
+
+
+
     });
+
+    // $(document).ready("#btnSearch").click(function() {
+    //     calHeatmap.getCountTT();
+    // });
+
+
+
+
 });

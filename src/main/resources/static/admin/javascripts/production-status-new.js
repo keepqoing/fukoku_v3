@@ -41,8 +41,7 @@ $(function() {
                             option.text = response.data[i].name; // show factory name
                             sel.appendChild(option);
                         }
-                        // $("#selFactory").prop("selectedIndex",1).change();
-
+                        $("#selFactory").prop("selectedIndex",1).change();
 
                     }
                 }
@@ -52,8 +51,7 @@ $(function() {
             }
         });
     };
-    // First load, call this function
-    productionStatus.getAllFactories();
+
 
 
     // When the factory select box is changed, so we need to query the lines
@@ -81,6 +79,8 @@ $(function() {
                     $.each(response.data, function(key, value){
                         $("#selectLine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
+
+                    $("#selectLine").prop("selectedIndex",2).change();
                 }
             },
             error:function(data,status,err) {
@@ -108,6 +108,8 @@ $(function() {
                     $.each(response.data, function(key, value){
                         $("#selectMachine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
+
+                    $("#selectMachine").prop("selectedIndex",6).change();
                 }
             },
             error:function(data,status,err) {
@@ -430,9 +432,18 @@ $(function() {
 
 
 
-    productionStatus.getAllMachinesNameV2();
+    // productionStatus.getAllMachinesNameV2();
 
 
 
     //productionStatus.getYearlyReport();
+
+    /***
+     * Page Load - Pre selection
+     */
+    $(document).ready(function () {
+        productionStatus.getAllFactories();
+    });
+
+
 });
