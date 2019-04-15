@@ -1,4 +1,4 @@
-package kr.co.fukoku.repository.sql;
+package kr.co.fukoku.repository_sqltem;
 
 import kr.co.fukoku.filters.ProductStatusFreqFilter;
 import kr.co.fukoku.model.ProductStatusFreqOrigin;

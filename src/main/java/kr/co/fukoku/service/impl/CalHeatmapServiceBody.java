@@ -2,7 +2,7 @@ package kr.co.fukoku.service.impl;
 
 import kr.co.fukoku.filters.CalHeatmapFilter;
 import kr.co.fukoku.model.CalHeatmap;
-import kr.co.fukoku.repository.sql.CalHeatmapRepository;
+import kr.co.fukoku.repository_sqltem.CalHeatmapRepository;
 import kr.co.fukoku.service.CalHeatmapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -6,7 +6,7 @@ import kr.co.fukoku.filters.ProductStatusFreqFilter;
 import kr.co.fukoku.model.*;
 import kr.co.fukoku.repository.LineRepository;
 import kr.co.fukoku.repository.MachineRepository;
-import kr.co.fukoku.repository.sql.ProductStatusFreqRepository;
+import kr.co.fukoku.repository_sqltem.ProductStatusFreqRepository;
 import kr.co.fukoku.service.ProductStatusFreqService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

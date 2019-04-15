@@ -1,10 +1,10 @@
-package kr.co.fukoku.repository.sql;
+package kr.co.fukoku.repository_sqltem;
+
 
 import kr.co.fukoku.filters.DashBoardFilter2;
 import kr.co.fukoku.filters.ProductStatusFilter;
 import kr.co.fukoku.model.ProcessAnalysis;
 import kr.co.fukoku.model.ProductStatusGraphNew;
-import kr.co.fukoku.repository_sqltem.SQLStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

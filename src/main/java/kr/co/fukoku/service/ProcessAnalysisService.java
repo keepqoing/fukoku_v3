@@ -11,5 +11,5 @@ import java.util.List;
 
 public interface ProcessAnalysisService {
     List<ProcessAnalysis> getProcessAnalysisResult(DashBoardFilter2 dashBoardFilter2) throws SQLException;
-    List<ProductStatusGraphNew> getAllProductStatusGraphs(ProductStatusFilter filter) throws BusinessException, SQLException;
+    List<ProductStatusGraphNew> getAllProductStatusGraphs(ProductStatusFilter productStatusFilter) throws BusinessException, SQLException;
 }

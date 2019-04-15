@@ -1,8 +1,7 @@
-package kr.co.fukoku.repository.sql;
+package kr.co.fukoku.repository_sqltem;
 
 import kr.co.fukoku.filters.ProductStatusFreqFilter;
 import kr.co.fukoku.model.ProductStatusFreqOrigin;
-import kr.co.fukoku.repository_sqltem.SQLStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

@@ -1,6 +1,5 @@
 package kr.co.fukoku.controller;
 
-
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import kr.co.fukoku.exception.BusinessException;
@@ -22,9 +21,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @RestController
-
+@CrossOrigin(origins = "*")
 @RequestMapping("/v3/api/fukoku/process-analysis")
 public class ProcessAnalysisRestController {
 

@@ -64,7 +64,7 @@ public class ProcessAnalysis {
     public ProcessAnalysis() {
     }
 
-    public ProcessAnalysis(String line, String machine, String product_model, String start_date, String end_date, String work_date, double working_time_h, double active_time_h, double working_nonactive_time_h, double working_nonactive_time_rate, double uph, int total_product, int ok_product, int defective_product, double defective_product_rate, int ng_product, double ng_product_rate, double process_cycle_time_s, double theoretical_product_qty, int row_num, double total_product_rate, double time_operation_rate, double ok_product_rate, int target_product_qty, double theoretical_cycle_time_s, int bypassed_product, double bypassed_product_rate) {
+    public ProcessAnalysis(String line, String machine, String product_model, String start_date, String end_date, String work_date, double working_time_h, double active_time_h, double working_nonactive_time_h, double working_nonactive_time_rate, double uph, int total_product, int ok_product, int defective_product, double defective_product_rate, int ng_product, double ng_product_rate, double theoretical_product_qty, double process_cycle_time_s, double total_product_rate, double time_operation_rate, double ok_product_rate, int target_product_qty, double theoretical_cycle_time_s, int bypassed_product, double bypassed_product_rate, int row_num) {
         this.line = line;
         this.machine = machine;
         this.product_model = product_model;
@@ -82,9 +82,8 @@ public class ProcessAnalysis {
         this.defective_product_rate = defective_product_rate;
         this.ng_product = ng_product;
         this.ng_product_rate = ng_product_rate;
-        this.process_cycle_time_s = process_cycle_time_s;
         this.theoretical_product_qty = theoretical_product_qty;
-        this.row_num = row_num;
+        this.process_cycle_time_s = process_cycle_time_s;
         this.total_product_rate = total_product_rate;
         this.time_operation_rate = time_operation_rate;
         this.ok_product_rate = ok_product_rate;
@@ -92,6 +91,7 @@ public class ProcessAnalysis {
         this.theoretical_cycle_time_s = theoretical_cycle_time_s;
         this.bypassed_product = bypassed_product;
         this.bypassed_product_rate = bypassed_product_rate;
+        this.row_num = row_num;
     }
 
     public String getLine() {
@@ -230,14 +230,6 @@ public class ProcessAnalysis {
         this.ng_product_rate = ng_product_rate;
     }
 
-    public double getProcess_cycle_time_s() {
-        return process_cycle_time_s;
-    }
-
-    public void setProcess_cycle_time_s(double process_cycle_time_s) {
-        this.process_cycle_time_s = process_cycle_time_s;
-    }
-
     public double getTheoretical_product_qty() {
         return theoretical_product_qty;
     }
@@ -246,12 +238,12 @@ public class ProcessAnalysis {
         this.theoretical_product_qty = theoretical_product_qty;
     }
 
-    public int getRow_num() {
-        return row_num;
+    public double getProcess_cycle_time_s() {
+        return process_cycle_time_s;
     }
 
-    public void setRow_num(int row_num) {
-        this.row_num = row_num;
+    public void setProcess_cycle_time_s(double process_cycle_time_s) {
+        this.process_cycle_time_s = process_cycle_time_s;
     }
 
     public double getTotal_product_rate() {
@@ -308,5 +300,13 @@ public class ProcessAnalysis {
 
     public void setBypassed_product_rate(double bypassed_product_rate) {
         this.bypassed_product_rate = bypassed_product_rate;
+    }
+
+    public int getRow_num() {
+        return row_num;
+    }
+
+    public void setRow_num(int row_num) {
+        this.row_num = row_num;
     }
 }

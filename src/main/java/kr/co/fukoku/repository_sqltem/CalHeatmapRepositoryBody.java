@@ -1,8 +1,7 @@
-package kr.co.fukoku.repository.sql;
+package kr.co.fukoku.repository_sqltem;
 
 import kr.co.fukoku.filters.CalHeatmapFilter;
 import kr.co.fukoku.model.CalHeatmap;
-import kr.co.fukoku.repository_sqltem.SQLStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
