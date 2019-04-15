@@ -708,9 +708,6 @@ async function drawChart(xAxis, yAxis, stringStartDate, stringEndDate, lineLabel
 
         xAxisName = '라인';
         yAxisName = `날짜`;
-        console.log(values);
-
-        //console.log((endDate-startDate)/(1000*60*60*24), 'days');
         let yAxisLabels = [];
         Object.keys(values).forEach(function(xAxisLabel){
             let yAxisValues = new Object();
@@ -1185,8 +1182,6 @@ function sendRequest(){
     if ($("#navStates li.active").attr('id') == 'liProduction'){
         getProductionAnalysis(xAxis, yAxis, lineLabel, machineLabel, startDate, endDate);
     };
-
-    //getAllDatas(xAxis, yAxis, lineLabel, machineLabel, startDate, endDate);
 }
 
 function getMachineAnalysis(xAxis, yAxis, lineLabel, machineLabel, startDate, endDate){
@@ -1201,6 +1196,7 @@ function getMachineAnalysis(xAxis, yAxis, lineLabel, machineLabel, startDate, en
     });
     const line = (lineLabel == 'All') ? "ALL" : lineLabel;
     const machine = (machineLabel == 'All') ? "ALL" : machinesName[machineLabel];
+    $('#btnSendRequest').prop('disabled', true);
     $.ajax({
         headers: {
             'Access-Control-Allow-Headers': '*',
@@ -1218,6 +1214,7 @@ function getMachineAnalysis(xAxis, yAxis, lineLabel, machineLabel, startDate, en
                     console.log("Result has been not found!");
                     break;
             }
+            $('#btnSendRequest').prop('disabled', false);
         }
     });
 }
@@ -1233,7 +1230,7 @@ function getProductionAnalysis(xAxis, yAxis, lineLabel, machineLabel, startDate,
 
     const line = (lineLabel == 'All') ? "ALL" : lineLabel;
     const machine = (machineLabel == 'All') ? "ALL" : machinesName[machineLabel];
-
+    $('#btnSendRequest').prop('disabled', true);
     $.ajax({
         headers: {
             'Access-Control-Allow-Headers': '*',
@@ -1251,6 +1248,7 @@ function getProductionAnalysis(xAxis, yAxis, lineLabel, machineLabel, startDate,
                     console.log("Result has been not found!");
                     break;
             }
+            $('#btnSendRequest').prop('disabled', false);
         }
     });
 }
@@ -1342,10 +1340,6 @@ function boxWasClicked(fullBarLabels){
     if ($("#navStates li.active").attr('id') == 'liProduction'){
 
     };
-
-
-    //getAllDatas("line", "machine", "HB", "All", startDateOfDatabase, new Date().toISOString().slice(0,10));
-
 }
 
 function backButtonOnClicked(){
