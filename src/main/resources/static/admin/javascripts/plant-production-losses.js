@@ -40,7 +40,7 @@ $(function() {
                             option.text = response.data[i].name; // show factory name
                             sel.appendChild(option);
                         }
-                        // $("#selFactory").prop("selectedIndex",1).change();
+                        $("#selFactory").prop("selectedIndex",1).change();
 
 
                     }
@@ -78,6 +78,7 @@ $(function() {
                     $.each(response.data, function(key, value){
                         $("#selectLine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
+                    $("#selectLine").prop("selectedIndex",2).change();
                 }
             },
             error:function(data,status,err) {
@@ -196,13 +197,12 @@ $(function() {
                     $("#PRODUCTION_BY_LINE").html("");
                     if (response.DATA.length > 0 || !response.DATA) {
 
-
                         $("#PRODUCTION_BY_LINE_TEMPLATE").tmpl(response.DATA).appendTo("tbody#PRODUCTION_BY_LINE");
                     } else {
-                        $("#PRODUCTION_BY_LINE").html("<tr style='text-align:center;'><td colspan='19'>콘텐츠 없음</td></tr>");
+                        $("#PRODUCTION_BY_LINE").html("<tr style='text-align:center;'><td colspan='23'>콘텐츠 없음</td></tr>");
                     }
                 } else {
-                    $("#PRODUCTION_BY_LINE").html("<tr style='text-align:center;'><td colspan='19'>콘텐츠 없음</td></tr>");
+                    $("#PRODUCTION_BY_LINE").html("<tr style='text-align:center;'><td colspan='23'>콘텐츠 없음</td></tr>");
                 }
                 closeLoading();
             },

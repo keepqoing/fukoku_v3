@@ -111,8 +111,18 @@
                                         <th>비가동욜(%)</th>
                                         <th>UPH</th>
                                         <th>생산수량</th>
+
+                                        <th>직행수량(개)</th>
+                                        <th>직행율(%)</th>
+
                                         <th>양폼수(개)</th>
                                         <th>양품율(%)</th>
+
+
+
+                                        <th>NG수량(개)</th>
+                                        <th>NG율(%)</th>
+
                                         <th>불량수량(개)</th>
                                         <th>불량율(%)</th>
                                         <th>이론목표수량(개)</th>
@@ -123,7 +133,7 @@
                                     </thead>
                                     <tbody id="PRODUCTION_BY_LINE">
                                     <tr role="row" class="odd" style="text-align:center;font-weight:bold;">
-                                        <td colspan="19">콘텐츠 없음</td>
+                                        <td colspan="23">콘텐츠 없음</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -151,10 +161,19 @@
             <td><strong>{{= (WORKING_NONACTIVE_TIME_RATE).toFixed(2) }}</strong></td>
             <td><strong>{{= (UPH).toFixed(2) }}</strong></td>
             <td><strong>{{= TOTAL_PRODUCT}}</strong></td>
+
+            <td><strong>{{= BYPASSED_PRODUCT}}</strong></td>
+            <td><strong>{{= (BYPASSED_PRODUCT_RATE).toFixed(2)  }}</strong></td>
+
             <td><strong>{{= OK_PRODUCT}}</strong></td>
             <td><strong>{{= (OK_PRODUCT_RATE).toFixed(2) }}</strong></td>
+
+
             <td><strong>{{= NG_PRODUCT}}</strong></td>
             <td><strong>{{= (NG_PRODUCT_RATE).toFixed(2)  }}</strong></td>
+
+            <td><strong>{{= DEFECTIVE_PRODUCT}}</strong></td>
+            <td><strong>{{= (DEFECTIVE_PRODUCT_RATE).toFixed(2)  }}</strong></td>
             <td><strong>{{= (THEORETICAL_PRODUCT_QTY).toFixed(0) }}</strong></td>
             <td><strong>{{= TARGET_PRODUCT_QTY}}</strong></td>
             <td><strong>{{= (THEORETICAL_CYCLE_TIME_S).toFixed(2) }}</strong></td>
