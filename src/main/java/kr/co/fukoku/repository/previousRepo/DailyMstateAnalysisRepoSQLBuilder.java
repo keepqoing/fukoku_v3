@@ -306,9 +306,11 @@ public class DailyMstateAnalysisRepoSQLBuilder {
                     " machine ," +
                     " SUM(CAST(fault_time_s AS INT)) AS fault_time_s "+
                     "\tFROM fukoku_v2.daily_mstate_analysis_"+ filter.getLine().toLowerCase() +" GROUP BY start_date,machine\n" +
-                    ") AS A\n" +
+                    ") AS A, machine m\n" +
                     "WHERE YEAR(start_date) = #{f.work_date} " + line +"  \n" +
+                    " AND machine = m.acronym " +
                     "GROUP BY 1,2,3,machine\n" +
+                    " ORDER BY m.seq "+
                     "  ");
         }
 

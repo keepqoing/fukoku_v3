@@ -108,7 +108,7 @@ $(function () {
 
                 var settings = {
                     selector: "#line-bar",
-                    width: "1200",
+                    width: "1000",
                     height: "500"
                 };
 
@@ -124,6 +124,7 @@ $(function () {
 
 
     process.breakdowntimeanalysisbyline = function () {
+        openLoading();
         $.ajax({
             url: "/v1/api/fukoku/daily-mstate-analysis/breakdowntimeanalysisbyline",
             type: 'POST',
@@ -207,7 +208,7 @@ $(function () {
 
                 var settings = {
                     selector: "#line-bar",
-                    width: "1200",
+                    width: "1000",
                     height: "500"
                 };
                 lineBarchart(graphObjArr, settings);
@@ -215,6 +216,7 @@ $(function () {
 
             }
         });
+        closeLoading();
     }
 
 
