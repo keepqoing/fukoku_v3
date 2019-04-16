@@ -2211,7 +2211,7 @@ FIND_ALL_PD("SELECT \n" +
     public enum ProductStatusFreqSQLByMachine {
 
         FIND_ALL_LINE_BY_MACHINE(
-                " CALL fukoku_v2.proc_get_product_all_line_by_machine(?,?);"
+                " CALL V3_PROC_GET_PRODUCT_ALL_LINE_BY_MACHINE(?,?);"
         );
 
         private String value;
@@ -2229,144 +2229,12 @@ FIND_ALL_PD("SELECT \n" +
     // TODO: SQL STATEMENT FOR QUERY Product Status Frequency by Line
     public enum ProductStatusFreqSQLByLine {
         FIND_ALL_LINE(
-                " call fukoku_v2.proc_get_product_by_line(?); "
+                " call V3_PROC_GET_PRODUCT_BY_LINE(?); "
         ),
-        FIND_ALL_IB(
-                " SELECT " +
-                "   t.ref_line AS line_name, " +
-                "   t.ref_machine AS machine_name, " +
-                "   t.production_date, " +
-                "   MAX( t.daily_seq ) AS total_product, " +
-                "   MAX( t.daily_seq_ok ) AS good_product, " +
-                "   MAX( t.daily_seq ) - MAX( t.daily_seq_ok ) AS ng_product, " +
-                "   0 AS defective_product " +
-//                "   ng.ng_product AS ng_product, " +
-//                "   dp.defective_product " +
-                " FROM fukoku_v2.good_product_analysis_ib AS t " +
-//                "   LEFT JOIN view_ng_product AS ng ON ng.ref_line = t.ref_line " +
-//                "   AND ng.production_date = t.production_date " +
-//                "   AND ng.ref_machine = t.ref_machine " +
-//                "   LEFT JOIN view_defective_product dp ON dp.ref_line = t.ref_line " +
-//                "   AND dp.production_date = t.production_date " +
-//                "   AND dp.ref_machine = t.ref_machine " +
-                " WHERE t.production_date = ? " +
-                " GROUP BY t.ref_machine, " +
-                "   t.production_date; "
-        ),
-        FIND_ALL_HA(
-                " SELECT " +
-                "   t.ref_line AS line_name, " +
-                "   t.ref_machine AS machine_name, " +
-                "   t.production_date, " +
-                "   MAX( t.daily_seq ) AS total_product, " +
-                "   MAX( t.daily_seq_ok ) AS good_product, " +
-                "   MAX( t.daily_seq ) - MAX( t.daily_seq_ok ) AS ng_product, " +
-                "   0 AS defective_product " +
-//                "   ng.ng_product AS ng_product, " +
-//                "   dp.defective_product " +
-                " FROM fukoku_v2.good_product_analysis_ha AS t " +
-//                "   LEFT JOIN view_ng_product AS ng ON ng.ref_line = t.ref_line " +
-//                "   AND ng.production_date = t.production_date " +
-//                "   AND ng.ref_machine = t.ref_machine " +
-//                "   LEFT JOIN view_defective_product dp ON dp.ref_line = t.ref_line " +
-//                "   AND dp.production_date = t.production_date " +
-//                "   AND dp.ref_machine = t.ref_machine " +
-                " WHERE t.production_date = ? " +
-                " GROUP BY t.ref_machine, " +
-                "   t.production_date; "
-        ),
-        FIND_ALL_HB(
-                " SELECT " +
-                "   t.ref_line AS line_name, " +
-                "   t.ref_machine AS machine_name, " +
-                "   t.production_date, " +
-                "   MAX( t.daily_seq ) AS total_product, " +
-                "   MAX( t.daily_seq_ok ) AS good_product, " +
-                "   MAX( t.daily_seq ) - MAX( t.daily_seq_ok ) AS ng_product, " +
-                "   0 AS defective_product " +
-//                "   ng.ng_product AS ng_product, " +
-//                "   dp.defective_product " +
-                " FROM fukoku_v2.good_product_analysis_hb AS t " +
-//                "   LEFT JOIN view_ng_product AS ng ON ng.ref_line = t.ref_line " +
-//                "   AND ng.production_date = t.production_date " +
-//                "   AND ng.ref_machine = t.ref_machine " +
-//                "   LEFT JOIN view_defective_product dp ON dp.ref_line = t.ref_line " +
-//                "   AND dp.production_date = t.production_date " +
-//                "   AND dp.ref_machine = t.ref_machine " +
-                " WHERE t.production_date = ? " +
-                " GROUP BY t.ref_machine, " +
-                "   t.production_date; "
-        ),
-        FIND_ALL_HC(
-                " SELECT " +
-                "   t.ref_line AS line_name, " +
-                "   t.ref_machine AS machine_name, " +
-                "   t.production_date, " +
-                "   MAX( t.daily_seq ) AS total_product, " +
-                "   MAX( t.daily_seq_ok ) AS good_product, " +
-                "   MAX( t.daily_seq ) - MAX( t.daily_seq_ok ) AS ng_product, " +
-                "   0 AS defective_product " +
 
-//                "   ng.ng_product AS ng_product, " +
-//                "   dp.defective_product " +
-                " FROM fukoku_v2.good_product_analysis_hc AS t " +
-//                "   LEFT JOIN view_ng_product AS ng ON ng.ref_line = t.ref_line " +
-//                "   AND ng.production_date = t.production_date " +
-//                "   AND ng.ref_machine = t.ref_machine " +
-//                "   LEFT JOIN view_defective_product dp ON dp.ref_line = t.ref_line " +
-//                "   AND dp.production_date = t.production_date " +
-//                "   AND dp.ref_machine = t.ref_machine " +
-                " WHERE t.production_date = ? " +
-                " GROUP BY t.ref_machine, " +
-                " t.production_date; "
-        ),
-        FIND_ALL_HD(
-                " SELECT " +
-                "   t.ref_line AS line_name, " +
-                "   t.ref_machine AS machine_name, " +
-                "   t.production_date, " +
-                "   MAX( t.daily_seq ) AS total_product, " +
-                "   MAX( t.daily_seq_ok ) AS good_product, " +
-                "   MAX( t.daily_seq ) - MAX( t.daily_seq_ok ) AS ng_product, " +
-                "   0 AS defective_product " +
-
-//                "   ng.ng_product AS ng_product, " +
-//                "   dp.defective_product " +
-                " FROM fukoku_v2.good_product_analysis_hd AS t " +
-//                "   LEFT JOIN view_ng_product AS ng ON ng.ref_line = t.ref_line " +
-//                "   AND ng.production_date = t.production_date " +
-//                "   AND ng.ref_machine = t.ref_machine " +
-//                "   LEFT JOIN view_defective_product dp ON dp.ref_line = t.ref_line " +
-//                "   AND dp.production_date = t.production_date " +
-//                "   AND dp.ref_machine = t.ref_machine " +
-                " WHERE t.production_date = ? " +
-                " GROUP BY t.ref_machine, " +
-                "   t.production_date; "
-        ),
-        FIND_ALL_PD(
-                " SELECT " +
-                "   t.ref_line AS line_name, " +
-                "   t.ref_machine AS machine_name, " +
-                "   t.production_date, " +
-                "   MAX( t.daily_seq ) AS total_product, " +
-                "   MAX( t.daily_seq_ok ) AS good_product, " +
-                "   MAX( t.daily_seq ) - MAX( t.daily_seq_ok ) AS ng_product, " +
-                "   0 AS defective_product " +
-//                "   ng.ng_product AS ng_product, " +
-//                "   dp.defective_product " +
-                " FROM fukoku_v2.good_product_analysis_pd AS t " +
-//                "   LEFT JOIN view_ng_product AS ng ON ng.ref_line = t.ref_line " +
-//                "   AND ng.production_date = t.production_date " +
-//                "   AND ng.ref_machine = t.ref_machine " +
-//                "   LEFT JOIN view_defective_product dp ON dp.ref_line = t.ref_line " +
-//                "   AND dp.production_date = t.production_date " +
-//                "   AND dp.ref_machine = t.ref_machine " +
-                " WHERE " +
-                "   t.production_date = ? " +
-                " GROUP BY t.ref_machine, " +
-                "   t.production_date; "
+        FIND_SPECIFIC_LINE(
+                " call V3_PROC_GET_PRODUCT_BY_SPECIFIC_LINE(?,?); "
         );
-
         private String value;
 
         ProductStatusFreqSQLByLine(String value) {
@@ -2382,7 +2250,7 @@ FIND_ALL_PD("SELECT \n" +
     // TODO: SQL STATEMENT FOR QUERY - ALL OK PRODUCT
     public enum ProductStatusFreqSQLByOKProduct {
         FIND_ALL_OK_PRODUCT(
-                " call proc_get_all_ok_product(?); "
+                " call fukoku_v2.proc_get_all_ok_product(?); "
         );
 
         private String value;
@@ -2399,7 +2267,7 @@ FIND_ALL_PD("SELECT \n" +
     // TODO: SQL STATEMENT FOR QUERY - ALL NG and DF Products.
     public enum ProductStatusFreqSQLByNG_DF {
         FIND_ALL_NG_DF_PRODUCT(
-                " call proc_nd_df_product(?); "
+                " call fukoku_v2.proc_nd_df_product(?); "
         );
 
         private String value;

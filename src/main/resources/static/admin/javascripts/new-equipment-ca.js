@@ -31,7 +31,7 @@ $(function () {
         $("#cTable").hide();
         openLoading();
         $.ajax({
-            url: "http://113.198.137.142:8080/v1/api/fukoku/new-correlation",
+            url: "/v1/api/fukoku/new-correlation",
             type: 'GET',
             dataType: 'JSON',
             data:{

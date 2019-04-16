@@ -275,51 +275,51 @@
         </div>
     </section>
     <th:block layout:fragment="script">
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 
-    <script src="/static/admin/javascripts/d3/piechart.js"></script>
-    <script src="/static/admin/javascripts/d3/group-barchart-optimized-tooltip.js"></script>
-    <script src="/static/admin/javascripts/product-summarization.js"></script>
-    <script>
-        function formatNumber(number) {
-            return (number < 10 ? '0' : '') + number;
-        }
-        $(document).ready(function () {
-            $(function () {
+        <script src="/static/admin/javascripts/d3/piechart.js"></script>
+        <script src="/static/admin/javascripts/d3/group-barchart-optimized-tooltip.js"></script>
+        <script src="/static/admin/javascripts/product-summarization.js"></script>
+        <script>
+            function formatNumber(number) {
+                return (number < 10 ? '0' : '') + number;
+            }
+            $(document).ready(function () {
+                $(function () {
 
-                var d1 = new Date();
-
-
-                var current_h_m = parseInt((d1.getHours()+""+formatNumber(d1.getMinutes())));
-
-                if( current_h_m < 800 ){
-                    d1.setDate(d1.getDate() -1 );
-                }else{
-                    d1.setDate(d1.getDate());
-                }
+                    var d1 = new Date();
 
 
-                $('#startDate').datetimepicker({
-                    format: 'YYYY-MM-DD',
-                    defaultDate: d1
+                    var current_h_m = parseInt((d1.getHours()+""+formatNumber(d1.getMinutes())));
+
+                    if( current_h_m < 800 ){
+                        d1.setDate(d1.getDate() -1 );
+                    }else{
+                        d1.setDate(d1.getDate());
+                    }
+
+
+                    $('#startDate').datetimepicker({
+                        format: 'YYYY-MM-DD',
+                        defaultDate: d1
+                    });
+                    $('#lineStartTime').datetimepicker({
+                        format: 'YYYY-MM-DD',
+                        defaultDate: d1
+                    });
+
+                    // $('#startTimeOK').datetimepicker({
+                    //     format: 'YYYY-MM-DD',
+                    //     defaultDate: new Date()
+                    // });
+                    // $('#ngStartTime').datetimepicker({
+                    //     format: 'YYYY-MM-DD',
+                    //     defaultDate: new Date()
+                    // });
                 });
-                $('#lineStartTime').datetimepicker({
-                    format: 'YYYY-MM-DD',
-                    defaultDate: d1
-                });
-
-                // $('#startTimeOK').datetimepicker({
-                //     format: 'YYYY-MM-DD',
-                //     defaultDate: new Date()
-                // });
-                // $('#ngStartTime').datetimepicker({
-                //     format: 'YYYY-MM-DD',
-                //     defaultDate: new Date()
-                // });
             });
-        });
-    </script>
+        </script>
 
 
     </th:block>

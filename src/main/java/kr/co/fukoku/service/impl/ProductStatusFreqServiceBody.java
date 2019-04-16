@@ -145,7 +145,7 @@ public class ProductStatusFreqServiceBody implements ProductStatusFreqService {
                 for(int j=0;j<productStatusFreqOriginList.size();j++){
 //                    System.out.println(productStatusFreqOriginList.get(j).getMachine().contains(i.getMappingName()));
 //                    System.out.println("get machine : " + productStatusFreqOriginList.get(j).getMachine());
-                    if(productStatusFreqOriginList.get(j).getMachine().equalsIgnoreCase(i.getName())){
+                    if(productStatusFreqOriginList.get(j).getMachine().equalsIgnoreCase(i.getAcronym())){
                         StatusFreq TTFreq = new StatusFreq(productStatusFreqOriginList.get(j).getTotalProduct(), "TT");
                         StatusFreq OKFreq = new StatusFreq(productStatusFreqOriginList.get(j).getTotalGoodProduct(), "OK");
                         StatusFreq NGFreq = new StatusFreq(productStatusFreqOriginList.get(j).getTotalNGProduct(), "NG");

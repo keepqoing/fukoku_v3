@@ -52,21 +52,13 @@ public class ProductStatusFreqRepositoryBody implements ProductStatusFreqReposit
         if(productStatusFreqFilter.getLine().equals("ALL")) {
 
             return jdbcTemplate.query(SQLStatement.ProductStatusFreqSQLByLine.FIND_ALL_LINE.toString(), new Object[]{productStatusFreqFilter.getStartDate()}, rowMapper);
+        } else{
+            return jdbcTemplate.query(SQLStatement.ProductStatusFreqSQLByLine.FIND_SPECIFIC_LINE.toString(), new Object[]{
+                    productStatusFreqFilter.getLine(),
+                    productStatusFreqFilter.getStartDate()
+            }, rowMapper);
         }
-        else if(productStatusFreqFilter.getLine().equals("IB"))
-            return jdbcTemplate.query(SQLStatement.ProductStatusFreqSQLByLine.FIND_ALL_IB.toString(), new Object[]{productStatusFreqFilter.getStartDate()}, rowMapper);
-        else if(productStatusFreqFilter.getLine().equals("HA"))
-            return jdbcTemplate.query(SQLStatement.ProductStatusFreqSQLByLine.FIND_ALL_HA.toString(), new Object[]{productStatusFreqFilter.getStartDate()}, rowMapper);
-        else if(productStatusFreqFilter.getLine().equals("HB"))
-            return jdbcTemplate.query(SQLStatement.ProductStatusFreqSQLByLine.FIND_ALL_HB.toString(), new Object[]{productStatusFreqFilter.getStartDate()}, rowMapper);
-        else if(productStatusFreqFilter.getLine().equals("HC"))
-            return jdbcTemplate.query(SQLStatement.ProductStatusFreqSQLByLine.FIND_ALL_HC.toString(), new Object[]{productStatusFreqFilter.getStartDate()}, rowMapper);
-        else if(productStatusFreqFilter.getLine().equals("HD"))
-            return jdbcTemplate.query(SQLStatement.ProductStatusFreqSQLByLine.FIND_ALL_HD.toString(), new Object[]{productStatusFreqFilter.getStartDate()}, rowMapper);
-        else if(productStatusFreqFilter.getLine().equals("PD"))
-            return jdbcTemplate.query(SQLStatement.ProductStatusFreqSQLByLine.FIND_ALL_PD.toString(), new Object[]{productStatusFreqFilter.getStartDate()}, rowMapper);
-        else
-            return null;
+
     }
 
     @Override

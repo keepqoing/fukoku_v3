@@ -535,7 +535,7 @@ $(function () {
         });
     };
     productSummarization.getAllLinesName(function(){
-        // productSummarization.getAllProductByLine();
+        productSummarization.getAllProductByLine();
     });
 
     // Get all machine name
@@ -556,7 +556,8 @@ $(function () {
                     $.each(response.data, function(key, value){
                         $("#selectMachine").append("<option value='"+value.name+"' data-id="+value.name+">"+value.name+"</option>");
                     });
-                    $("#selectMachine").val("Balancer");
+                    // $("#selectMachine").val("Balancer");
+                    $("#selectMachine").prop("selectedIndex",0).change();
                     if(callback)
                         callback();
                 }
@@ -567,9 +568,9 @@ $(function () {
         });
     };
     productSummarization.getAllMachinesName(function () {
-        // productSummarization.getAllProductByMachine();
-        // productSummarization.getAllProductByOK();
-        // productSummarization.getAllProductByNG();
+        productSummarization.getAllProductByMachine();
+        productSummarization.getAllProductByOK();
+        productSummarization.getAllProductByNG();
         // productSummarization.getAllProductByDF();
 
     });
