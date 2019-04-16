@@ -109,7 +109,7 @@ public class DailyMstateAnalysisRepoSQLBuilder {
                     "\ttotal_product,\n" +
                     "\tok_product,\n" +
                     "\tng_product"+
-                    " from daily_mstate_analysis_"+l +" WHERE ");
+                    " from fukoku_v2.daily_mstate_analysis_"+l +" WHERE ");
             /*if(!filter.getLine().equalsIgnoreCase("")){
                 buffer.append(" line=#{f.line} ");
             }*/
@@ -143,42 +143,42 @@ public class DailyMstateAnalysisRepoSQLBuilder {
                 "\tIFNULL(SUM(total_product),0) as  total_product, \n" +
                 "  IFNULL(SUM(ng_product),0) as  ng_product,\n" +
                 "\t IFNULL(FORMAT(SUM(  (ng_product / total_product)  * 100), 2),0)  as  ng_product_rate\n" +
-                "FROM daily_mstate_analysis_ha WHERE start_date >= #{f.start_date} AND  end_date <= #{f.end_date} \n" +
+                "FROM fukoku_v2.daily_mstate_analysis_ha WHERE start_date >= #{f.start_date} AND  end_date <= #{f.end_date} \n" +
                 "UNION\n" +
                 "SELECT \n" +
                 "\t'HB' as line,\n" +
                 "\tIFNULL(SUM(total_product),0) as  total_product, \n" +
                 "  IFNULL(SUM(ng_product),0) as  ng_product,\n" +
                 "\t IFNULL(FORMAT(SUM(  (ng_product / total_product)  * 100), 2),0)  as  ng_product_rate\n" +
-                "FROM daily_mstate_analysis_hb WHERE start_date >= #{f.start_date} AND  end_date <= #{f.end_date} \n" +
+                "FROM fukoku_v2.daily_mstate_analysis_hb WHERE start_date >= #{f.start_date} AND  end_date <= #{f.end_date} \n" +
                 "UNION\n" +
                 "SELECT \n" +
                 "\t'HD' as line,\n" +
                 "\tIFNULL(SUM(total_product),0) as  total_product, \n" +
                 "  IFNULL(SUM(ng_product),0) as  ng_product,\n" +
                 "\t IFNULL(FORMAT(SUM(  (ng_product / total_product)  * 100), 2),0)  as  ng_product_rate\n" +
-                "FROM daily_mstate_analysis_hd WHERE start_date >= #{f.start_date} AND  end_date <= #{f.end_date} \n" +
+                "FROM fukoku_v2.daily_mstate_analysis_hd WHERE start_date >= #{f.start_date} AND  end_date <= #{f.end_date} \n" +
                 "UNION\n" +
                 "SELECT \n" +
                 "\t'IB' as line,\n" +
                 "\tIFNULL(SUM(total_product),0) as  total_product, \n" +
                 "  IFNULL(SUM(ng_product),0) as  ng_product,\n" +
                 "\t IFNULL(FORMAT(SUM(  (ng_product / total_product)  * 100), 2),0)  as  ng_product_rate\n" +
-                "FROM daily_mstate_analysis_ib WHERE start_date >= #{f.start_date} AND  end_date <= #{f.end_date} \n" +
+                "FROM fukoku_v2.daily_mstate_analysis_ib WHERE start_date >= #{f.start_date} AND  end_date <= #{f.end_date} \n" +
                 "UNION\n" +
                 "SELECT \n" +
                 "\t'PD' as line,\n" +
                 "\tIFNULL(SUM(total_product),0) as  total_product, \n" +
                 "  IFNULL(SUM(ng_product),0) as  ng_product,\n" +
                 "\t IFNULL(FORMAT(SUM(  (ng_product / total_product)  * 100), 2),0)  as  ng_product_rate\n" +
-                "FROM daily_mstate_analysis_pd WHERE start_date >= #{f.start_date} AND  end_date <= #{f.end_date} " +
+                "FROM fukoku_v2.daily_mstate_analysis_pd WHERE start_date >= #{f.start_date} AND  end_date <= #{f.end_date} " +
                 " UNION " +
                 " SELECT " +
                 " 'HC' as line," +
                 " IFNULL(SUM(total_product),0) as  total_product, " +
                 " IFNULL(SUM(ng_product),0) as  ng_product, " +
                 " IFNULL(FORMAT(SUM(  (ng_product / total_product)  * 100), 2),0)  as  ng_product_rate " +
-                "   FROM daily_mstate_analysis_hc WHERE start_date >= #{f.start_date} AND  end_date <= #{f.end_date} ");
+                "   FROM fukoku_v2.daily_mstate_analysis_hc WHERE start_date >= #{f.start_date} AND  end_date <= #{f.end_date} ");
         System.out.println(buffer.toString());
         System.out.println("################# "+ filter.toString());
         return buffer.toString();
@@ -186,7 +186,7 @@ public class DailyMstateAnalysisRepoSQLBuilder {
 
     public static String breakdowntimeanalysisbyline(@Param("f") DailyMstateAnalysisFilter filter){
         System.out.println(filter.toString());
-        String lines[] = new String[]{"ha", "hb", "hc", "hd", "ib", "pd"};
+        String lines[] = new String[]{"hc", "ib", "ha", "hd", "pd", "hb"};
         StringBuffer buffer = new StringBuffer();
         int i=0;
         System.out.println("###### filter.getLine() "+filter.getLine());
@@ -219,13 +219,11 @@ public class DailyMstateAnalysisRepoSQLBuilder {
                         "\tSUM(CAST(non_active_time_s AS INT)) AS non_active_time_s,\n" +
                         "\tSUM(CAST(working_nonactive_time_s AS INT)) AS working_nonactive_time_s, \n" +
                         " SUM(CAST(alarm_time_s AS INT)) AS alarm_time_s,  "+
-                        "(SELECT COUNT(LMD.join_name) FROM machines M \n" +
-                        "\t\tINNER JOIN lines_machines_detail LMD ON LMD.ref_machine_id = M.id \n" +
-                        "\t\tINNER JOIN _lines L ON LMD.ref_line_id = L.id  \n" +
-                        "\t\tINNER JOIN factories F ON L.ref_factory = F.id  \n" +
-                        "\t\tWHERE  L._name = '"+l.toUpperCase()+"')as num_of_machines, machine," +
+                        "(SELECT COUNT(1) FROM machine M \n" +
+
+                        "\t\tWHERE  LEFT(M.acronym,2) = '"+l.toUpperCase()+"')as num_of_machines, machine," +
                         " SUM(CAST(fault_time_s AS INT)) AS fault_time_s "+
-                        "\tFROM daily_mstate_analysis_"+ l +" GROUP BY start_date " +groupBy+ " \n" +
+                        "\tFROM fukoku_v2.daily_mstate_analysis_"+ l +" GROUP BY start_date " +groupBy+ " \n" +
                         ") AS A\n" +
                         "WHERE YEAR(start_date) = #{f.work_date} "+ likeMachine +"\n" +
                         "GROUP BY 1,2,3\n" + groupBy +
@@ -264,13 +262,11 @@ public class DailyMstateAnalysisRepoSQLBuilder {
                         "\tSUM(CAST(non_active_time_s AS INT)) AS non_active_time_s,\n" +
                         "\tSUM(CAST(working_nonactive_time_s AS INT)) AS working_nonactive_time_s, \n" +
                         " SUM(CAST(alarm_time_s AS INT)) AS alarm_time_s,  "+
-                        "(SELECT COUNT(LMD.join_name) FROM machines M \n" +
-                        "\t\tINNER JOIN lines_machines_detail LMD ON LMD.ref_machine_id = M.id \n" +
-                        "\t\tINNER JOIN _lines L ON LMD.ref_line_id = L.id  \n" +
-                        "\t\tINNER JOIN factories F ON L.ref_factory = F.id  \n" +
-                        "\t\tWHERE  L._name = '"+l.toUpperCase()+"')as num_of_machines, machine," +
+                        "(SELECT COUNT(1) FROM machine M \n" +
+
+                        "\t\tWHERE  LEFT(M.acronym,2) = '"+l.toUpperCase()+"')as num_of_machines, machine," +
                         " SUM(CAST(fault_time_s AS INT)) AS fault_time_s "+
-                        "\tFROM daily_mstate_analysis_"+ l +" GROUP BY start_date " +groupBy+ " \n" +
+                        "\tFROM fukoku_v2.daily_mstate_analysis_"+ l +" GROUP BY start_date " +groupBy+ " \n" +
                         ") AS A\n" +
                         "WHERE YEAR(start_date) = #{f.work_date} "+ likeMachine +"\n" +
                         "GROUP BY 1,2,3\n" + groupBy +
@@ -304,14 +300,12 @@ public class DailyMstateAnalysisRepoSQLBuilder {
                     "\tSUM(CAST(non_active_time_s AS INT)) AS non_active_time_s,\n" +
                     "\tSUM(CAST(working_nonactive_time_s AS INT)) AS working_nonactive_time_s, \n" +
                     " SUM(CAST(alarm_time_s AS INT)) AS alarm_time_s,  "+
-                    "(SELECT COUNT(LMD.join_name) FROM machines M \n" +
-                    "\t\tINNER JOIN lines_machines_detail LMD ON LMD.ref_machine_id = M.id \n" +
-                    "\t\tINNER JOIN _lines L ON LMD.ref_line_id = L.id  \n" +
-                    "\t\tINNER JOIN factories F ON L.ref_factory = F.id  \n" +
-                    "\t\tWHERE  L._name = '"+filter.getLine().toUpperCase()+"')as num_of_machines," +
+                    "(SELECT COUNT(1) FROM machine M \n" +
+
+                    "\t\tWHERE  LEFT(M.acronym,2) = '"+filter.getLine().toUpperCase()+"')as num_of_machines," +
                     " machine ," +
                     " SUM(CAST(fault_time_s AS INT)) AS fault_time_s "+
-                    "\tFROM daily_mstate_analysis_"+ filter.getLine().toLowerCase() +" GROUP BY start_date,machine\n" +
+                    "\tFROM fukoku_v2.daily_mstate_analysis_"+ filter.getLine().toLowerCase() +" GROUP BY start_date,machine\n" +
                     ") AS A\n" +
                     "WHERE YEAR(start_date) = #{f.work_date} " + line +"  \n" +
                     "GROUP BY 1,2,3,machine\n" +

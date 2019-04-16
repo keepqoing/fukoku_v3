@@ -138,7 +138,7 @@ $(function () {
             success: function (response) {
                 console.log("response", response);
                 let data = response.breakdowntimeanalysisbyline;
-                var lines = ["HA", "HB", "HC", "HD", "IB", "PD"];
+                var lines = ["HC", "IB", "HA", "HD", "PD", "HB"];
                 var month = [0,0,0,0,0,0,0,0,0,0,0,0]; var working_time = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var tr = "";

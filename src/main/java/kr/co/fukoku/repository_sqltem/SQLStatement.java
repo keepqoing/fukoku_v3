@@ -622,8 +622,10 @@ public class SQLStatement {
     }
     // TODO: SQL STATEMENT FOR QUERY TOTAL HOURS EACH MACHINE( STOP+OFFLINE) BY MACHINE and YEAR
     public enum FailureFactoryMonitoring {
-        FIND_FACTORY_NAME("SELECT _name FROM factories"),
-        FINE_MACHINE_NAME("SELECT _name,ref_factory FROM _lines"),
+
+        // Select from version 3
+        FIND_FACTORY_NAME("SELECT name _name FROM factory"),
+        FINE_MACHINE_NAME("SELECT name _name, ref_factory_id ref_factory FROM line"),
         FIND_ALL_LINE_WITH_TOTALHOUR(""),
 
         COUNT_BY_NAME(""),
