@@ -21,6 +21,9 @@ public class NewCorrelationRepositoryBody implements NewCorrelationRepository {
 
     private static DecimalFormat df2 = new DecimalFormat(".###");
 
+    // DB Name for previous version
+    String dbName = "fukuko_v2";
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -138,6 +141,7 @@ public class NewCorrelationRepositoryBody implements NewCorrelationRepository {
     }
 
     public List<WorkpieceCorrelation> getValue(NewCorrelationFilter correlationFilter) throws SQLException{
+
         RowMapper<WorkpieceCorrelation> rowMapper = (rs, rowNum) -> {
             WorkpieceCorrelation wpc = new WorkpieceCorrelation();
             wpc.setLi_ln(rs.getString("li_ln"));
@@ -152,7 +156,7 @@ public class NewCorrelationRepositoryBody implements NewCorrelationRepository {
 
             return wpc;
         };
-        return jdbcTemplate.query(SQLStatement.WPCorrelationSQL.FIND_WP_CORR+" FROM workpiece_"
+        return jdbcTemplate.query(SQLStatement.WPCorrelationSQL.FIND_WP_CORR+" FROM "+dbName+".workpiece_"
                 +correlationFilter.getLine().toLowerCase()
                 +" WHERE mi_mn =  ? "
                 +" AND DATE_FORMAT(pi_pst,'%Y-%m-%d %H:%i%s') >= ? "
@@ -174,7 +178,7 @@ public class NewCorrelationRepositoryBody implements NewCorrelationRepository {
 
             return c;
         };
-        return jdbcTemplate.query(SQLStatement.WPCorrelationSQL.COUNT_WP_CORR+" FROM workpiece_"
+        return jdbcTemplate.query(SQLStatement.WPCorrelationSQL.COUNT_WP_CORR+" FROM "+dbName+".workpiece_"
                 +correlationFilter.getLine().toLowerCase()
                 +" WHERE mi_mn =  ? "
                 +" AND DATE_FORMAT(pi_pst,'%Y-%m-%d %H:%i%s') >= ? "
