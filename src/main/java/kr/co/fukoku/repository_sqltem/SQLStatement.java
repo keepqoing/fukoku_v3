@@ -1687,7 +1687,7 @@ FIND_ALL_PD("SELECT \n" +
     }
 
     public enum NonActiveStateSQL {
-        FIND_ALL("SELECT * FROM non_active_state_analysis " +
+        FIND_ALL("SELECT * FROM fukoku_v2.non_active_state_analysis " +
                 "WHERE ref_line LIKE ? " +
                 "      AND ref_machine LIKE ? " +
                 "      AND work_date LIKE ? " +
@@ -1695,27 +1695,30 @@ FIND_ALL_PD("SELECT \n" +
                 "LIMIT ? " +
                 "OFFSET ?;"),
         COUNT("SELECT COUNT(1) " +
-                "FROM non_active_state_analysis " +
+                "FROM fukoku_v2.non_active_state_analysis " +
                 "WHERE ref_line LIKE ? " +
                 "      AND ref_machine LIKE ? " +
                 "      AND work_date LIKE ?;"),
-        COUNT_NUMBER_BY_LINE("SELECT _name, (SELECT COUNT(1) FROM non_active_state_analysis WHERE ref_line = _name AND work_date LIKE ?) AS counting FROM _lines"),
-        COUNT_NUMBER_BY_MACHINE("SELECT mapping_name, (SELECT COUNT(1) FROM non_active_state_analysis WHERE ref_machine = LMD.mapping_name AND work_date LIKE ?) AS counting " +
-                                "FROM lines_machines_detail LMD " +
-                                "WHERE SUBSTR(mapping_name,1,2) = ?;"),
-        ADD("INSERT INTO non_active_state_analysis(ref_line, ref_machine, ref_product, mstate, work_date, start_time, end_time, duration, alarm_code, alarm_name, department) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"),
+        COUNT_NUMBER_BY_LINE("SELECT name _name, (SELECT COUNT(1) FROM fukoku_v2.non_active_state_analysis WHERE ref_line = _name AND work_date LIKE ?) AS counting FROM line"),
+//        COUNT_NUMBER_BY_MACHINE("SELECT mapping_name, (SELECT COUNT(1) FROM fukoku_v2.non_active_state_analysis WHERE ref_machine = LMD.mapping_name AND work_date LIKE ?) AS counting " +
+//                                "FROM lines_machines_detail LMD " +
+//                                "WHERE SUBSTR(mapping_name,1,2) = ?;"),
+        COUNT_NUMBER_BY_MACHINE("SELECT acronym mapping_name, (SELECT COUNT(1) FROM fukoku_v2.non_active_state_analysis WHERE ref_machine = LMD.acronym AND work_date LIKE ?) AS counting " +
+                "FROM machine LMD " +
+                "WHERE SUBSTR(acronym,1,2) = ?;"),
+        ADD("INSERT INTO fukoku_v2.non_active_state_analysis(ref_line, ref_machine, ref_product, mstate, work_date, start_time, end_time, duration, alarm_code, alarm_name, department) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"),
         FIND_FREQ("select ref_line, ref_machine, alarm_code, count(alarm_code) counting , alarm_name\n" +
-                "                from non_active_state_analysis \n" +
+                "                from fukoku_v2.non_active_state_analysis \n" +
                 "                where ref_line LIKE ? and work_date between ? and ?\n" +
                 "                group by alarm_code;"),
         FIND_MS_FREQ("select ref_line, ref_machine, SUBSTRING_INDEX(SUBSTRING_INDEX(mstate, '_', 3), '_', -1) as mstate, count(alarm_code) counting\n" +
-                "                from non_active_state_analysis \n" +
+                "                from fukoku_v2.non_active_state_analysis \n" +
                 "                where ref_line LIKE ? and work_date between ? and ? and (alarm_code = '' || alarm_code IS NULL)\n" +
                 "                group by SUBSTRING_INDEX(SUBSTRING_INDEX(mstate, '_', 3), '_', -1);"),
 
 
-        COUNT_BY_MSTATE_ID("SELECT COUNT(1) FROM non_active_state_analysis WHERE mstate = ? AND IFNULL(alarm_code,'')=''; "),
-        UPDATE_ENDTIME_DURATION("UPDATE non_active_state_analysis SET end_time = ?, duration = ? WHERE IFNULL(alarm_code,'') = '' AND mstate = ?;");
+        COUNT_BY_MSTATE_ID("SELECT COUNT(1) FROM fukoku_v2.non_active_state_analysis WHERE mstate = ? AND IFNULL(alarm_code,'')=''; "),
+        UPDATE_ENDTIME_DURATION("UPDATE fukoku_v2.non_active_state_analysis SET end_time = ?, duration = ? WHERE IFNULL(alarm_code,'') = '' AND mstate = ?;");
         private String value;
 
         NonActiveStateSQL(String value) {
