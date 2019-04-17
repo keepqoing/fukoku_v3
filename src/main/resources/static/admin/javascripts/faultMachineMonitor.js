@@ -81,6 +81,7 @@ $(function() {
 
 
     fualtMachineMonitor.breakdowntimeanalysisbyline = function () {
+        openLoading();
         $.ajax({
             url: "/v1/api/fukoku/daily-mstate-analysis/breakdowntimeanalysisbyline",
             type: 'POST',
@@ -168,7 +169,7 @@ $(function() {
                 $("#bar-label").empty();
                 var settings = {
                     selector: "#bar-label",
-                    width: 1400,
+                    width: 1000,
                     height: 350,
                     x: "MACHINE",
                     y: "stopTime"
@@ -177,6 +178,7 @@ $(function() {
 
             }
         });
+        closeLoading();
     }
 
 

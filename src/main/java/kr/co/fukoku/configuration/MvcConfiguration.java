@@ -74,6 +74,10 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/non-moving-state-classification")
 				.setViewName("/admin/non-moving-state-classification");
 		registry.addViewController("/admin/calendar-heatmap-nas").setViewName("/admin/calendar-heatmap-nas");
+		registry.addViewController("/admin/faultTimeAnalysisAllLine").setViewName("/admin/faultTimeAnalysisAllLine");
+
+
+
 
 		registry.addViewController("/admin/defective-product-listing").setViewName("/admin/defective_product_list_v2");
 
