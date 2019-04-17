@@ -1710,11 +1710,15 @@ FIND_ALL_PD("SELECT \n" +
         FIND_FREQ("select ref_line, ref_machine, alarm_code, count(alarm_code) counting , alarm_name\n" +
                 "                from fukoku_v2.non_active_state_analysis \n" +
                 "                where ref_line LIKE ? and work_date between ? and ?\n" +
-                "                group by alarm_code;"),
+                "                group by alarm_code" +
+                "                order by  count(alarm_code) desc  " +
+                "                limit ?   "),
         FIND_MS_FREQ("select ref_line, ref_machine, SUBSTRING_INDEX(SUBSTRING_INDEX(mstate, '_', 3), '_', -1) as mstate, count(alarm_code) counting\n" +
                 "                from fukoku_v2.non_active_state_analysis \n" +
                 "                where ref_line LIKE ? and work_date between ? and ? and (alarm_code = '' || alarm_code IS NULL)\n" +
-                "                group by SUBSTRING_INDEX(SUBSTRING_INDEX(mstate, '_', 3), '_', -1);"),
+                "                group by SUBSTRING_INDEX(SUBSTRING_INDEX(mstate, '_', 3), '_', -1)" +
+                "                order by count(alarm_code) " +
+                "                limit ? "),
 
 
         COUNT_BY_MSTATE_ID("SELECT COUNT(1) FROM fukoku_v2.non_active_state_analysis WHERE mstate = ? AND IFNULL(alarm_code,'')=''; "),

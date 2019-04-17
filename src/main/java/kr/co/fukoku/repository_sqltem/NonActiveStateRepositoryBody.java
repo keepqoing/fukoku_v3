@@ -115,7 +115,7 @@ public class NonActiveStateRepositoryBody implements NonActiveStateRepository {
             );
             return freqValue;
         };
-        return jdbcTemplate.query(SQLStatement.NonActiveStateSQL.FIND_FREQ.toString(), new Object[]{"%"+filter.getLine()+"%", filter.getStartDate(), filter.getEndDate()}, rowMapper);
+        return jdbcTemplate.query(SQLStatement.NonActiveStateSQL.FIND_FREQ.toString(), new Object[]{"%"+filter.getLine()+"%", filter.getStartDate(), filter.getEndDate(), filter.getLimit()}, rowMapper);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class NonActiveStateRepositoryBody implements NonActiveStateRepository {
             );
             return freqValue;
         };
-        return jdbcTemplate.query(SQLStatement.NonActiveStateSQL.FIND_MS_FREQ.toString(), new Object[]{"%"+filter.getLine()+"%", filter.getStartDate(), filter.getEndDate()}, rowMapper);
+        return jdbcTemplate.query(SQLStatement.NonActiveStateSQL.FIND_MS_FREQ.toString(), new Object[]{"%"+filter.getLine()+"%", filter.getStartDate(), filter.getEndDate(), filter.getLimit()}, rowMapper);
     }
 
     @Override

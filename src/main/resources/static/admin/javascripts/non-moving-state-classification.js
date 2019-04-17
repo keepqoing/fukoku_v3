@@ -53,7 +53,7 @@ $(function () {
 
     nonMovingCls.getAllLinesName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/line/factory/" +  2 ,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -66,11 +66,13 @@ $(function () {
                 $('#selectLineSearch').empty();
                 $("#selectLine").append("<option value=''>라인</option>");
                 $("#selectLineSearch").append("<option value=''>라인</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectLine").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
-                        $("#selectLineSearch").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#selectLine").append("<option value="+value.name+">"+value.name+"</option>");
+                        $("#selectLineSearch").append("<option value="+value.name+">"+value.name+"</option>");
                     });
+
+                    $("#selectLineSearch").prop("selectedIndex",2).change();
                 }
             },
             error:function(data,status,err) {
@@ -126,7 +128,8 @@ $(function () {
             data:{
                 "line"      :   line,
                 "startDate"     :   startDate,
-                "endDate"      :   endDate
+                "endDate"      :   endDate,
+                "limit"        : $("#txtTopK").val()
             },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -157,7 +160,8 @@ $(function () {
             data:{
                 "line"      :   line,
                 "startDate"     :   startDate,
-                "endDate"      :   endDate
+                "endDate"      :   endDate,
+                "limit"         : $("#txtTopK").val()
             },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");

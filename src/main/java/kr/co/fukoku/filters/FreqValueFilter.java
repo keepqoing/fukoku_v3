@@ -7,11 +7,13 @@ public class FreqValueFilter {
     private String line;
     private String startDate;
     private String endDate;
+    private int limit;
 
     public FreqValueFilter(){
         line = "";
         startDate = Helper.getCurrentDate();
         endDate = Helper.getCurrentDate();
+        limit = 10;
     }
 
     public String getLine() {
@@ -36,5 +38,13 @@ public class FreqValueFilter {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 }

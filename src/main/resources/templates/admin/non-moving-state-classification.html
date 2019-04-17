@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+<head>
+    <meta charset="UTF-8">
+    <title> 비가동분류</title>
+    <style type="text/css">
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 4px;
+        }
+
+        .axisSteelBlue text{
+            fill: steelblue;
+        }
+
+        .axisRed text{
+            fill: red;
+        }
+    </style>
+
+</head>
+<body>
+<div layout:fragment="content">
+
+    <section class="content-header">
+        <h1>
+            비가동분류
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div>
+                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <select class="form-control" id="selectLineSearch">
+                                        <option value="">라인</option>
+                                    </select>
+                                </div>
+                                <!--<div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <select class="form-control" id="selectMachineSearch">
+                                        <option value="">설비</option>
+                                    </select>
+                                </div>-->
+                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <div class='input-group date' id='startDate'>
+                                        <input type='text' class="form-control" id="txtStartDate" placeholder="시작날짜"/>
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <div class='input-group date' id='endDate'>
+                                        <input type='text' class="form-control" id="txtEndDate" placeholder="종료날짜"/>
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-4 col-xs-12">
+                                    <button id="btnSearch" class="form-control btn btn-primary">검색</button>
+                                </div>
+                                <br/>
+                                <br/>
+                                <div class="row" style="clear:both; ">
+                                    <div>
+                                        <label for="txtTopK"  style="padding:7px; margin-left:30px!important; float:left; background-color:dodgerblue; color: white;">Top K:</label>
+                                        <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-xs-1" >
+                                            <input type="number" class="form-control" id="txtTopK" value="10">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <br/>
+                                <br/>
+
+
+
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 table-responsive" id="p1">
+                                        <center><h3>비가동발생회수</h3></center>
+                                        <center><div class="table" id="bar-label1" style="width:1400px; margin: 0 auto;"></div></center>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 table-responsive" id="p2">
+                                        <center><h3>기계상태회수</h3></center>
+                                        <center><div class="table" id="bar-label2" style="width:100%; margin: 0 auto;"></div></center>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="/static/admin/javascripts/d3/barchart-labelv4.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="../../static/admin/javascripts/non-moving-state-classification.js"></script>
+
+
+    <th:block layout:fragment="script">
+
+
+        <script src="../../static/admin/javascripts/libraries/jquery-dateFormat.js"></script>
+        <script>
+            $(document).ready(function () {
+
+                var startDateYesterDay = new Date();
+                startDateYesterDay.setDate(startDateYesterDay.getDate() - 30);
+                $('#startDate').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    //defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: startDateYesterDay
+                });
+
+                $('#txtStartDate').val(startDateYesterDay.toISOString().substring(0, 10));
+
+                $('#endDate').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD',
+                    defaultDate: new Date()
+                });
+                var today = new Date();
+                $('#txtEndDate').val(today.toISOString().substring(0, 10));
+
+            });
+        </script>
+    </th:block>
+</div>
+</body>
+</html>
