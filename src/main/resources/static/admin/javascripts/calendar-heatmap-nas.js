@@ -110,10 +110,12 @@ $(function () {
             success: function(response) {
                 $('#select-line').empty();
                 $("#select-line").append("<option value='ALL'>ALL</option>");
-                if(response.CODE == 200){
+                if(response.code == 200){
                     $.each(response.data, function(key, value){
                         $("#select-line").append("<option value="+value.name+">"+value.name+"</option>");
                     });
+
+                    $("#select-line").prop("selectedIndex",0).change();
                 }
             },
             error:function(data,status,err) {
@@ -122,9 +124,20 @@ $(function () {
         });
     };
 
-    calHeatmap.getAllMachineNameByLineName = function(){
+    calHeatmap.getAllMachineNameByLineName = function(p_line){
+        var strUrl = "";
+
+
+
+        if(p_line == 'ALL'){
+            strUrl = "/v3/api/fukoku/machine/findAll";
+        }else{
+            strUrl = "/v3/api/fukoku/machine/findAllByLine/" + p_line;
+        }
+
+
         $.ajax({
-            url: "/v3/api/fukoku/machine/findAllByLine/" + $("#select-line").val(),
+            url: strUrl,
             type: 'GET',
             dataType: 'JSON',
             data:{
@@ -136,7 +149,7 @@ $(function () {
             success: function(response) {
                 $('#select-machine').empty();
                 $("#select-machine").append("<option value='ALL'>ALL</option>");
-                if(response.CODE == 200){
+                if(response.code == 200){
                     $.each(response.data, function(key, value){
                         $("#select-machine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
@@ -150,13 +163,14 @@ $(function () {
 
     calHeatmap.getAllLinesName(2); // factory id = 2;
     calHeatmap.getAllMachineNameByLineName('ALL');
-    $('#select-line').on('click', function () {
-        calHeatmap.getAllMachineNameByLineName();
+    $('#select-line').on('change', function () {
+        calHeatmap.getAllMachineNameByLineName($("#select-line").val());
     });
+
 
     calHeatmap.getCountNAS = function(line, machine, label){
         $.ajax({
-            url: "/v1/api/fukoku/cal-heatmap/nas",
+            url: "/v3/api/fukoku/cal-heatmap/nas",
             type: 'GET',
             dataType: 'JSON',
             data:{
@@ -212,12 +226,17 @@ $(function () {
 
         switch(ln) {
             case "ALL":
+
                 calHeatmap.getCountNAS("HC", ma, "(HC)");
                 calHeatmap.getCountNAS("IB", ma, "(IB)");
                 calHeatmap.getCountNAS("HA", ma, "(HA)");
                 calHeatmap.getCountNAS("HD", ma, "(HD)");
                 calHeatmap.getCountNAS("PD", ma, "(PD)");
                 calHeatmap.getCountNAS("HB", ma, "(HB)");
+
+
+
+
                 break;
             case "IB":
                 if (ma == "ALL") {

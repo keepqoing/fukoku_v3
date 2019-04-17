@@ -2295,19 +2295,19 @@ FIND_ALL_PD("SELECT \n" +
     // Chomrern - 2018-07-20
     public enum CalendarHeatmapMachineState{
         COUNT_NAS(" SELECT work_date ,COUNT(id) AS number " +
-                " FROM non_active_state_analysis " +
+                " FROM fukoku_v2.non_active_state_analysis " +
                 " WHERE ref_line LIKE ?" +
                 " AND ref_machine LIKE ? " +
                 " AND work_date LIKE ? " +
                 " GROUP BY work_date; "),
         COUNT_FS(" SELECT work_date ,COUNT(id) AS number " +
-                " FROM fault_state_analysis " +
+                " FROM fukoku_v2.fault_state_analysis " +
                 " WHERE ref_line LIKE ?" +
                 " AND ref_machine LIKE ? " +
                 " AND work_date LIKE ? " +
                 " GROUP BY work_date; "),
         COUNT_ALARM(" SELECT work_date ,COUNT(id) AS number " +
-                " FROM alarm_histories " +
+                " FROM fukoku_v2.alarm_histories " +
                 " WHERE ref_line LIKE ?" +
                 " AND ref_machine LIKE ? " +
                 " AND work_date LIKE ? " +
