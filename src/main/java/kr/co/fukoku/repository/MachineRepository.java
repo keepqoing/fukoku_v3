@@ -170,7 +170,7 @@ public interface MachineRepository {
 	List<Machine> findAllMachines();
 
 	// Chomrern - as of 2019-03-11. This api is requested by Bakhit
-	@Select("Select * from machine where status='1' AND LEFT(name, 2) = #{line} ")
+	@Select("Select * from machine where status='1' AND LEFT(name, 2) = #{line} ORDER BY seq")
 	@Results(value={
 			@Result(property="id",column="id"),
 			@Result(property="importDate",column="import_date"),

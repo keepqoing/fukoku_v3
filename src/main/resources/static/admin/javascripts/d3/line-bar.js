@@ -14,6 +14,9 @@ function lineBarchart(data, settings) {
     var yBar = d3.scaleLinear().range([height, 0]);
     var yLine = d3.scaleLinear().range([height, 0]);
 
+
+
+
     // define the 1st line
     var valueline = d3.line()
         .x(function (d) {
@@ -126,17 +129,7 @@ function lineBarchart(data, settings) {
         .call(d3.axisRight(yLine));
 
 
-    //add text labels to the top of each bar
-    svg.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        .selectAll(".textlabel")
-        .data(data)
-        .enter()
-        .append("text")
-        .attr("class", "textlabel")
-        .attr("x", function(d){ return xScale(d[settings.x]) + (120/2); })
-        .attr("y", function(d){ return yScale(d[settings.y]) - 3; })
-        .text(function(d){ return d3.format("")(d[settings.y]); });
+
     // text label for the y axis
     svg.append("text")
         .attr("transform", "rotate(-90)")

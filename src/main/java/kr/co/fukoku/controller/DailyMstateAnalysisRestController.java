@@ -2,7 +2,9 @@ package kr.co.fukoku.controller;
 
 import kr.co.fukoku.filters.DailyMstateAnalysisFilter;
 import kr.co.fukoku.model.DailyMstateAnalysis;
+import kr.co.fukoku.model.Machine;
 import kr.co.fukoku.model.ProductStatusGraph;
+import kr.co.fukoku.repository.MachineRepository;
 import kr.co.fukoku.repository.previousRepo.DailyMstateAnalysisRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,9 @@ public class DailyMstateAnalysisRestController {
 
     @Autowired
     private DailyMstateAnalysisRepo dailyMstateAnalysisRepo;
+
+    @Autowired
+    private MachineRepository machineRepository;
 
     @RequestMapping(value = "/find", method = RequestMethod.POST)
     public ResponseEntity<Map<String,Object>> findDailyMstateAnalysises(@RequestBody DailyMstateAnalysisFilter f) throws Exception {
@@ -115,13 +120,11 @@ public class DailyMstateAnalysisRestController {
     public ResponseEntity<Map<String,Object>> nonActiveTimeByMachine(@RequestBody DailyMstateAnalysisFilter f) throws Exception {
         ArrayList<Map<String, Object>> mapArr = (ArrayList<Map<String, Object>>) dailyMstateAnalysisRepo.breakdowntimeanalysisbyline(f);
         System.out.println("###### non_active_Time_by_machine");
-        Set set = new HashSet();
-        for (Map<String, Object> m: mapArr ) {
-            set.add(m.get("machine"));
-        }
+        List<Machine> machine = machineRepository.findAllMachinesByLine(f.getLine());
+
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("breakdowntimeanalysisbyline",  mapArr);
-        map.put("machines",  set);
+        map.put("machines",  machine);
         return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
     }
 

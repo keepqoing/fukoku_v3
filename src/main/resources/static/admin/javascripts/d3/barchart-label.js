@@ -1,5 +1,5 @@
 function barchartLabel(data, settings){
-    var margin = {top:30, right:30, bottom:50, left:200},
+    var margin = {top:30, right:30, bottom:50, left:30},
         width  = settings.width,
         height = settings.height;
 
@@ -12,7 +12,8 @@ function barchartLabel(data, settings){
         .range([height - margin.top - margin.bottom, 0]);
 
     var xScale = d3.scale.ordinal()
-        .rangeRoundBands([0, width - margin.right+100 - margin.left], .3);
+        // .rangeRoundBands([0, width - margin.right+100 - margin.left], .3);
+        .rangeRoundBands([0, 700], .05);
     var xAxis = d3.svg.axis()
         .scale(xScale)
         .orient("bottom");
@@ -38,10 +39,10 @@ function barchartLabel(data, settings){
         .enter()
         .append("rect")
         .attr("class", "bar")
-        .attr("x", function(d){ return xScale(d[settings.x])+20; })
+        .attr("x", function(d){ return xScale(d[settings.x])+30; })
         .attr("y", function(d){ return yScale(d[settings.y]); })
         .attr("height", function(d){ return height - margin.top - margin.bottom - yScale(d[settings.y]); })
-        .attr("width", function(d){ return 100;});
+        .attr("width", function(d){ return 50;});
     svg.append("g")
         .attr("class", "y axis")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
@@ -65,7 +66,7 @@ function barchartLabel(data, settings){
         .enter()
         .append("text")
         .attr("class", "textlabel")
-        .attr("x", function(d){ return xScale(d[settings.x]) + (120/2); })
+        .attr("x", function(d){ return xScale(d[settings.x]) + (110/2); })
         .attr("y", function(d){ return yScale(d[settings.y]) - 3; })
         .text(function(d){ return d3.format("")(d[settings.y]); });
 
