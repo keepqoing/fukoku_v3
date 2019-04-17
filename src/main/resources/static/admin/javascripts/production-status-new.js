@@ -104,7 +104,7 @@ $(function() {
             success: function(response) {
                 $('#selectMachine').empty();
                 $("#selectMachine").append("<option value=''>설비</option>");
-                if(response.code == "200"){
+                if(response.code == 200){
                     $.each(response.data, function(key, value){
                         $("#selectMachine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
