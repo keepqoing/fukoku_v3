@@ -646,8 +646,9 @@ public class SQLStatement {
 
     // TODO: SQL STATEMENT FOR QUERY TOTAL HOURS EACH MACHINE( STOP+OFFLINE) BY MACHINE and YEAR
     public enum MFaultTimePerYearByMachine {
+        // It is not correct
         FIND_MACHINE_NAME("SELECT DISTINCT substr(machine,4) machine FROM mstate_analysis GROUP BY machine ORDER BY machine"),
-        FIND_MACHINE_NAME_BY_LINE("select lmd.mapping_name machine from lines_machines_detail lmd join _lines l ON lmd.ref_line_id=l.id where l._name=?"),
+        FIND_MACHINE_NAME_BY_LINE("select lmd.mapping_name machine from fukokulines_machines_detail lmd join _lines l ON lmd.ref_line_id=l.id where l._name=?"),
         FIND_MACHINE_NAME_IN_ALL_LINE("SELECT lmd.mapping_name,lmd.join_name,l._name from lines_machines_detail lmd JOIN _lines l ON lmd.ref_line_id=l.id where lmd.mapping_name like ?"),
         FIND_ALL_LINE_WITH_TOTALHOUR("SELECT line, " +
                 "   machine, " +
@@ -750,7 +751,7 @@ public class SQLStatement {
                 "FROM mstate_analysis " +
                 " WHERE line = ? AND substr(_date,1,4) = ?  " +
                 "GROUP BY machine/*,YEAR(_date),MONTH(_date)*/;"),
-        NON_ACTIVE_BY_LINE("CALL proc_find_noActiveStateByLine(?,?) "),
+        NON_ACTIVE_BY_LINE("CALL V3_PROC_NON_ACTIVE_BY_LINE(?,?) "),
         STOP_AUTO_STOP_WAIT2("SELECT sum(stopauto+stopwait) stop_auto_wait,date,line,machine,sum(workingtime/60) workingtime,sum(planingnonworkingtime/60) planingnonworkingtime FROM machineAnalysisStatus_copy2 /*where date like'2018-02%' or date like'2018-03%'*/ where line=? and substr(date,1,4)=? GROUP BY MONTH(date),machine"),
         STOP_AUTO_STOP_WAIT_Graph("SELECT sum(stopauto+stopwait) stop_auto_wait,date,line,machine FROM machineAnalysisStatus_copy2  where line = ? and substr(date,1,4)=? GROUP BY machine ORDER BY stop_auto_wait DESC"),
         STOP_AUTO_STOP_WAIT_GRAPH_BY_MACHINE("SELECT sum(stopauto+stopwait) stop_auto_wait,date,line,machine FROM machineAnalysisStatus_copy2  where machine like ? and substr(date,1,4)=? GROUP BY machine ORDER BY stop_auto_wait DESC"),
@@ -808,7 +809,7 @@ public class SQLStatement {
 
     // TODO: SQL STATEMENT FOR QUERY TOTAL HOURS EACH MACHINE( STOP+OFFLINE) BY SEPERATE MONTH
     public enum findEachMonthAsHours {
-        FIND_LINE_NAME("SELECT DISTINCT line FROM mstate_analysis ORDER BY line"),
+        FIND_LINE_NAME("SELECT DISTINCT name line FROM line ORDER BY seq"),
         FIND_BY_ID(""),
         FIND_ALL_fINDEACHMONTHASHOURS("SELECT " +
                 "   line, " +
