@@ -1,9 +1,9 @@
 $(function() {
     fualtMachineMonitorByLine = {};
 
-    fualtMachineMonitorByLine.getAllLinesName = function(){
+    fualtMachineMonitorByLine.getAllLinesName = function(fid){
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/line/factory/" +  fid ,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -14,9 +14,9 @@ $(function() {
             success: function(response) {
                 $('#selectLineSearch').empty();
                 //$("#selectLineSearch").append("<option value=''>라인</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectLineSearch").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#selectLineSearch").append("<option value="+value.name+">"+value.name+"</option>");
                     });
                     //fualtMachineMonitorByLine.getFualtData();
                 }
@@ -27,7 +27,7 @@ $(function() {
         });
     };
 
-    fualtMachineMonitorByLine.getAllLinesName();
+    fualtMachineMonitorByLine.getAllLinesName(2); // factory_id = 2;
     fualtMachineMonitorByLine.getFualtData = function () {
         var year = $('#yearSelected').val();
         var dataTable = $('#dataTable').DataTable();

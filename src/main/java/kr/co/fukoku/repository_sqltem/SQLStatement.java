@@ -1982,7 +1982,7 @@ FIND_ALL_PD("SELECT \n" +
     }
 
     public enum FaultMachineMonitor{
-        FIND_FAULT_DATA_BY_YEAR("SELECT REF_LINE, sum(DURATION) as duration, END_TIME, ALARM_CODE, ALARM_NAME, department, MONTH(END_TIME) as monthly FROM fault_state_analysis WHERE END_TIME LIKE ? AND DEPARTMENT <> 'ALARM_AUTO_DELETED' GROUP BY  monthly, ref_line;"),
+        FIND_FAULT_DATA_BY_YEAR("SELECT REF_LINE, sum(DURATION) as duration, END_TIME, ALARM_CODE, ALARM_NAME, department, MONTH(END_TIME) as monthly FROM fukoku_v2.fault_state_analysis WHERE END_TIME LIKE ? AND DEPARTMENT <> 'ALARM_AUTO_DELETED' GROUP BY  monthly, ref_line;"),
         FIND_FAULT_REAL_OPERATION_TIME_BY_YEAR("select line, (sum(operating_time) - sum(plan_stop_time)) duration, Month(store_date) monthly from dashboard_analysis where store_date like ? GROUP BY line, monthly;"),
         FIND_FAULT_DATA_BY_LINE("SELECT f.REF_LINE, f.ref_machine,m.display_name, sum(f.DURATION) as duration, f.END_TIME, f.ALARM_CODE, f.ALARM_NAME, f.department, MONTH(f.END_TIME) as monthly FROM fault_state_analysis f, lines_machines_detail m WHERE f.END_TIME LIKE ? AND f.ref_line = ? AND f.DEPARTMENT <> 'ALARM_AUTO_DELETED' AND f.ref_machine = m.mapping_name GROUP BY  monthly, f.ref_line,f.ref_machine;"),
         FIND_FAULT_REAL_OPERATION_TIME_BY_LINE("select d.line, d.machine_name,m.display_name, (sum(d.operating_time) - sum(d.plan_stop_time)) duration, d.store_date , Month(d.store_date) monthly from dashboard_analysis d, lines_machines_detail m where d.store_date like ? AND d.line=? AND d.machine_name = m.mapping_name GROUP BY monthly, d.line, d.machine_name;"),
