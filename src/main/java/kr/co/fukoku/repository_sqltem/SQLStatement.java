@@ -1618,7 +1618,7 @@ FIND_ALL_PD("SELECT \n" +
 
     public enum NGProductSQL {
         FIND_ALL("SELECT * " +
-                "FROM ng_product_analysis " +
+                "FROM fukoku_v2.ng_product_analysis " +
                 "WHERE ref_line LIKE ? " +
                 "      AND ref_machine LIKE ? " +
                 "      AND status LIKE ? " +
@@ -1626,20 +1626,20 @@ FIND_ALL_PD("SELECT \n" +
                 "ORDER BY id DESC " +
                 "LIMIT ? " +
                 "OFFSET ?;"),
-        FIND_BY_ID("SELECT *FROM ng_product_analysis WHERE id = ?;"),
+        FIND_BY_ID("SELECT * FROM fukoku_v2.ng_product_analysis WHERE id = ?;"),
         COUNT("SELECT COUNT(1) " +
-                "FROM ng_product_analysis " +
+                "FROM fukoku_v2.ng_product_analysis " +
                 "WHERE ref_line LIKE ? " +
                 "       AND ref_machine LIKE ? " +
                 "       AND status LIKE ? " +
                 "       AND production_date LIKE ?;"),
-        COUNT_NG_IN_LINE("SELECT _name,(SELECT COUNT(1) FROM ng_product_analysis WHERE ref_line = _name AND status = 1 AND production_date LIKE ?) AS counting FROM _lines"),
-        COUNT_NG_IN_MACHINE("SELECT mapping_name, " +
-                            "       (SELECT COUNT(1) FROM ng_product_analysis WHERE ref_machine = mapping_name AND status = 1 AND production_date LIKE ?) AS counting " +
-                            "FROM lines_machines_detail " +
-                            "WHERE SUBSTR(mapping_name,1,2) = ?"),
-        UPDATE_STATUS("UPDATE ng_product_analysis SET status = 0 WHERE id = ?;"),
-        ADD("INSERT INTO ng_product_analysis(ref_line, ref_machine, mstate, ref_product, start_time, end_time, production_date, quality, product_cycle, status) VALUES(?,?,?,?,?,?,?,'NG',0,1);");
+        COUNT_NG_IN_LINE("SELECT ln.name _name,(SELECT COUNT(1) FROM fukoku_v2.ng_product_analysis WHERE ref_line = ln.name AND status = 1 AND production_date LIKE ?) AS counting FROM line ln"),
+        COUNT_NG_IN_MACHINE("SELECT m.acronym mapping_name, " +
+                            "       (SELECT COUNT(1) FROM fukoku_v2.ng_product_analysis WHERE ref_machine = m.acronym AND status = 1 AND production_date LIKE ?) AS counting " +
+                            "FROM machine m " +
+                            "WHERE SUBSTR(m.acronym,1,2) = ?"),
+        UPDATE_STATUS("UPDATE fukoku_v2.ng_product_analysis SET status = 0 WHERE id = ?;"),
+        ADD("INSERT INTO fukoku_v2.ng_product_analysis(ref_line, ref_machine, mstate, ref_product, start_time, end_time, production_date, quality, product_cycle, status) VALUES(?,?,?,?,?,?,?,'NG',0,1);");
         private String value;
 
         NGProductSQL(String value) {
