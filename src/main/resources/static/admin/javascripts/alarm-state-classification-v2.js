@@ -67,7 +67,7 @@ $(function () {
 
     alarmCls.getAllLinesName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/line/factory/" +  2 ,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -80,11 +80,13 @@ $(function () {
                 $('#selectLineSearch').empty();
                 $("#selectLine").append("<option value=''>라인</option>");
                 $("#selectLineSearch").append("<option value=''>라인</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectLine").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
-                        $("#selectLineSearch").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#selectLine").append("<option value="+value.name+">"+value.name+"</option>");
+                        $("#selectLineSearch").append("<option value="+value.name+">"+value.name+"</option>");
                     });
+                    $("#selectLine").prop("selectedIndex",1).change();
+                    $("#selectLineSearch").prop("selectedIndex",1).change();
                 }
             },
             error:function(data,status,err) {
