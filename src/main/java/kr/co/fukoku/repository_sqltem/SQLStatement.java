@@ -2038,23 +2038,23 @@ FIND_ALL_PD("SELECT \n" +
                 " id,	ref_line,	ref_machine,	ref_product, "+
                 " mstate, "+
                 " work_date,	start_time,	end_time,	duration,	alarm_code,	alarm_name,	item,	sub_item,	error,	treatment,	department,	identifier "+
-                " FROM view_transfer_fault_history WHERE ref_line LIKE ? AND ref_machine LIKE ? AND department LIKE ? AND work_date LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
-        COUNT("SELECT COUNT(1) FROM view_transfer_fault_history WHERE ref_line LIKE ? AND ref_machine LIKE ? AND department LIKE ? AND work_date LIKE ?;"),
-        COUNT_NUMBER_BY_LINE("SELECT _name, (SELECT COUNT(1) FROM view_transfer_fault_history WHERE ref_line = _name AND department LIKE ? AND work_date LIKE ?) AS counting FROM _lines"),
-        COUNT_NUMBER_BY_MACHINE("SELECT mapping_name, (SELECT COUNT(1) FROM view_transfer_fault_history WHERE ref_machine = LMD.mapping_name AND department LIKE ? AND work_date LIKE ?) AS counting FROM lines_machines_detail LMD WHERE SUBSTR(mapping_name,1,2) = ?;"),
+                " FROM fukoku_v2.view_transfer_fault_history WHERE ref_line LIKE ? AND ref_machine LIKE ? AND department LIKE ? AND work_date LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
+        COUNT("SELECT COUNT(1) FROM fukoku_v2.view_transfer_fault_history WHERE ref_line LIKE ? AND ref_machine LIKE ? AND department LIKE ? AND work_date LIKE ?;"),
+        COUNT_NUMBER_BY_LINE("SELECT name _name, (SELECT COUNT(1) FROM fukoku_v2.view_transfer_fault_history WHERE ref_line = name AND department LIKE ? AND work_date LIKE ?) AS counting FROM line"),
+        COUNT_NUMBER_BY_MACHINE("SELECT acronym mapping_name, (SELECT COUNT(1) FROM fukoku_v2.view_transfer_fault_history WHERE ref_machine = LMD.acronym AND department LIKE ? AND work_date LIKE ?) AS counting FROM machine LMD WHERE LEFT(acronym,2) = ?;"),
 
 
-        ADD("INSERT INTO fault_state_analysis(ref_line, ref_machine, ref_product, mstate, work_date, start_time, end_time, duration, alarm_code, alarm_name, item, sub_item, error, treatment, department, identifier) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"),
+        ADD("INSERT INTO fukoku_v2.fault_state_analysis(ref_line, ref_machine, ref_product, mstate, work_date, start_time, end_time, duration, alarm_code, alarm_name, item, sub_item, error, treatment, department, identifier) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"),
 //        FREQ_VALUE("select ref_machine, alarm_code, count(alarm_code) counting\n" +
 //                "from fault_state_analysis \n" +
 //                "where ref_line LIKE ? and work_date between ? and ? and alarm_code <> \"\"\n" +
 //                "group by alarm_code;"),
 
         FREQ_VALUE("select ref_machine, alarm_code, count(alarm_code) counting\n" +
-                "from view_transfer_fault_history \n" +
+                "from fukoku_v2.view_transfer_fault_history \n" +
                 "where ref_line LIKE ? and work_date between ? and ? and alarm_code <> \"\"\n" +
                 "group by alarm_code;"),
-        DELETE("DELETE FROM fault_state_analysis WHERE id = ?; ");
+        DELETE("DELETE FROM fukoku_v2.fault_state_analysis WHERE id = ?; ");
         private String value;
         FaultStateSQL(String value){this.value = value;}
         public String toString(){return this.value;}

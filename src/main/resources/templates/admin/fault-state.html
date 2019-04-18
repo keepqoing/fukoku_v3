@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+
+<head>
+
+    <title>고장내역</title>
+    <style type="text/css">
+        table {
+            font-size: 12pt;
+        }
+
+        .table-head {
+            background-color: #3c8dbc;
+            color: white;
+        }
+
+        table thead th {
+            text-align: center;
+        }
+
+        table tbody tr {
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+    <section class="content-header">
+        <h1>
+            고장내역
+        </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                <div id="selectLineButtonList">
+
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                <div class='input-group date' id='productionDate'>
+                                    <input type='text' class="form-control" id="txtProductionDate" placeholder="생산날짜"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                <div id="selectMachineButtonList">
+
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <table class="table">
+                                    <thead class="table-head">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>라인</th>
+                                        <th>설비</th>
+                                        <th>설비상태</th>
+                                        <th>세산날짜</th>
+                                        <th>시작날짜</th>
+                                        <th>종료날짜</th>
+                                        <th>분:초</th>
+                                        <th>알람코드</th>
+                                        <th>알람명</th>
+                                        <th>항목</th>
+                                        <th>세부항목</th>
+                                        <th>고장</th>
+                                        <th>조치</th>
+                                        <th>처리부서</th>
+                                        <!--<th>수정</th>-->
+                                    </tr>
+                                    </thead>
+                                    <tbody id="ERROR_STATE">
+                                    <tr role="row" class="odd" style="text-align:center;font-weight:bold;">
+                                        <td colspan="12">콘텐츠 없음</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <div id="pageMessage">전시 <span id="limitPage"></span> 의 <span id="totalPage"></span>
+                                        페이지 <span id="totalRecords"></span></div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <select class="form-control" style="width:100px;" id="PER_PAGE">
+                                        <option value="15">15</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-12">
+                                    <div class="pull-right" id="PAGINATION">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- box-footer -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalNonMovingState">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="box box-primary modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">라인관리</h4>
+                </div>
+
+                <form class="form-horizontal" enctype="multipart/form-data">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">라인명:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtName" placeholder="라인명"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">공장:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="selectFactory">
+                                    <option value="">공장</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtLocation" class="col-sm-2 control-label">위치:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtLocation" placeholder="위치"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtProduct" class="col-sm-2 control-label">생산제품:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtProduct" placeholder="생산제품"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">제작날짜</label>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                <div class='input-group date' id='date'>
+                                    <input type='text' class="form-control" id="txtDate" placeholder="제작날짜"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtRemark" class="col-sm-2 control-label">설명:</label>
+                            <div class="col-sm-10">
+                                <textarea rows="5" class="form-control" id="txtRemark"></textarea>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary pull-right btn-flat" id="btnSave">저장</button>
+                        <button type="button" class="btn btn-primary pull-right btn-flat" id="btnSaveUpdate"
+                                style="display:none;">Save
+                        </button>
+                    </div><!-- /.box-footer -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalMessage" style="z-index: 10000">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="TITLE2">메시지</h4>
+                </div>
+                <div class="modal-body">
+                    <h5 id="MESSAGE1"><strong>이 기록을 삭제 하시겠습니까?</strong></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-red btn-default btn-ripple" data-dismiss="modal">아니</button>
+                    <button type="button" class="btn btn-indigo btn-danger" id="btnOk">승인</button>
+                </div>
+            </div><!--.modal-content-->
+        </div>
+    </div>
+    <!--<script src="/static/admin/javascripts/libraries/bootstrap-waitingfor.js"></script>-->
+    <script src="/static/admin/javascripts/fault-state.js"></script>
+    <script id="ERROR_STATE_TEMPLATE" type="text/x-jquery-tmpl">
+        <tr data-id="{{= ID}} "style="text-align:center;">
+            <td>{{= NO}}</td>
+            <td><strong>{{= LINE}}</strong></td>
+            <td><strong>{{= MACHINE}}</strong></td>
+            <td><strong>{{= MSTATE}}</strong></td>
+            <td><strong>{{= WORK_DATE}}</strong></td>
+            <td><strong>{{= START_TIME}}</strong></td>
+            <td><strong>{{= END_TIME}}</strong></td>
+            <td><strong>{{= DURATION}}</strong></td>
+            <td><strong>{{= ALARM_CODE}}</strong></td>
+            <td><strong>{{= ALARM_NAME}}</strong></td>
+            <td><strong>{{= ITEM}}</strong></td>
+            <td><strong>{{= SUB_ITEM}}</strong></td>
+            <td><strong>{{= ERROR}}</strong></td>
+            <td><strong>{{= TREATMENT}}</strong></td>
+            <td><strong>{{= DEPARTMENT}}</strong></td>
+            <!--<td style="text-align:center;">
+                <a href="javascript:;" id="btnEdit">
+                    <button class="btn btn-info btn-xs"><i class="fa fa-edit fa-lg"></i></button>
+                </a>
+                <a href="javascript:;" id="btnDelete">
+                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o fa-lg"></i> </button>
+                </a>
+          </td>-->
+        </tr>
+    </script>
+</div>
+<th:block layout:fragment="script">
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $('#year').datetimepicker({
+                    format: 'YYYY-MM-DD HH:MM:SS',
+                    defaultDate: new Date()
+                });
+            });
+        });
+
+    </script>
+</th:block>
+</body>
+</html>
