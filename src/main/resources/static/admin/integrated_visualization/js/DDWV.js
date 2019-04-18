@@ -382,11 +382,16 @@
         //==============================================================================================//
         function drawYAxisLabel(barData, yAxis, font){
             for (var i=0; i<yAxis; i++) {
+
                 var yAxisItem = barData.data[i];
-                var geometry = new THREE.TextGeometry( yAxisItem.label, {
+                let l = yAxisItem.label;
+                if (yAxisItem.label.includes('-') && yAxisItem.label.includes('|')){
+                    l = yAxisItem.label.split('|')[1];
+                }
+                var geometry = new THREE.TextGeometry( l, {
                     font: font,
                     size: yAxisLabelSize,
-                    height: 0.1
+                    height: 0.01
                 });
                 var material = new THREE.MeshPhongMaterial( { color: yAxisLabelColor } );
                 var text = new THREE.Mesh(geometry, material);
@@ -411,7 +416,7 @@
             var geometry = new THREE.TextGeometry( label, {
                 font: font,
                 size: yAxisLabelSize,
-                height: 0.1
+                height: 0.01
             });
             var material = new THREE.MeshPhongMaterial( { color: yAxisLabelColor } );
             var text = new THREE.Mesh(geometry, material);
@@ -432,11 +437,15 @@
         //===============================================================================================//
         function drawXAxisLabel(barData, xAxis, font){
             barData.labels.forEach(function(label, i) {
+                let l = label;
+                if (label.includes('-') && label.includes('|')){
+                    l = label.split('|')[1];
+                }
                 if (i + 1 > xAxis) return;
-                var geometry = new THREE.TextGeometry( label, {
+                var geometry = new THREE.TextGeometry( l, {
                     font: font,
                     size: xAxisLabelSize,
-                    height: 0.1
+                    height: 0.01
                 });
                 var material = new THREE.MeshPhongMaterial( { color: xAxisLabelColor } );
                 var text = new THREE.Mesh(geometry, material);
@@ -461,7 +470,7 @@
             var geometry = new THREE.TextGeometry( label, {
                 font: font,
                 size: xAxisLabelSize,
-                height: 0.1
+                height: 0.01
             });
             var material = new THREE.MeshPhongMaterial( { color: xAxisLabelColor } );
             var text = new THREE.Mesh(geometry, material);
@@ -498,7 +507,7 @@
                         var geometry = new THREE.TextGeometry( childItem.value.toString(), {
                             font: font,
                             size: barLabelSize,
-                            height: 0.1
+                            height: 0.01
                         });
 
                         var material = new THREE.MeshPhongMaterial( { color: barLabelColor } );
@@ -531,7 +540,7 @@
                 var geometry = new THREE.TextGeometry( (i).toString(), {
                     font: font,
                     size: scaleLabelSize,
-                    height: 0.1
+                    height: 0.01
                 });
                 var material = new THREE.MeshPhongMaterial( { color: scaleLabelColor } );
                 var text = new THREE.Mesh(geometry, material);
@@ -588,7 +597,7 @@
                     var geometry = new THREE.TextGeometry( label, {
                         font: font,
                         size: barLabelSize,
-                        height: 0.1
+                        height: 0.01
                     });
                     var material = new THREE.MeshPhongMaterial( { color: barLabelColor } );
                     var text = new THREE.Mesh(geometry, material);
@@ -634,7 +643,7 @@
                     var geometry = new THREE.TextGeometry( label, {
                         font: font,
                         size: barLabelSize,
-                        height: 0.1
+                        height: 0.01
                     });
                     var material = new THREE.MeshPhongMaterial( { color: barLabelColor } );
                     var text = new THREE.Mesh(geometry, material);
@@ -758,7 +767,11 @@
         function setTextToInfoScreen(message){;
             let inner = "";
             Object.keys(message).forEach(function(key){
-                inner += `<b>${key}:</b> ${message[key]}<br>`;
+                let m = message[key];
+                if (message[key].includes('-') && message[key].includes('|')){
+                    m = message[key].split('|')[1];
+                }
+                inner += `<b>${key}:</b> ${m}<br>`;
             });
             document.getElementById("infoMessage").innerHTML = inner;
         }
