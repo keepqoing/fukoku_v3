@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+
+<head>
+    <title> 라인설비별알람시간분석 </title>
+    <style>
+        table {
+            font-size: 12pt;
+        }
+
+        table thead {
+            background-color: #3c8dbc;
+            color: white;
+        }
+
+        table thead th {
+            text-align: center;
+        }
+
+        table tbody tr {
+            text-align: center;
+        }
+
+        .axis text {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            text-anchor: end;
+        }
+
+        .axis path {
+            fill: none;
+            stroke: black;
+            stroke-width: 0.5px;
+            shape-rendering: crispEdges;
+        }
+
+        .bar {
+            stroke: none;
+            fill: steelblue;
+        }
+
+        .textlabel {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            text-anchor: middle;
+        }
+    </style>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <h1>
+            라인설비별알람시간분석
+        </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <select class="form-control" id="selectLineSearch">
+                                        <option value="">라인</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <div class='input-group date' id='startTime'>
+                                        <input type='text' class="form-control" id="yearSelected"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                <button type="button" class="btn btn-primary" id="btnQuery">검색</button>
+                                <button type="button" class="btn btn-primary">Excel</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <div class="table" id="bar-label" style="width:1400px; margin: 0 auto;"></div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12  table-responsive">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                        <div class="box" id="clearTable">
+                                            <div class="box-body">
+                                                <table class="table table-bordered table-striped" id="tbl-result">
+                                                    <thead>
+                                                    <tr>
+
+                                                        <th>설비</th>
+                                                        <th>설비</th>
+                                                        <th>1월(h)</th>
+                                                        <th>2월(h)</th>
+                                                        <th>3월(h)</th>
+                                                        <th>4월(h)</th>
+                                                        <th>5월(h)</th>
+                                                        <th>6월(h)</th>
+                                                        <th>7월(h)</th>
+                                                        <th>8월(h)</th>
+                                                        <th>9월(h)</th>
+                                                        <th>10월(h)</th>
+                                                        <th>11월(h)</th>
+                                                        <th>12월(h)</th>
+                                                        <th>총알람시간(h)</th>
+                                                        <th>총부하시간(h)</th>
+                                                        <th>알람율(%)</th>
+
+
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="tbody">
+                                                    <!--
+                                                    <tr th:each="i : ${#numbers.sequence( 1, 1000)}">
+                                                        <td th:text="${i}"></td>
+                                                        <td>CM5E</td>
+                                                        <td>2017.8.1</td>
+                                                        <td>13:35:30</td>
+                                                        <td>1900</td>
+                                                        <td>2500</td>
+                                                        <td>1950</td>
+                                                        <td>OK</td>
+                                                        <td>525</td>
+                                                        <td>변경</td>
+                                                    </tr>-->
+                                                    </tbody>
+                                                    <tfoot id="tfoot"></tfoot>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="/static/admin/javascripts/d3/barchart-label.js"></script>
+    <script src="../../static/admin/javascripts/alarmMachineMonitorByLine.js"></script>
+
+
+
+</div>
+<th:block layout:fragment="script">
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $('#startTime').datetimepicker({
+                    format: 'YYYY',
+                    defaultDate: new Date()
+                });
+
+            });
+        });
+    </script>
+</th:block>
+</body>
+</html>

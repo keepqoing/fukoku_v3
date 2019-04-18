@@ -11,6 +11,7 @@ $(function() {
     });
 
     alarmMachineMonitor.getAlarmData = function () {
+        openLoading();
         var year = $('#yearSelected').val();
         var dataTable = $('#dataTable').DataTable();
         $.ajax({
@@ -79,6 +80,7 @@ $(function() {
                 console.log("error: "+data+" status: "+status+" err:"+err);
             }
         });
+        closeLoading();
     };
 
     $('#btnQuery').click(function () {
@@ -114,7 +116,7 @@ $(function() {
             success: function (response) {
                 console.log("response", response);
                 let data = response.breakdowntimeanalysisbyline;
-                var lines = ["HA", "HB", "HC", "HD", "IB", "PD"];
+                var lines = ["HC", "IB", "HA", "HD", "PD", "HB"];
 
                 var tr = "";
                 $("#tbody").empty();

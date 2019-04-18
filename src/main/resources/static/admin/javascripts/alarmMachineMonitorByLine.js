@@ -11,9 +11,9 @@ $(function() {
         }
     });
 
-    alarmMachineMonitor.getAllLinesName = function(){
+    alarmMachineMonitor.getAllLinesName = function(fid){
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/line/factory/" +  fid ,
             type: 'GET',
             dataType: 'JSON',
 
@@ -24,10 +24,11 @@ $(function() {
             success: function(response) {
                 $('#selectLineSearch').empty();
                 // $("#selectLineSearch").append("<option value=''>라인</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectLineSearch").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#selectLineSearch").append("<option value="+value.name+">"+value.name+"</option>");
                     });
+                    $("#selectLineSearch").prop("selectedIndex",0).change();
 
                 }
             },
@@ -176,7 +177,7 @@ $(function() {
 
     // First Loading Page
     $(document).ready(function(){
-        alarmMachineMonitor.getAllLinesName();
+        alarmMachineMonitor.getAllLinesName(2);
         var line = $('#selectLineSearch').val();
         var year = $('#yearSelected').val();
 
@@ -221,18 +222,18 @@ $(function() {
                 // for (var l = 0; l < lines.length; l++) {
                 for (var m = 0; m < response.machines.length; m++) {
                     for (var i = 0; i < data.length; i++) {
-                        if(data[i].month == 1 && response.machines[m] == data[i].machine){ month[0] = data[i].alarm_time_s; working_time[0] = data[i].working_time_s ; non_active_ratio[0] = (data[i].alarm_time_s / data[i].working_time_s) * 100  }
-                        if(data[i].month == 2  && response.machines[m] == data[i].machine){ month[1] = data[i].alarm_time_s; working_time[1] = data[i].working_time_s ; non_active_ratio[1] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                        if(data[i].month == 3  && response.machines[m] == data[i].machine){ month[2] = data[i].alarm_time_s; working_time[2] = data[i].working_time_s ; non_active_ratio[2] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                        if(data[i].month == 4  && response.machines[m] == data[i].machine){ month[3] = data[i].alarm_time_s; working_time[3] = data[i].working_time_s ; non_active_ratio[3] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                        if(data[i].month == 5  && response.machines[m] == data[i].machine){ month[4] = data[i].alarm_time_s; working_time[4] = data[i].working_time_s ; non_active_ratio[4] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                        if(data[i].month == 6  && response.machines[m] == data[i].machine){ month[5] = data[i].alarm_time_s; working_time[5] = data[i].working_time_s ; non_active_ratio[5] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                        if(data[i].month == 7  && response.machines[m] == data[i].machine){ month[6] = data[i].alarm_time_s; working_time[6] = data[i].working_time_s ; non_active_ratio[6] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                        if(data[i].month == 8  && response.machines[m] == data[i].machine){ month[7] = data[i].alarm_time_s; working_time[7] = data[i].working_time_s ; non_active_ratio[7] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                        if(data[i].month == 9  && response.machines[m] == data[i].machine){ month[8] = data[i].alarm_time_s; working_time[8] = data[i].working_time_s ; non_active_ratio[8] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                        if(data[i].month == 10  && response.machines[m] == data[i].machine){ month[9] = data[i].alarm_time_s; working_time[9] = data[i].working_time_s ; non_active_ratio[9] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                        if(data[i].month == 11  && response.machines[m] == data[i].machine){ month[10] = data[i].alarm_time_s; working_time[10] = data[i].working_time_s ; non_active_ratio[10] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                        if(data[i].month == 12  && response.machines[m] == data[i].machine){ month[11] = data[i].alarm_time_s; working_time[11] = data[i].working_time_s ; non_active_ratio[11] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                        if(data[i].month == 1 && response.machines[m].name == data[i].machine){ month[0] = data[i].alarm_time_s; working_time[0] = data[i].working_time_s ; non_active_ratio[0] = (data[i].alarm_time_s / data[i].working_time_s) * 100  }
+                        if(data[i].month == 2  && response.machines[m].name == data[i].machine){ month[1] = data[i].alarm_time_s; working_time[1] = data[i].working_time_s ; non_active_ratio[1] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                        if(data[i].month == 3  && response.machines[m].name == data[i].machine){ month[2] = data[i].alarm_time_s; working_time[2] = data[i].working_time_s ; non_active_ratio[2] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                        if(data[i].month == 4  && response.machines[m].name == data[i].machine){ month[3] = data[i].alarm_time_s; working_time[3] = data[i].working_time_s ; non_active_ratio[3] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                        if(data[i].month == 5  && response.machines[m].name == data[i].machine){ month[4] = data[i].alarm_time_s; working_time[4] = data[i].working_time_s ; non_active_ratio[4] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                        if(data[i].month == 6  && response.machines[m].name == data[i].machine){ month[5] = data[i].alarm_time_s; working_time[5] = data[i].working_time_s ; non_active_ratio[5] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                        if(data[i].month == 7  && response.machines[m].name == data[i].machine){ month[6] = data[i].alarm_time_s; working_time[6] = data[i].working_time_s ; non_active_ratio[6] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                        if(data[i].month == 8  && response.machines[m].name == data[i].machine){ month[7] = data[i].alarm_time_s; working_time[7] = data[i].working_time_s ; non_active_ratio[7] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                        if(data[i].month == 9  && response.machines[m].name == data[i].machine){ month[8] = data[i].alarm_time_s; working_time[8] = data[i].working_time_s ; non_active_ratio[8] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                        if(data[i].month == 10  && response.machines[m].name == data[i].machine){ month[9] = data[i].alarm_time_s; working_time[9] = data[i].working_time_s ; non_active_ratio[9] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                        if(data[i].month == 11  && response.machines[m].name == data[i].machine){ month[10] = data[i].alarm_time_s; working_time[10] = data[i].working_time_s ; non_active_ratio[10] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                        if(data[i].month == 12  && response.machines[m].name == data[i].machine){ month[11] = data[i].alarm_time_s; working_time[11] = data[i].working_time_s ; non_active_ratio[11] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
                     }
 
                     var total_working_nonactive_time_s = 0;
@@ -252,7 +253,7 @@ $(function() {
 
                     var tr =
                         "<tr><td>"+ $("#selectLineSearch").val()+"</td>"+
-                        "<td>"+response.machines[m]+"</td>"+
+                        "<td>"+response.machines[m].name+"</td>"+
                         "<td>"+(month[0] / 3600).toFixed(2)+"</td>"+
                         "<td>"+(month[1] / 3600).toFixed(2)+"</td>"+
                         "<td>"+(month[2] / 3600).toFixed(2)+"</td>"+
@@ -272,7 +273,7 @@ $(function() {
                     $("#tbody").append(tr);
 
                     var graphObj = {};
-                    graphObj.MACHINE = response.machines[m];
+                    graphObj.MACHINE = response.machines[m].name;
                     graphObj .stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
                     graphObjArr.push(graphObj);
 

@@ -1738,21 +1738,21 @@ FIND_ALL_PD("SELECT \n" +
     }
 
     public enum AlarmHistorySQL {
-        FIND_ALL("SELECT * FROM alarm_histories WHERE ref_line LIKE ? AND ref_machine LIKE ? AND work_date LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
-        COUNT("SELECT COUNT(1) FROM alarm_histories WHERE ref_line LIKE ? AND ref_machine LIKE ? AND work_date LIKE ?;"),
-        COUNT_NUMBER_BY_LINE("SELECT _name, (SELECT COUNT(1) FROM alarm_histories WHERE ref_line = L._name AND work_date LIKE ?) AS counting FROM _lines L"),
-        COUNT_NUMBER_BY_MACHINE("SELECT mapping_name, (SELECT COUNT(1) FROM alarm_histories WHERE ref_machine = LMD.mapping_name AND work_date LIKE ?) AS counting FROM lines_machines_detail LMD WHERE SUBSTR(mapping_name,1,2) = ?;"),
-        ADD("INSERT INTO alarm_histories(ref_line, ref_machine, ref_product, machine_state, work_date, start_time, end_time, duration, alarm_code, alarm_name, alarm_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"),
-        MONTHLY_SUM("CALL proc_alarm_by_month(?); "),
-        MONTHLY_SUM_BY_LINE("CALL proc_alarm_by_month_line(?,?); "),
-        MONTHLY_SUM_BY_MACHINE("CALL proc_alarm_by_month_machine(?,?); "),
-        MONTHLY_SUM_BY_LINE_MACHINE("CALL proc_alarm_by_month_line_machine(?,?,?); "),
+        FIND_ALL("SELECT * FROM fukoku_v2.alarm_histories WHERE ref_line LIKE ? AND ref_machine LIKE ? AND work_date LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
+        COUNT("SELECT COUNT(1) FROM fukoku_v2.alarm_histories WHERE ref_line LIKE ? AND ref_machine LIKE ? AND work_date LIKE ?;"),
+        COUNT_NUMBER_BY_LINE("SELECT _name, (SELECT COUNT(1) FROM fukoku_v2.alarm_histories WHERE ref_line = L._name AND work_date LIKE ?) AS counting FROM _lines L"),
+        COUNT_NUMBER_BY_MACHINE("SELECT mapping_name, (SELECT COUNT(1) FROM fukoku_v2.alarm_histories WHERE ref_machine = LMD.mapping_name AND work_date LIKE ?) AS counting FROM lines_machines_detail LMD WHERE SUBSTR(mapping_name,1,2) = ?;"),
+        ADD("INSERT INTO fukoku_v2.alarm_histories(ref_line, ref_machine, ref_product, machine_state, work_date, start_time, end_time, duration, alarm_code, alarm_name, alarm_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"),
+        MONTHLY_SUM("CALL fukoku_v2.proc_alarm_by_month(?); "),
+        MONTHLY_SUM_BY_LINE("CALL fukoku_v2.proc_alarm_by_month_line(?,?); "),
+        MONTHLY_SUM_BY_MACHINE("CALL fukoku_v2.proc_alarm_by_month_machine(?,?); "),
+        MONTHLY_SUM_BY_LINE_MACHINE("CALL fukoku_v2.proc_alarm_by_month_line_machine(?,?,?); "),
         ALARM_FREQ("select ref_machine, alarm_code, alarm_name, count(alarm_code) counting\n" +
-                "from alarm_histories \n" +
+                "from fukoku_v2.alarm_histories \n" +
                 "where ref_line LIKE ? and work_date between ? and ?\n" +
                 "group by alarm_code;"),
-        COUNT_ALARM_BY_ID("SELECT COUNT(1) FROM alarm_histories WHERE alarm_id = ?"),
-        UPDATE_TIME("UPDATE alarm_histories SET end_time = ?, duration = ? WHERE alarm_id = ?");
+        COUNT_ALARM_BY_ID("SELECT COUNT(1) FROM fukoku_v2.alarm_histories WHERE alarm_id = ?"),
+        UPDATE_TIME("UPDATE fukoku_v2.alarm_histories SET end_time = ?, duration = ? WHERE alarm_id = ?");
 
         private String value;
 
