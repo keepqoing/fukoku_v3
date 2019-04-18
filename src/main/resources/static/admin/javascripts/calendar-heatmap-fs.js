@@ -97,9 +97,9 @@ $(function () {
         calHeatmap.getCountTT();
     });*/
 
-    calHeatmap.getAllLinesName = function(){
+    calHeatmap.getAllLinesName = function(fid){
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/line/factory/" +  fid ,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -110,10 +110,11 @@ $(function () {
             success: function(response) {
                 $('#select-line').empty();
                 $("#select-line").append("<option value='ALL'>ALL</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#select-line").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#select-line").append("<option value="+value.name+">"+value.name+"</option>");
                     });
+                    $("#select-line").prop("selectedIndex",0).change();
                 }
             },
             error:function(data,status,err) {
@@ -122,13 +123,20 @@ $(function () {
         });
     };
 
-    calHeatmap.getAllMachineNameByLineName = function(){
+    calHeatmap.getAllMachineNameByLineName = function(p_line){
+        var strUrl = "";
+        if(p_line == 'ALL'){
+            strUrl = "/v3/api/fukoku/machine/findAll";
+        }else{
+            strUrl = "/v3/api/fukoku/machine/findAllByLine/" + p_line;
+        }
+
         $.ajax({
-            url: "/v1/api/fukoku/machine/select-box",
+            url: strUrl,
             type: 'GET',
             dataType: 'JSON',
             data:{
-                "lineName"  :   $("#select-line").val()
+
             },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -137,9 +145,9 @@ $(function () {
             success: function(response) {
                 $('#select-machine').empty();
                 $("#select-machine").append("<option value='ALL'>ALL</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#select-machine").append("<option value="+value.MAPPING_NAME+">"+value.MACHINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#select-machine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
                 }
             },
@@ -149,16 +157,16 @@ $(function () {
         });
     };
 
-    calHeatmap.getAllLinesName();
+    calHeatmap.getAllLinesName(2);
     calHeatmap.getAllMachineNameByLineName('ALL');
-    $('#select-line').on('click', function () {
-        calHeatmap.getAllMachineNameByLineName();
+    $('#select-line').on('change', function () {
+        calHeatmap.getAllMachineNameByLineName($('#select-line').val());
     });
 
     calHeatmap.getCountFS = function(line, machine, label){
 
         $.ajax({
-            url: "/v1/api/fukoku/cal-heatmap/fs",
+            url: "/v3/api/fukoku/cal-heatmap/fs",
             type: 'GET',
             dataType: 'JSON',
             data:{
@@ -209,12 +217,13 @@ $(function () {
 
         switch(ln) {
             case "ALL":
-                calHeatmap.getCountFS("IB", ma, "(IB)");
-                calHeatmap.getCountFS("PD", ma, "(PD)");
-                calHeatmap.getCountFS("HA", ma, "(HA)");
-                calHeatmap.getCountFS("HB", ma, "(HB)");
                 calHeatmap.getCountFS("HC", ma, "(HC)");
+                calHeatmap.getCountFS("IB", ma, "(IB)");
+                calHeatmap.getCountFS("HA", ma, "(HA)");
                 calHeatmap.getCountFS("HD", ma, "(HD)");
+                calHeatmap.getCountFS("PD", ma, "(PD)");
+                calHeatmap.getCountFS("HB", ma, "(HB)");
+
                 break;
             case "IB":
                 if (ma == "ALL") {

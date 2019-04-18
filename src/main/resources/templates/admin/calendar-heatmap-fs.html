@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+
+<head>
+
+    <title> 라인별년간고장분석</title>
+    <!-- Include SmartWizard CSS -->
+    <link href="/static/admin/style/smart_wizard.css" rel="stylesheet" type="text/css"/>
+
+    <style>
+
+        .d3-tip {
+            line-height: 1;
+            font-weight: bold;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border-radius: 2px;
+        }
+
+        /* Creates a small triangle extender for the tooltip */
+        .d3-tip:after {
+            box-sizing: border-box;
+            display: inline;
+            font-size: 10px;
+            width: 100%;
+            line-height: 1;
+            color: rgba(0, 0, 0, 0.8);
+            content: "\25BC";
+            position: absolute;
+            text-align: center;
+        }
+
+        /* Style northward tooltips differently */
+        .d3-tip.n:after {
+            margin: -1px 0 0 0;
+            top: 100%;
+            left: 0;
+        }
+
+        .toolTip {
+            position: absolute;
+            display: none;
+            min-width: 80px;
+            height: auto;
+            background: none repeat scroll 0 0 #ffffff;
+            border: 1px solid #6F257F;
+            padding: 14px;
+            text-align: center;
+        }
+
+    </style>
+
+    <!-- Optional SmartWizard theme -->
+    <link href="/static/admin/style/smart_wizard_theme_arrows.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/static/admin/style/heatmap-cal.css">
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js" charset="utf-8"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+
+
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <section class="content-header">
+        <h1>
+            라인별년간고장분석
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                                <select class="form-control" id="select-line">
+                                    <option value="IB">IB</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                                <select class="form-control" id="select-machine">
+                                    <option value="IB_Pre1">1차압입기</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                                <div class='input-group date' id='year'>
+                                    <input type='text' class="form-control" id="txtYear" placeholder="년"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                                <input type="button" class="btn btn-primary" value="검색" id="btnSearch">
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="alert alert-success" style="margin-left: 20px; margin-right: 20px; margin-bottom: 0px;">
+                                <strong id="info">Date: N/A | Value: N/A</strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div style="margin-left: 100px;" id="mark">
+
+                            </div>
+                            <div>
+                                <section id="heatmap"></section>
+                            </div>
+                        </div>
+
+                        <div class="box-footer">
+                            <div class="row">
+
+                            </div>
+                        </div><!-- box-footer -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="/static/admin/javascripts/calendar-heatmap-fs.js"></script>
+    <script src="/static/admin/javascripts/d3/heatmap_cal.js"></script>
+    <script>
+
+
+
+    </script>
+</div>
+<th:block layout:fragment="script">
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $('#year').datetimepicker({
+                    format: 'YYYY'
+                });
+            });
+            $('#txtYear').val(new Date().getFullYear());
+        });
+    </script>
+    <script> d3.eesur = {}; //namespace  </script>
+</th:block>
+</body>
+</html>
