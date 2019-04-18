@@ -648,8 +648,11 @@ public class SQLStatement {
     public enum MFaultTimePerYearByMachine {
         // It is not correct
         FIND_MACHINE_NAME("SELECT DISTINCT substr(machine,4) machine FROM mstate_analysis GROUP BY machine ORDER BY machine"),
-        FIND_MACHINE_NAME_BY_LINE("select lmd.mapping_name machine from fukokulines_machines_detail lmd join _lines l ON lmd.ref_line_id=l.id where l._name=?"),
-        FIND_MACHINE_NAME_IN_ALL_LINE("SELECT lmd.mapping_name,lmd.join_name,l._name from lines_machines_detail lmd JOIN _lines l ON lmd.ref_line_id=l.id where lmd.mapping_name like ?"),
+//        FIND_MACHINE_NAME_BY_LINE("select lmd.mapping_name machine from fukokulines_machines_detail lmd join _lines l ON lmd.ref_line_id=l.id where l._name=?"),
+        FIND_MACHINE_NAME_BY_LINE("SELECT m.acronym machine FROM machine m WHERE LEFT(m.acronym,2) =?"),
+//        FIND_MACHINE_NAME_IN_ALL_LINE("SELECT lmd.mapping_name,lmd.join_name,l._name from lines_machines_detail lmd JOIN _lines l ON lmd.ref_line_id=l.id where lmd.mapping_name like ?"),
+        FIND_MACHINE_NAME_IN_ALL_LINE("SELECT acronym mapping_name, name join_name, LEFT(acronym,2) _name FROM machine WHERE LEFT(acronym, 2) LIKE ?"),
+
         FIND_ALL_LINE_WITH_TOTALHOUR("SELECT line, " +
                 "   machine, " +
                 "  substr(_date,1,7) _date " +
@@ -1986,7 +1989,7 @@ FIND_ALL_PD("SELECT \n" +
         FIND_FAULT_REAL_OPERATION_TIME_BY_YEAR("select line, (sum(operating_time) - sum(plan_stop_time)) duration, Month(store_date) monthly from dashboard_analysis where store_date like ? GROUP BY line, monthly;"),
         FIND_FAULT_DATA_BY_LINE("SELECT f.REF_LINE, f.ref_machine,m.display_name, sum(f.DURATION) as duration, f.END_TIME, f.ALARM_CODE, f.ALARM_NAME, f.department, MONTH(f.END_TIME) as monthly FROM fault_state_analysis f, lines_machines_detail m WHERE f.END_TIME LIKE ? AND f.ref_line = ? AND f.DEPARTMENT <> 'ALARM_AUTO_DELETED' AND f.ref_machine = m.mapping_name GROUP BY  monthly, f.ref_line,f.ref_machine;"),
         FIND_FAULT_REAL_OPERATION_TIME_BY_LINE("select d.line, d.machine_name,m.display_name, (sum(d.operating_time) - sum(d.plan_stop_time)) duration, d.store_date , Month(d.store_date) monthly from dashboard_analysis d, lines_machines_detail m where d.store_date like ? AND d.line=? AND d.machine_name = m.mapping_name GROUP BY monthly, d.line, d.machine_name;"),
-        FINE_FAULT_DATA_BY_MACHINE("SELECT f.REF_LINE, f.ref_machine,m.display_name, sum(f.DURATION) as duration, f.END_TIME, f.ALARM_CODE, f.ALARM_NAME, f.department, MONTH(f.END_TIME) as monthly FROM fault_state_analysis f, lines_machines_detail m WHERE f.END_TIME LIKE ? AND f.ref_machine like ? AND f.DEPARTMENT <> 'ALARM_AUTO_DELETED' AND f.ref_machine = m.mapping_name GROUP BY  monthly, f.ref_line,f.ref_machine;"),
+        FINE_FAULT_DATA_BY_MACHINE("SELECT f.REF_LINE, f.ref_machine,m.display_name, sum(f.DURATION) as duration, f.END_TIME, f.ALARM_CODE, f.ALARM_NAME, f.department, MONTH(f.END_TIME) as monthly FROM fukoku_v2.fault_state_analysis f, lines_machines_detail m WHERE f.END_TIME LIKE ? AND f.ref_machine like ? AND f.DEPARTMENT <> 'ALARM_AUTO_DELETED' AND f.ref_machine = m.mapping_name GROUP BY  monthly, f.ref_line,f.ref_machine;"),
         FINE_FAULT_REAL_OPERATION_TIME_BY_MACHINE("select d.line, d.machine_name,m.display_name, (sum(d.operating_time) - sum(d.plan_stop_time)) duration, d.store_date , Month(d.store_date) monthly from dashboard_analysis d, lines_machines_detail m where d.store_date like ? AND d.machine_name like ? AND d.machine_name = m.mapping_name GROUP BY monthly, d.line, d.machine_name;"),
         FIND_FREQUENCY_FAULT_CODE("select ref_line,ref_machine,end_time, alarm_code,alarm_name, COUNT(alarm_code) as frequency from fault_state_analysis where ref_line =? and ref_machine = ? and end_time BETWEEN ? and ? GROUP BY alarm_code;"),
         FIND_FREQUENCY_NON_MOVE_STATE("select ref_line,mstate,ref_machine,end_time, alarm_code,alarm_name, COUNT(mstate) as frequency from non_active_state where ref_line =? and ref_machine = ? and end_time BETWEEN ? and ? and alarm_code<>'' GROUP BY mstate;"),

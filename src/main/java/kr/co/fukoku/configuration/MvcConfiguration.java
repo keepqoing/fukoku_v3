@@ -76,7 +76,8 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/calendar-heatmap-nas").setViewName("/admin/calendar-heatmap-nas");
 		registry.addViewController("/admin/faultTimeAnalysisAllLine").setViewName("/admin/faultTimeAnalysisAllLine");
 		registry.addViewController("/admin/faultTimeAnalysisByLine").setViewName("/admin/faultTimeAnalysisByLine");
-
+		registry.addViewController("/admin/faultTimeAnalysisByMachine")
+				.setViewName("/admin/faultTimeAnalysisByMachine");
 
 
 		registry.addViewController("/admin/defective-product-listing").setViewName("/admin/defective_product_list_v2");
