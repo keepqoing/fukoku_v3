@@ -76,7 +76,7 @@ $(function () {
 
     alarmHistories.getAllLinesName = function(callback){
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/line/factory/" +  2 ,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -97,11 +97,11 @@ $(function () {
 
     alarmHistories.getAllMachineNameByLineName = function(line, callback){
         $.ajax({
-            url: "/v1/api/fukoku/machine/select-box",
+            url: "/v3/api/fukoku/machine/findAllByLine/" + line,
             type: 'GET',
             dataType: 'JSON',
             data:{
-                "lineName"  :   line
+
             },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -120,16 +120,16 @@ $(function () {
 
     function getCountLine(){
         alarmHistories.getAllLinesName(function (response) {
-            if(response.CODE == "7777"){
+            if(response.code == 200){
                 $("#selectLineButtonList").html("");
                 $("#selectLineButtonList").append("<button class='btn btn-success' style='margin-right:5px; margin-bottom:5px;' data-id='' id='btnLine'>ALL</button>");
                 var productionDate = $('#txtProductionDate').val()==""?"0":$('#txtProductionDate').val();
                 alarmHistories.getLineCounting(productionDate, function (response1) {
                     var total = 0;
-                    for(var v=0;v<response.DATA.length;v++){
+                    for(var v=0;v<response.data.length;v++){
                         for(var v1=0;v1<response1.DATA.length;v1++) {
-                            if (response.DATA[v] == response.DATA[v1]) {
-                                $("#selectLineButtonList").append("<button class='btn btn-success' style='margin-right:5px; margin-bottom:5px;' data-id=" + response.DATA[v].MAPPING_NAME + " id='btnLine'>" + response.DATA[v].LINE_NAME +"("+response1.DATA[v1].NUMBER+ ")</button>");
+                            if (response.data[v].name == response1.DATA[v1].ATTRIBUTE) {
+                                $("#selectLineButtonList").append("<button class='btn btn-success' style='margin-right:5px; margin-bottom:5px;' data-id=" + response.data[v].name + " id='btnLine'>" + response.data[v].name +"("+response1.DATA[v1].NUMBER+ ")</button>");
                                 total += response1.DATA[v1].NUMBER;
                             }
                         }
@@ -162,10 +162,10 @@ $(function () {
             var productionDate = $('#txtProductionDate').val()==""?"0":$('#txtProductionDate').val();
             alarmHistories.getMachineCounting(lineId, productionDate, function (response1) {
                 var total = 0;
-                $.each(response.DATA, function (key, value) {
+                $.each(response.data, function (key, value) {
                     $.each(response1.DATA, function (key1, value1) {
-                        if(value.MAPPING_NAME == value1.ATTRIBUTE) {
-                            $("#selectMachineButtonList").append("<button class='btn btn-danger' style='margin-right:5px; margin-bottom: 5px;' id='btnMachine' data-id=" + value.MAPPING_NAME + ">" + value.MACHINE_NAME +"("+value1.NUMBER+ ")</button>");
+                        if(value.name == value1.ATTRIBUTE) {
+                            $("#selectMachineButtonList").append("<button class='btn btn-danger' style='margin-right:5px; margin-bottom: 5px;' id='btnMachine' data-id=" + value.name + ">" + value.name +"("+value1.NUMBER+ ")</button>");
                             total += value1.NUMBER;
                         }
                     });

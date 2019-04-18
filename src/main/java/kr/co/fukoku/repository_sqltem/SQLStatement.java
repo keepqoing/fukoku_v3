@@ -1740,8 +1740,8 @@ FIND_ALL_PD("SELECT \n" +
     public enum AlarmHistorySQL {
         FIND_ALL("SELECT * FROM fukoku_v2.alarm_histories WHERE ref_line LIKE ? AND ref_machine LIKE ? AND work_date LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
         COUNT("SELECT COUNT(1) FROM fukoku_v2.alarm_histories WHERE ref_line LIKE ? AND ref_machine LIKE ? AND work_date LIKE ?;"),
-        COUNT_NUMBER_BY_LINE("SELECT _name, (SELECT COUNT(1) FROM fukoku_v2.alarm_histories WHERE ref_line = L._name AND work_date LIKE ?) AS counting FROM _lines L"),
-        COUNT_NUMBER_BY_MACHINE("SELECT mapping_name, (SELECT COUNT(1) FROM fukoku_v2.alarm_histories WHERE ref_machine = LMD.mapping_name AND work_date LIKE ?) AS counting FROM lines_machines_detail LMD WHERE SUBSTR(mapping_name,1,2) = ?;"),
+        COUNT_NUMBER_BY_LINE("SELECT name _name, (SELECT COUNT(1) FROM fukoku_v2.alarm_histories WHERE ref_line = L.name AND work_date LIKE ?) AS counting FROM line L"),
+        COUNT_NUMBER_BY_MACHINE("SELECT acronym mapping_name, (SELECT COUNT(1) FROM fukoku_v2.alarm_histories WHERE ref_machine = LMD.acronym AND work_date LIKE ?) AS counting FROM machine LMD WHERE LEFT(acronym, 2) = ?;"),
         ADD("INSERT INTO fukoku_v2.alarm_histories(ref_line, ref_machine, ref_product, machine_state, work_date, start_time, end_time, duration, alarm_code, alarm_name, alarm_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"),
         MONTHLY_SUM("CALL fukoku_v2.proc_alarm_by_month(?); "),
         MONTHLY_SUM_BY_LINE("CALL fukoku_v2.proc_alarm_by_month_line(?,?); "),
