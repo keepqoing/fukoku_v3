@@ -40,7 +40,7 @@ $(function() {
 
 
     alarmMachineMonitor.getAlarmData = function (line, year) {
-
+        openLoading();
 
         $.ajax({
             url:"/v1/api/fukoku/alarm-history/monthly/" + line + "/" + year,
@@ -165,6 +165,7 @@ $(function() {
                 console.log("error: "+data+" status: "+status+" err:"+err);
             }
         });
+        closeLoading();
     };
 
     $('#btnQuery').click(function () {

@@ -11,8 +11,9 @@ $(function() {
     });
 
     alarm.getAllMachinesName = function(){
+        var machineName = "";
         $.ajax({
-            url: "/v1/api/fukoku/machine/all/select-box",
+            url:  "/v3/api/fukoku/machine/findAll",
             type: 'GET',
             dataType: 'JSON',
 
@@ -23,9 +24,16 @@ $(function() {
             success: function(response) {
                 $('#selectMachine').empty();
                 $("#selectMachine").append("<option value=''>설비</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectMachine").append("<option value='"+value.MAPPING_NAME+"' data-id="+value.ID+">"+value.MACHINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+
+                        if(value.name[2] == "_"){
+                            machineName = value.name.substring(3);
+                        }else{
+                            machineName = value.name;
+                        }
+                        
+                        $("#selectMachine").append("<option value='"+machineName+"' data-id="+value.ID+">"+machineName+"</option>");
                     });
                 }
             },
@@ -147,7 +155,7 @@ $(function() {
             success: function (response) {
                 console.log("response", response);
                 let data = response.breakdowntimeanalysisbyline;
-                var lines = ["HA", "HB", "HC", "HD", "IB", "PD"];
+                var lines = ["HC", "IB", "HA", "HD", "PD", "HB"];
                 var month = [0,0,0,0,0,0,0,0,0,0,0,0]; var working_time = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var tr = "";
@@ -157,18 +165,18 @@ $(function() {
                 for (var l = 0; l < lines.length; l++) {
                     for (var m = 0; m < response.machines.length; m++) {
                         for (var i = 0; i < data.length; i++) {
-                            if(data[i].month == 1 && lines[l] == data[i].line && response.machines[m] == data[i].machine){ month[0] = data[i].alarm_time_s; working_time[0] = data[i].working_time_s ; non_active_ratio[0] = (data[i].alarm_time_s / data[i].working_time_s) * 100  }
-                            if(data[i].month == 2 && lines[l] == data[i].line && response.machines[m] == data[i].machine){ month[1] = data[i].alarm_time_s; working_time[1] = data[i].working_time_s ; non_active_ratio[1] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 3 && lines[l] == data[i].line && response.machines[m] == data[i].machine){ month[2] = data[i].alarm_time_s; working_time[2] = data[i].working_time_s ; non_active_ratio[2] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 4 && lines[l] == data[i].line && response.machines[m] == data[i].machine){ month[3] = data[i].alarm_time_s; working_time[3] = data[i].working_time_s ; non_active_ratio[3] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 5 && lines[l] == data[i].line && response.machines[m] == data[i].machine){ month[4] = data[i].alarm_time_s; working_time[4] = data[i].working_time_s ; non_active_ratio[4] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 6 && lines[l] == data[i].line && response.machines[m] == data[i].machine){ month[5] = data[i].alarm_time_s; working_time[5] = data[i].working_time_s ; non_active_ratio[5] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 7 && lines[l] == data[i].line && response.machines[m] == data[i].machine){ month[6] = data[i].alarm_time_s; working_time[6] = data[i].working_time_s ; non_active_ratio[6] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 8 && lines[l] == data[i].line && response.machines[m] == data[i].machine){ month[7] = data[i].alarm_time_s; working_time[7] = data[i].working_time_s ; non_active_ratio[7] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 9 && lines[l] == data[i].line && response.machines[m] == data[i].machine){ month[8] = data[i].alarm_time_s; working_time[8] = data[i].working_time_s ; non_active_ratio[8] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 10 && lines[l] == data[i].line && response.machines[m] == data[i].machine){ month[9] = data[i].alarm_time_s; working_time[9] = data[i].working_time_s ; non_active_ratio[9] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 11 && lines[l] == data[i].line && response.machines[m] == data[i].machine){ month[10] = data[i].alarm_time_s; working_time[10] = data[i].working_time_s ; non_active_ratio[10] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 12 && lines[l] == data[i].line && response.machines[m] == data[i].machine){ month[11] = data[i].alarm_time_s; working_time[11] = data[i].working_time_s ; non_active_ratio[11] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                            if(data[i].month == 1 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[0] = data[i].alarm_time_s; working_time[0] = data[i].working_time_s ; non_active_ratio[0] = (data[i].alarm_time_s / data[i].working_time_s) * 100  }
+                            if(data[i].month == 2 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[1] = data[i].alarm_time_s; working_time[1] = data[i].working_time_s ; non_active_ratio[1] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                            if(data[i].month == 3 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[2] = data[i].alarm_time_s; working_time[2] = data[i].working_time_s ; non_active_ratio[2] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                            if(data[i].month == 4 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[3] = data[i].alarm_time_s; working_time[3] = data[i].working_time_s ; non_active_ratio[3] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                            if(data[i].month == 5 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[4] = data[i].alarm_time_s; working_time[4] = data[i].working_time_s ; non_active_ratio[4] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                            if(data[i].month == 6 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[5] = data[i].alarm_time_s; working_time[5] = data[i].working_time_s ; non_active_ratio[5] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                            if(data[i].month == 7 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[6] = data[i].alarm_time_s; working_time[6] = data[i].working_time_s ; non_active_ratio[6] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                            if(data[i].month == 8 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[7] = data[i].alarm_time_s; working_time[7] = data[i].working_time_s ; non_active_ratio[7] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                            if(data[i].month == 9 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[8] = data[i].alarm_time_s; working_time[8] = data[i].working_time_s ; non_active_ratio[8] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                            if(data[i].month == 10 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[9] = data[i].alarm_time_s; working_time[9] = data[i].working_time_s ; non_active_ratio[9] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                            if(data[i].month == 11 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[10] = data[i].alarm_time_s; working_time[10] = data[i].working_time_s ; non_active_ratio[10] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
+                            if(data[i].month == 12 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[11] = data[i].alarm_time_s; working_time[11] = data[i].working_time_s ; non_active_ratio[11] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
                         }
                         var total_working_nonactive_time_s = 0;
                         var total_working_time_s = 0;
