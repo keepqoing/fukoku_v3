@@ -1,9 +1,7 @@
 package kr.co.fukoku.service.impl;
 
-import kr.co.fukoku.filters.AlarmStatisticsFilter;
-import kr.co.fukoku.model.AlarmStatistics;
-import kr.co.fukoku.model.Line;
-import kr.co.fukoku.model.Machine;
+import kr.co.fukoku.filters.AlarmHistoryFilter;
+import kr.co.fukoku.model.*;
 import kr.co.fukoku.repository_sqltem.AlarmStatisticsRepository;
 import kr.co.fukoku.service.AlarmStatisticsService;
 import kr.co.fukoku.utils.Counting;
@@ -18,25 +16,19 @@ public class AlarmStatisticsServiceBody implements AlarmStatisticsService {
     @Autowired
     private AlarmStatisticsRepository alarmStatisticsRepository;
 
-
     @Override
-    public List<AlarmStatistics> findAll(AlarmStatisticsFilter alarmStatisticsFilter, Pagination pagination) {
-        return alarmStatisticsRepository.findAll(alarmStatisticsFilter,pagination);
+    public List<Counting> findNumberByFactory() {
+        return alarmStatisticsRepository.findNumberByFactory();
     }
 
     @Override
-    public List<Counting> findNumberByFactory(String startYear, String endYear) {
-        return alarmStatisticsRepository.findNumberByFactory(startYear, endYear);
+    public List<Counting> findNumberByLine(String factoryName) {
+        return alarmStatisticsRepository.findNumberByLine(factoryName);
     }
 
     @Override
-    public List<Counting> findNumberByLine(String factoryName, String startYear, String endYear) {
-        return alarmStatisticsRepository.findNumberByLine(factoryName, startYear, endYear);
-    }
-
-    @Override
-    public List<Counting> findNumberByMachine(String line, String startYear, String endYear) {
-        return alarmStatisticsRepository.findNumberByMachine(line, startYear, endYear);
+    public List<Counting> findNumberByMachine(String line) {
+        return alarmStatisticsRepository.findNumberByMachine(line);
     }
 
     @Override
@@ -47,5 +39,40 @@ public class AlarmStatisticsServiceBody implements AlarmStatisticsService {
     @Override
     public List<Machine> findAllMachinesByLine(String line, String startYear, String endYear) {
         return alarmStatisticsRepository.findAllMachinesByLine(line, startYear, endYear);
+    }
+
+    @Override
+    public String callAutoCountingAlarm() {
+        return alarmStatisticsRepository.callAutoCountingAlarm();
+    }
+
+    @Override
+    public List<MainAlarmStatistics> getMainAlarmStatistic(String factory, String line, String machine, String year) {
+        return alarmStatisticsRepository.getMainAlarmStatistic(factory, line, machine, year);
+    }
+
+    @Override
+    public List<AlarmHistory> getAllAlarmHistories(AlarmHistoryFilter alarmHistoryFilter, Pagination pagination) {
+        return alarmStatisticsRepository.findAllAlarmHistory(alarmHistoryFilter, pagination);
+    }
+
+    @Override
+    public String callAutoCountingAlarmDuration() {
+        return alarmStatisticsRepository.callAutoCountingAlarmDuration();
+    }
+
+    @Override
+    public List<MainAlarmStatistics> getMainAlarmStatisticDuration(String factory, String line, String machine, String year) {
+        return alarmStatisticsRepository.getMainAlarmStatisticDuration(factory, line, machine, year);
+    }
+
+    @Override
+    public List<MainAlarmStatistics> getMainAlarmStatisticSum(String factory, String line, String machine, String year) {
+        return alarmStatisticsRepository.getMainAlarmStatisticSum(factory, line, machine, year);
+    }
+
+    @Override
+    public List<MainAlarmStatistics> getMainAlarmStatisticDurationSum(String factory, String line, String machine, String year) {
+        return alarmStatisticsRepository.getMainAlarmStatisticDurationSum(factory, line, machine, year);
     }
 }

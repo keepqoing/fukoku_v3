@@ -2639,15 +2639,23 @@ FIND_ALL_PD("SELECT \n" +
     // Alarm Statistics
     public enum AlarmStatisticsSQL {
 
-        COUNT("CALL proc_alarm_count(?,?,?,?);"),
-        COUNT_NUMNBER_BY_FACTORY("CALL proc_counting_factory(?,?);"),
-        COUNT_NUMBER_BY_LINE("CALL proc_counting_line(?,?,?);"),
-        COUNT_NUMBER_BY_MACHINE("CALL proc_counting_machine(?,?,?);"),
-        FIND_ALL("CALL proc_alarm_statistics(?,?,?,?,?,?);"),
-        FIND_ALL_MACHINE("CALL proc_get_machine(?,?,?);"),
-        FIND_ALL_LINE("CALL proc_line_by_factory(?,?,?);"),
-        FIND_ALARM_HISTORY("SELECT * FROM alarm_histories WHERE ref_line LIKE ? AND alarm_name = ? AND (LEFT(work_date,4) BETWEEN LEFT(?,4) AND LEFT(?,4)) ORDER BY id DESC LIMIT ? OFFSET ?;"),
-        COUNT_ALARM_HISTORY("SELECT COUNT(1) FROM alarm_histories WHERE ref_line LIKE ? AND alarm_name = ? AND (LEFT(work_date,4) BETWEEN LEFT(?,4) AND LEFT(?,4));");
+        COUNT("CALL fukoku_v2.proc_alarm_count(?,?,?,?);"),
+        COUNT_NUMNBER_BY_FACTORY("CALL fukoku_v2.proc_counting_factory(?,?);"),
+        COUNT_NUMBER_BY_LINE("CALL fukoku_v2.proc_counting_line(?,?,?);"),
+        COUNT_NUMBER_BY_MACHINE("CALL fukoku_v2.proc_counting_machine(?,?,?);"),
+        FIND_ALL("CALL fukoku_v2.proc_alarm_statistics(?,?,?,?,?,?);"),
+        FIND_ALL_MACHINE("CALL fukoku_v2.proc_get_machine(?,?,?);"),
+        FIND_ALL_LINE("CALL fukoku_v2.proc_line_by_factory(?,?,?);"),
+        FIND_ALARM_HISTORY("SELECT * FROM fukoku_v2.alarm_histories WHERE ref_line LIKE ? AND alarm_name = ? AND (LEFT(work_date,4) BETWEEN LEFT(?,4) AND LEFT(?,4)) ORDER BY id DESC LIMIT ? OFFSET ?;"),
+        COUNT_ALARM_HISTORY("SELECT COUNT(1) FROM fukoku_v2.alarm_histories WHERE ref_line LIKE ? AND alarm_name = ? AND (LEFT(work_date,4) BETWEEN LEFT(?,4) AND LEFT(?,4));"),
+
+        AUTO_COUNTING_ALARM("CALL fukoku_v2.proc_auto_counting_alarm();"),
+        AUTO_COUNTING_ALARM_DURATION("CALL fukoku_v2.proc_auto_counting_alarm_duration();"),
+        FIND_ALL_MAIN_ALARM_STATISTICS("CALL fukoku_v2.procFinalAlarmCounting(?,?,?,?);"),
+        FIND_ALL_MAIN_ALARM_STATISTICS_DURATION("CALL fukoku_v2.procFinalAlarmCountingDuration(?,?,?,?);"),
+
+        FIND_ALL_MAIN_ALARM_STATISTICS_SUM("CALL fukoku_v2.procFinalAlarmCountingSUM(?,?,?,?);"),
+        FIND_ALL_MAIN_ALARM_STATISTICS_DURATION_SUM("CALL fukoku_v2.procFinalAlarmCountingDurationSum(?,?,?,?);");
 
         private String value;
 
