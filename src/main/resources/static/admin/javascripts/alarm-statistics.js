@@ -108,7 +108,7 @@ $(function () {
 
         alarmStatistics.getFactoryCounting(function (response) {
             var total = 0;
-            for(var v=0;v<response.data.length;v++){
+            for(var v=0;v<response.DATA.length;v++){
                 $("#selectFactoryButtonList").append("<button class='btn btn-success' style='margin-right:5px; margin-bottom:5px;' data-id='" + response.DATA[v].ATTRIBUTE + "' id='btnFactory'>" + response.DATA[v].ATTRIBUTE +"("+response.DATA[v].NUMBER+ ")</button>");
                 total += response.DATA[v].NUMBER;
 

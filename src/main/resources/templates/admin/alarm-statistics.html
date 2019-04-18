@@ -6,7 +6,7 @@
       layout:decorator="admin/layout">
 
 <head>
-
+    <meta charset="UTF-8">
     <title>알람통계</title>
 
     <style type="text/css">
@@ -54,7 +54,7 @@
 
 
 
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+
 
 </head>
 
@@ -767,15 +767,16 @@
     </tr>
     </script>
 
-    <script>
-        var alarmStatistics = {};
-    </script>
 
-    <link rel="stylesheet" href="../../static/admin/style/multifreezer.css">
-    <script src="../../static/admin/javascripts/libraries/multifreezer.js"></script>
+
+
+
 
 </div>
 <th:block layout:fragment="script">
+    <script>
+        var alarmStatistics = {};
+    </script>
 
 </th:block>
 </body>
