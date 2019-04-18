@@ -86,6 +86,9 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/alarmTimeAnalysisByMachine")
 				.setViewName("/admin/alarmTimeAnalysisByMachine");
 		registry.addViewController("/admin/alarm-history").setViewName("/admin/alarm-history");
+		registry.addViewController("/admin/alarm-state-classification")
+				.setViewName("/admin/alarm-state-classification-v2");
+
 		//integrated_visualization
 		registry.addViewController("/admin/integrated_visualization").setViewName("/admin/integrated_visualization");
 

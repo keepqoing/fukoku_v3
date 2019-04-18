@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+<head>
+    <meta charset="UTF-8">
+    <title> 알람분류</title>
+    <!-- Google fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400' rel='stylesheet' type='text/css'>
+
+    <!-- <script src="d3.v3.js"></script> -->
+    <script src="//d3js.org/d3.v3.min.js"></script>
+
+    <style>
+        body {
+            font-size: 10px;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        #title {
+            font-size: 20px;
+            padding-bottom: 10px;
+            padding-top: 20px;
+            font-weight: 300;
+        }
+
+        #explanation {
+            font-size: 12px;
+            max-width: 620px;
+            margin: 0 auto;
+            padding-top: 10px;
+            color: #ababab;
+            font-weight: 300;
+        }
+
+        .y.axis line {
+            fill: none;
+        }
+
+        .x.axis line {
+            fill: none;
+            stroke: #e0e0e0;
+            shape-rendering: crispEdges;
+        }
+
+        .axis path {
+            display: none;
+        }
+
+        .brush .extent {
+            fill-opacity: .125;
+            shape-rendering: crispEdges;
+        }
+
+        .resize {
+            display: inline !important; /* show when empty */
+            fill: #7A7A7A;
+            fill-opacity: 1;
+            stroke: #7A7A7A;
+            stroke-width: 2px;
+        }
+
+        .bar {
+            /*shape-rendering: crispEdges;*/
+        }
+
+
+
+
+    </style>
+
+
+
+
+</head>
+<body>
+<div layout:fragment="content">
+
+    <section class="content-header">
+
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div>
+                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <select class="form-control" id="selectLineSearch">
+                                        <option value="">라인</option>
+                                    </select>
+                                </div>
+                                <!--<div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <select class="form-control" id="selectMachineSearch">
+                                        <option value="">설비</option>
+                                    </select>
+                                </div>-->
+                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <div class='input-group date' id='startDate'>
+                                        <input type='text' class="form-control" id="txtStartDate" placeholder="시작날짜"/>
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <div class='input-group date' id='endDate'>
+                                        <input type='text' class="form-control" id="txtEndDate" placeholder="종료날짜"/>
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-4 col-xs-12">
+                                    <button id="btnSearch" class="form-control btn btn-primary">검색</button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                        <div id="title"><h1>
+                                            알람분류
+                                        </h1></div>
+                                        <div id="chart">
+
+                                        </div>
+                                        <div id="explanation">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../../static/admin/javascripts/alarm-state-classification-v2.js"></script>
+
+    <th:block layout:fragment="script">
+        <script>
+            // $(document).ready(function () {
+            //     $(function () {
+            //         $('#startDate, #endDate').datetimepicker({
+            //             format: 'YYYY-MM-DD',
+            //             defaultDate: new Date()
+            //         });
+            //     });
+            // });
+            $(document).ready(function () {
+
+                var startDateYesterDay = new Date();
+                startDateYesterDay.setDate(startDateYesterDay.getDate() - 30);
+                $('#startDate').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    //defaultDate: new Date().setHours(08, 00)
+                    format: 'YYYY-MM-DD',
+                    defaultDate: startDateYesterDay
+                });
+
+                $('#txtStartDate').val(startDateYesterDay.toISOString().substring(0, 10));
+
+                $('#endDate').datetimepicker({
+                    // format: 'YYYY-MM-DD HH:mm',
+                    // defaultDate: new Date()
+                    format: 'YYYY-MM-DD',
+                    defaultDate: new Date()
+                });
+                var today = new Date();
+                $('#txtEndDate').val(today.toISOString().substring(0, 10));
+
+
+
+            });
+        </script>
+    </th:block>
+
+
+
+
+</div>
+</body>
+</html>
