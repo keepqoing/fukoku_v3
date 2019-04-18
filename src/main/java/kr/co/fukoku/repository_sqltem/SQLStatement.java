@@ -1737,6 +1737,48 @@ FIND_ALL_PD("SELECT \n" +
         }
     }
 
+
+    public enum DefectiveProductListSQL {
+        FIND_ALL("SELECT * FROM fukoku_v2.VIEW_DEFECTIVE_PRODUCT_V2 " +
+                "WHERE line LIKE ? " +
+                "      AND mapping_name LIKE ? " +
+                "      AND date LIKE ? " +
+                "ORDER BY id  " +
+                "LIMIT ? " +
+                "OFFSET ?;"),
+        COUNT("SELECT COUNT(1) " +
+                "FROM fukoku_v2.VIEW_DEFECTIVE_PRODUCT_V2 " +
+                "WHERE line LIKE ? " +
+                "      AND mapping_name LIKE ? " +
+                "      AND date LIKE ?;"),
+        COUNT_NUMBER_BY_LINE("SELECT d.line _name, count(1) counting\n" +
+                "FROM fukoku_v2.VIEW_DEFECTIVE_PRODUCT_V2 d\n" +
+                "LEFT JOIN line ln\n" +
+                "ON d.line = ln.name\n" +
+                "WHERE date LIKE ?\n" +
+                "GROUP BY d.line "),
+        //        COUNT_NUMBER_BY_MACHINE("SELECT mapping_name, (SELECT COUNT(1) FROM fukoku_v2.non_active_state_analysis WHERE ref_machine = LMD.mapping_name AND work_date LIKE ?) AS counting " +
+//                                "FROM lines_machines_detail LMD " +
+//                                "WHERE SUBSTR(mapping_name,1,2) = ?;"),
+        COUNT_NUMBER_BY_MACHINE("SELECT d.mapping_name, count(1) counting\n" +
+                "FROM fukoku_v2.VIEW_DEFECTIVE_PRODUCT_V2 d\n" +
+                "LEFT JOIN machine m\n" +
+                "ON d.mapping_name = m.acronym\n" +
+                "WHERE date LIKE ?\n" +
+                "AND d.line = ?\n" +
+                "GROUP BY d.mapping_name");
+
+        private String value;
+
+        DefectiveProductListSQL(String value) {
+            this.value = value;
+        }
+
+        public String toString() {
+            return this.value;
+        }
+    }
+
     public enum AlarmHistorySQL {
         FIND_ALL("SELECT * FROM fukoku_v2.alarm_histories WHERE ref_line LIKE ? AND ref_machine LIKE ? AND work_date LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
         COUNT("SELECT COUNT(1) FROM fukoku_v2.alarm_histories WHERE ref_line LIKE ? AND ref_machine LIKE ? AND work_date LIKE ?;"),

@@ -16,7 +16,7 @@ $(function () {
 
     defectiveProduct.getLineCounting = function (productionDate, callback) {
         $.ajax({
-            url: "/v1/api/fukoku/non-active-state/number-line/"+productionDate,
+            url: "/v3/api/fukoku/defective-product/number-line/"+productionDate,
             type: 'GET',
             dataType: 'JSON',
             data: {},
@@ -37,7 +37,7 @@ $(function () {
 
     defectiveProduct.getMachineCounting = function (lineParam, productionDate, callback) {
         $.ajax({
-            url: "/v1/api/fukoku/non-active-state/number-machine/"+lineParam+"/"+productionDate,
+            url: "/v3/api/fukoku/defective-product/number-machine/"+lineParam+"/"+productionDate,
             type: 'GET',
             dataType: 'JSON',
             data: {},
@@ -137,8 +137,17 @@ $(function () {
                                 $("#selectLineButtonList").append("<button class='btn btn-success' style='margin-right:5px; margin-bottom:5px;' data-id=" + response.data[v].name + " id='btnLine'>" + response.data[v].name +"("+response1.DATA[v1].NUMBER+ ")</button>");
                                 total += response1.DATA[v1].NUMBER;
                             }
+
                         }
                     }
+                    for(var v1=0;v1<response1.DATA.length;v1++) {
+
+                        if (response1.DATA[v1].ATTRIBUTE == 'OTHER') {
+                            $("#selectLineButtonList").append("<button class='btn btn-success' style='margin-right:5px; margin-bottom:5px;' data-id=" + response1.DATA[v1].ATTRIBUTE + " id='btnLine'>" + response1.DATA[v1].ATTRIBUTE + "(" + response1.DATA[v1].NUMBER + ")</button>");
+                            total += response1.DATA[v1].NUMBER;
+                        }
+                    }
+
                     $("#selectLineButtonList").val($("#selectLineButtonList button:first").html('ALL('+total+')'));
                 });
             }
@@ -175,6 +184,12 @@ $(function () {
                         }
                     });
                 });
+                $.each(response1.DATA, function (key1, value1) {
+                    if(value1.ATTRIBUTE ==  "OTHER") {
+                        $("#selectMachineButtonList").append("<button class='btn btn-danger' style='margin-right:5px; margin-bottom: 5px;' id='btnMachine' data-id=" + value1.ATTRIBUTE + ">" + value1.ATTRIBUTE +"("+value1.NUMBER+ ")</button>");
+                        total += value1.NUMBER;
+                    }
+                });
                 $("#selectMachineButtonList").val($("#selectMachineButtonList button:first").html('ALL('+total+')'));
             })
         });
@@ -195,7 +210,7 @@ $(function () {
     defectiveProduct.getAllnonActiveStates = function (lId, mId) {
         openLoading();
         $.ajax({
-            url: "/v1/api/fukoku/non-active-state",
+            url: "/v3/api/fukoku/defective-product",
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -211,7 +226,7 @@ $(function () {
             },
             success: function (response) {
                 if (response.CODE == "7777") {
-                    $("#NON_MOVING_STATE").html("");
+                    $("#DEFECTIVE_PRODUCT").html("");
                     if (response.DATA.length > 0) {
                         $("#limitPage").html(response.PAGINATION.PAGE);
                         $("#totalPage").html(response.PAGINATION.TOTAL_PAGES);
@@ -220,17 +235,17 @@ $(function () {
                             response.DATA[key]["NO"] = (key + 1) + ((response.PAGINATION.PAGE - 1) * response.PAGINATION.LIMIT);
                             /!*response.DATA[key]["DURATION"] = response.DATA[key].DURATION.toFixed(2);*!/
                         });
-                        $("#NON_MOVING_STATE_TEMPLATE").tmpl(response.DATA).appendTo("tbody#NON_MOVING_STATE");
+                        $("#DEFECTIVE_PRODUCT_TEMPLATE").tmpl(response.DATA).appendTo("tbody#DEFECTIVE_PRODUCT");
                         if (checkPagination) {
                             defectiveProduct.setPagination(response.PAGINATION.TOTAL_PAGES);
                             checkPagination = false;
                         }
                     } else {
-                        $("#NON_MOVING_STATE").html("<tr style='text-align:center;'><td colspan='8'>콘텐츠 없음</td></tr>");
+                        $("#DEFECTIVE_PRODUCT").html("<tr style='text-align:center;'><td colspan='8'>콘텐츠 없음</td></tr>");
                         $("#PAGINATION").html("");
                     }
                 } else {
-                    $("#NON_MOVING_STATE").html("<tr style='text-align:center;'><td colspan='8'>콘텐츠 없음</td></tr>");
+                    $("#DEFECTIVE_PRODUCT").html("<tr style='text-align:center;'><td colspan='8'>콘텐츠 없음</td></tr>");
                     $("#PAGINATION").html("");
                     $("#limitPage").html(0);
                     $("#totalPage").html(0);
