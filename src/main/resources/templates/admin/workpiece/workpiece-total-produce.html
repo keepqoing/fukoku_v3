@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout" ng-app="fukoku">
+<head>
+    <title>LINE별 T/MARKING 공정 분석 </title>
+
+
+    <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
+    <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/d3/d3.min.js}" charset="utf-8"></script>
+    <script th:src="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/angular-nvd3/dist/angular-nvd3.js}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-sanitize.js"></script>
+
+
+   
+
+
+
+</head>
+<body ng-controller="MainCtrl">
+
+
+
+<div layout:fragment="content">
+
+
+    <section class="content-header">
+        <div class="col-md-12">
+            <div class="col-md-10">
+                <section class="content-header" style="padding-top: 5px;">
+                    <h1 id="info">
+
+                    </h1>
+                </section>
+                <!--<span class="btn btn-block btn-info"  id="info"></span>-->
+            </div>
+        </div>
+
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="box box-primary">
+
+                    <div class="box-body">
+
+
+                        <!-- Filter style="visibility: hidden;" -->
+                        <div class="row" >
+
+
+
+
+
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <div class='input-group date' id='startTime'>
+                                        <input type='text' class="form-control" name="txStartTime"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-sm-4 col-xs-12">
+                                <button class="btn btn-primary" type="button" id="btQuery" value="Submit" ng-click="findAssignedProducedProduct()">검색</button>
+                            </div>
+
+                            <div  style="visibility: hidden;" class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <select class="form-control" id="selectLine">
+                                        <option value="">라인:</option>
+                                        <option ng-repeat="l in lines" value="{{l.LINE_NAME}}">{{l.LINE_NAME}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <!-- filteringResult -->
+
+                        <!-- ./filteringResult -->
+
+                        <div id="filteringResult">
+                            <nvd3 options="options" data="data"></nvd3>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+</div>
+
+
+
+
+
+<th:block layout:fragment="script">
+
+<script th:src="@{/static/admin/angular/bower_components/workpiece-total-produce.js}"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                var d1 = new Date();
+                var d2 = new Date();
+                if (d1.getHours() > 23 || d1.getHours() < 8) {
+                    d1.setDate(d1.getDate() - 1);
+                }else{
+                    d1.setDate(d1.getDate());
+                }
+                d1.setHours(0,0,0);
+                d2.setHours(0,0,0);
+                $('#startTime').datetimepicker({
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endTime').datetimepicker({
+                    format: 'YYYY-MM-DD',
+                    defaultDate:  d2
+                });
+
+
+            });
+        });
+    </script>
+
+
+
+
+
+
+</th:block>
+
+
+
+</body>
+</html>
