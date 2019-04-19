@@ -267,8 +267,13 @@ public class WorkpieceSpcPcServiceImpl implements WorkpieceSpcPcService{
         				cpk = processCapabilities[4];
         				std = processCapabilities[8];
         				
-        				 cpNew = StatisticalCalculation.calCp(dataSetReadData, USL, LSL);
-         				 cpkNew = StatisticalCalculation.calCpk(LSL, USL, MyConverter.formatter(xBar), cpNew);
+        				try {
+        		        	cpNew =  StatisticalCalculation.calCp(dataSetReadData, usl1, lsl1);
+        					cpkNew = StatisticalCalculation.calCpk(lsl1, usl1, target1, cpNew);
+        		        }catch(Exception e) {
+        		        	System.out.println("Error !!!! Cp Cpk ..");
+        		        }
+        		       
         				
     		        }
     		        
@@ -312,6 +317,14 @@ public class WorkpieceSpcPcServiceImpl implements WorkpieceSpcPcService{
     		       
     		        spc.setCp(cpNew);
     		        spc.setCpk(cpkNew);
+    		        
+    		        if(cpNew > 0) {
+    		        	spc.setCp(cpNew);
+    		        }
+    		        
+    		        if(cpkNew > 0) {
+    		        	spc.setCpk(cpkNew);
+    		        }
     		        
     		        allXbar.add(range);
     		        allRange.add(xBar);
@@ -412,6 +425,8 @@ public class WorkpieceSpcPcServiceImpl implements WorkpieceSpcPcService{
 			singleData.setMinBar(nums[0]); 
 			singleData.setMaxBar(nums[nums.length - 1]); 
 			
+			double cpNew = 0;
+			double cpkNew = 0;
 		
 			if(processCapabilities[8] == 0) {
 				singleData.setCp(1.67);
@@ -425,13 +440,33 @@ public class WorkpieceSpcPcServiceImpl implements WorkpieceSpcPcService{
 				singleData.setPp( Double.parseDouble(new DecimalFormat("##.###").format((Double.isInfinite(processCapabilities[6]) || Double.isNaN(processCapabilities[6]) ) ? 0 : processCapabilities[6])) );
 				singleData.setPpk( Double.parseDouble(new DecimalFormat("##.###").format((Double.isInfinite(processCapabilities[7]) || Double.isNaN(processCapabilities[7]) ) ? 0 : processCapabilities[7])) );
 				singleData.setStdv( Double.parseDouble(new DecimalFormat("##.###").format((Double.isInfinite(processCapabilities[8]) || Double.isNaN(processCapabilities[8]) ) ? 0 : processCapabilities[8])) );
+			
+				try {
+		        	cpNew =  StatisticalCalculation.calCp(dataSetReadData, usl1, lsl1);
+					cpkNew = StatisticalCalculation.calCpk(lsl1, usl1, target1, cpNew);
+		        }catch(Exception e) {
+		        	System.out.println("Error !!!! Cp Cpk ..");
+		        }
+		        if(cpNew > 0) {
+		        	singleData.setCp(MyConverter.formatter(cpNew));
+		        }else{
+		        	singleData.setCp( (Double.isInfinite(processCapabilities[0]) || Double.isNaN(processCapabilities[0]) ) ? 0 : processCapabilities[0] );
+		        }
+		        
+		        if(cpkNew > 0) {
+		        	singleData.setCpk(MyConverter.formatter(cpkNew));
+		        }else{
+		        	singleData.setCpk((Double.isInfinite(processCapabilities[4]) || Double.isNaN(processCapabilities[4]) ) ? 0 : processCapabilities[4] );
+		        }
+		        
 			}
 			
-			double cpNew = StatisticalCalculation.calCp(dataSetReadData, USL, LSL);
-			double cpkNew = StatisticalCalculation.calCpk(LSL, USL, totalProductForAllDays, cpNew);
-			singleData.setCp(cpNew);
-			singleData.setCpk(cpkNew);
 			
+			System.out.println(Double.parseDouble(new DecimalFormat("##.###").format((Double.isInfinite(processCapabilities[0]) || Double.isNaN(processCapabilities[0]) ) ? 0 : processCapabilities[0])) );
+			System.out.println(Double.parseDouble(new DecimalFormat("##.###").format((Double.isInfinite(processCapabilities[4]) || Double.isNaN(processCapabilities[4]) ) ? 0 : processCapabilities[4])) );
+			System.out.println(cpNew);
+			System.out.println(cpkNew);
+		
         }
         
 		

@@ -29,7 +29,9 @@ public class StatisticalCalculation {
 			double specificationLimit = (usl - lsl) / 2;
 			k = processMean / specificationLimit;
 			cpk = (1 - k) * cp;
-			cpk = (Double.isInfinite(cpk) ? 0 : Double.parseDouble(new DecimalFormat("##.###").format(cpk)));
+			if(cpk > 0) {
+				cpk = (Double.isInfinite(cpk) ? 0 : Double.parseDouble(new DecimalFormat("##.###").format(cpk)));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
