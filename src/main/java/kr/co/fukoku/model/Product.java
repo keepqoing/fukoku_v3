@@ -21,6 +21,9 @@ public class Product {
 	@JsonProperty("status")
 	private String status;
 	
+	private long  usl;
+	private long lsl;
+	
 	@JsonProperty("acronym")
 	private String acronym;
 	
@@ -99,6 +102,22 @@ public class Product {
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", type=" + type + ", startDate=" + startDate + ", endDate="
 				+ endDate + ", customerName=" + customerName + ", remark=" + remark + ", status=" + status + "]";
+	}
+
+	public long getUsl() {
+		return usl;
+	}
+
+	public void setUsl(long usl) {
+		this.usl = usl;
+	}
+
+	public long getLsl() {
+		return lsl;
+	}
+
+	public void setLsl(long lsl) {
+		this.lsl = lsl;
 	}
 	
 	
