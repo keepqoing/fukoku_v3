@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+
+    <link rel="stylesheet" th:href="@{/static/admin/timeline/example.css}"/>
+    <link type="text/css" href="http://mbostock.github.io/d3/style.css" rel="stylesheet" />
+
+
+    <style>
+        .bar:hover, .pending:hover {
+            fill: #3498db;
+        }
+        .tooltip {
+            background: #eee;
+            box-shadow: 0 0 5px #999999;
+            color: #333;
+            font-size: 12px;
+            left: 130px;
+            padding: 10px;
+            position: absolute;
+            text-align: center;
+            top: 95px;
+            z-index: 10;
+            display: block;
+            opacity: 0;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <div id="time-line">
+
+    </div>
+
+    <div id="time-line-hbase">
+
+    </div>
+
+    <div id="alarm-time-lines">
+
+    </div>
+
+    <div class="alert alert-warning alert-dismissible" id="noAlarm" style="display: none;margin-left:250px;">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-warning"></i> No alarm!</h4>
+    </div>
+
+
+    <!--
+    <div id="showData" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"   style="display:none;margin-right: 20px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+        <div class="box box-default" style="margin-right:0px;">
+            <div class="box-header"><h4><strong></strong></h4></div>
+            <div class="box-body">
+
+                <div class="row" style="padding-left: 20px;padding-right: 20px;">
+                    <table class="table table-bordered" id="dataTable">
+
+                    </table>
+                </div>
+
+                <div class="row" style="text-align: left">
+                    <div style="margin-left: 20%;"> <nvd3  options="xOptions" data="xData"></nvd3> </div>
+                    <div style="margin-left: 20%;"> <nvd3  options="rOptions" data="rData"></nvd3> </div>
+                    <div style="margin-left: 20%;" id="histogram">  </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script th:src="@{/static/admin/timeline/d3.v3.min.js}"></script>
+    <script th:src="@{/static/admin/timeline/gantt-chart-d3.js}"></script>
+    <script th:src="@{/static/admin/timeline/example.js}"></script>
+    <script th:src="@{/static/admin/plugins/datatables/jquery.dataTables.js}"></script>
+    <script th:src="@{/static/admin/plugins/datatables/dataTables.bootstrap.js}"></script>
+
+
+
+
+
+</body>
+
+
+</html>

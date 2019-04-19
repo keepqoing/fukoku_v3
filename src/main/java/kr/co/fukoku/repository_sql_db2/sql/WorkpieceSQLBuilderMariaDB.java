@@ -200,4 +200,51 @@ public class WorkpieceSQLBuilderMariaDB {
 	        System.out.println(buffer.toString());
 	        return  buffer.toString();
 	    }
+	  
+	  
+//////////////////////////////////////
+	  
+	  
+	  public static String findWorkpieceByLineMachineProcessProductEndTimeStartTime(@Param("f")WorkpieceFilter filter){
+	        System.out.println(filter.toString());
+	        StringBuffer buffer = new StringBuffer();
+	        buffer.append(
+	        "SELECT *   FROM " +
+	                "              workpiece_" +filter.getLineName().toLowerCase() +
+	                "            WHERE  " +
+	                "              li_ln = #{f.lineName} AND " +
+	                "              mi_mn = #{f.machineName} AND  " +
+	                "              pdi_n = #{f.processName} AND  " +
+	                "              UNIX_TIMESTAMP(pi_pst) >= UNIX_TIMESTAMP(#{f.startTime}) AND UNIX_TIMESTAMP(pi_pet) <= UNIX_TIMESTAMP(#{f.endTime}) ");
+	        if(!filter.getModel().equalsIgnoreCase("ALL")){
+	            buffer.append(" AND pi_m='"+filter.getModel()+"'");
+	        }
+	        buffer.append(" ORDER BY UNIX_TIMESTAMP(pi_pst) ASC");
+	        return buffer.toString();
+	    }
+
+	    public static String findWorkpieceMaxDsGroupByWorkDayByLineMachineProcessProductEndTimeStartTime(@Param("f")WorkpieceFilter filter){
+	        System.out.println(filter.toString());
+	        StringBuffer buffer = new StringBuffer();
+	        buffer.append(
+	                "SELECT pi_pd,pi_m , max(CAST(pi_ds AS INTEGER)) as max_ds, max(CAST(pi_dsok AS INTEGER)) as max_dsok  FROM " +
+	                        "              workpiece_" +filter.getLineName().toLowerCase() +
+	                        "            WHERE  " +
+	                        "              li_ln = #{f.lineName} AND " +
+	                        "              mi_mn = #{f.machineName} AND  " +
+	                        "              pdi_n = #{f.processName} AND  " +
+	                        "              UNIX_TIMESTAMP(pi_pst) >= UNIX_TIMESTAMP(#{f.startTime}) AND UNIX_TIMESTAMP(pi_pet) <= UNIX_TIMESTAMP(#{f.endTime}) ");
+	        if(!filter.getModel().equalsIgnoreCase("ALL")){
+	            buffer.append(" AND pi_m='"+filter.getModel()+"'");
+	        }
+	        buffer.append(" GROUP BY pi_pd ORDER BY UNIX_TIMESTAMP(pi_pst) ASC");
+
+	        return buffer.toString();
+	    }
+
+
+	   
+	  
+	  
+	  
 }

@@ -10,7 +10,7 @@ $(document).ready(function() {
 
     function getLines(){
         $.ajax({
-            url: "/v1/api/fukoku/workpiece/line-list",
+            url: "http://113.198.137.142:8080/v1/api/fukoku/workpiece/line-list",
             type: 'GET',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -142,7 +142,7 @@ $(document).ready(function() {
         window.parent.openLoading();
         $("#time-line,#time-line-hbase,#alarm-time-lines").empty();
         $.ajax({
-            url: "/v1/api/fukoku/time-line/workPlanByCurrentTime?line="+window.parent.$("#lineName").val()+"&crossDate="+window.parent.$("#crossedDate").find("input").val(),
+            url: "http://113.198.137.142:8080/v1/api/fukoku/time-line/workPlanByCurrentTime?line="+window.parent.$("#lineName").val()+"&crossDate="+window.parent.$("#crossedDate").find("input").val(),
             type: 'GET',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
