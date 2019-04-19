@@ -211,7 +211,7 @@
 							    										<span  class="label label-success">{{m.ref_machine}}</span>
 							    										
 							    										<div class="processWrapper" ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id">
-											    								<a style="cursor: pointer;" href="/admin/production-process-detail?l={{f.name}}&p={{pcp.ref_product}}&m={{m.ref_machine}}&pr={{pvar.name}}&lsl={{pvar.lsl}}&usl={{pvar.usl}}" class="label label-info"><b>{{pvar.name}}</b></a> <span>{{pvar.lsl}} ~ {{pvar.usl}} {{pvar.unit_kind}}</span>
+											    								<a style="cursor: pointer;" href="/admin/production-cycle-time-detail?l={{f.name}}&p={{pcp.ref_product}}&m={{m.ref_machine}}&pr={{pvar.name}}&lsl={{pvar.lsl}}&usl={{pvar.usl}}" class="label label-info"><b>{{pvar.name}}</b></a> <span>{{pvar.lsl}} ~ {{pvar.usl}} {{pvar.unit_kind}}</span>
 																				
 											    			     		</div>
 							    			     				</div>
@@ -224,7 +224,7 @@
 							    										<span  class="label label-success">{{m.ref_machine}}</span>
 															            
 							    										<div class="processWrapper" ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id">
-											    								<a style="cursor: pointer;" href="/admin/production-process-detail?l={{f.name}}&p={{pcp.ref_product}}&m={{m.ref_machine}}&pr={{pvar.name}}&lsl={{pvar.lsl}}&usl={{pvar.usl}}" class="label label-info"><b>{{pvar.name}}</b></a> <span>{{pvar.lsl}} ~ {{pvar.usl}} {{pvar.unit_kind}}</span>
+											    								<a style="cursor: pointer;" href="/admin/production-cycle-time-detail?l={{f.name}}&p={{pcp.ref_product}}&m={{m.ref_machine}}&pr={{pvar.name}}&lsl={{pvar.lsl}}&usl={{pvar.usl}}" class="label label-info"><b>{{pvar.name}}</b></a> <span>{{pvar.lsl}} ~ {{pvar.usl}} {{pvar.unit_kind}}</span>
 											    			     		</div>
 							    			     				</div>
 							    			     				
