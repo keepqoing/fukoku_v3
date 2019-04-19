@@ -49,42 +49,6 @@
             /*width:220px;*/
         /*}*/
 
-        /* Style the tab */
-        .tab {
-            overflow: hidden;
-            border: 1px solid #ccc;
-            background-color: #f1f1f1;
-        }
-
-        /* Style the buttons inside the tab */
-        .tab button {
-            background-color: inherit;
-            float: left;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-            font-size: 17px;
-        }
-
-        /* Change background color of buttons on hover */
-        .tab button:hover {
-            background-color: #ddd;
-        }
-
-        /* Create an active/current tablink class */
-        .tab button.active {
-            background-color: #ccc;
-        }
-
-        /* Style the tab content */
-        .tabcontent {
-            display: none;
-            padding: 6px 12px;
-            border: 1px solid #ccc;
-            border-top: none;
-        }
 
     </style>
 
@@ -103,200 +67,186 @@
         </h1>
     </section>
     <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
 
 
-        <div class="tab">
-            <button class="tablinks" onclick="openCity(event, 'alarm_table')">테이블</button>
-            <button class="tablinks" onclick="openCity(event, 'alarm_chart')">차트</button>
+                        <div class="row">
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                <div id="selectFactoryButtonList">
 
-        </div>
-
-        <div id="alarm_table" class="tabcontent">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box box-primary">
-                        <div class="box-body">
-
-
-                            <div class="row">
-                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <div id="selectFactoryButtonList">
-
-                                    </div>
-                                </div>
-                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <div id="selectLineButtonList">
-
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <div id="selectMachineButtonList">
-
-                                    </div>
-                                </div>
-                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <form id="filterForm">
-                                        <button type="button" class='btn btn-danger' id="selectedYear" data-id="2018">2018</button>
-                                        <button type="button" class='btn btn-danger' id="selectedYear" data-id="2019">2019</button>
-                                        <span>
-                                            <input type="radio" name="rdoShow" value="month" id="rdoMonth">월
-                                            <input type="radio" name="rdoShow" value="day" checked="checked" id="rdoDay">일
-                                        </span>
-                                        <label class="column-label"><input class="select_column" name="m_option" type="checkbox" value="show_product" id="show_product" checked> 제품보기</label>
-                                    </form>
                                 </div>
                             </div>
-                            <br>
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                <div id="selectLineButtonList">
 
-                            <div class="row" id="firstTable" >
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                                    <table class="table" id="mainTable">
-                                        <thead class="thead-inverse table-head" >
-                                        <tr id="tableHeader">
-                                            <td rowspan="2">알람명</td>
-                                            <td rowspan="2">함계</td>
-                                            <td colspan="2"​ class="product">제품</td>
-
-                                            <td colspan="31">1</td>
-                                            <td colspan="31">2</td>
-                                            <td colspan="31">3</td>
-                                            <td colspan="31">4</td>
-                                            <td colspan="31">5</td>
-                                            <td colspan="31">6</td>
-                                            <td colspan="31">7</td>
-                                            <td colspan="31">8</td>
-                                            <td colspan="31">9</td>
-                                            <td colspan="31">10</td>
-                                            <td colspan="31">11</td>
-                                            <td colspan="31">12</td>
-                                        </tr>
-
-                                        <tr id="dayOfMonth">
-                                            <td class="product">함계</td>
-                                            <td class="product">제품명</td>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody id="ALARM_COUNTING_1">
-
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
 
-                            <div class="row" id="secondTable" style="display:none">
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                                    <table class="table" id="mainTable">
-                                        <thead class="thead-inverse table-head" >
-                                        <tr id="tableHeader">
-                                            <td rowspan="2">알람명</td>
-                                            <td rowspan="2">함계</td>
-                                            <td colspan="2"​ class="product">제품</td>
-                                            <td rowspan="2">1</td>
-                                            <td rowspan="2">2</td>
-                                            <td rowspan="2">3</td>
-                                            <td rowspan="2">4</td>
-                                            <td rowspan="2">5</td>
-                                            <td rowspan="2">6</td>
-                                            <td rowspan="2">7</td>
-                                            <td rowspan="2">8</td>
-                                            <td rowspan="2">9</td>
-                                            <td rowspan="2">10</td>
-                                            <td rowspan="2">11</td>
-                                            <td rowspan="2">12</td>
-                                        </tr>
-                                        <tr id="tableHeader2">
-                                            <td class="product">함계</td>
-                                            <td class="product">제품명</td>
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                <div id="selectMachineButtonList">
 
-                                        </tr>
-
-                                        </thead>
-
-                                        <tbody id="ALARM_COUNTING_2">
-
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
-
-                            <!-- Summation for Days -->
-                            <div class="row" id="thirdTable" style="display:none">
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                                    <table class="table" id="mainTable">
-                                        <thead class="thead-inverse table-head" >
-                                        <tr id="tableHeader">
-
-                                            <td rowspan="2">알람명</td>
-                                            <td rowspan="2">함계</td>
-
-                                            <td colspan="31">1</td>
-                                            <td colspan="31">2</td>
-                                            <td colspan="31">3</td>
-                                            <td colspan="31">4</td>
-                                            <td colspan="31">5</td>
-                                            <td colspan="31">6</td>
-                                            <td colspan="31">7</td>
-                                            <td colspan="31">8</td>
-                                            <td colspan="31">9</td>
-                                            <td colspan="31">10</td>
-                                            <td colspan="31">11</td>
-                                            <td colspan="31">12</td>
-                                        </tr>
-                                        <tr id="dayOfMonth">
-
-                                        </tr>
-                                        </thead>
-
-                                        <tbody id="ALARM_COUNTING_3">
-
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                <form id="filterForm">
+                                    <button type="button" class='btn btn-danger' id="selectedYear" data-id="2018">2018</button>
+                                    <button type="button" class='btn btn-danger' id="selectedYear" data-id="2019">2019</button>
+                                    <span>
+                                        <input type="radio" name="rdoShow" value="month" id="rdoMonth">월
+                                        <input type="radio" name="rdoShow" value="day" checked="checked" id="rdoDay">일
+                                    </span>
+                                    <label class="column-label"><input class="select_column" name="m_option" type="checkbox" value="show_product" id="show_product" checked> 제품보기</label>
+                                </form>
                             </div>
-
-                            <!-- Summation for Months -->
-                            <div class="row" id="fourthTable" style="display:none">
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                                    <table class="table" id="mainTable">
-                                        <thead class="thead-inverse table-head" >
-                                        <tr id="tableHeader">
-
-                                            <td>알람명</td>
-                                            <td>함계</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>6</td>
-                                            <td>7</td>
-                                            <td>8</td>
-                                            <td>9</td>
-                                            <td>10</td>
-                                            <td>11</td>
-                                            <td>12</td>
-
-                                        </tr>
-
-                                        </thead>
-
-                                        <tbody id="ALARM_COUNTING_4">
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
                         </div>
+                        <br>
+
+                        <div class="row" id="firstTable" >
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <table class="table" id="mainTable">
+                                    <thead class="thead-inverse table-head" >
+                                    <tr id="tableHeader">
+                                        <td rowspan="2">알람명</td>
+                                        <td rowspan="2">함계</td>
+                                        <td colspan="2"​ class="product">제품</td>
+
+                                        <td colspan="31">1</td>
+                                        <td colspan="31">2</td>
+                                        <td colspan="31">3</td>
+                                        <td colspan="31">4</td>
+                                        <td colspan="31">5</td>
+                                        <td colspan="31">6</td>
+                                        <td colspan="31">7</td>
+                                        <td colspan="31">8</td>
+                                        <td colspan="31">9</td>
+                                        <td colspan="31">10</td>
+                                        <td colspan="31">11</td>
+                                        <td colspan="31">12</td>
+                                    </tr>
+
+                                    <tr id="dayOfMonth">
+                                        <td class="product">함계</td>
+                                        <td class="product">제품명</td>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody id="ALARM_COUNTING_1">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row" id="secondTable" style="display:none">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <table class="table" id="mainTable">
+                                    <thead class="thead-inverse table-head" >
+                                    <tr id="tableHeader">
+                                        <td rowspan="2">알람명</td>
+                                        <td rowspan="2">함계</td>
+                                        <td colspan="2"​ class="product">제품</td>
+                                        <td rowspan="2">1</td>
+                                        <td rowspan="2">2</td>
+                                        <td rowspan="2">3</td>
+                                        <td rowspan="2">4</td>
+                                        <td rowspan="2">5</td>
+                                        <td rowspan="2">6</td>
+                                        <td rowspan="2">7</td>
+                                        <td rowspan="2">8</td>
+                                        <td rowspan="2">9</td>
+                                        <td rowspan="2">10</td>
+                                        <td rowspan="2">11</td>
+                                        <td rowspan="2">12</td>
+                                    </tr>
+                                    <tr id="tableHeader2">
+                                        <td class="product">함계</td>
+                                        <td class="product">제품명</td>
+
+                                    </tr>
+
+                                    </thead>
+
+                                    <tbody id="ALARM_COUNTING_2">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Summation for Days -->
+                        <div class="row" id="thirdTable" style="display:none">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <table class="table" id="mainTable">
+                                    <thead class="thead-inverse table-head" >
+                                    <tr id="tableHeader">
+
+                                        <td rowspan="2">알람명</td>
+                                        <td rowspan="2">함계</td>
+
+                                        <td colspan="31">1</td>
+                                        <td colspan="31">2</td>
+                                        <td colspan="31">3</td>
+                                        <td colspan="31">4</td>
+                                        <td colspan="31">5</td>
+                                        <td colspan="31">6</td>
+                                        <td colspan="31">7</td>
+                                        <td colspan="31">8</td>
+                                        <td colspan="31">9</td>
+                                        <td colspan="31">10</td>
+                                        <td colspan="31">11</td>
+                                        <td colspan="31">12</td>
+                                    </tr>
+                                    <tr id="dayOfMonth">
+
+                                    </tr>
+                                    </thead>
+
+                                    <tbody id="ALARM_COUNTING_3">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Summation for Months -->
+                        <div class="row" id="fourthTable" style="display:none">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <table class="table" id="mainTable">
+                                    <thead class="thead-inverse table-head" >
+                                    <tr id="tableHeader">
+
+                                        <td>알람명</td>
+                                        <td>함계</td>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>3</td>
+                                        <td>4</td>
+                                        <td>5</td>
+                                        <td>6</td>
+                                        <td>7</td>
+                                        <td>8</td>
+                                        <td>9</td>
+                                        <td>10</td>
+                                        <td>11</td>
+                                        <td>12</td>
+
+                                    </tr>
+
+                                    </thead>
+
+                                    <tbody id="ALARM_COUNTING_4">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="alarm_chart" class="tabcontent">
-            <h3>Paris</h3>
-            <p>Paris is the capital of France.</p>
         </div>
     </section>
 
@@ -364,17 +314,28 @@
     </div>
 
 
+    <script>
+        $(document).ready(function(){
+            var tr = document.getElementById("dayOfMonth");
+            for(var i = 0; i < 12; i++) {
+                for (var j = 0; j < 31; j++) {
+                    var th = document.createElement("th");
+                    th.innerText = (j + 1);
+                    tr.appendChild(th);
+                }
+            }
+
+            // var colGroup = document.getElementById("colGroup");
+            //
+            // for (var j = 0; j < 376; j++) {
+            //     var col = document.createElement("col");
+            //     colGroup.appendChild(col);
+            // }
+
+        });
+    </script>
 
 
-
-
-
-
-
-
-
-</div>
-<th:block layout:fragment="script">
     <script src="../../static/admin/javascripts/alarm-statistics.js"></script>
     <script id="ALARM_HISTORY_TEMPLATE" type="text/x-jquery-tmpl">
     <tr data-id="{{= ID}}"style="text-align:center;">
@@ -805,46 +766,18 @@
     <td class="tdValue">{{= TOTAL_M12}}</td>
     </tr>
     </script>
-    <script>
-        $(document).ready(function(){
-            var tr = document.getElementById("dayOfMonth");
-            for(var i = 0; i < 12; i++) {
-                for (var j = 0; j < 31; j++) {
-                    var th = document.createElement("th");
-                    th.innerText = (j + 1);
-                    tr.appendChild(th);
-                }
-            }
 
-            // var colGroup = document.getElementById("colGroup");
-            //
-            // for (var j = 0; j < 376; j++) {
-            //     var col = document.createElement("col");
-            //     colGroup.appendChild(col);
-            // }
 
-        });
-    </script>
 
+
+
+
+</div>
+<th:block layout:fragment="script">
     <script>
         var alarmStatistics = {};
     </script>
 
-    <script>
-        function openCity(evt, tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-    </script>
 </th:block>
 </body>
 </html>

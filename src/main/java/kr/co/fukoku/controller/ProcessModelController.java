@@ -80,7 +80,7 @@ public class ProcessModelController {
                     map.put("code", 404);
                     map.put("message", "Data has not been inserted!");
                 }
-                System.out.println(pro.toString());
+//                System.out.println(pro.toString());
             }
 
         }catch(Exception e) {
@@ -184,7 +184,7 @@ public class ProcessModelController {
                             processChain.setProcess_product(processProductFrms);
                             processChain.setProcess_chain_element(processChainElements);
                             processModel.setProcessChains(processChains);
-                        System.out.println(processModel.toString());
+//                        System.out.println(processModel.toString());
                     }
                 }
                 }
@@ -245,7 +245,7 @@ public class ProcessModelController {
                             processChain.setProcess_product(processProductFrms);
                             processChain.setProcess_chain_element(processChainElements);
                             processModel.setProcessChains(processChains);
-                            System.out.println(processModel.toString());
+//                            System.out.println(processModel.toString());
                         }
                     }
                 }
@@ -287,6 +287,10 @@ public class ProcessModelController {
     @RequestMapping(value="/remove/{lines}",method = RequestMethod.GET)
     public ResponseEntity<Map<String,Object>> delete(@PathVariable("lines") String lines)  {
         Map<String, Object> map = new HashMap<String, Object>();
+
+        System.out.println("lines will be removed are : "+ lines);
+
+
         try {
             int i = repository.truncateProcessModel(lines);
             if( i == 1) {

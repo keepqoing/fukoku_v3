@@ -11,7 +11,7 @@
             font-size: 8pt;
             display: block;
             overflow-x: auto;
-
+            table-layout: fixed;
         }
 
         .table-head {
@@ -74,7 +74,7 @@
         .table_wrapper {
             display: flex;
             overflow-x: auto;
-            height: 700px;
+            height: 100%;
             width: 100%;
 
 
@@ -155,7 +155,12 @@
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
                                         <div class="table_wrapper">
                                             <table class="table fixed_headers" id="mainTable">
-                                                <thead class="thead-inverse table-head" id="tableHeader">
+                                                <thead class="thead-inverse table-head"
+
+                                                >
+                                                    <tr id="tableHeader"
+                                                        style="display: fixed; "
+                                                    ></tr>
                                                 <!--<tr id="firstHeader">-->
                                                     <!--<th>라인</th>-->
                                                 <!--</tr>-->

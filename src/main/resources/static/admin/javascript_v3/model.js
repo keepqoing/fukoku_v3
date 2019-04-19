@@ -111,7 +111,7 @@ $(function () {
     lines.createLineCheckBox = function(){
         var divLine = document.getElementById("lineCheckboxes");
         divLine.innerHTML = "";
-        console.log("Line checkbox length = " + lineArr.length);
+        // console.log("Line checkbox length = " + lineArr.length);
         for(i=0; i< lineArr.length; i++){
             divLine.appendChild(lines.createCheckBox(lineArr[i][0], lineArr[i][1]));
         }
@@ -267,7 +267,7 @@ $(function () {
                 machineSpecificArr = [];
                 if (response.code == 200) {
                     if (response.data.length > 0) {
-                        console.log("oh : "+ response.data.length);
+                        // console.log("oh : "+ response.data.length);
                         for(i = 0; i < response.data.length; i++){
                             machineSpecificArr[i] = response.data[i].name;
                         }
@@ -275,7 +275,7 @@ $(function () {
 
                         // $.each($(selObject).parent().parent().find(".subProcess .machine_select"), function(keySubProcess, subProcess) {
                             $(machineObj).find("option").remove();
-                            console.log(machineSpecificArr);
+                            // console.log(machineSpecificArr);
                             for (i = 0; i < machineSpecificArr.length; i++) {
                                 var option = document.createElement("option");
                                 option.setAttribute("value", machineSpecificArr[i]); // store machine ID
@@ -306,7 +306,7 @@ $(function () {
 
     /// insert all the process model to DATABASE
     lines.insertData = function () {
-        console.log("DATAs==> ",datas);
+        // console.log("DATAs==> ",datas);
         $.ajax({
             url: "/v3/api/fukoku/process_model",
             type: 'POST',
@@ -856,6 +856,25 @@ function addRowAfter(btnObj){
     var newRow= document.createElement('tr');
     newRow.id = finalClassName+ "_" + (countClassName + 1); // plus one because of new element
     newRow.setAttribute("data-id", finalClassName.substr(2)+ "_" + (countClassName + 1)); // substring
+    newRow.className = finalClassName;
+
+    refElement.parentNode.insertBefore(newRow, refElement.nextSibling);
+    return newRow;
+}
+
+// Add Row After from DB
+function addRowAfterFromDB(btnObj, dataID){
+    // get final class name of current tr which obtains the clicked button
+    var finalClassName = $(btnObj).parent().parent().attr("class");
+    // count the class name of current tr which obtains the clicked button
+    var countClassName = $("."+finalClassName).length;
+
+    // select the last tr with the class name that we selected above
+    var refElement = $("tr"+"."+finalClassName+":last")[0];
+
+    var newRow= document.createElement('tr');
+    newRow.id = finalClassName+ "_" + (countClassName + 1); // plus one because of new element
+    newRow.setAttribute("data-id", dataID); // substring
     newRow.className = finalClassName;
 
     refElement.parentNode.insertBefore(newRow, refElement.nextSibling);
@@ -1489,7 +1508,7 @@ var data = [{
 function DBInsertion(){
     datas = [];
     $('#processTable tr').each(function(row, tr){
-        console.log("product = " + $(this).find(".tdProduct").attr("data-id"));
+        // console.log("product = " + $(this).find(".tdProduct").attr("data-id"));
         if($(this).find(".tdProduct").attr("data-id") == null ||
             $(this).find(".tdProduct").attr("data-id") == "" ||
             $(this).find(".tdProduct").attr("data-id") == undefined ){
@@ -1559,7 +1578,7 @@ function DBInsertion(){
         //
         datas.push(data);
     });
-    console.log(datas);
+    // console.log(datas);
     lines.insertData();
 }
 
@@ -1586,7 +1605,7 @@ function removeHiddenControls(class_name) {
 
     let txtSeq = document.getElementsByClassName(class_name);
     for (let txt of txtSeq){
-        console.log(txt);
+        // console.log(txt);
         txt.remove();
     }
 }
@@ -1594,7 +1613,7 @@ function removeHiddenControls(class_name) {
 
 // ======================= START READING DATA FROM DATABASE ================================================
 function loadDataToTable(result){
-    console.log(result);
+    // console.log(result);
     for(var i = 0; i < result.length; i++){
         if(getLineName().indexOf(result[i].REF_LINE) == -1) {
             var btnObj = createOneLine(result[i].REF_LINE);
@@ -1697,9 +1716,10 @@ function newProduct_2_1_FromDB(lineName, processProducts, result, btnObj){
     }
 
     if(countClassName >= 1  && newTd != undefined){
-        console.log("Wow");
+        // console.log("Wow");
         // var cell = addProductFamily();
-        var row = addRowAfter(btnObj);
+        console.log("result.PROCESS_CHAIN.NAME = " + result.NAME);
+        var row = addRowAfterFromDB(btnObj, result.NAME);
         row.insertCell(0);
 
         var cell = row.cells[0];
@@ -2068,12 +2088,12 @@ function checkProductDuplicated(btnObj){
     });
 
     array = $.unique(array);
-    console.log("array = " + array.length);
-    console.log("count = " + count);
+    // console.log("array = " + array.length);
+    // console.log("count = " + count);
     if(array.length != count){
         swal("복제!");
     }else{
-        console.log("okay");
+        // console.log("okay");
     }
 
 }
