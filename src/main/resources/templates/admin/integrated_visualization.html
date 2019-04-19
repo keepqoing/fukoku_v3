@@ -9,7 +9,6 @@
 
     <link rel="stylesheet" th:href="@{/static/admin/integrated_visualization/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/static/admin/integrated_visualization/css/contextMenuDDWV.css}">
-    <link th:href="@{//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.css}" rel="stylesheet"/>
     <link rel="stylesheet" th:href="@{/static/admin/integrated_visualization/css/bootstrap-colorpicker.min.css}">
     <link rel="stylesheet" th:href="@{/static/admin/integrated_visualization/css/style.css}">
     <title>통합정보시각화</title>
@@ -32,39 +31,13 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="box box-primary">
                     <div class="box-body">
-                        <div style="width: 100%; padding: 10px 20px;">
-                            <div class="header-div">
-                                <div style="margin: 0 10px 10px 0;">
-                                    <div class="input-group">
-                                        <div class="input-group-addon" style="width: min-content;">
-                                            <label class="input-group-text">공장관리</label>
-                                        </div>
-                                        <select class="form-control custom-select" id="selectCompany"></select>
+                        <div style="width: 100%; padding: 10px 20px; position: relative;">
+                            <div style="margin: 0 10px 10px 0;">
+                                <div class="input-group">
+                                    <div class="input-group-addon" style="width: min-content;">
+                                        <label class="input-group-text">공장관리</label>
                                     </div>
-                                </div>
-                                <div class="date-div">
-                                    <div>
-                                        <div class="input-group date" id="startDate">
-                                            <div class="input-group-addon" style="width: min-content;">
-                                                <label class="input-group-text">시작일</label>
-                                            </div>
-                                            <input class="form-control" id="txtStartDate" name="txtStartDate" type="text">
-                                            <span class="input-group-addon" style="width: min-content;">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="input-group date" id="endDate">
-                                            <div class="input-group-addon" style="width: min-content;">
-                                                <label class="input-group-text">종료일</label>
-                                            </div>
-                                            <input class="form-control" id="txtEndDate" name="txtEndDate" type="text">
-                                            <span class="input-group-addon" style="width: min-content;">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                                        </div>
-                                    </div>
+                                    <select class="form-control custom-select" id="selectCompany"></select>
                                 </div>
                             </div>
                             <div>
@@ -72,7 +45,6 @@
                                     <li class="z-axis">데이터(Z-축)</li>
                                     <li class="active" id="liMachine"><a data-toggle="tab" href="#nav-machine"  style="font-weight: 700;">설비</a></li>
                                     <li id="liProduction"><a data-toggle="tab" href="#nav-production" style="font-weight: 700;">생산</a></li>
-                                    <!-- <li><a data-toggle="tab" href="#nav-product" style="font-weight: 700;">제품</a></li> -->
                                 </ul>
 
                                 <div class="tab-content">
@@ -82,13 +54,10 @@
                                     <div id="nav-production" class="tab-pane fade">
                                         <div id="zAxisBox2" style="padding: 16px 0;"></div>
                                     </div>
-                                    <!-- <div id="nav-product" class="tab-pane fade">
-                                        <div id="zAxisBox3" style="padding: 16px 0;"></div>
-                                    </div> -->
                                 </div>
                             </div>
-                            <div class="row" style="margin: 0;" >
-                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bar-chart-container">
+                            <div class="row" style="margin: 0;">
+                                <div id="mainChartContainer" class="col-lg-9 col-md-9 col-sm-8 col-xs-8 bar-chart-container">
                                     <div style="width:100%; padding-top: 10px; display: flex; position: absolute; flex-direction: row; justify-content: center;">
                                         <div class="chips">
                                             <div class="line-chips">라인</div>
@@ -99,12 +68,12 @@
                                             <div id="machine"></div>
                                         </div>
                                         <div class="chips">
-                                            <div class="line-chips">년</div>
-                                            <div id="year"></div>
+                                            <div class="line-chips">시작일</div>
+                                            <div id="startDate"></div>
                                         </div>
                                         <div class="chips">
-                                            <div class="line-chips">달</div>
-                                            <div id="month"></div>
+                                            <div class="line-chips">종료일</div>
+                                            <div id="endDate"></div>
                                         </div>
                                     </div>
                                     <nav id="context-menu-ddwv" class="context-menu-ddwv">
@@ -124,80 +93,57 @@
 
                                     <div id="chartContainer" style=" width: 100%; height: 100%;"></div>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding: 0 0 0 10px;">
-                                    <div style="width: 100%; border-bottom: 1px solid #ccc">
-                                        <p class="z-axis" style="border-bottom: 0; margin:0; width: 120px;">X-축</p>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4" style="padding: 0 0 0 10px;">
+                                    <div class='input-group' style='width: 100%; vertical-align: middle;'>
+                                        <div class="input-group-addon"  style="width: 67px; text-align: left; border-right: 0;">
+                                            <label class="input-group-text" style="vertical-align: middle;">라인</label>
+                                        </div>
+                                        <select class="form-control custom-select" id="selectLine"></select>
                                     </div>
-                                    <div style="width: 100%;  padding: 10px 0;">
-                                        <div class='input-group' style='width: 100%; vertical-align: middle;'>
-                        <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
-                            <input type="radio" name="rbHorizontal" id="rbHorizontalLine" value="line" style="vertical-align: middle;" checked>
-                        </span>
-                                            <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
-                                                <label class="input-group-text" id="rblHorizontalLine" style="vertical-align: middle;">라인</label>
-                                            </div>
-                                            <select class="form-control custom-select" id="selectHorizontalLine"></select>
+                                    <div class='input-group' style='width: 100%; vertical-align: middle; margin-top: 5px;'>
+                                        <div class="input-group-addon"  style="width: 67px; text-align: left; border-right: 0;">
+                                            <label class="input-group-text" style="vertical-align: middle;">설비</label>
                                         </div>
-                                        <div class='input-group' style='width: 100%; vertical-align: middle; margin-top: 5px;'>
-                        <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
-                            <input type="radio" name="rbHorizontal" id="rbHorizontalMachine" value="line" style="vertical-align: middle;">
-                        </span>
-                                            <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
-                                                <label class="input-group-text radio-button-label-disabled" id="rblHorizontalMachine" style="vertical-align: middle;">설비</label>
-                                            </div>
-                                            <select class="form-control custom-select" id="selectHorizontalMachine" disabled></select>
+                                        <select class="form-control custom-select" id="selectMachine"></select>
+                                    </div>
+                                    <div class='input-group' style='width: 100%; vertical-align: middle; margin-top: 5px;'>
+                                        <div class="input-group-addon"  style="width: 67px; text-align: left; border-right: 0;">
+                                            <label class="input-group-text" style="vertical-align: middle;">시작일</label>
                                         </div>
-                                        <div class='input-group' style='width: 100%; vertical-align: middle; margin-top: 5px;'>
-                            <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
-                                <input type="radio" name="rbHorizontal" id="rbHorizontalDate" value="line" style="vertical-align: middle;">
-                            </span>
-                                            <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
-                                                <label class="input-group-text radio-button-label-disabled" id="rblHorizontalDate" style="vertical-align: middle;">날짜</label>
-                                            </div>
-                                            <select class="form-control custom-select" style="width: 35%; border-right: 0;" id="selectHorizontalYear" disabled></select>
-                                            <select class="form-control custom-select" style="width: 40%; border-right: 0;" id="selectHorizontalMonth" disabled></select>
-                                            <select class="form-control custom-select" style="width: 25%;" id="selectHorizontalDay" disabled></select>
+                                        <select class="form-control custom-select" style="width: 35%; border-right: 0;" id="selectStartYear"></select>
+                                        <select class="form-control custom-select" style="width: 40%; border-right: 0;" id="selectStartMonth"></select>
+                                        <select class="form-control custom-select" style="width: 25%;" id="selectStartDay"></select>
+                                    </div>
+                                    <div class='input-group' style='width: 100%; vertical-align: middle; margin-top: 5px;'>
+                                        <div class="input-group-addon"  style="width: 67px; text-align: left; border-right: 0;">
+                                            <label class="input-group-text " style="vertical-align: middle;">종료일</label>
+                                        </div>
+                                        <select class="form-control custom-select" style="width: 35%; border-right: 0;" id="selectEndYear"></select>
+                                        <select class="form-control custom-select" style="width: 40%; border-right: 0;" id="selectEndMonth"></select>
+                                        <select class="form-control custom-select" style="width: 25%;" id="selectEndDay"></select>
+                                    </div>
+                                    <div class='input-group' style='width: 100%; vertical-align: middle; margin-top: 5px;'>
+                                        <div class="input-group-addon"  style="width: 67px; text-align: left;border-right: 0;">
+                                            <label class="input-group-text" style="vertical-align: middle;">X-축</label>
+                                        </div>
+                                        <select class="form-control custom-select" id="selectXAxis">
+                                            <option value="line" selected>라인</option>
+                                            <option value="machine">설비</option>
+                                            <option value="date">날짜</option>
+                                        </select>
+                                    </div>
+                                    <div class='input-group' style='width: 100%; vertical-align: middle; margin-top: 5px;'>
+                                        <div class="input-group-addon"  style="width: 67px; text-align: left; border-right: 0;">
+                                            <label class="input-group-text" style="vertical-align: middle;">Y-축</label>
+                                        </div>
+                                        <select class="form-control custom-select" id="selectYAxis">
+                                            <option value="line" disabled>라인</option>
+                                            <option value="machine">설비</option>
+                                            <option value="date" selected>날짜</option>
+                                        </select>
+                                    </div>
 
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <div style="width: 100%; border-bottom: 1px solid #ccc">
-                                            <p class="z-axis" style="border-bottom: 0; margin:0; width: 120px;">Y-축</p>
-                                        </div>
-                                    </div>
-                                    <div style="padding: 10px 0;">
-                                        <div class='input-group' style='width:100%; vertical-align: middle;'>
-                            <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
-                                <input type="radio" name="rbVertical" id="rbVerticalLine" value="line" style="vertical-align: middle;" disabled>
-                            </span>
-                                            <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
-                                                <label class="input-group-text radio-button-label-disabled" id="rblVerticalle=" style="vertical-align: middle;">라인</label>
-                                            </div>
-                                            <select class="form-control custom-select" id="selectVerticalLine" disabled></select>
-                                        </div>
-                                        <div class='input-group' style='width: 100%; vertical-align: middle; margin-top: 5px;'>
-                            <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
-                                <input type="radio" name="rbVertical" id="rbVerticalMachine" value="line" style="vertical-align: middle;">
-                            </span>
-                                            <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
-                                                <label class="input-group-text radio-button-label-disabled" id="rblVerticalMachine" style="vertical-align: middle;">설비</label>
-                                            </div>
-                                            <select class="form-control custom-select" id="selectVerticalMachine" disabled></select>
-                                        </div>
-                                        <div class='input-group' style='width: 100%; vertical-align: middle; margin-top: 5px;'>
-                            <span class="input-group-addon" style="width: 38px; background-color: #fff; vertical-align: middle;">
-                                <input type="radio" name="rbVertical" id="rbVerticalDate" value="line" style="vertical-align: middle;" checked>
-                            </span>
-                                            <div class="input-group-addon"  style="width: 54px; text-align: left; background-color: #fff; border-right: 0;">
-                                                <label class="input-group-text" id="rblVerticalDate" style="vertical-align: middle;">날짜</label>
-                                            </div>
-                                            <select class="form-control custom-select" style="width: 35%; border-right: 0;" id="selectVerticalYear"></select>
-                                            <select class="form-control custom-select" style="width: 40%; border-right: 0;" id="selectVerticalMonth" disabled></select>
-                                            <select class="form-control custom-select" style="width: 25%;" id="selectVerticalDay" disabled></select>
-                                        </div>
-                                    </div>
-                                    <button id="btnSendRequest" type="button" onclick="sendRequest()" style="width: 100%;" class="btn btn-info">결과보기</button>
+                                    <button id="btnSendRequest" type="button" onclick="sendRequest()" style="width: 100%; margin-top: 5px;" class="btn btn-info">결과보기</button>
                                 </div>
                             </div>
                         </div>
@@ -216,8 +162,6 @@
     <script>var $j = jQuery.noConflict(true);</script>
 
     <script th:src="@{/static/admin/integrated_visualization/js/bootstrap.min.js}"></script>
-    <script th:src="@{/static/admin/integrated_visualization/js/moment-with-locales.min.js}"></script>
-    <script th:src="@{//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js}"></script>
     <script th:src="@{/static/admin/integrated_visualization/js/bootstrap-colorpicker.min.js}"></script>
     <script th:src="@{/static/admin/integrated_visualization/js/three.min.js}"></script>
     <script th:src="@{/static/admin/integrated_visualization/js/threex.domevents.js}"></script>

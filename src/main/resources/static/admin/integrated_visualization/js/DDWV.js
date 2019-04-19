@@ -94,6 +94,33 @@
             return barHeight;
         }
 
+        //Units
+        //===========================================================================================//
+        function getUnits(barData){
+            let stringUnits = "";
+            let units = [];
+            barData.data.forEach(function(yAxisItem){
+                var values = yAxisItem.values;
+                values.forEach(function(xAxisItems){
+                    xAxisItems.forEach(function(xAxisItem){
+                        if (units.indexOf(xAxisItem.unit) === -1) units.push(xAxisItem.unit);
+                    });
+                });
+            });
+            units.forEach(function(unit, index){
+                if (index == 0){
+                    stringUnits += "(";
+                }
+                if (index == units.length - 1){
+                    stringUnits += unit + ")";
+                } else {
+                    stringUnits += unit + ",";
+                }
+            });
+            return stringUnits;
+        }
+
+
         //maxWidth: calculating maximum width of plane and setting global variable
         //===========================================================================================//
         function setMaxWidth(yAxis){
@@ -528,7 +555,7 @@
 
         //drawScaleLabel: drawing the label of scale
         //================================================================================================//
-        function drawScaleLabel(font){
+        function drawScaleLabel(font, units){
             let interval = scaleIntervals[scaleIntervals.length - 1];
             for (let scaleInterval of scaleIntervals){
                 if (parseFloat(maxHeight*mult/scaleInterval) <= 10) {
@@ -537,7 +564,7 @@
                 }
             };
             for (var i=interval; i <= (parseFloat(maxHeight*mult) + interval); i+=interval) {
-                var geometry = new THREE.TextGeometry( (i).toString(), {
+                var geometry = new THREE.TextGeometry( (i).toString() + " " + units, {
                     font: font,
                     size: scaleLabelSize,
                     height: 0.01
@@ -940,6 +967,7 @@
                 var yAxis = getYAxisLength(barData);
                 var xAxis = getXAxisLength(barData);
                 var barHeight = getBarHeight(barData);
+                var units = getUnits(barData);
 
                 initFullScreenInfo();
                 if (barHeight > 0){
@@ -1057,7 +1085,7 @@
                         }
 
                         if (scaleLabelIsEnabled){
-                            drawScaleLabel(font);
+                            drawScaleLabel(font, units);
                         }
 
                         if (totalYAxisEnabled){

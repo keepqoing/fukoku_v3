@@ -1,8 +1,7 @@
 .bar-chart-container {
     border-radius: 2px;
     border: 2px solid #d3d3d3;
-    padding: 0px;
-    height: 50vh;
+    padding: 0;
     position: relative;
 }
 
@@ -11,12 +10,6 @@
 }
 select:disabled{
     color: silver !important;
-}
-
-.x-axis{
-    -ms-transform: rotate(-90deg); /* IE 9 */
-    -webkit-transform: rotate(-90deg); /* Safari 3-8 */
-    transform: rotate(-90deg);
 }
 
 .header-div > div{

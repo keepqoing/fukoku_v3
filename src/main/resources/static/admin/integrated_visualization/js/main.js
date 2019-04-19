@@ -8,37 +8,26 @@ let states = new Object();
 
 let selectCompany = $j(`#selectCompany`);
 
-//xAxis
-let selectXAxisLine = $j(`#selectHorizontalLine`);
-let selectXAxisMachine = $j(`#selectHorizontalMachine`);
-let selectXAxisYear = $j(`#selectHorizontalYear`);
-let selectXAxisMonth = $j(`#selectHorizontalMonth`);
-let selectXAxisDay = $j(`#selectHorizontalDay`);
-let rbXAxisLine = $j(`#rbHorizontalLine`);
-let rbXAxisMachine = $j(`#rbHorizontalMachine`);
-let rbXAxisDate = $j(`#rbHorizontalDate`);
-let rblXAxisLine = $j(`#rblHorizontalLine`);
-let rblXAxisMachine = $j(`#rblHorizontalMachine`);
-let rblXAxisDate = $j(`#rblHorizontalDate`);
+let selectLine = $j(`#selectLine`);
+let selectMachine = $j(`#selectMachine`);
 
-//yAxis
-let selectYAxisLine = $j(`#selectVerticalLine`);
-let selectYAxisMachine = $j(`#selectVerticalMachine`);
-let selectYAxisYear = $j(`#selectVerticalYear`);
-let selectYAxisMonth = $j(`#selectVerticalMonth`);
-let selectYAxisDay = $j(`#selectVerticalDay`);
-let rbYAxisLine = $j(`#rbVerticalLine`);
-let rbYAxisMachine = $j(`#rbVerticalMachine`);
-let rbYAxisDate = $j(`#rbVerticalDate`);
-let rblYAxisLine = $j(`#rblVerticalLine`);
-let rblYAxisMachine = $j(`#rblVerticalMachine`);
-let rblYAxisDate = $j(`#rblVerticalDate`);
+let selectStartYear = $j(`#selectStartYear`);
+let selectStartMonth = $j(`#selectStartMonth`);
+let selectStartDay = $j(`#selectStartDay`);
+
+let selectEndYear = $j(`#selectEndYear`);
+let selectEndMonth = $j(`#selectEndMonth`);
+let selectEndDay = $j(`#selectEndDay`);
+
+let selectXAxis = $j(`#selectXAxis`);
+let selectYAxis = $j(`#selectYAxis`);
+
 
 let chipsCompany = $j(`#company`);
 let chipsLine = $j(`#line`);
 let chipsMachine = $j(`#machine`);
-let chipsYear = $j(`#year`);
-let chipsMonth = $j(`#month`);
+let chipsStart = $j(`#startDate`);
+let chipsEnd = $j(`#startEnd`);
 
 
 
@@ -215,36 +204,20 @@ let productionActions = [];
 
 function setLines(lines){
     currentLines = lines;
-    //xAxis
-    selectXAxisLine.append(`<option value="all" selected>All</option>`);
+    selectLine.append(`<option value="all">All</option>`);
     lines.forEach(function(line, index){
-        selectXAxisLine.append(`<option value="${index + 1}">${line}</option>`);
-    });
-
-    //yAxis
-    selectYAxisLine.append(`<option value="all" selected>All</option>`);
-    lines.forEach(function(line, index){
-        selectYAxisLine.append(`<option value="${index + 1}">${line}</option>`);
+        selectLine.append(`<option value="${index + 1}">${line}</option>`);
     });
 }
 
 
 function setMachines(machines){
     currentMachines = machines;
-    //xAxis
-    selectXAxisMachine.empty();
-    selectXAxisMachine.append(`<option value="all" selected>All</option>`);
+    selectMachine.empty();
+    selectMachine.append(`<option value="all">All</option>`);
     machines.forEach(function(machine, index){
-        selectXAxisMachine.append(`<option value="${index + 1}">${machine}</option>`);
+        selectMachine.append(`<option value="${index + 1}">${machine}</option>`);
     });
-
-    //yAxis
-    selectYAxisMachine.empty();
-    selectYAxisMachine.append(`<option value="all" selected>All</option>`);
-    machines.forEach(function(machine, index){
-        selectYAxisMachine.append(`<option value="${index + 1}">${machine}</option>`);
-    });
-
 }
 
 function setStates(){
@@ -331,101 +304,51 @@ function setCompany(){
 
 function setDate(){
     const startDate = new Date(startDateOfDatabase);
-    selectXAxisYear.append(`<option value="all" selected>All</option>`);
-    selectYAxisYear.append(`<option value="all" selected>All</option>`);
     for (let year=new Date().getFullYear(); year>=startDate.getFullYear(); year--){
-        selectXAxisYear.append(`<option value="${year}">${year}</option>`);
-        selectYAxisYear.append(`<option value="${year}">${year}</option>`);
+        selectStartYear.append(`<option value="${year}">${year}</option>`);
+        selectEndYear.append(`<option value="${year}">${year}</option>`);
     }
-    selectXAxisMonth.append(`<option value="all" selected>All</option>`);
-    selectYAxisMonth.append(`<option value="all" selected>All</option>`);
+    selectStartYear.val(startDate.getFullYear().toString()).change();
+    selectEndYear.val(new Date().getFullYear().toString()).change();
+
     months.forEach(function(month, index){
-        selectXAxisMonth.append(`<option value="${index + 1}">${month}</option>`);
-        selectYAxisMonth.append(`<option value="${index + 1}">${month}</option>`);
+        selectStartMonth.append(`<option value="${index + 1}">${month}</option>`);
+        selectEndMonth.append(`<option value="${index + 1}">${month}</option>`);
     });
-    selectXAxisDay.append(`<option value="all" selected>All</option>`);
-    selectYAxisDay.append(`<option value="all" selected>All</option>`);
+    selectStartMonth.val((startDate.getMonth() + 1).toString()).change();
+    selectEndMonth.val((new Date().getMonth() + 1).toString()).change();
+
+    for (let i=1; i<=getDays(startDate.getFullYear(), startDate.getMonth() + 1); i++){
+        selectStartDay.append(`<option value="${i}">${i}</option>`);
+    }
+    for (let i=1; i<=getDays(new Date().getFullYear(), new Date().getMonth() + 1); i++){
+        selectEndDay.append(`<option value="${i}">${i}</option>`);
+    }
+    selectStartDay.val((startDate.getDate()).toString()).change();
+    selectEndDay.val((new Date().getDate()).toString()).change();
 };
 
-
-//xAxis
-
-function controlXAxisLine(isDisable){
-    if (isDisable){
-        rblXAxisLine.addClass('radio-button-label-disabled');
+function getDays(year, month){
+    let n = 31;
+    if (month == 2){
+        if (year%4 == 0){
+            n = 29;
+        } else {
+            n = 28;
+        }
     } else {
-        rblXAxisLine.removeClass('radio-button-label-disabled');
+        if (month == 4 || month == 6 || month == 9 || month == 11){
+            n = 30;
+        }
     }
-    selectXAxisLine.prop('disabled', isDisable);
-    selectXAxisLine.val('all').change;;
-}
-
-function controlXAxisMachine(isDisable){
-    if (isDisable){
-        rblXAxisMachine.addClass('radio-button-label-disabled');
-    } else {
-        rblXAxisMachine.removeClass('radio-button-label-disabled');
-    }
-    selectXAxisMachine.prop('disabled', isDisable);
-    selectXAxisMachine.val('all').change;;
-}
-
-function controlXAxisDate(isDisable){
-    if (isDisable){
-        rblXAxisDate.addClass('radio-button-label-disabled');
-    } else {
-        rblXAxisDate.removeClass('radio-button-label-disabled');
-    }
-    selectXAxisYear.prop('disabled', isDisable);
-    selectXAxisMonth.prop('disabled', isDisable || selectXAxisYear.val()=='all');
-    selectXAxisDay.prop('disabled', isDisable || selectXAxisYear.val()=='all' || selectXAxisMonth.val()=='all');
-    selectXAxisYear.val('all').change;
-    selectXAxisMonth.val('all').change;
-    selectXAxisDay.val('all').change;
+    return n;
 }
 
 
+async function drawChart(xAxis, yAxis, interval, lineLabel, machineLabel, jsonData){
 
-function controlYAxisLine(isDisable){
-    if (isDisable){
-        rblYAxisLine.addClass('radio-button-label-disabled');
-    } else {
-        rblYAxisLine.removeClass('radio-button-label-disabled');
-    }
-    selectYAxisLine.prop('disabled', isDisable);
-    selectYAxisLine.val('all').change;
-}
-
-function controlYAxisMachine(isDisable){
-    if (isDisable){
-        rblYAxisMachine.addClass('radio-button-label-disabled');
-    } else {
-        rblYAxisMachine.removeClass('radio-button-label-disabled');
-    }
-    selectYAxisMachine.prop('disabled', isDisable);
-    selectYAxisMachine.val('all').change;
-}
-
-function controlYAxisDate(isDisable){
-    if (isDisable){
-        rblYAxisDate.addClass('radio-button-label-disabled');
-    } else {
-        rblYAxisDate.removeClass('radio-button-label-disabled');
-    }
-    selectYAxisYear.prop('disabled', isDisable);
-    selectYAxisMonth.prop('disabled', isDisable || selectYAxisYear.val()=='all');
-    selectYAxisDay.prop('disabled', isDisable || selectYAxisYear.val()=='all' || selectYAxisMonth.val()=='all');
-    selectYAxisYear.val('all').change;
-    selectYAxisMonth.val('all').change;
-    selectYAxisDay.val('all').change;
-}
-
-
-async function drawChart(xAxis, yAxis, stringStartDate, interval, lineLabel, machineLabel, jsonData){
-
-    let stringEndDate = $j('#txtEndDate').val();
-    let startDate = new Date(stringStartDate);
-    let endDate = new Date(stringEndDate);
+    let startDate = new Date(getStartDate());
+    let endDate = new Date(getEndDate());
 
     let values = new Object();
 
@@ -433,22 +356,8 @@ async function drawChart(xAxis, yAxis, stringStartDate, interval, lineLabel, mac
     //chipsCompany.text(selectCompany.children(':selected').text());
     chipsLine.text(lineLabel);
     chipsMachine.text(machineLabel);
-    switch (interval){
-        case 'year':
-            chipsYear.text('All');
-            chipsMonth.text('All');
-            break;
-        case 'month':
-            chipsYear.text(startDate.getFullYear().toString());
-            chipsMonth.text('All');
-            break;
-        case 'day':
-            chipsYear.text(startDate.getFullYear().toString());
-            chipsMonth.text(months[startDate.getMonth()]);
-            break;
-    }
-    setStartDate(stringStartDate);
-
+    chipsStart.text(getStartDate);
+    chipsEnd.text(getEndDate);
     let lines = [];
     let machines = [];
     let selectedMachineNames = new Object();
@@ -861,11 +770,7 @@ async function drawChart(xAxis, yAxis, stringStartDate, interval, lineLabel, mac
                         key = `${data.WORK_DATE}|${new Date(data.WORK_DATE).getDate()}`;
                         break;
                 }
-                console.log(values);
-
-                console.log(key);
                 machineValues = values[key];
-                console.log(machineValues);
 
                 stateValues = machineValues[Object.keys(selectedMachineNames).find(key => selectedMachineNames[key] === machine)];
                 Object.keys(stateValues).forEach(function(state){
@@ -1007,9 +912,6 @@ async function drawChart(xAxis, yAxis, stringStartDate, interval, lineLabel, mac
             })
         });
     }
-
-    console.log(data);
-
     let calculatedData = [];
     data.forEach(function(xAxis){
         let calculatedValues = [];
@@ -1107,85 +1009,74 @@ async function drawChart(xAxis, yAxis, stringStartDate, interval, lineLabel, mac
     ddwv.barChart(barData);
 
 }
+function setStartDate(date){
+    selectStartYear.val(new Date(date).getFullYear().toString()).change();
+    selectStartMonth.val((new Date(date).getMonth() + 1).toString()).change();
+    selectStartDay.empty();
+    for (let i=1; i<=getDays(new Date(date).getFullYear(), new Date(date).getMonth() + 1); i++){
+        selectStartDay.append(`<option value="${i}">${i}</option>`);
+    }
+    selectStartDay.val((new Date(date).getDate()).toString()).change();
+}
 
+function getStartDate(){
+    let date = "";
+    date = (`0000${selectStartYear.val()}`).slice(-4);
+    date += '-';
+    date += (`00${selectStartMonth.val()}`).slice(-2);
+    date += '-';
+    date += (`00${selectStartDay.val()}`).slice(-2);
+    return date;
+}
+function setEndDate(date){
+    selectEndYear.val(new Date(date).getFullYear().toString()).change();
+    selectEndMonth.val((new Date(date).getMonth() + 1).toString()).change();
+    selectEndDay.empty();
+    for (let i=1; i<=getDays(new Date(date).getFullYear(), new Date(date).getMonth() + 1); i++){
+        selectEndDay.append(`<option value="${i}">${i}</option>`);
+    }
+    selectEndDay.val((new Date(date).getDate()).toString()).change();
+}
+
+function getEndDate(){
+    let date = "";
+    date = (`0000${selectEndYear.val()}`).slice(-4);
+    date += '-';
+    date += (`00${selectEndMonth.val()}`).slice(-2);
+    date += '-';
+    date += (`00${selectEndDay.val()}`).slice(-2);
+    return date;
+}
 function sendRequest(){
-    let endDate = $j('#txtEndDate').val();
-    let lineLabel = 'All';
-    let machineLabel = 'All';
-    let startDate = new Date(startDateOfDatabase).toISOString().slice(0,10);
-    let xAxis = `line`;
-    let yAxis = `machine`;
-    let year = (`0000${new Date(startDateOfDatabase).getFullYear()}`).slice(-4);
-    let month = (`00${new Date(startDateOfDatabase).getMonth() + 1}`).slice(-2);
-    let day = (`00${new Date(startDateOfDatabase).getDay()}`).slice(-2);
+    let startDate = getStartDate();
+    let endDate = getEndDate();
+    let lineLabel = selectLine.children(':selected').text();
+    let machineLabel = selectMachine.children(':selected').text();
+    let xAxis = selectXAxis.val();
+    let yAxis = selectYAxis.val();
 
-    if (rbXAxisLine.is(':checked')){
-        lineLabel = selectXAxisLine.children(':selected').text();
-        xAxis = `line`;
-    }
-    if (rbXAxisMachine.is(':checked')){
-        machineLabel = selectXAxisMachine.children(':selected').text();
-        xAxis = `machine`;
-    }
-    if (rbXAxisDate.is(':checked')){
-        if (selectXAxisYear.children(':selected').text() != 'All') {
-            year = (`0000${selectXAxisYear.children(':selected').text()}`).slice(-4);
-            month = `01`;
-            day = `01`;
-        }
-        if (selectXAxisMonth.children(':selected').text() != 'All') {
-            month = (`00${selectXAxisMonth.children(':selected').val()}`).slice(-2);
-        }
-        if (selectXAxisDay.children(':selected').text() != 'All') {
-            day = (`00${selectXAxisDay.children(':selected').text()}`).slice(-2);
-        }
-        startDate = `${year}-${month}-${day}`;
-        xAxis = `date`;
-    }
-
-    if (rbYAxisLine.is(':checked')){
-        lineLabel = selectYAxisLine.children(':selected').text();
-        yAxis = `line`;
-    }
-    if (rbYAxisMachine.is(':checked')){
-        machineLabel = selectYAxisMachine.children(':selected').text();
-        yAxis = `machine`;
-    }
-    if (rbYAxisDate.is(':checked')){
-        if (selectYAxisYear.children(':selected').text() != 'All') {
-            year = (`0000${selectYAxisYear.children(':selected').text()}`).slice(-4);
-            month = `01`;
-            day = `01`;
-        }
-        if (selectYAxisMonth.children(':selected').text() != 'All') {
-            month = (`00${selectYAxisMonth.children(':selected').val()}`).slice(-2);
-        }
-        if (selectYAxisDay.children(':selected').text() != 'All') {
-            day = (`00${selectYAxisDay.children(':selected').text()}`).slice(-2);
-        }
-        startDate = `${year}-${month}-${day}`;
-        yAxis = `date`;
-    }
-
-    console.log('lineLabel: ', lineLabel);
-    console.log('machineLabel: ', machineLabel);
-    console.log('startDate: ', startDate);
-    console.log('endDate: ', endDate);
-    console.log('xAxis: ', xAxis);
-    console.log('yAxis: ', yAxis);
+    // console.log('lineLabel: ', lineLabel);
+    // console.log('machineLabel: ', machineLabel);
+    // console.log('startDate: ', startDate);
+    // console.log('endDate: ', endDate);
+    // console.log('xAxis: ', xAxis);
+    // console.log('yAxis: ', yAxis);
 
     getAnalysisData(xAxis, yAxis, lineLabel, machineLabel, startDate);
 }
 
-function getAnalysisData(xAxis, yAxis, lineLabel, machineLabel, stringStartDate){
+function getAnalysisData(xAxis, yAxis, lineLabel, machineLabel){
+    selectXAxis.val(xAxis);
+    selectYAxis.val(yAxis);
+    selectLine.val($(`#selectLine option:contains("${lineLabel}")`).val());
+    selectMachine.val($(`#selectMachine option:contains("${machineLabel}")`).val());
 
-    let stringEndDate = $j('#txtEndDate').val();
     const line = (lineLabel == 'All') ? "ALL" : lineLabel;
     const machine = (machineLabel == 'All') ? "ALL" : machinesName[machineLabel];
 
     let interval = 'year';
-    let startDate = new Date(stringStartDate);
-    let endDate = new Date(stringEndDate);
+    let startDate = new Date(getStartDate());
+    let endDate = new Date(getEndDate());
     endDate.setHours(endDate.getHours() - 10);
 
     if (endDate.getFullYear() - startDate.getFullYear() > 0){
@@ -1205,11 +1096,11 @@ function getAnalysisData(xAxis, yAxis, lineLabel, machineLabel, stringStartDate)
             yAxis: yAxis,
             lineLabel: lineLabel,
             machineLabel: machineLabel,
-            startDate: stringStartDate,
-            endDate: stringEndDate,
+            startDate: getStartDate(),
+            endDate: getEndDate(),
             interval: interval
         });
-        url = `http://113.198.137.142:8080/v1/api/fukoku/machine-analysis-api?line=${line}&machine=${machine}&start_date=${stringStartDate}&end_date=${stringEndDate}`;
+        url = `http://113.198.137.142:8080/v1/api/fukoku/machine-analysis-api?line=${line}&machine=${machine}&start_date=${getStartDate()}&end_date=${getEndDate()}`;
     };
 
     if ($("#navStates li.active").attr('id') == 'liProduction'){
@@ -1218,19 +1109,19 @@ function getAnalysisData(xAxis, yAxis, lineLabel, machineLabel, stringStartDate)
             yAxis: yAxis,
             lineLabel: lineLabel,
             machineLabel: machineLabel,
-            startDate: stringStartDate,
-            endDate: stringEndDate,
+            startDate: getStartDate(),
+            endDate: getEndDate(),
             interval: interval
         });
-        url = `http://113.198.137.142:8080/v1/api/fukoku/production-analysis-api?line=${line}&machine=${machine}&start_date=${stringStartDate}&end_date=${stringEndDate}`;
+        url = `http://113.198.137.142:8080/v1/api/fukoku/production-analysis-api?line=${line}&machine=${machine}&start_date=${getStartDate()}&end_date=${getEndDate()}`;
     };
 
-    console.log('lineLabel: ', lineLabel);
-    console.log('machineLabel: ', machineLabel);
-    console.log('startDate: ', stringStartDate);
-    console.log('endDate: ', stringEndDate);
-    console.log('xAxis: ', xAxis);
-    console.log('yAxis: ', yAxis);
+    // console.log('lineLabel: ', lineLabel);
+    // console.log('machineLabel: ', machineLabel);
+    // console.log('startDate: ', getStartDate());
+    // console.log('endDate: ', getEndDate());
+    // console.log('xAxis: ', xAxis);
+    // console.log('yAxis: ', yAxis);
 
 
     $('#btnSendRequest').prop('disabled', true);
@@ -1245,9 +1136,7 @@ function getAnalysisData(xAxis, yAxis, lineLabel, machineLabel, stringStartDate)
         success: function(jsonData){
             switch(jsonData.CODE){
                 case "7777":
-                    console.log(jsonData.DATA);
-
-                    drawChart(xAxis, yAxis, stringStartDate, interval, lineLabel, machineLabel, jsonData.DATA);
+                    drawChart(xAxis, yAxis, interval, lineLabel, machineLabel, jsonData.DATA);
                     break;
                 default:
                     console.log("Result has been not found!");
@@ -1324,11 +1213,6 @@ async function getAllMachineNames(){
 
 function boxWasClicked(fullBarLabels){
 
-    console.log(machineActions);
-
-    console.log(`xAxis: ${fullBarLabels.xAxis}`);
-    console.log(`yAxis: ${fullBarLabels.yAxis}`);
-
     $('.back-btn').css('display', 'flex');
 
     let actions = [];
@@ -1338,7 +1222,6 @@ function boxWasClicked(fullBarLabels){
     if ($("#navStates li.active").attr('id') == 'liProduction'){
         actions = productionActions;
     };
-    let currentEndDate = $j('#txtEndDate').val();
 
     if (actions.length > 0){
         let previousStartDate = new Date(actions[actions.length - 1].startDate.split('|')[0]);
@@ -1347,6 +1230,7 @@ function boxWasClicked(fullBarLabels){
 
         let interval = actions[actions.length - 1].interval;
         if (actions[actions.length - 1].xAxis == 'line' && actions[actions.length - 1].yAxis == 'date'){
+
             let startDate = new Date(fullBarLabels.yAxis.split('|')[0]);
             let endDate = new Date(startDate);
             switch(interval){
@@ -1361,14 +1245,18 @@ function boxWasClicked(fullBarLabels){
                     break;
             }
             endDate.setHours(endDate.getHours() - 10);
-            if (endDate < new Date(currentEndDate)){
-                $j('#txtEndDate').val(endDate.toISOString().slice(0,10))
+            if (endDate > new Date()){
+                endDate = new Date();
             }
-            getAnalysisData('line', 'machine', 'All', 'All', startDate.toISOString().slice(0,10));
+            setEndDate(endDate.toISOString().slice(0,10));
+            setStartDate(startDate.toISOString().slice(0,10));
+
+            getAnalysisData('line', 'machine', 'All', 'All');
             return;
         }
         if (actions[actions.length - 1].xAxis == 'date' && actions[actions.length - 1].yAxis == 'line'){
             let startDate = new Date(fullBarLabels.xAxis.split('|')[0]);
+            let endDate = new Date(startDate);
             switch(interval){
                 case 'year':
                     endDate.setFullYear(endDate.getFullYear() + 1);
@@ -1381,19 +1269,22 @@ function boxWasClicked(fullBarLabels){
                     break;
             }
             endDate.setHours(endDate.getHours() - 10);
-            if (endDate < new Date(currentEndDate)){
-                $j('#txtEndDate').val(endDate.toISOString().slice(0,10))
+            if (endDate > new Date()){
+                endDate = new Date();
             }
-            getAnalysisData('machine', 'line', 'All', 'All', startDate.toISOString().slice(0,10));
+            setEndDate(endDate.toISOString().slice(0,10));
+            setStartDate(startDate.toISOString().slice(0,10));
+
+            getAnalysisData('machine', 'line', 'All', 'All');
             return;
         }
 
         if (actions[actions.length - 1].xAxis == 'line' && actions[actions.length - 1].yAxis == 'machine'){
-            getAnalysisData('machine', 'date', fullBarLabels.xAxis, 'All', actions[actions.length - 1].startDate.split('|')[0]);
+            getAnalysisData('machine', 'date', fullBarLabels.xAxis, 'All');
             return;
         }
         if (actions[actions.length - 1].xAxis == 'machine' && actions[actions.length - 1].yAxis == 'line'){
-            getAnalysisData('date', 'machine', fullBarLabels.yAxis, 'All', actions[actions.length - 1].startDate.split('|')[0]);
+            getAnalysisData('date', 'machine', fullBarLabels.yAxis, 'All');
             return;
         }
 
@@ -1412,10 +1303,12 @@ function boxWasClicked(fullBarLabels){
                     break;
             }
             endDate.setHours(endDate.getHours() - 10);
-            if (endDate < new Date(currentEndDate)){
-                $j('#txtEndDate').val(endDate.toISOString().slice(0,10))
+            if (endDate > new Date()){
+                endDate = new Date();
             }
-            getAnalysisData('machine', 'date', actions[actions.length - 1].lineLabel, 'All', startDate.toISOString().slice(0,10));
+            setEndDate(endDate.toISOString().slice(0,10));
+            setStartDate(startDate.toISOString().slice(0,10));
+            getAnalysisData('machine', 'date', actions[actions.length - 1].lineLabel, 'All');
             return;
         }
 
@@ -1434,62 +1327,17 @@ function boxWasClicked(fullBarLabels){
                     break;
             }
             endDate.setHours(endDate.getHours() - 10);
-            if (endDate < new Date(currentEndDate)){
-                $j('#txtEndDate').val(endDate.toISOString().slice(0,10))
+            if (endDate > new Date()){
+                endDate = new Date();
             }
-            getAnalysisData('date', 'machine', actions[actions.length - 1].lineLabel, 'All', startDate.toISOString().slice(0,10));
+            setEndDate(endDate.toISOString().slice(0,10));
+            setStartDate(startDate.toISOString().slice(0,10));
+
+            getAnalysisData('date', 'machine', actions[actions.length - 1].lineLabel, 'All');
             return;
         }
     };
 
-
-}
-
-function setStartDate(stringStartDate){
-    console.log(stringStartDate);
-
-    $j("#txtStartDate").val(stringStartDate);
-    let startDate = new Date(stringStartDate);
-    if (rbXAxisDate.is(':checked')){
-        if (stringStartDate == startDateOfDatabase){
-            selectXAxisYear.val('all').change();
-        } else {
-            if (startDate.getDate() == 1){
-                selectXAxisYear.val(startDate.getFullYear().toString()).change();
-                console.log((startDate.getMonth() + 1).toString());
-
-                selectXAxisMonth.val((startDate.getMonth() + 1).toString()).change();
-                selectXAxisDay.val('all').change();
-            } else {
-                console.log((startDate.getMonth() + 1).toString());
-                selectXAxisYear.val(startDate.getFullYear().toString()).change();
-                selectXAxisMonth.val((startDate.getMonth() + 1).toString()).change();
-                selectXAxisDay.val(startDate.getDate().toString()).change();
-            }
-        }
-    }
-    if (rbYAxisDate.is(':checked')){
-        if (stringStartDate == startDateOfDatabase){
-            selectYAxisYear.val('all').change();
-        } else {
-            if (startDate.getMonth() == 0 && startDate.getDate() == 1){
-                selectYAxisYear.val(startDate.getFullYear().toString()).change();
-                selectYAxisMonth.val('all').change();
-                selectYAxisDay.val('all').change();
-            } else {
-                if (startDate.getDate() == 1){
-                    selectYAxisYear.val(startDate.getFullYear().toString()).change();
-                    selectYAxisMonth.val((startDate.getMonth() + 1).toString()).change();
-                    selectYAxisDay.val('all').change();
-                } else {
-                    selectYAxisYear.val(startDate.getFullYear().toString()).change();
-                    selectYAxisMonth.val((startDate.getMonth() + 1).toString()).change();
-                    selectYAxisDay.val(startDate.getDate().toString()).change();
-                }
-            }
-
-        }
-    }
 }
 
 function backButtonOnClicked(){
@@ -1502,7 +1350,8 @@ function backButtonOnClicked(){
             if (machineActions.length == 0){
                 $('.back-btn').css('display', 'none');
             }
-            $j('#txtEndDate').val(previousMachineAction.endDate);
+            setStartDate(previousMachineAction.startDate);
+            setEndDate(previousMachineAction.endDate);
             getAnalysisData(previousMachineAction.xAxis,
                 previousMachineAction.yAxis,
                 previousMachineAction.lineLabel,
@@ -1519,7 +1368,8 @@ function backButtonOnClicked(){
             if (productionActions.length == 0){
                 $('.back-btn').css('display', 'none');
             }
-            $j('#txtEndDate').val(previousProductionAction.endDate);
+            setStartDate(previousProductionAction.startDate);
+            setEndDate(previousProductionAction.endDate);
             getAnalysisData(previousProductionAction.xAxis,
                 previousProductionAction.yAxis,
                 previousProductionAction.lineLabel,
@@ -1534,234 +1384,101 @@ $j(document).ready(async function(){
 
     selectCompany = $j(`#selectCompany`);
 
-    //xAxis
-    selectXAxisLine = $j(`#selectHorizontalLine`);
-    selectXAxisMachine = $j(`#selectHorizontalMachine`);
-    selectXAxisYear = $j(`#selectHorizontalYear`);
-    selectXAxisMonth = $j(`#selectHorizontalMonth`);
-    selectXAxisDay = $j(`#selectHorizontalDay`);
-    rbXAxisLine = $j(`#rbHorizontalLine`);
-    rbXAxisMachine = $j(`#rbHorizontalMachine`);
-    rbXAxisDate = $j(`#rbHorizontalDate`);
-    rblXAxisLine = $j(`#rblHorizontalLine`);
-    rblXAxisMachine = $j(`#rblHorizontalMachine`);
-    rblXAxisDate = $j(`#rblHorizontalDate`);
+    selectLine = $j(`#selectLine`);
+    selectMachine = $j(`#selectMachine`);
 
-    //yAxis
-    selectYAxisLine = $j(`#selectVerticalLine`);
-    selectYAxisMachine = $j(`#selectVerticalMachine`);
-    selectYAxisYear = $j(`#selectVerticalYear`);
-    selectYAxisMonth = $j(`#selectVerticalMonth`);
-    selectYAxisDay = $j(`#selectVerticalDay`);
-    rbYAxisLine = $j(`#rbVerticalLine`);
-    rbYAxisMachine = $j(`#rbVerticalMachine`);
-    rbYAxisDate = $j(`#rbVerticalDate`);
-    rblYAxisLine = $j(`#rblVerticalLine`);
-    rblYAxisMachine = $j(`#rblVerticalMachine`);
-    rblYAxisDate = $j(`#rblVerticalDate`);
+    selectStartYear = $j(`#selectStartYear`);
+    selectStartMonth = $j(`#selectStartMonth`);
+    selectStartDay = $j(`#selectStartDay`);
+
+    selectEndYear = $j(`#selectEndYear`);
+    selectEndMonth = $j(`#selectEndMonth`);
+    selectEndDay = $j(`#selectEndDay`);
+
+    selectXAxis = $j(`#selectXAxis`);
+    selectYAxis = $j(`#selectYAxis`);
 
     chipsCompany = $j(`#company`);
     chipsLine = $j(`#line`);
     chipsMachine = $j(`#machine`);
-    chipsYear = $j(`#year`);
-    chipsMonth = $j(`#month`);
+    chipsStart = $j(`#startDate`);
+    chipsEnd = $j(`#endDate`);
 
-
-    rbXAxisLine.change(function(){
-        controlXAxisLine(false);
-        controlXAxisMachine(true);
-        controlXAxisDate(true);
-
-        rbYAxisLine.prop('disabled', true);
-        rbYAxisMachine.prop('disabled', false);
-        rbYAxisDate.prop('disabled', false);
-
-        if (rbYAxisLine.is(':checked')){
-            rbYAxisMachine.prop("checked", true);
-            controlYAxisMachine(false);
-            controlYAxisLine(true);
-        }
-        if (!rbXAxisLine.is('checked')){
-            selectXAxisLine.change();
-        }
-    });
-    rbXAxisMachine.change(function(){
-        controlXAxisLine(true);
-        controlXAxisMachine(false);
-        controlXAxisDate(true);
-
-        rbYAxisLine.prop('disabled', false);
-        rbYAxisMachine.prop('disabled', true);
-        rbYAxisDate.prop('disabled', false);
-
-        if (rbYAxisMachine.is(':checked')){
-            rbYAxisLine.prop("checked", true);
-            controlYAxisLine(false);
-            controlYAxisMachine(true);
-        }
-        if (!rbXAxisMachine.is('checked')){
-            selectXAxisLine.change();
-        }
-    });
-    rbXAxisDate.change(function(){
-        controlXAxisLine(true);
-        controlXAxisMachine(true);
-        controlXAxisDate(false);
-
-        rbYAxisLine.prop('disabled', false);
-        rbYAxisMachine.prop('disabled', false);
-        rbYAxisDate.prop('disabled', true);
-
-        if (rbYAxisDate.is(':checked')){
-            rbYAxisLine.prop("checked", true);
-            controlYAxisLine(false);
-            controlYAxisDate(true);
-        }
-        if (!rbXAxisDate.is('checked')){
-            selectXAxisLine.change();
-        }
-    });
-
-    selectXAxisLine.change(async function(){
-        const line = selectXAxisLine.children("option:selected").text();
+    selectLine.change(async function(){
+        const line = selectLine.children("option:selected").text();
         const machines = (line != "All") ? await getMachinesByLineName(line) : await getAllMachineNames();
         setMachines(machines);
     });
 
-    selectYAxisLine.change(async function(){
-        const line = selectYAxisLine.children("option:selected").text();
-        const machines = (line != "All") ? await getMachinesByLineName(line) : await getAllMachineNames();
-        setMachines(machines);
+    selectStartYear.change(function(){
+        let startDate = new Date(startDateOfDatabase);
+        selectStartMonth.val((startDate.getMonth() + 1).toString()).change();
+        selectStartDay.val(startDate.getDate().toString()).change();
     });
 
-    selectXAxisYear.change(function(){
-        selectXAxisMonth.prop('disabled', selectXAxisYear.val()=='all');
-        selectXAxisMonth.val('all').change();
-        selectXAxisDay.val('all').change();
-    });
+    selectStartMonth.change(function(){
+        let year = parseInt(selectStartYear.val());
+        let month = parseInt(selectStartMonth.val());
 
-    selectXAxisMonth.change(function(){
-
-        selectXAxisDay.empty();
-        selectXAxisDay.append(`<option value="all" selected>All</option>`);
-
-        if (selectXAxisMonth.val() == "all"){
-            selectXAxisDay.prop('disabled', true);
-        } else {
-            selectXAxisDay.prop('disabled', false);
-            if (selectXAxisMonth.val() == 2){
-                if (selectXAxisYear.val()%4 == 0){
-                    for (let day=1; day<=29; day++){
-                        selectXAxisDay.append(`<option value="${day}">${day}</option>`);
-                    }
-                } else {
-                    for (let day=1; day<=28; day++){
-                        selectXAxisDay.append(`<option value="${day}">${day}</option>`);
-                    }
-                }
-            } else {
-                if (selectXAxisMonth.val() == 4 || selectXAxisMonth.val() == 6 || selectXAxisMonth.val() == 9 || selectXAxisDay.val() == 11){
-                    for (let day=1; day<=30; day++){
-                        selectXAxisDay.append(`<option value="${day}">${day}</option>`);
-                    }
-                } else {
-                    for (let day=1; day<=31; day++){
-                        selectXAxisDay.append(`<option value="${day}">${day}</option>`);
-                    }
-                }
-            }
+        selectStartDay.empty();
+        for (let i=1; i<=getDays(year, month); i++){
+            selectStartDay.append(`<option value="${i}">${i}</option>`);
         }
     });
 
+    selectEndYear.change(function(){
+        let endDate = new Date();
+        selectEndMonth.val((endDate.getMonth() + 1).toString()).change();
+        selectEndDay.val(endDate.getDate().toString()).change();
+    });
 
-    //yAxis
-    rbYAxisLine.change(function(){
-        controlYAxisLine(false);
-        controlYAxisMachine(true);
-        controlYAxisDate(true);
-        if (!rbYAxisLine.is('checked')){
-            selectYAxisLine.change();
-        }
-    });
-    rbYAxisMachine.change(function(){
-        controlYAxisLine(true);
-        controlYAxisMachine(false);
-        controlYAxisDate(true);
-        if (!rbYAxisMachine.is('checked')){
-            selectYAxisLine.change();
-        }
-    });
-    rbYAxisDate.change(function(){
-        controlYAxisLine(true);
-        controlYAxisMachine(true);
-        controlYAxisDate(false);
-        if (!rblYAxisDate.is('checked')){
-            selectYAxisLine.change();
+    selectEndMonth.change(function(){
+        let year = parseInt(selectEndYear.val());
+        let month = parseInt(selectEndMonth.val());
+
+        selectEndDay.empty();
+        for (let i=1; i<=getDays(year, month); i++){
+            selectEndDay.append(`<option value="${i}">${i}</option>`);
         }
     });
 
-    selectYAxisYear.change(function(){
-        selectYAxisMonth.prop('disabled', selectYAxisYear.val()=='all');
-        selectYAxisMonth.val('all').change();
-        selectYAxisDay.val('all').change();
-
-    });
-
-    selectYAxisMonth.change(function(){
-
-        selectYAxisDay.empty();
-        selectYAxisDay.append(`<option value="all" selected>All</option>`);
-
-        if (selectYAxisMonth.val() == "all"){
-            selectYAxisDay.prop('disabled', true);
-        } else {
-            selectYAxisDay.prop('disabled', false);
-            if (selectYAxisMonth.val() == 2){
-                if (selectYAxisYear.val()%4 == 0){
-                    for (let day=1; day<=29; day++){
-                        selectYAxisDay.append(`<option value="${day}">${day}</option>`);
-                    }
-                } else {
-                    for (let day=1; day<=28; day++){
-                        selectYAxisDay.append(`<option value="${day}">${day}</option>`);
-                    }
-                }
-            } else {
-                if (selectYAxisMonth.val() == 4 || selectYAxisMonth.val() == 6 || selectYAxisMonth.val() == 9 || selectYAxisDay.val() == 11){
-                    for (let day=1; day<=30; day++){
-                        selectYAxisDay.append(`<option value="${day}">${day}</option>`);
-                    }
-                } else {
-                    for (let day=1; day<=31; day++){
-                        selectYAxisDay.append(`<option value="${day}">${day}</option>`);
-                    }
-                }
-            }
+    selectXAxis.change(function(){
+        if (selectXAxis.val() == 'line'){
+            selectYAxis.children(`[value="line"]`).prop("disabled", true);
+            selectYAxis.children(`[value="machine"]`).prop("disabled", false);
+            selectYAxis.children(`[value="date"]`).prop("disabled", false).prop("selected", true);
+        }
+        if (selectXAxis.val() == 'machine'){
+            selectYAxis.children(`[value="line"]`).prop("disabled", false);
+            selectYAxis.children(`[value="machine"]`).prop("disabled", true);
+            selectYAxis.children(`[value="date"]`).prop("disabled", false).prop("selected", true);
+        }
+        if (selectXAxis.val() == 'date'){
+            selectYAxis.children(`[value="line"]`).prop("disabled", false).prop("selected", true);
+            selectYAxis.children(`[value="machine"]`).prop("disabled", false);
+            selectYAxis.children(`[value="date"]`).prop("disabled", true);
         }
     });
 
+    setStates();
+    let windowHeight = $(window).height();
+    let topOffset = $j('#mainChartContainer').offset().top;
+    $('#mainChartContainer').css(`height`, `${windowHeight - topOffset - 10}px`);
 
     const lines = await getAllLineNames();
     if (lines.length < 1) return;
     setLines(lines);
     const machines = await getAllMachineNames()
     setMachines(machines);
-    setStates();
     setCompany();
     setDate();
-
-    console.log('send data');
-    $('#startDate').datetimepicker({
-        format: 'YYYY-MM-DD',
-        defaultDate: new Date(startDateOfDatabase),
-        minDate: new Date(startDateOfDatabase),
-        maxDate: new Date()
-    }).on('dp.change', function(e){ setStartDate(e.date.toISOString().slice(0,10))})
-    $('#endDate').datetimepicker({
-        format: 'YYYY-MM-DD',
-        defaultDate: new Date(),
-        minDate: new Date(startDateOfDatabase),
-        maxDate: new Date()
-    });
     sendRequest();
+
+    window.addEventListener( 'resize', onWindowResize, false );
+    function onWindowResize(){
+        let windowHeight = $(window).height();
+        let topOffset = $j('#mainChartContainer').offset().top;
+        $('#mainChartContainer').css(`height`, `${windowHeight - topOffset - 10}px`);
+    }
 });
+
