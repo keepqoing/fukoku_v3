@@ -27,7 +27,7 @@ $(function () {
 
     process.getPrefixMachineName=function () {
         $.ajax({
-            url: "/v3/api/fukoku/machine/findAll",
+            url: "/v3/api/fukoku/machine/findAllDistinct",
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -50,7 +50,7 @@ $(function () {
 
                 for (i = 0; i < len; i++) {
                     var option = document.createElement("option");
-                    option.text = response.data[i].name.substring(3);
+                    option.text = response.data[i].name;
                     elt.add(option);
                 }
 
@@ -170,7 +170,7 @@ $(function () {
 
 
 process.breakdowntimeanalysisbyline = function () {
-
+    openLoading();
     $.ajax({
         url: "/v1/api/fukoku/daily-mstate-analysis/non_active_Time_by_machine",
         type: 'POST',
@@ -192,8 +192,11 @@ process.breakdowntimeanalysisbyline = function () {
             var tr = "";
             $("#tbody").empty();
             $("#bar-label").empty();
-
+            $("#donut-label").empty();
             var graphObjArr = [];
+            var pieObjArr = [];
+
+
             var total_working_nonactive_time_s = 0;
             var total_working_time_s = 0;
             var  total_non_active_ratio = 0;
@@ -258,28 +261,59 @@ process.breakdowntimeanalysisbyline = function () {
                     "</tr>";
                 $("#tbody").append(tr);
 
+                // var graphObj = {};
+                // graphObj.MACHINE = lines[l]+"_"+$("#machineName").val();
+                // graphObj.stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
+                // graphObjArr.push(graphObj);
+
+
                 var graphObj = {};
+                var pieObj = {};
                 graphObj.MACHINE = lines[l]+"_"+$("#machineName").val();
                 graphObj.stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
                 graphObjArr.push(graphObj);
 
-
-
+                pieObj.label = lines[l]+"_"+$("#machineName").val();
+                pieObj.value = parseInt(((total_working_nonactive_time_s / 3600) + 1) * 10);
+                pieObjArr.push(pieObj);
 
             }
 
+            // var settings = {
+            //     selector: "#bar-label",
+            //     width: 1400,
+            //     height: 350,
+            //     x: "MACHINE",
+            //     y: "stopTime"
+            // };
+            // barchartLabel(graphObjArr, settings);
+            // console.log(month);
+
+            var pie = new d3pie("donut-label", {
+                "data": {
+                    "content":pieObjArr
+                },
+                "size": {
+
+                    "canvasHeight": 280,
+                    "canvasWidth": 400
+                }
+            });
+
+            var barPanel = document.getElementById("piePanel");
+
             var settings = {
                 selector: "#bar-label",
-                width: 1400,
-                height: 350,
+                width: $(barPanel).width(),
+                height: $(barPanel).height() - 97,
                 x: "MACHINE",
                 y: "stopTime"
             };
             barchartLabel(graphObjArr, settings);
-            console.log(month);
 
         }
     });
+    closeLoading();
 }
 
 

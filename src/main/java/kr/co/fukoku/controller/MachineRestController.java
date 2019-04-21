@@ -274,4 +274,26 @@ public class MachineRestController {
 		}
 		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 	}
+
+
+	// Chomrern - as of 2019-04-22. This api is requested by Bakhit
+	@RequestMapping(value="/findAllDistinct",method = RequestMethod.GET)
+	public ResponseEntity<Map<String,Object>> findAllDistinctMachines()  {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			List<Machine> data = repository.findAllDistinctMachines();
+			if(data.size() > 0 ) {
+				map.put("data", data);
+				map.put("code", 200);
+			}else {
+				map.put("code", 404);
+				map.put("message", "Data not found!");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			map.put("code", 500);
+			map.put("message", "Error! " + e.getMessage());
+		}
+		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+	}
 }

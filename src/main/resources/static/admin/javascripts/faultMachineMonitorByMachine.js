@@ -3,7 +3,7 @@ $(function() {
 
     fualtMachineMonitorByMachine.getPrefixMachineName=function () {
         $.ajax({
-            url: "/v3/api/fukoku/machine/findAll",
+            url: "/v3/api/fukoku/machine/findAllDistinct",
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -38,7 +38,7 @@ $(function() {
     fualtMachineMonitorByMachine.getAllMachinesName = function(){
         var machineName = "";
         $.ajax({
-            url: "/v3/api/fukoku/machine/findAll",
+            url: "/v3/api/fukoku/machine/findAllDistinct",
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -51,14 +51,10 @@ $(function() {
                 $("#selectMachine").append("<option value=''>설비</option>");
                 if(response.code == 200){
                     $.each(response.data, function(key, value){
-                        if(value.name[2] == "_"){
-                            machineName = value.name.substring(3);
-                        }else{
-                            machineName = value.name;
-                        }
 
-                        $("#selectMachine").append("<option value='"+machineName+"' data-id="+value.id+">"+machineName+"</option>");
+                        $("#selectMachine").append("<option value='"+value.name+"' data-id="+value.id+">"+value.name+"</option>");
                     });
+                    $("#selectMachine").prop("selectedIndex",1).change();
                 }
             },
             error:function(data,status,err) {
@@ -155,6 +151,7 @@ $(function() {
 
 
     fualtMachineMonitorByMachine.breakdowntimeanalysisbyline = function () {
+        openLoading();
         $.ajax({
             url: "/v1/api/fukoku/daily-mstate-analysis/non_active_Time_by_machine",
             type: 'POST',
@@ -175,7 +172,11 @@ $(function() {
                 var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var tr = "";
                 $("#tbody").empty();
+                $("#bar-label").empty();
+                $("#donut-label").empty();
                 var graphObjArr = [];
+                var pieObjArr = [];
+
                 $("#bar-label").empty();
                 for (var l = 0; l < lines.length; l++) {
                     for (var m = 0; m < response.machines.length; m++) {
@@ -231,28 +232,59 @@ $(function() {
                         "</tr>";
                     $("#tbody").append(tr);
 
+                    // var graphObj = {};
+                    // graphObj.MACHINE = lines[l]+"_"+$("#selectMachine").val();
+                    // graphObj.stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
+                    // graphObjArr.push(graphObj);
+
                     var graphObj = {};
+                    var pieObj = {};
                     graphObj.MACHINE = lines[l]+"_"+$("#selectMachine").val();
                     graphObj.stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
                     graphObjArr.push(graphObj);
 
-
+                    pieObj.label = lines[l]+"_"+$("#selectMachine").val();
+                    pieObj.value = parseInt(((total_working_nonactive_time_s / 3600) + 1) * 10);
+                    pieObjArr.push(pieObj);
 
 
                 }
 
+                // var settings = {
+                //     selector: "#bar-label",
+                //     width: 1400,
+                //     height: 350,
+                //     x: "MACHINE",
+                //     y: "stopTime"
+                // };
+                // barchartLabel(graphObjArr, settings);
+                // console.log(month);
+
+                var pie = new d3pie("donut-label", {
+                    "data": {
+                        "content":pieObjArr
+                    },
+                    "size": {
+
+                        "canvasHeight": 280,
+                        "canvasWidth": 400
+                    }
+                });
+
+                var barPanel = document.getElementById("piePanel");
+
                 var settings = {
                     selector: "#bar-label",
-                    width: 1400,
-                    height: 350,
+                    width: $(barPanel).width(),
+                    height: $(barPanel).height() - 97,
                     x: "MACHINE",
                     y: "stopTime"
                 };
                 barchartLabel(graphObjArr, settings);
-                console.log(month);
 
             }
         });
+        closeLoading();
     }
 
 

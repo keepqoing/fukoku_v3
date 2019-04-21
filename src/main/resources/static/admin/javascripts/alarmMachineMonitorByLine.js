@@ -197,6 +197,7 @@ $(function() {
 
 
     alarmMachineMonitor.breakdowntimeanalysisbyline = function () {
+        openLoading();
         $.ajax({
             url: "/v1/api/fukoku/daily-mstate-analysis/non_active_Time_by_machine",
             type: 'POST',
@@ -336,6 +337,7 @@ $(function() {
 
             }
         });
+        closeLoading();
     }
 
 
