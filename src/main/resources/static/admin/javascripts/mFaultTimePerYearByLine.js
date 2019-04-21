@@ -228,7 +228,7 @@ process.breakdowntimeanalysisbyline = function () {
                      graphObjArr.push(graphObj);
 
                     pieObj.label = response.machines[m].name;
-                    pieObj.value = parseInt((total_working_nonactive_time_s / 3600));
+                    pieObj.value = parseInt(((total_working_nonactive_time_s / 3600) + 1) * 10);
                     pieObjArr.push(pieObj);
 
                 }

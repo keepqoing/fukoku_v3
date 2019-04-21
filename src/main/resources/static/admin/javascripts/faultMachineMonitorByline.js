@@ -131,7 +131,10 @@ $(function() {
                 var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var tr = "";
                 $("#tbody").empty();
+                $("#bar-label").empty();
+                $("#donut-label").empty();
                 var graphObjArr = [];
+                var pieObjArr = [];
 
                 // for (var l = 0; l < lines.length; l++) {
                 for (var m = 0; m < response.machines.length; m++) {
@@ -186,12 +189,16 @@ $(function() {
                         "</tr>";
                     $("#tbody").append(tr);
 
+
                     var graphObj = {};
+                    var pieObj = {};
                     graphObj.MACHINE = response.machines[m].name;
-                    graphObj .stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
+                    graphObj.stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
                     graphObjArr.push(graphObj);
 
-
+                    pieObj.label = response.machines[m].name;
+                    pieObj.value = parseInt(((total_working_nonactive_time_s / 3600) + 1) * 10);
+                    pieObjArr.push(pieObj);
 
                 }
 
@@ -205,17 +212,37 @@ $(function() {
                 // }
 
 
+                // var settings = {
+                //     selector: "#bar-label",
+                //     width: 1400,
+                //     height: 350,
+                //     x: "MACHINE",
+                //     y: "stopTime"
+                // };
+                // barchartLabel(graphObjArr, settings);
+
+
+                var pie = new d3pie("donut-label", {
+                    "data": {
+                        "content":pieObjArr
+                    },
+                    "size": {
+
+                        "canvasHeight": 280,
+                        "canvasWidth": 400
+                    }
+                });
+
+                var barPanel = document.getElementById("piePanel");
+
                 var settings = {
                     selector: "#bar-label",
-                    width: 1400,
-                    height: 350,
+                    width: $(barPanel).width(),
+                    height: $(barPanel).height() - 97,
                     x: "MACHINE",
                     y: "stopTime"
                 };
                 barchartLabel(graphObjArr, settings);
-
-
-                console.log(month);
 
             }
         });
