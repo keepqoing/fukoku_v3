@@ -39,6 +39,10 @@ public class Machine {
 	@JsonProperty("station")
 	private String station;
 	
+	@JsonProperty("mapping_name")
+	private String mappingName;
+	
+	
 	@JsonProperty("acronym")
 	private String acronym;
 	
@@ -182,6 +186,14 @@ public class Machine {
 	}
 	public void setStation(String station) {
 		this.station = station;
+	}
+
+	public String getMappingName() {
+		return mappingName;
+	}
+
+	public void setMappingName(String mappingName) {
+		this.mappingName = mappingName;
 	}
 	
 	

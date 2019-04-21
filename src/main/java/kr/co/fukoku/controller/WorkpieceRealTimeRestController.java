@@ -30,6 +30,7 @@ import kr.co.fukoku.model.Workpiece;
 import kr.co.fukoku.model.form.wp.WorkpieceIndexing;
 import kr.co.fukoku.model.visualization.ArrayMultiLinesVisualization;
 import kr.co.fukoku.model.visualization.SingleDataMultiLinesVisualization;
+import kr.co.fukoku.service.LineMachineProcessProductService;
 import kr.co.fukoku.service.WorkpieceHBaseRealTimeService;
 import kr.co.fukoku.utils.MyConverter;
 import kr.co.fukoku.utils.StatisticalCalculation;
@@ -41,7 +42,8 @@ public class WorkpieceRealTimeRestController {
 	@Autowired
 	private WorkpieceHBaseRealTimeService service;
 	
-	
+	@Autowired
+	private LineMachineProcessProductService lmppService;
 	
 	@RequestMapping(value="/real-time",method = RequestMethod.POST)
     public ResponseEntity<Map<String,Object>> realTime(@RequestBody WorkpieceIndexing wp) throws ParseException  {
@@ -57,12 +59,13 @@ public class WorkpieceRealTimeRestController {
 		String startDate = wp.getStartTime();// MyConverter.getDate(0);
 		String stopDate =  wp.getStopTime();// MyConverter.getDate(1);
 		
-		Product lslUsl = new Product();
-		lslUsl.setLsl(wp.getLsl());
-		lslUsl.setUsl(wp.getUsl());
+//		Product lslUsl = new Product();
+//		lslUsl.setLsl(wp.getLsl());
+//		lslUsl.setUsl(wp.getUsl());
 				
 		if(wp.getProcesses().size() > 0){
 			for(int i=0 ; i < wp.getProcesses().size() ; i++ ) {
+				Product lslUsl = lmppService.findUslLsl(wp.getProduct(), wp.getProcesses().get(i), wp.getLine());
 				List<ArrayMultiLinesVisualization> workpieceVisuals = new ArrayList<ArrayMultiLinesVisualization>();
 				String key= wp.getLine()+"+"+wp.getProduct()+"+"+machineName+"+"+wp.getProcesses().get(i);
 				System.out.println(key+"+"+startDate + " ##### "+ key+"+"+stopDate);
@@ -70,6 +73,7 @@ public class WorkpieceRealTimeRestController {
 				data.addAll(workpieceVisuals);
 			}
 		}else {
+			Product lslUsl = lmppService.findUslLsl(wp.getProduct(), wp.getProcesses().get(0), wp.getLine());
 			String key= wp.getLine()+"+"+wp.getProduct()+"+"+machineName+"+"+wp.getProcesses().get(0);
 			System.out.println(key+"+"+startDate + " ##### "+ key+"+"+stopDate);
 			data = service.findWorkpiecePhoenixIndex(key+"+"+startDate, key+"+"+stopDate, lslUsl);
