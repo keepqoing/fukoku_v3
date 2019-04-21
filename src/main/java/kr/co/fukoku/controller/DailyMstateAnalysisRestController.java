@@ -120,7 +120,7 @@ public class DailyMstateAnalysisRestController {
     public ResponseEntity<Map<String,Object>> nonActiveTimeByMachine(@RequestBody DailyMstateAnalysisFilter f) throws Exception {
         ArrayList<Map<String, Object>> mapArr = (ArrayList<Map<String, Object>>) dailyMstateAnalysisRepo.breakdowntimeanalysisbyline(f);
         System.out.println("###### non_active_Time_by_machine");
-        List<Machine> machine = machineRepository.findAllMachines();
+        List<Machine> machine = machineRepository.findAllMachinesByLine(f.getLine());
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("breakdowntimeanalysisbyline",  mapArr);
