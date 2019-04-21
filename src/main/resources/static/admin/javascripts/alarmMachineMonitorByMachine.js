@@ -138,7 +138,7 @@ $(function() {
     alarm.breakdowntimeanalysisbyline = function () {
         openLoading();
         $.ajax({
-            url: "/v1/api/fukoku/daily-mstate-analysis/non_active_Time_by_machine",
+            url: "/v1/api/fukoku/daily-mstate-analysis/non_active_Time_by_machine/all_machine/",
             type: 'POST',
             dataType: 'JSON',
             data: JSON.stringify({

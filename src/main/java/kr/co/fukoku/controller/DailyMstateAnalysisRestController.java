@@ -128,6 +128,18 @@ public class DailyMstateAnalysisRestController {
         return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/non_active_Time_by_machine/all_machine/", method = RequestMethod.POST)
+    public ResponseEntity<Map<String,Object>> nonActiveTimeByAllMachine(@RequestBody DailyMstateAnalysisFilter f) throws Exception {
+        ArrayList<Map<String, Object>> mapArr = (ArrayList<Map<String, Object>>) dailyMstateAnalysisRepo.breakdowntimeanalysisbyline(f);
+        System.out.println("###### non_active_Time_by_machine");
+        List<Machine> machine = machineRepository.findAllMachines();
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("breakdowntimeanalysisbyline",  mapArr);
+        map.put("machines",  machine);
+        return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+    }
+
 
 
 
