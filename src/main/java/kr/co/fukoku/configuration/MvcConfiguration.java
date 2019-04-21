@@ -108,8 +108,8 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/production-cycle-time").setViewName("/admin/workpiece/production-cycle-time-detail");
 		registry.addViewController("/admin/production-cycle-time-detail").setViewName("/admin/workpiece/production-cycle-time-detail");
 		
-		registry.addViewController("/admin/workpiece-spc").setViewName("/admin/workpiece/workpiece-spc");
-		registry.addViewController("/admin/workpiece-spc-detail").setViewName("/admin/workpiece/workpiece-spc-detail");
+		registry.addViewController("/admin/workpiece-spc-thesis").setViewName("/admin/workpiece/workpiece-spc-thesis");
+		registry.addViewController("/admin/workpiece-spc-detail-thesis").setViewName("/admin/workpiece/workpiece-spc-detail-thesis");
 		
 		registry.addViewController("/admin/workpiece-total-produce").setViewName("/admin/workpiece/workpiece-total-produce");
 		
@@ -122,6 +122,9 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		
 		registry.addViewController("/admin/workpiece-line-bad-type").setViewName("/admin/workpiece/workpiece-line-bad-type-detail");
 		registry.addViewController("/admin/workpiece-line-bad-type-detail").setViewName("/admin/workpiece/workpiece-line-bad-type-detail");
+		
+		registry.addViewController("/admin/workpiece-spc").setViewName("/admin/workpiece/workpiece-spc-detail");
+		registry.addViewController("/admin/workpiece-spc-detail").setViewName("/admin/workpiece/workpiece-spc-detail");
 		
 		
 	}

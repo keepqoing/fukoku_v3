@@ -25,6 +25,7 @@ import kr.co.fukoku.model.visualization.ArraySpcPcVisualization;
 import kr.co.fukoku.model.visualization.SingleDataMultiLinesVisualization;
 import kr.co.fukoku.model.visualization.SpcLine;
 import kr.co.fukoku.repository_hbase.WorkpieceHBaseRealTimeRepository;
+import kr.co.fukoku.service.LineMachineProcessProductService;
 import kr.co.fukoku.service.WorkpieceSpcPcService;
 import kr.co.fukoku.utils.MyConverter;
 import kr.co.fukoku.utils.StatisticalCalculation;
@@ -35,6 +36,8 @@ public class WorkpieceSpcPcServiceImpl implements WorkpieceSpcPcService{
 	@Autowired
 	private WorkpieceHBaseRealTimeRepository repo;
 	
+	@Autowired
+	private LineMachineProcessProductService service;
 	
 
 	@Override
@@ -74,9 +77,19 @@ public class WorkpieceSpcPcServiceImpl implements WorkpieceSpcPcService{
 			processName = wp.getProcesses().get(0);
 		}
 		
-		Product lslUsl = new Product();
-		lslUsl.setLsl(wp.getLsl());
-		lslUsl.setUsl(wp.getUsl());
+		
+		
+//		Product lslUsl = new Product();
+//		lslUsl.setLsl(wp.getLsl());
+//		lslUsl.setUsl(wp.getUsl());
+//		long LSL = 0;
+//	    long USL =300;
+//		if(lslUsl != null) {
+//			USL = lslUsl.getUsl();
+//			LSL = lslUsl.getLsl();
+//		}
+		
+		Product lslUsl = service.findUslLsl(wp.getProduct(), processName, wp.getLine());
 		long LSL = 0;
 	    long USL =300;
 		if(lslUsl != null) {
