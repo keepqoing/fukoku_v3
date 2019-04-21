@@ -580,6 +580,15 @@ public class AlarmStatisticsRepositoryBody implements AlarmStatisticsRepository 
                 new Object[]{factory, line, machine, year}, rowMapper);
     }
 
+    @Override
+    public List<MainAlarmStatistics> graphAlarmCountingByYear(String p_year) {
+        RowMapper<MainAlarmStatistics> rowMapper = (rs, rowNum) -> {
+            return getObject(rs, true);
+        };
+        return jdbcTemplate.query(SQLStatement.AlarmStatisticsSQL.ALARM_GRAPH_BY_YEAR.toString(),
+                new Object[]{p_year}, rowMapper);
+    }
+
     private Long countHistory(AlarmHistoryFilter alarmHistoryFilter) {
         return jdbcTemplate.queryForObject(SQLStatement.AlarmStatisticsSQL.
                 COUNT_ALARM_HISTORY.toString(), new Object[]{

@@ -30,4 +30,6 @@ public interface AlarmStatisticsRepository {
     List<MainAlarmStatistics> getMainAlarmStatisticDurationSum(String factory, String line, String machine, String year);
 
 
+    // Alarm Graph
+    List<MainAlarmStatistics> graphAlarmCountingByYear(String p_year);
 }

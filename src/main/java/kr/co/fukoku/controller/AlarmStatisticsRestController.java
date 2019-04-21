@@ -212,4 +212,21 @@ public class AlarmStatisticsRestController {
     }
 
 
+    // Graph
+    @RequestMapping(value="/alarmGraphYear/{p_year}", method = RequestMethod.GET)
+    public ResponseList<MainAlarmStatistics> graphAlarmCountingByYear(
+            @PathVariable("p_year") String p_year
+    ){
+
+        ResponseList<MainAlarmStatistics> response = new ResponseList<>();
+        List<MainAlarmStatistics> countingList = repository.graphAlarmCountingByYear(p_year);
+        if (countingList.size() != 0) {
+            response.setCode(StatusCode.FOUND);
+            response.setData(countingList);
+        } else {
+            response.setCode(StatusCode.NOT_FOUND);
+        }
+        return response;
+    }
+
 }

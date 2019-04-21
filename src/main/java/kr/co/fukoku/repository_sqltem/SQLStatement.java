@@ -2696,7 +2696,17 @@ FIND_ALL_PD("SELECT \n" +
         FIND_ALL_MAIN_ALARM_STATISTICS_DURATION("CALL fukoku_v2.procFinalAlarmCountingDuration(?,?,?,?);"),
 
         FIND_ALL_MAIN_ALARM_STATISTICS_SUM("CALL fukoku_v2.procFinalAlarmCountingSUM(?,?,?,?);"),
-        FIND_ALL_MAIN_ALARM_STATISTICS_DURATION_SUM("CALL fukoku_v2.procFinalAlarmCountingDurationSum(?,?,?,?);");
+        FIND_ALL_MAIN_ALARM_STATISTICS_DURATION_SUM("CALL fukoku_v2.procFinalAlarmCountingDurationSum(?,?,?,?);"),
+
+
+        // Alarm Graphs
+        ALARM_GRAPH_BY_YEAR("SELECT DISTINCT alarm, \n" +
+                "SUM(total_alarm_year) total_alarm_year\n" +
+                "FROM fukoku_v2.alarm_counting\n" +
+                "WHERE a_year = ?'\n" +
+                "AND total_alarm_year > 0\n" +
+                "GROUP BY alarm\n" +
+                "ORDER BY alarm;");
 
         private String value;
 

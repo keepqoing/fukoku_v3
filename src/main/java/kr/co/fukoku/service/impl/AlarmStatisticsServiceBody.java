@@ -75,4 +75,9 @@ public class AlarmStatisticsServiceBody implements AlarmStatisticsService {
     public List<MainAlarmStatistics> getMainAlarmStatisticDurationSum(String factory, String line, String machine, String year) {
         return alarmStatisticsRepository.getMainAlarmStatisticDurationSum(factory, line, machine, year);
     }
+
+    @Override
+    public List<MainAlarmStatistics> graphAlarmCountingByYear(String p_year) {
+        return alarmStatisticsRepository.graphAlarmCountingByYear(p_year);
+    }
 }

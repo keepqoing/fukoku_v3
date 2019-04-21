@@ -27,4 +27,8 @@ public interface AlarmStatisticsService {
     // summation
     List<MainAlarmStatistics> getMainAlarmStatisticSum(String factory, String line, String machine, String year);
     List<MainAlarmStatistics> getMainAlarmStatisticDurationSum(String factory, String line, String machine, String year);
+
+    // Alarm Graph
+    List<MainAlarmStatistics> graphAlarmCountingByYear(String p_year);
+
 }
