@@ -218,7 +218,10 @@ $(function() {
                 var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var tr = "";
                 $("#tbody").empty();
+                $("#bar-label").empty();
+                $("#donut-label").empty();
                 var graphObjArr = [];
+                var pieObjArr = [];
 
                 // for (var l = 0; l < lines.length; l++) {
                 for (var m = 0; m < response.machines.length; m++) {
@@ -237,18 +240,15 @@ $(function() {
                         if(data[i].month == 12  && response.machines[m].name == data[i].machine){ month[11] = data[i].alarm_time_s; working_time[11] = data[i].working_time_s ; non_active_ratio[11] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
                     }
 
-                    var total_working_nonactive_time_s = 0;
+                    var total_alarm_time_s = 0;
                     var total_working_time_s = 0;
-                    var  total_non_active_ratio = 0;
+
                     for (var t = 0; t < month.length; t++) {
                         if(!Number.isNaN(month[t])){
-                            total_working_nonactive_time_s += month[t];
+                            total_alarm_time_s += month[t];
                         }
                         if(!Number.isNaN(working_time[t])){
                             total_working_time_s += working_time[t];
-                        }
-                        if(!Number.isNaN(non_active_ratio[t])){
-                            total_non_active_ratio += non_active_ratio[t];
                         }
                     }
 
@@ -267,18 +267,26 @@ $(function() {
                         "<td>"+(month[9] / 3600).toFixed(2)+"</td>"+
                         "<td>"+(month[10] / 3600).toFixed(2)+"</td>"+
                         "<td>"+(month[11] / 3600).toFixed(2)+"</td>" +
-                        "<td>"+(total_working_nonactive_time_s / 3600).toFixed(2)+"</td>" +
+                        "<td>"+(total_alarm_time_s / 3600).toFixed(2)+"</td>" +
                         "<td>"+(total_working_time_s / 3600).toFixed(2)+"</td>" +
-                        "<td>"+  total_non_active_ratio.toFixed(2)+"</td>" +
+                        "<td>"+   ((total_alarm_time_s / total_working_time_s) * 100).toFixed(2)+"</td>" +
                         "</tr>";
                     $("#tbody").append(tr);
 
+                    // var graphObj = {};
+                    // graphObj.MACHINE = response.machines[m].name;
+                    // graphObj .stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
+                    // graphObjArr.push(graphObj);
+
                     var graphObj = {};
+                    var pieObj = {};
                     graphObj.MACHINE = response.machines[m].name;
-                    graphObj .stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
+                    graphObj.stopTime = (total_alarm_time_s / 3600).toFixed(2);
                     graphObjArr.push(graphObj);
 
-
+                    pieObj.label = response.machines[m].name;
+                    pieObj.value = parseInt(((total_alarm_time_s / 3600) + 1) * 10);
+                    pieObjArr.push(pieObj);
 
                 }
 
@@ -292,17 +300,39 @@ $(function() {
                 // }
 
 
+                // var settings = {
+                //     selector: "#bar-label",
+                //     width: 1400,
+                //     height: 350,
+                //     x: "MACHINE",
+                //     y: "stopTime"
+                // };
+                // barchartLabel(graphObjArr, settings);
+                //
+                //
+                // console.log(month);
+
+                var pie = new d3pie("donut-label", {
+                    "data": {
+                        "content":pieObjArr
+                    },
+                    "size": {
+
+                        "canvasHeight": 280,
+                        "canvasWidth": 400
+                    }
+                });
+
+                var barPanel = document.getElementById("piePanel");
+
                 var settings = {
                     selector: "#bar-label",
-                    width: 1400,
-                    height: 350,
+                    width: $(barPanel).width(),
+                    height: $(barPanel).height() - 97,
                     x: "MACHINE",
                     y: "stopTime"
                 };
                 barchartLabel(graphObjArr, settings);
-
-
-                console.log(month);
 
             }
         });

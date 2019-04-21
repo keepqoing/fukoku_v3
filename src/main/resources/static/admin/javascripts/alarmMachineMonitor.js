@@ -102,6 +102,7 @@ $(function() {
 
 
     alarmMachineMonitor.breakdowntimeanalysisbyline = function () {
+        openLoading();
         $.ajax({
             url: "/v1/api/fukoku/daily-mstate-analysis/breakdowntimeanalysisbyline",
             type: 'POST',
@@ -120,7 +121,10 @@ $(function() {
 
                 var tr = "";
                 $("#tbody").empty();
+                $("#bar-label").empty();
+                $("#donut-label").empty();
                 var graphObjArr = [];
+                var pieObjArr = [];
                 for (var l = 0; l < lines.length; l++) {
                     var month = [0,0,0,0,0,0,0,0,0,0,0,0]; var working_time = [0,0,0,0,0,0,0,0,0,0,0,0];
                     var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -140,20 +144,17 @@ $(function() {
                         if(data[i].month == 11 && lines[l] == data[i].line){ month[10] = data[i].alarm_time_s; working_time[10] = data[i].working_time_s ; non_active_ratio[10] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
                         if(data[i].month == 12 && lines[l] == data[i].line){ month[11] = data[i].alarm_time_s; working_time[11] = data[i].working_time_s ; non_active_ratio[11] = (data[i].alarm_time_s / data[i].working_time_s) * 100}
                     }
-                    var total_working_nonactive_time_s = 0;
+                    var total_alarm_time_s = 0;
                     var total_working_time_s = 0;
-                    var  total_non_active_ratio = 0;
+
                     for (var t = 0; t < month.length; t++) {
                         if(Number.isNaN(month[t]) || Number.isFinite(month[t]) ){
-                            total_working_nonactive_time_s += month[t];
+                            total_alarm_time_s += month[t];
                         }
                         if(Number.isNaN(working_time[t]) || Number.isFinite(working_time[t]) ){
                             total_working_time_s += working_time[t] ;
                         }
-                        if(Number.isNaN(non_active_ratio[t]) || isFinite(non_active_ratio[t]) ){
-                            total_non_active_ratio += non_active_ratio[t];
-                            console.log(isFinite(non_active_ratio[t]));
-                        }
+
                     }
                    // console.log(lines[l] , month);
                    // console.log(lines[l] , working_time);
@@ -173,25 +174,58 @@ $(function() {
                         "<td>"+(month[9] / 3600).toFixed(2)+"</td>"+
                         "<td>"+(month[10] / 3600).toFixed(2)+"</td>"+
                         "<td>"+(month[11] / 3600).toFixed(2)+"</td>" +
-                        "<td>"+(total_working_nonactive_time_s / 3600).toFixed(2)+"</td>" +
+                        "<td>"+(total_alarm_time_s / 3600).toFixed(2)+"</td>" +
                         "<td>"+(total_working_time_s / 3600).toFixed(2)+"</td>" +
-                        "<td>"+  total_non_active_ratio.toFixed(2)+"</td>" +
+                        "<td>"+  ((total_alarm_time_s / total_working_time_s) * 100).toFixed(2) +"</td>" +
                         "</tr>";
                     $("#tbody").append(tr);
 
+                    // var graphObj = {};
+                    // graphObj.MACHINE = lines[l];
+                    // graphObj .stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
+                    // graphObjArr.push(graphObj);
+
+
                     var graphObj = {};
+                    var pieObj = {};
                     graphObj.MACHINE = lines[l];
-                    graphObj .stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
+                    graphObj.stopTime = (total_alarm_time_s / 3600).toFixed(2);
                     graphObjArr.push(graphObj);
 
+                    pieObj.label = lines[l];
+                    pieObj.value = parseInt(((total_alarm_time_s / 3600) + 1) * 10);
+                    pieObjArr.push(pieObj);
 
                 }
 
-                $("#bar-label").empty();
+                // $("#bar-label").empty();
+                // var settings = {
+                //     selector: "#bar-label",
+                //     width: 1400,
+                //     height: 350,
+                //     x: "MACHINE",
+                //     y: "stopTime"
+                // };
+                // barchartLabel(graphObjArr, settings);
+
+
+                var pie = new d3pie("donut-label", {
+                    "data": {
+                        "content":pieObjArr
+                    },
+                    "size": {
+
+                        "canvasHeight": 280,
+                        "canvasWidth": 400
+                    }
+                });
+
+                var barPanel = document.getElementById("piePanel");
+
                 var settings = {
                     selector: "#bar-label",
-                    width: 1400,
-                    height: 350,
+                    width: $(barPanel).width(),
+                    height: $(barPanel).height() - 97,
                     x: "MACHINE",
                     y: "stopTime"
                 };
@@ -199,6 +233,7 @@ $(function() {
 
             }
         });
+        closeLoading();
     }
 
 
