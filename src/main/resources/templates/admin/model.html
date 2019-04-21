@@ -6,12 +6,12 @@
       layout:decorator="admin/layout">
 <head>
     <title>공정설계</title>
+
     <style>
+
+
         table {
             font-size: 8pt;
-            display: block;
-            overflow-x: auto;
-            table-layout: fixed;
         }
 
         .table-head {
@@ -44,7 +44,7 @@
 
         td, th{
             text-align: center;
-            /*vertical-align: middle!important;*/
+
 
         }
         .table td  {
@@ -64,40 +64,21 @@
             display: inline-block;
             padding-right: 10px;
             text-indent: -2px;
-            /*font-weight: bold;*/
+
         }
         .select_line{
             width: 18px;
             height: 18px;
         }
 
-        .table_wrapper {
-            display: flex;
-            overflow-x: auto;
-            height: 100%;
+        #parent {
             width: 100%;
-
+            height: 600px;
 
         }
-
-        table {
-            width: 100%
-        }
-
-
 
     </style>
 
-    <script src="../../static/admin/sweet_alert/sweetalert.min-new.js"></script>
-
-
-    <!-- Sweet Alert -->
-    <!--<link rel="stylesheet" href="../../static/admin/sweet_alert/sweetalert.css">-->
-    <!--<script src="../../static/admin/sweet_alert/sweetalert.min.js"></script>-->
-
-
-    <!--<script src="../../static/admin/sweet_alert/sweetalert.min-new.js"></script>-->
-    <!--<script src="../../static/admin/sweet_alert/sweetalert-dev.js"></script>-->
 
 </head>
 <body>
@@ -153,17 +134,11 @@
                         <div class="row">
 
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                                        <div class="table_wrapper">
-                                            <table class="table fixed_headers" id="mainTable">
-                                                <thead class="thead-inverse table-head"
+                                        <div id="parent">
+                                            <table class="table" id="fixTable">
+                                                <thead >
+                                                    <tr id="tableHeader" class="table-head"></tr>
 
-                                                >
-                                                    <tr id="tableHeader"
-                                                        style="display: fixed; "
-                                                    ></tr>
-                                                <!--<tr id="firstHeader">-->
-                                                    <!--<th>라인</th>-->
-                                                <!--</tr>-->
                                                 </thead>
                                                 <tbody id="processTable">
                                                 <!--<tr id="firstRow">-->
@@ -187,6 +162,12 @@
 
 
 
+
+
+
+
+</div>
+<th:block layout:fragment="script">
     <script>
         var datas = [];
         var product_Array = [];
@@ -198,13 +179,12 @@
 
         var machine = [];
 
+
     </script>
 
+    <script src="../../static/admin/javascripts/fixedTableHeader/tableHeadFixer.js"></script>
     <script src="/static/admin/javascript_v3/model.js"></script>
-
-</div>
-<th:block layout:fragment="script">
-
+    <script src="../../static/admin/sweet_alert/sweetalert.min-new.js"></script>
 </th:block>
 
 </body>

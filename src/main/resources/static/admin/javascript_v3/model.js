@@ -1631,6 +1631,16 @@ function loadDataToTable(result){
         }
     }
     // isChecked();
+
+
+    // fixed header and left column
+    var divHeight = document.getElementsByClassName("table-responsive")[0].clientHeight;
+    // console.log("divHeight = " + divHeight);
+    // $("#parent").css("height",divHeight);
+    $("#fixTable").tableHeadFixer({"left" : 2});
+
+
+
 }
 
 var numberProcess = 0;
