@@ -51,8 +51,10 @@ function barchartLabel(data, settings){
     //adding x axis to the bottom of chart
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(" + margin.left + "," + (height - margin.bottom) + ")")
+        .attr("transform", "translate(" + (margin.left - 20) + "," + (height - margin.bottom) + ")")
         .call(xAxis);
+
+
     //go back to where you created yAxis
     var yAxis = d3.svg.axis()
         .scale(yScale)
@@ -89,4 +91,6 @@ function barchartLabel(data, settings){
         .attr("transform", "translate("+ (width/2) +","+(height-(5))+")")  // centre below axis
         .style('font-size','8px')
         .text(settings.x_text);
+
+
 }

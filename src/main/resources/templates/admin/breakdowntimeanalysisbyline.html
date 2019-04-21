@@ -24,18 +24,25 @@
         table tbody tr {
             text-align: center;
         }
-        .line {
-            fill: none;
-            stroke: steelblue;
-            stroke-width: 4px;
+        .axis text{
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 8px;
+            text-anchor: start;
         }
-
-        .axisSteelBlue text{
+        .axis path{
+            fill:none;
+            stroke:black;
+            stroke-width: 0.5px;
+            shape-rendering: crispEdges;
+        }
+        .bar{
+            stroke: none;
             fill: steelblue;
         }
-
-        .axisRed text{
-            fill: red;
+        .textlabel{
+            font-family: Helvetica, Arial, sans-serif;
+            font-size:10px;
+            text-anchor: middle;
         }
     </style>
 
@@ -87,10 +94,39 @@
                                 <button type="button" class="btn btn-primary">Excel</button>
                             </div>
                         </div>
+<!--                        <div class="row">-->
+<!--                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">-->
+<!--                                <div class="table" id="line-bar" style="width:1200px; margin: 0 auto;"></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <div class="row">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                                <div class="table" id="line-bar" style="width:1200px; margin: 0 auto;"></div>
+
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="font-size: 10pt;">막대 그래프</div>
+                                    <div class="panel-body">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <center>
+                                                <div id="bar-label"></div>
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6" id="piePanel">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="font-size: 10pt;">파이 차트</div>
+                                    <div class="panel-body">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <center>
+                                                <div id="donut-label"></div>
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                         <br/>
                         <div class="row">
@@ -149,8 +185,10 @@
             </div>
         </div>
     </section>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="/static/admin/javascripts/d3/line-bar.js"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+<!--    <script src="/static/admin/javascripts/d3/line-bar.js"></script>-->
+    <script src="/static/admin/javascripts/d3/barchart-label.js"></script>
+    <script src="/static/admin/javascripts/d3/d3pie-v3.js"></script>
     <script src="../../static/admin/javascripts/FailureFactoryMonitoring.js"></script>
     <!--<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>-->

@@ -143,9 +143,11 @@ $(function () {
                 var month = [0,0,0,0,0,0,0,0,0,0,0,0]; var working_time = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var tr = "";
-                $("#tbody").empty()
-                $("#line-bar").empty();
+                $("#bar-label").empty();
+                $("#donut-label").empty();
+
                 var graphObjArr = [];
+                var pieObjArr = [];
                 for (var l = 0; l < lines.length; l++) {
                     for (var i = 0; i < data.length; i++) {
                         if(data[i].month == 1 && lines[l] == data[i].line){ month[0] = data[i].working_nonactive_time_s; working_time[0] = data[i].working_time_s ; non_active_ratio[0] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100  }
@@ -197,22 +199,66 @@ $(function () {
                         "</tr>";
                     $("#tbody").append(tr);
 
+                    // var graphObj = {};
+                    // graphObj.year = lines[l];
+                    // graphObj.line1 = lines[l];
+                    // graphObj.bar = (total_working_nonactive_time_s / 3600).toFixed(2);
+                    // graphObjArr.push(graphObj);
+
                     var graphObj = {};
-                    graphObj.year = lines[l];
+                    var pieObj = {};
                     graphObj.line1 = lines[l];
                     graphObj.bar = (total_working_nonactive_time_s / 3600).toFixed(2);
                     graphObjArr.push(graphObj);
 
+                    pieObj.label = lines[l];
+                    pieObj.value = parseInt((total_working_nonactive_time_s / 3600));
+                    pieObjArr.push(pieObj);
+
 
                 }
 
+                // var settings = {
+                //     selector: "#line-bar",
+                //     width: "1000",
+                //     height: "500"
+                // };
+                // lineBarchart(graphObjArr, settings);
+
+
+                var pie = new d3pie("donut-label", {
+                    "data": {
+                        "content":pieObjArr
+                    },
+                    "size": {
+
+                        "canvasHeight": 280,
+                        "canvasWidth": 400
+                    }
+                });
+
+                var barPanel = document.getElementById("piePanel");
+
                 var settings = {
-                    selector: "#line-bar",
-                    width: "1000",
-                    height: "500"
+                    selector: "#bar-label",
+                    width: $(barPanel).width(),
+                    height: $(barPanel).height() - 97,
+                    x: "line1",
+                    y: "bar"
                 };
-                lineBarchart(graphObjArr, settings);
-                console.log(month);
+                barchartLabel(graphObjArr, settings);
+
+
+
+
+
+
+
+
+
+
+
+                // console.log(month);
 
             }
         });
