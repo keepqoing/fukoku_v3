@@ -22,7 +22,7 @@ $(function() {
 
     productQtyInfor.getAllProductQTY = function () {
         $.ajax({
-            url: "/v1/api/fukoku/statistic/product-qty/graph",
+            url: "http://113.198.137.142:8080/v1/api/fukoku/statistic/product-qty/graph",
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -59,7 +59,7 @@ $(function() {
 
     productQtyInfor.getAllProductQTYTable = function () {
         $.ajax({
-            url: "/v1/api/fukoku/statistic/product-qty/table",
+            url: "http://113.198.137.142:8080/v1/api/fukoku/statistic/product-qty/table",
             type: 'GET',
             dataType: 'JSON',
             data: {

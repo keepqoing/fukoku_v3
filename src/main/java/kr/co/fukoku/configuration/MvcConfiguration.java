@@ -126,6 +126,9 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/workpiece-spc").setViewName("/admin/workpiece/workpiece-spc-detail");
 		registry.addViewController("/admin/workpiece-spc-detail").setViewName("/admin/workpiece/workpiece-spc-detail");
 		
+		registry.addViewController("/admin/process-quality-management-by-line").setViewName("/admin/workpiece/process-quality-management-by-line");
+		
+		registry.addViewController("/admin/product-qty-information").setViewName("/admin/workpiece/product-qty-information");
 		
 	}
 

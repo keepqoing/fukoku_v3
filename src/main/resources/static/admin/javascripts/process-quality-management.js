@@ -30,7 +30,7 @@ $(function () {
 
     corelations.getAllLinesName1 = function(){
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "http://113.198.137.142:8080/v1/api/fukoku/line/select-box",
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -60,7 +60,7 @@ $(function () {
 
     corelations.getAllMachineNameByLineName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/machine/select-box",
+            url: "http://113.198.137.142:8080/v1/api/fukoku/machine/select-box",
             type: 'GET',
             dataType: 'JSON',
             data:{
@@ -93,7 +93,7 @@ $(function () {
 
     corelations.getProductName = function(line,machine){
         $.ajax({
-            url: "/v1/api/fukoku/workpiece/find-product/"+line+"/"+machine,
+            url: "http://113.198.137.142:8080/v1/api/fukoku/workpiece/find-product/"+line+"/"+machine,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -121,7 +121,7 @@ $(function () {
 
     corelations.getAllLinesName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "http://113.198.137.142:8080/v1/api/fukoku/line/select-box",
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -147,7 +147,7 @@ $(function () {
     corelations.getAllProcessesByLineAndMachine = function(){
         openLoading();
         $.ajax({
-            url: "/v1/api/fukoku/process/correlation",
+            url: "http://113.198.137.142:8080/v1/api/fukoku/process/correlation",
             type: 'GET',
             dataType: 'JSON',
             data:{
@@ -176,7 +176,7 @@ $(function () {
 
     corelations.getAllProductName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/product/select-box",
+            url: "http://113.198.137.142:8080/v1/api/fukoku/product/select-box",
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -212,7 +212,7 @@ $(function () {
     corelations.getAllProduct= function(line,machine,product,startDate,endDate,process){
         console.log(line,machine,product,startDate, endDate,process);
         $.ajax({
-            url: "/v1/api/fukoku/ppn/selectPpn",
+            url: "http://113.198.137.142:8080/v1/api/fukoku/ppn/selectPpn",
             type: 'GET',
             dataType: 'JSON',
             data: {
