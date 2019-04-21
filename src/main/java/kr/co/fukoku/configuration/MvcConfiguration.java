@@ -117,10 +117,10 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/time-line1").setViewName("/admin/time-line1");
 		registry.addViewController("/admin/time-line2").setViewName("/admin/time-line2");
 		
-		registry.addViewController("/admin/workpiece-spc-overall").setViewName("/admin/workpiece/workpiece-spc-overall");
+		registry.addViewController("/admin/workpiece-spc-overall").setViewName("/admin/workpiece/workpiece-spc-overall-detail");
 		registry.addViewController("/admin/workpiece-spc-overall-detail").setViewName("/admin/workpiece/workpiece-spc-overall-detail");
 		
-		registry.addViewController("/admin/workpiece-line-bad-type").setViewName("/admin/workpiece/workpiece-line-bad-type");
+		registry.addViewController("/admin/workpiece-line-bad-type").setViewName("/admin/workpiece/workpiece-line-bad-type-detail");
 		registry.addViewController("/admin/workpiece-line-bad-type-detail").setViewName("/admin/workpiece/workpiece-line-bad-type-detail");
 		
 		

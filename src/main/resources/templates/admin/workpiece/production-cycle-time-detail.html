@@ -43,7 +43,7 @@
                         
                         <div class="row" >
                         
-                        	<div class="col-xl-12 col-lg-12 col-md-6 col-sm-6 col-xs-12">
+                        	<!-- <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6 col-xs-12">
                         		
                         			<div class="col-xl-1 col-lg-1 col-md-6 col-sm-6 col-xs-12">
 		                                <span style="font-size:15px"  class="label label-success">{{labelLine}}</span>
@@ -84,6 +84,63 @@
 	                           		</div>
 	                           		
 	                           		<div class="col-xl-1 col-lg-1 col-md-1 col-sm-4 col-xs-12">
+	                           			<button class="btn btn-primary" id="btFind" ng-click="btSearch()" type="button">검색 </button>
+	                                </div>
+                                
+                        	</div> -->
+                        	
+                        	<div class="col-xl-12 col-lg-12 col-md-6 col-sm-6 col-xs-12">
+                        		
+                        			<div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
+		                                <div class="form-group">
+			                                <select class="form-control" id="selectLine">
+			                                    <option value="NA">라인</option>
+			                                    <option ng-repeat="l in lines" value="{{l.name}}">{{l.name}}</option>
+			                                </select>
+		                                </div>
+		                            </div>
+		                            
+		                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+		                                <div class="form-group">
+			                                <select class="form-control" id="selectMachine">
+			                                    <option value="">설비</option>
+			                                    <option ng-repeat="m in machines" value="{{m.mapping_name}}">{{m.name}}</option>
+			                                </select>
+		                                </div>
+		                            </div>
+		                            
+	                            	
+	                            	<div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+		                                <div class="form-group">
+			                                <select class="form-control" id="selectProduct">
+			                                    <option value="">품종</option>
+			                                   <option ng-repeat="p in products" value="{{p.name}}">{{p.name}}</option>
+			                                </select>
+		                                </div>
+		                            </div>
+	                                
+	                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+		                                <div class="form-group">
+		                                    <div class="input-group date" id="startTime">
+		                                        <input class="form-control" name="txtStartTime" type="text">
+		                                        <span class="input-group-addon">
+		                                            <span class="glyphicon glyphicon-calendar"></span>
+		                                        </span>
+		                                    </div>
+		                                </div>
+	                           		</div>
+	                           		<div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+		                                <div class="form-group">
+		                                    <div class="input-group date" id="endTime">
+		                                        <input class="form-control" name="txtEndTime" type="text">
+		                                        <span class="input-group-addon">
+		                                            <span class="glyphicon glyphicon-calendar"></span>
+		                                        </span>
+		                                    </div>
+		                                </div>
+	                           		</div>
+	                           		
+	                           		<div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
 	                           			<button class="btn btn-primary" id="btFind" ng-click="btSearch()" type="button">검색 </button>
 	                                </div>
                                 

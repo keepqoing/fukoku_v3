@@ -256,8 +256,10 @@ app.controller('MainCtrl', function($scope, $http,$location) {
 	/*******************************************************************************
 	 * Event()
 	 *******************************************************************************/
-    		$scope.btSearch = function(){
-    			  
+    		/** New Process Design ****/
+    		 /*
+    		 $scope.btSearch = function(){
+    			 
     			  var start = $("#startTime").find("input").val();
     		      var end = $("#endTime").find("input").val();
     		      var currentDate = new Date(start);
@@ -277,8 +279,8 @@ app.controller('MainCtrl', function($scope, $http,$location) {
 //    					   $scope.processesSelected.push(this.value);
 //    				});
     				
-    				$scope.findWorkpieces($location.search().l , $location.search().p ,
-    						$location.search().m  , $scope.processesSelected,$scope.dayBetween[0],$scope.dayBetween[0]);
+    				$scope.findWorkpieces( $location.search().l , $location.search().p ,
+    						$location.search().m  , $scope.processesSelected  ,$scope.dayBetween[0],$scope.dayBetween[0]);
     				
     				$scope.seletedDate = $scope.dayBetween[0];
     				
@@ -288,13 +290,11 @@ app.controller('MainCtrl', function($scope, $http,$location) {
     					 $("#previous").prop('disabled', false);
     				 }
     		 };
-    		 
-    		 
-    		 
+    		
     		 $scope.all = function(){
     			 $scope.dayIndexBetween=0;
-    			 $scope.findWorkpieces($location.search().l , $location.search().p ,
- 						$location.search().m  , $scope.processesSelected,
+    			 $scope.findWorkpieces( $location.search().l , $location.search().p ,
+    						$location.search().m  , $scope.processesSelected,
     						$scope.dayBetween[0],
     						$scope.dayBetween[$scope.dayBetween.length-1]);
     			 $scope.seletedDate = "All: "+ $scope.dayBetween[0] +" to "+ $scope.dayBetween[$scope.dayBetween.length-1];
@@ -311,8 +311,8 @@ app.controller('MainCtrl', function($scope, $http,$location) {
     		 }
     		 $scope.previous = function(){
     			 $scope.dayIndexBetween-=1 ;
-    			 $scope.findWorkpieces($location.search().l , $location.search().p ,
- 						$location.search().m   , $scope.processesSelected, 
+    			 $scope.findWorkpieces( $location.search().l , $location.search().p ,
+    						$location.search().m  , $scope.processesSelected, 
     						$scope.dayBetween[$scope.dayIndexBetween],
     						$scope.dayBetween[ $scope.dayIndexBetween]);
     			 $scope.seletedDate = $scope.dayBetween[$scope.dayIndexBetween];
@@ -329,8 +329,8 @@ app.controller('MainCtrl', function($scope, $http,$location) {
     		 }
     		 $scope.next = function(){
     			 $scope.dayIndexBetween+=1 ;
-    			 $scope.findWorkpieces($location.search().l , $location.search().p ,
- 						$location.search().m   , $scope.processesSelected,
+    			 $scope.findWorkpieces( $location.search().l , $location.search().p ,
+    						$location.search().m  , $scope.processesSelected,
     						$scope.dayBetween[ $scope.dayIndexBetween],
     						$scope.dayBetween[ $scope.dayIndexBetween]);
     			 $scope.seletedDate = $scope.dayBetween[$scope.dayIndexBetween];
@@ -345,6 +345,95 @@ app.controller('MainCtrl', function($scope, $http,$location) {
     				 $("#previous").prop('disabled', false);
     			 }
     		 }
+    		 */
+    			
+    			/*** Old Process design ***/
+    			$scope.btSearch = function(){
+    				  
+    				  var start = $("#startTime").find("input").val();
+    			      var end = $("#endTime").find("input").val();
+    			      var currentDate = new Date(start);
+    			      var newEnd = new Date(end);
+    			      $scope.dayBetween = [];
+    			 	  $scope.dayIndexBetween = 0 ;
+    			      while (currentDate <= newEnd) {
+    			    	  $scope.dayBetween.push($scope.formatDateTime(new Date(currentDate)));
+    			          currentDate.setDate(currentDate.getDate() + 1);
+    			      }
+    			      console.log($scope.dayBetween);
+    			      
+    				 	$scope.processesSelected = [];
+    					$('input[name="ckProcess"]:checked').each(function() {
+    						   console.log(this.value);
+    						   $scope.processesSelected.push(this.value);
+    					});
+    					
+    					$scope.findWorkpieces($("#selectLine").val() , $("#selectProduct").val() ,
+    							$("#selectMachine").val()  , $scope.processesSelected,$scope.dayBetween[0],$scope.dayBetween[0]);
+    					
+    					$scope.seletedDate = $scope.dayBetween[0];
+    					
+    					if($scope.dayIndexBetween == 0 ){
+    						 $("#previous").prop('disabled', true);
+    					 }else{
+    						 $("#previous").prop('disabled', false);
+    					 }
+    			 };
+    			
+    			 $scope.all = function(){
+    				 $scope.dayIndexBetween=0;
+    				 $scope.findWorkpieces($("#selectLine").val() , $("#selectProduct").val() ,
+    							$("#selectMachine").val()  , $scope.processesSelected,
+    							$scope.dayBetween[0],
+    							$scope.dayBetween[$scope.dayBetween.length-1]);
+    				 $scope.seletedDate = "All: "+ $scope.dayBetween[0] +" to "+ $scope.dayBetween[$scope.dayBetween.length-1];
+    				 if($scope.dayIndexBetween == $scope.dayBetween.length-1 ){
+    					 $("#next").prop('disabled', true);
+    				 }else{
+    					 $("#next").prop('disabled', false);
+    				 }
+    				 if($scope.dayIndexBetween == 0 ){
+    					 $("#previous").prop('disabled', true);
+    				 }else{
+    					 $("#previous").prop('disabled', false);
+    				 }
+    			 }
+    			 $scope.previous = function(){
+    				 $scope.dayIndexBetween-=1 ;
+    				 $scope.findWorkpieces($("#selectLine").val() , $("#selectProduct").val() ,
+    							$("#selectMachine").val()  , $scope.processesSelected, 
+    							$scope.dayBetween[$scope.dayIndexBetween],
+    							$scope.dayBetween[ $scope.dayIndexBetween]);
+    				 $scope.seletedDate = $scope.dayBetween[$scope.dayIndexBetween];
+    				 if($scope.dayIndexBetween == $scope.dayBetween.length-1 ){
+    					 $("#next").prop('disabled', true);
+    				 }else{
+    					 $("#next").prop('disabled', false);
+    				 }
+    				 if($scope.dayIndexBetween == 0 ){
+    					 $("#previous").prop('disabled', true);
+    				 }else{
+    					 $("#previous").prop('disabled', false);
+    				 }
+    			 }
+    			 $scope.next = function(){
+    				 $scope.dayIndexBetween+=1 ;
+    				 $scope.findWorkpieces($("#selectLine").val() , $("#selectProduct").val() ,
+    							$("#selectMachine").val()  , $scope.processesSelected,
+    							$scope.dayBetween[ $scope.dayIndexBetween],
+    							$scope.dayBetween[ $scope.dayIndexBetween]);
+    				 $scope.seletedDate = $scope.dayBetween[$scope.dayIndexBetween];
+    				 if($scope.dayIndexBetween == $scope.dayBetween.length-1 ){
+    					 $("#next").prop('disabled', true);
+    				 }else{
+    					 $("#next").prop('disabled', false);
+    				 }
+    				 if($scope.dayIndexBetween == 0 ){
+    					 $("#previous").prop('disabled', true);
+    				 }else{
+    					 $("#previous").prop('disabled', false);
+    				 }
+    			 }
 
 	
         
@@ -371,7 +460,133 @@ app.controller('MainCtrl', function($scope, $http,$location) {
     		  }
     		 
      
-        
+    		 /***********************************************************
+    		  *  Params
+    		  ************************************************************/
+    		 /**
+    			 * Variable
+    			 */
+    			$scope.lines;
+    			$scope.machines;
+    			$scope.processes;
+    			$scope.products;
+    		    
+    		    
+    		       
+
+    			
+    			/***
+    			 * Function()
+    			 */
+    			
+
+    		    $scope.findLineByLineName = function(lineName){  
+    		        var post = $http({
+    		            method: "GET",
+    		            url: "/v1/api/fukoku/line/"+lineName,
+    		            dataType: 'json',
+    		            headers: { "Content-Type": "application/json" }
+    		        });
+    		        post.success(function (response, status) {
+    		            if(response.code == "200"){
+    		                $scope.lines = response.data;
+    		            }else{
+    		            	
+    		            }
+    		            console.log( $scope.lines);
+    		        });
+    		        post.error(function (data, status) {
+    		            console.log(data);
+    		        });
+    		    }
+    		    
+    		    $scope.findMachineByLineName = function(lineName){  
+    		        var post = $http({
+    		            method: "GET",
+    		            url: "/v1/api/fukoku/machine/"+lineName,
+    		            dataType: 'json',
+    		            headers: { "Content-Type": "application/json" }
+    		        });
+    		        post.success(function (response, status) {
+    		            if(response.code == "200"){
+    		                $scope.machines = response.data;
+    		            }else{
+    		            	
+    		            }
+    		            console.log( $scope.machines);
+    		        });
+    		        post.error(function (data, status) {
+    		            console.log(data);
+    		        });
+    		    }
+    			
+    		    $scope.findProcessByLineNameAndMachineName = function(lineName, machineName){  
+    		    	console.log(lineName +" - "+ machineName);
+    		        var post = $http({
+    		            method: "GET",
+    		            url: "/v1/api/fukoku/process/"+lineName+"/"+machineName,
+    		            dataType: 'json',
+    		            headers: { "Content-Type": "application/json" }
+    		        });
+    		        post.success(function (response, status) {
+    		            if(response.code == "200"){
+    		                $scope.processes = response.data;
+    		            }else{
+    		            	
+    		            }
+    		            console.log( $scope.processes);
+    		        });
+    		        post.error(function (data, status) {
+    		            console.log(data);
+    		        });
+    		    }
+    		    
+    		    $scope.findProductByLine = function(lineName){  
+    		        var post = $http({
+    		            method: "GET",
+    		            url: "/v1/api/fukoku/product/"+lineName,
+    		            dataType: 'json',
+    		            headers: { "Content-Type": "application/json" }
+    		        });
+    		        post.success(function (response, status) {
+    		            if(response.code == "200"){
+    		                $scope.products = response.data;
+    		            }else{
+    		            	
+    		            }
+    		            console.log( $scope.products);
+    		        });
+    		        post.error(function (data, status) {
+    		            console.log(data);
+    		        });
+    		    }
+    			
+    			
+    			/*******************************************************************************
+    			 * Onload()
+    			 *******************************************************************************/
+    		    
+    		    $scope.findLineByLineName("NA");
+    		    
+    			
+    			
+    			
+    			
+    			/*******************************************************************************
+    			 * Event()
+    			 *******************************************************************************/
+    		     $("#selectLine").change(function(){
+    		    	 $scope.findMachineByLineName($("#selectLine").val());
+    		    	 $scope.findProductByLine($("#selectLine").val());
+    		     });
+    		     
+    		     $("#selectMachine").change(function(){ 
+    		    	 $scope.findProcessByLineNameAndMachineName($("#selectLine").val(),$("#selectMachine option:selected").html());
+    		     });
+    		     
+    		     /***
+    		      * End Params
+    		      */
 	
 	
 	
