@@ -35,7 +35,7 @@ $(function () {
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function (response) {
-                console.log(response);
+                // console.log(response);
                 var elt = document.getElementById('lineName');
 
                 while (elt.hasChildNodes()) {
@@ -80,15 +80,26 @@ $(function () {
             },
             success: function (response) {
                // console.log("@@@@@@@@@@@@ ");
-                console.log(response);
+               //  console.log(response);
+                // var settings = {
+                //     selector: "#bar-label",
+                //     width: 300,
+                //     height: 300,
+                //     x: "MACHINE",
+                //     y: "stopTime"
+                // };
+                // barchartLabel(response.DataTables, settings);
+
+                // console.log("Hello");
                 var settings = {
-                    selector: "#bar-label",
+                    selector: "#donut-label",
                     width: 1400,
-                    height: 350,
+                    height: 300,
                     x: "MACHINE",
                     y: "stopTime"
                 };
-                barchartLabel(response.DataTables, settings);
+
+                donutLabel(response.DataTables, settings);
 
                 dataTable.rows()
                     .remove()
@@ -142,7 +153,7 @@ process.breakdowntimeanalysisbyline = function () {
             xhr.setRequestHeader("Content-Type", "application/json");
         },
         success: function (response) {
-            console.log("response", response);
+            // console.log("response", response);
             let data = response.breakdowntimeanalysisbyline;
             var lines = [$("#lineName").val()];
             var month = [0,0,0,0,0,0,0,0,0,0,0,0]; var working_time = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -150,7 +161,9 @@ process.breakdowntimeanalysisbyline = function () {
             var tr = "";
             $("#tbody").empty();
             $("#bar-label").empty();
+            $("#donut-label").empty();
             var graphObjArr = [];
+            var pieObjArr = [];
 
            // for (var l = 0; l < lines.length; l++) {
                 for (var m = 0; m < response.machines.length; m++) {
@@ -185,7 +198,7 @@ process.breakdowntimeanalysisbyline = function () {
                     }
 
 
-                    console.log("Machine is ["+m+"] = "+response.machines[m].name);
+                    // console.log("Machine is ["+m+"] = "+response.machines[m].name);
 
                     var tr =
                         "<tr><td>"+ $("#lineName").val()+"</td>"+
@@ -209,11 +222,14 @@ process.breakdowntimeanalysisbyline = function () {
                     $("#tbody").append(tr);
 
                      var graphObj = {};
+                     var pieObj = {};
                      graphObj.MACHINE = response.machines[m].name;
-                     graphObj .stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
+                     graphObj.stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
                      graphObjArr.push(graphObj);
 
-
+                    pieObj.label = response.machines[m].name;
+                    pieObj.value = parseInt((total_working_nonactive_time_s / 3600));
+                    pieObjArr.push(pieObj);
 
                 }
 
@@ -227,17 +243,32 @@ process.breakdowntimeanalysisbyline = function () {
            // }
 
 
+
+
+
+            var pie = new d3pie("donut-label", {
+                "data": {
+                    "content":pieObjArr
+                },
+                "size": {
+
+                    "canvasHeight": 280,
+                    "canvasWidth": 400
+                }
+            });
+
+            var barPanel = document.getElementById("piePanel");
+
             var settings = {
                 selector: "#bar-label",
-                width: 1400,
-                height: 350,
+                width: $(barPanel).width(),
+                height: $(barPanel).height() - 97,
                 x: "MACHINE",
                 y: "stopTime"
             };
             barchartLabel(graphObjArr, settings);
 
 
-            console.log(month);
 
         }
     });

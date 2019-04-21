@@ -13,7 +13,7 @@ function barchartLabel(data, settings){
 
     var xScale = d3.scale.ordinal()
         // .rangeRoundBands([0, width - margin.right+100 - margin.left], .3);
-        .rangeRoundBands([0, 700], .05);
+        .rangeRoundBands([0, 400], .05);
     var xAxis = d3.svg.axis()
         .scale(xScale)
         .orient("bottom");
@@ -39,10 +39,10 @@ function barchartLabel(data, settings){
         .enter()
         .append("rect")
         .attr("class", "bar")
-        .attr("x", function(d){ return xScale(d[settings.x])+30; })
+        .attr("x", function(d){ return xScale(d[settings.x]); })
         .attr("y", function(d){ return yScale(d[settings.y]); })
         .attr("height", function(d){ return height - margin.top - margin.bottom - yScale(d[settings.y]); })
-        .attr("width", function(d){ return 50;});
+        .attr("width", function(d){ return 20;});
     svg.append("g")
         .attr("class", "y axis")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
@@ -66,19 +66,19 @@ function barchartLabel(data, settings){
         .enter()
         .append("text")
         .attr("class", "textlabel")
-        .attr("x", function(d){ return xScale(d[settings.x]) + (110/2); })
+        .attr("x", function(d){ return xScale(d[settings.x]) + 15; })
         .attr("y", function(d){ return yScale(d[settings.y]) - 3; })
         .text(function(d){ return d3.format("")(d[settings.y]); });
 
 
     // text label for the y axis
     svg.append("text")
-        .attr("transform", "rotate(-90)")
+        .attr("transform", "rotate(-50)")
         .attr("y", 0 - margin.left)
         .attr("x",0 - (height / 2))
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .style('font-size','12px')
+        .style('font-size','8px')
         .text(settings.y_text);
 
 
@@ -87,6 +87,6 @@ function barchartLabel(data, settings){
     svg.append("text")
         .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
         .attr("transform", "translate("+ (width/2) +","+(height-(5))+")")  // centre below axis
-        .style('font-size','12px')
+        .style('font-size','8px')
         .text(settings.x_text);
 }
