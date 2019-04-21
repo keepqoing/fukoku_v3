@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+
+<head>
+
+    <title>아람</title>
+    <!-- Include SmartWizard CSS -->
+    <link href="/static/admin/style/smart_wizard.css" rel="stylesheet" type="text/css"/>
+
+    <!-- Optional SmartWizard theme -->
+    <link href="/static/admin/style/smart_wizard_theme_arrows.css" rel="stylesheet" type="text/css"/>
+    <style type="text/css">
+        body {
+            padding-right: 0 !important
+        }
+
+        table {
+            font-size: 12pt;
+        }
+
+        table .head {
+            background-color: #3c8dbc;
+            color: white;
+        }
+
+        table thead th {
+            text-align: center;
+        }
+
+        table tbody tr {
+            text-align: center;
+        }
+
+        .btn-group .btn + .btn, .btn-group .btn + .btn-group, .btn-group .btn-group + .btn, .btn-group .btn-group + .btn-group {
+            margin-left: 10px;
+            width: 150px;
+        }
+
+        .btn-group > .btn:first-child {
+            width: 150px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $('#productionDate').datetimepicker({
+                    format: 'YYYY-MM-DD',
+                });
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <section class="content-header">
+        <h1>
+            NG제품목록
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                                <div id="selectLineButtonList">
+
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                <div class='input-group date' id='productionDate'>
+                                    <input type='text' class="form-control" id="txtProductionDate" placeholder="생산날짜"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                <div id="selectMachineButtonList">
+
+                                </div>
+                            </div>
+                            <br/>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <table class="table">
+                                    <thead class="thead-inverse head">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>라인</th>
+                                        <th>설비</th>
+                                        <th>품종</th>
+                                        <th>설비상태</th>
+                                        <th>제작시점</th>
+                                        <th>완료시점</th>
+                                        <th>생산날짜</th>
+                                        <th>품질</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="NG_PRODUCT">
+                                    <tr role="row" class="odd" style="text-align:center;font-weight:bold;">
+                                        <td colspan="9">콘텐츠 없음</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="box-footer">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <div id="pageMessage">전시 <span id="limitPage"></span> 의 <span id="totalPage"></span>
+                                        페이지 <span id="totalRecords"></span></div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <select class="form-control" style="width:100px;" id="PER_PAGE">
+                                        <option value="15">15</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-12">
+                                    <div class="pull-right" id="PAGINATION">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- box-footer -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="/static/admin/javascripts/ng-product-listing.js"></script>
+    <script id="NG_PRODUCT_TEMPLATE" type="text/x-jquery-tmpl">
+        <tr data-id="{{= ID}} "style="text-align:center;">
+            <td>{{= NO}}</td>
+            <td><strong>{{= LINE}}</strong></td>
+            <td><strong>{{= MACHINE}}</strong></td>
+            <td><strong>{{= PRODUCT}}</strong></td>
+            <td><strong>{{= MSTATE}}</strong></td>
+            <td><strong>{{= START_TIME}}</strong></td>
+            <td><strong>{{= END_TIME}}</strong></td>
+            <td><strong>{{= PRODUCTION_DATE}}</strong></td>
+            <td><strong>{{= QUALITY}}</strong></td>
+        </tr>
+    </script>
+</div>
+<th:block layout:fragment="script">
+
+</th:block>
+</body>
+</html>

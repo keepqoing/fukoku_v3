@@ -15,7 +15,7 @@ $(function () {
 
     ngProduct.getLineCounting = function (callback, productionDate) {
         $.ajax({
-            url: "/v1/api/fukoku/ng-product/number-line/"+productionDate,
+            url: "http://113.198.137.142:8080/v1/api/fukoku/ng-product/number-line/"+productionDate,
             type: 'GET',
             dataType: 'JSON',
             data: {},
@@ -36,7 +36,7 @@ $(function () {
 
     ngProduct.getMachineCounting = function (lineParam, productionDate, callback) {
         $.ajax({
-            url: "/v1/api/fukoku/ng-product/number-machine/"+lineParam+"/"+productionDate,
+            url: "http://113.198.137.142:8080/v1/api/fukoku/ng-product/number-machine/"+lineParam+"/"+productionDate,
             type: 'GET',
             dataType: 'JSON',
             data: {},
@@ -74,7 +74,7 @@ $(function () {
     }
     ngProduct.getAllLinesName = function(callback){
         $.ajax({
-            url: "/v3/api/fukoku/line/factory/" +  2 ,
+            url: "http://113.198.137.142:8080/v3/api/fukoku/line/factory/" +  2 ,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -113,7 +113,7 @@ $(function () {
 
     ngProduct.getAllMachineNameByLineName = function(line, callback){
         $.ajax({
-            url: "/v3/api/fukoku/machine/findAllByLine/" + line,
+            url: "http://113.198.137.142:8080/v3/api/fukoku/machine/findAllByLine/" + line,
             type: 'GET',
             dataType: 'JSON',
             data:{
@@ -207,7 +207,7 @@ $(function () {
 
     ngProduct.getAllProductName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/product/select-box",
+            url: "http://113.198.137.142:8080/v1/api/fukoku/product/select-box",
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -237,7 +237,7 @@ $(function () {
     ngProduct.getAllngProduct = function (lId, mId) {
         openLoading();
         $.ajax({
-            url: "/v1/api/fukoku/ng-product",
+            url: "http://113.198.137.142:8080/v1/api/fukoku/ng-product",
             type: 'GET',
             dataType: 'JSON',
             data: {
