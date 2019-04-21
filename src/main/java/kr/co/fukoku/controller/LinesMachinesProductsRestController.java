@@ -55,6 +55,7 @@ public class LinesMachinesProductsRestController {
         return new ResponseEntity<Map<String,Object>>(map , HttpStatus.OK);
     }
     
+    
     @RequestMapping(value = "/process/{lineName}/{machineName}", method = RequestMethod.GET)
     public ResponseEntity<Map<String,Object>> findProcessByLineNameAndMachineName(@PathVariable String lineName, @PathVariable String machineName) {
     	System.out.print("===================> "+ machineName);
