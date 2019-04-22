@@ -9,18 +9,34 @@
 
     <title>라인별설비 생산누적</title>
     <style type="text/css">
-        table{
+        table {
             font-size: 12pt;
         }
-        .table-head{
+
+        .table-head {
             background-color: #3c8dbc;
             color: white;
         }
-        table thead th{
+
+        table thead th {
             text-align: center;
         }
-        table tbody tr{
+
+        table tbody tr {
             text-align: center;
+        }
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 4px;
+        }
+
+        .axisSteelBlue text{
+            fill: steelblue;
+        }
+
+        .axisRed text{
+            fill: red;
         }
         td, th{
             text-align: center;
@@ -93,6 +109,37 @@
                             <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
                             </div>
                         </div>
+
+
+                        <!-- Start: Graph -->
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-left: 100px;" id="mark">
+                                <span style="width: 20px; height: 30px; background-color: #1792a4; display: inline-block; vertical-align: middle;"></span>
+                                <span style="margin-right: 10px;">  생산수량(개)</span>
+                                <span style="width: 20px; height: 30px; background-color: #FE2EF7; display: inline-block; vertical-align: middle;"></span>
+                                <span style="margin-right: 10px; color:red;">  UPH</span>
+                                <span style="width: 20px; height: 20px; background-color: #3A01DF; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                <span style="margin-right: 10px; color:red;">  가동율(%)</span>
+                                <span style="width: 20px; height: 20px; background-color: #AC58FA; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                <span style="margin-right: 10px; color:red;">  직행율(%)</span>
+                                <span style="width: 20px; height: 20px; background-color: #5FB404; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                <span style="margin-right: 10px; color:red;">  양품율(%)</span>
+                                <span style="width: 20px; height: 20px; background-color: #FF8000; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                <span style="margin-right: 10px; color:red;">  공정사이클타임(초)</span>
+                                <span style="width: 20px; height: 20px; background-color: #B40431; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                <span style="margin-right: 10px; color:red;">  이론사이클타임(초)</span>
+                                <!--<span style="width: 20px; height: 20px; background-color: #AC58FA; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>-->
+                                <!--<span style="margin-right: 10px; color:red;">  UPH</span>-->
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <div class="table" id="barMultiLine" style="width:1200px; margin: 0 auto;"></div>
+                            </div>
+                        </div>
+                        <!-- End: Graph -->
+
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
                                 <table class="table">
@@ -144,6 +191,8 @@
             </div>
         </div>
     </section>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="/static/admin/javascripts/d3/bar-multiline.js"></script>
     <script src="/static/admin/javascripts/plant-production-losses.js"></script>
     <script id="PRODUCTION_BY_LINE_TEMPLATE" type="text/x-jquery-tmpl">
         <tr>

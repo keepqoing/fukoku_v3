@@ -168,9 +168,9 @@ $(function() {
         if($("#txtEndDate").val() ==""){ alert("종료날짜 선택하십시오!"); return ; }
 
 
-        console.log('$("#selectMachine").val() = ' + $("#selectMachine").val());
-        console.log('$("#txtStartDate").val() = ' + $("#txtStartDate").val() );
-        console.log('$("#txtEndDate").val() = ' + $("#txtEndDate").val() );
+        // console.log('$("#selectMachine").val() = ' + $("#selectMachine").val());
+        // console.log('$("#txtStartDate").val() = ' + $("#txtStartDate").val() );
+        // console.log('$("#txtEndDate").val() = ' + $("#txtEndDate").val() );
 
 
         $("#PRODUCT_STATUS").html("");

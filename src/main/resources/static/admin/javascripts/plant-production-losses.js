@@ -198,6 +198,9 @@ $(function() {
                     if (response.DATA.length > 0 || !response.DATA) {
 
                         $("#PRODUCTION_BY_LINE_TEMPLATE").tmpl(response.DATA).appendTo("tbody#PRODUCTION_BY_LINE");
+                        plantProductionLosses.getAllProductStatusGraphs();
+
+
                     } else {
                         $("#PRODUCTION_BY_LINE").html("<tr style='text-align:center;'><td colspan='23'>콘텐츠 없음</td></tr>");
                     }
@@ -213,9 +216,71 @@ $(function() {
     };
 
 
+    /*** ===============================================================
+     *  Start - Graph
+     * ================================================================ */
+    plantProductionLosses.getAllProductStatusGraphs = function () {
+        $("#barMultiLine").html("");
+        $("#mark").show();
+        $.ajax({
+            url: "/v3/api/fukoku/process-analysis/graph",
+            type: 'GET',
+            dataType: 'JSON',
+            data: {
+                "line"       :   $("#selectLine").val(),
+                "machine"       :   "ALL",
 
+                "startDate"     :   $("#txtStartDate").val(),
+                "endDate"       :   $("#txtEndDate").val()
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (response) {
+                console.log(response)
+                if (response.CODE == "7777") {
+                    if (response.DATA.length > 0) {
+                        $.each(response.DATA, function (key, value) {
+                            var a = parseFloat(response.DATA[key].line1);
+                            var a1 = parseFloat(response.DATA[key].line2);
+                            var a2 = parseFloat(response.DATA[key].line3);
+                            var a3 = parseFloat(response.DATA[key].line4);
+                            var a4 = parseFloat(response.DATA[key].line5);
+                            var a5 = parseFloat(response.DATA[key].line6);
+                            response.DATA[key]["line1"] = (parseFloat(a.toFixed(2))?parseFloat(a.toFixed(2)):0);
+                            response.DATA[key]["line2"] = (parseFloat(a1.toFixed(2))?parseFloat(a1.toFixed(2)):0);
+                            response.DATA[key]["line3"] = (parseFloat(a2.toFixed(2))?parseFloat(a2.toFixed(2)):0);
+                            response.DATA[key]["line4"] = (parseFloat(a3.toFixed(2))?parseFloat(a3.toFixed(2)):0);
+                            response.DATA[key]["line5"] = (parseFloat(a4.toFixed(2))?parseFloat(a4.toFixed(2)):0);
+                            response.DATA[key]["line6"] = (parseFloat(a5.toFixed(2))?parseFloat(a4.toFixed(2)):0);
+                        });
+                        var settings = {
+                            selector: "#barMultiLine",
+                            width: 1200,
+                            height: 450
+                        };
+                        barchartMultiLine(response.DATA, settings);
+                    }
+
+                }else{
+                    $("#mark").hide();
+                }
+                closeLoading();
+            },
+            error: function (data, status, err) {
+                console.log("error: " + data + " status: " + status + " err:" + err);
+            }
+        });
+    };
+
+    /*** ===============================================================
+     *  End - Graph
+     * ================================================================ */
+    $("#mark").hide();
 
     $("#btnQuery").click(function(){
+        $("#mark").hide();
         plantProductionLosses.getAllProductionByLineTable();
     });
 });
