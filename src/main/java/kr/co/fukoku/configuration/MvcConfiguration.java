@@ -102,35 +102,35 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/integrated_visualization").setViewName("/admin/integrated_visualization");
 		
 		// workpiece 
-		registry.addViewController("/admin/production-process").setViewName("/admin/workpiece/production-process-detail");
-		registry.addViewController("/admin/production-process-detail").setViewName("/admin/workpiece/production-process-detail");
+		registry.addViewController("/admin/production-process").setViewName("/admin/production-process-detail");
+		registry.addViewController("/admin/production-process-detail").setViewName("/admin/production-process-detail");
 		
-		registry.addViewController("/admin/production-cycle-time").setViewName("/admin/workpiece/production-cycle-time-detail");
-		registry.addViewController("/admin/production-cycle-time-detail").setViewName("/admin/workpiece/production-cycle-time-detail");
+		registry.addViewController("/admin/production-cycle-time").setViewName("/admin/production-cycle-time-detail");
+		registry.addViewController("/admin/production-cycle-time-detail").setViewName("/admin/production-cycle-time-detail");
 		
-		registry.addViewController("/admin/workpiece-spc-thesis").setViewName("/admin/workpiece/workpiece-spc-thesis");
-		registry.addViewController("/admin/workpiece-spc-detail-thesis").setViewName("/admin/workpiece/workpiece-spc-detail-thesis");
+		registry.addViewController("/admin/workpiece-spc-thesis").setViewName("/admin/workpiece-spc-thesis");
+		registry.addViewController("/admin/workpiece-spc-detail-thesis").setViewName("/admin/workpiece-spc-detail-thesis");
 		
-		registry.addViewController("/admin/workpiece-total-produce").setViewName("/admin/workpiece/workpiece-total-produce");
+		registry.addViewController("/admin/workpiece-total-produce").setViewName("/admin/workpiece-total-produce");
 		
 		registry.addViewController("/admin/time-line").setViewName("/admin/time-line");
 		registry.addViewController("/admin/time-line1").setViewName("/admin/time-line1");
 		registry.addViewController("/admin/time-line2").setViewName("/admin/time-line2");
 		
-		registry.addViewController("/admin/workpiece-spc-overall").setViewName("/admin/workpiece/workpiece-spc-overall-detail");
-		registry.addViewController("/admin/workpiece-spc-overall-detail").setViewName("/admin/workpiece/workpiece-spc-overall-detail");
+		registry.addViewController("/admin/workpiece-spc-overall").setViewName("/admin/workpiece-spc-overall-detail");
+		registry.addViewController("/admin/workpiece-spc-overall-detail").setViewName("/admin/workpiece-spc-overall-detail");
 		
-		registry.addViewController("/admin/workpiece-line-bad-type").setViewName("/admin/workpiece/workpiece-line-bad-type-detail");
-		registry.addViewController("/admin/workpiece-line-bad-type-detail").setViewName("/admin/workpiece/workpiece-line-bad-type-detail");
+		registry.addViewController("/admin/workpiece-line-bad-type").setViewName("/admin/workpiece-line-bad-type-detail");
+		registry.addViewController("/admin/workpiece-line-bad-type-detail").setViewName("/admin/workpiece-line-bad-type-detail");
 		
-		registry.addViewController("/admin/workpiece-spc").setViewName("/admin/workpiece/workpiece-spc-detail");
-		registry.addViewController("/admin/workpiece-spc-detail").setViewName("/admin/workpiece/workpiece-spc-detail");
+		registry.addViewController("/admin/workpiece-spc").setViewName("/admin/workpiece-spc-detail");
+		registry.addViewController("/admin/workpiece-spc-detail").setViewName("/admin/workpiece-spc-detail");
 		
-		registry.addViewController("/admin/process-quality-management-by-line").setViewName("/admin/workpiece/process-quality-management-by-line");
+		registry.addViewController("/admin/process-quality-management-by-line").setViewName("/admin/process-quality-management-by-line");
 		
-		registry.addViewController("/admin/product-qty-information").setViewName("/admin/workpiece/product-qty-information");
+		registry.addViewController("/admin/product-qty-information").setViewName("/admin/product-qty-information");
 		
-		registry.addViewController("/admin/ng-product-listing").setViewName("/admin/workpiece/ng-product-listing");
+		registry.addViewController("/admin/ng-product-listing").setViewName("/admin/ng-product-listing");
 		
 	}
 
