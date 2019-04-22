@@ -1,8 +1,8 @@
-var app = angular.module('fukoku', ['nvd3','ngSanitize']);
+var app = angular.module('fukoku', ['nvd3']);
 
-app.config(['$locationProvider', function($locationProvider) {
-	   $locationProvider.html5Mode(true);
-	}]);
+//app.config(['$locationProvider', function($locationProvider) {
+//	   $locationProvider.html5Mode(true);
+//	}]);
 
 
 app.controller('MainCtrl', function($scope, $http,$rootScope, $location) {
