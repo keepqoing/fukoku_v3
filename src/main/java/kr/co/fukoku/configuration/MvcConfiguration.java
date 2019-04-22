@@ -19,6 +19,8 @@ public class MvcConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 
+		
+		
 		// TODO: SWAGGER ROUTING
 		registry.addViewController("/swagger").setViewName("swagger/swagger-ui");
 
