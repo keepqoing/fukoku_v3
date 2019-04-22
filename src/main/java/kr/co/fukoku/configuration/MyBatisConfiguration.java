@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import kr.co.fukoku.configuration.mapper.PhoenixMapper;
@@ -30,6 +31,11 @@ public class MyBatisConfiguration {
 				.password(env.getProperty("spring.datasource.password"))
 				.url(env.getProperty("spring.datasource.url"))
 				.driverClassName(env.getProperty("spring.datasource.driver-class-name")).build();
+	}
+
+	@Bean("jdbcTemplate")
+	public JdbcTemplate jdbcTEmplate(){
+		return new JdbcTemplate(dataSource());
 	}
 
 	@Bean(name = "sql1DataSourceTransactionManager")

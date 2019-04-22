@@ -1,11 +1,11 @@
 package kr.co.fukoku.repository_sqltem;
 
-
 import kr.co.fukoku.filters.DashBoardFilter2;
 import kr.co.fukoku.filters.ProductStatusFilter;
 import kr.co.fukoku.model.ProcessAnalysis;
 import kr.co.fukoku.model.ProductStatusGraphNew;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -13,10 +13,12 @@ import org.springframework.stereotype.Repository;
 import java.sql.SQLException;
 import java.util.List;
 
+
 @Repository
 public class ProcessAnalysisRepositoryBody implements ProcessAnalysisRepository {
 
     @Autowired
+    @Qualifier("jdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
 
