@@ -7,7 +7,7 @@
 
 <head>
 
-    <title>NG제품목록</title>
+    <title>아람</title>
     <!-- Include SmartWizard CSS -->
     <link href="/static/admin/style/smart_wizard.css" rel="stylesheet" type="text/css"/>
 
@@ -44,7 +44,16 @@
             width: 150px;
         }
     </style>
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $('#productionDate').datetimepicker({
+                    format: 'YYYY-MM-DD',
+                });
+            });
 
+        });
+    </script>
 </head>
 <body>
 
@@ -153,16 +162,7 @@
     </script>
 </div>
 <th:block layout:fragment="script">
-    <script>
-        $(document).ready(function () {
-            $(function () {
-                $('#productionDate').datetimepicker({
-                    format: 'YYYY-MM-DD',
-                });
-            });
 
-        });
-    </script>
 </th:block>
 </body>
 </html>

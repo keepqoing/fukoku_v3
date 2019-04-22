@@ -60,9 +60,9 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="/admin/production-status-new"><i class="fa fa-circle-o"></i> <span> 설비별 생산추이</span></a></li>
-          <li><a href="/admin/plant-production-losses"><i class="fa fa-circle-o"></i> <span> 라인별설비 생산누적</span></a></li>
-          <li><a href="/admin/calendar-heatmap"><i class="fa fa-circle-o"></i> <span> 라인별년간생산제품분석</span></a></li>
-          <li><a href="/admin/product-summarization"><i class="fa fa-circle-o"></i> <span> 일일생산총계</span></a></li>
+          <li><a href="admin/plant-production-losses"><i class="fa fa-circle-o"></i> <span> 라인별설비 생산누적</span></a></li>
+          <li><a href="admin/calendar-heatmap"><i class="fa fa-circle-o"></i> <span> 라인별년간생산제품분석</span></a></li>
+          <li><a href="admin/product-summarization"><i class="fa fa-circle-o"></i> <span> 일일생산총계</span></a></li>
         </ul>
       </li>
       
@@ -311,29 +311,26 @@
     </ul>
     <!-- /.sidebar-menu -->
     <script type="text/javascript">
-        var url = window.location;
-        if(url.pathname == '/admin/summary-error' || url.pathname== '/admin/summary-error/'){
-            $('ul.sidebar-menu a').filter(function() { return this.href == url.origin+'/admin/error'; }).parent().addClass('active');
-            $('ul.treeview-menu a').filter(function() { return this.href == url.origin+'/admin/error'; }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
-        } else if(url.pathname+url.hash == '/admin/machine-stopped#step-1' || url.pathname+url.hash == '/admin/machine-stopped#step-2' || url.pathname+url.hash == '/admin/machine-stopped#step-3' || url.pathname+url.hash == '/admin/machine-stopped#step-4' ){
-            $('ul.sidebar-menu a').filter(function() { return this.href == url.origin+'/admin/machine-stopped'; }).parent().addClass('active');
-            $('ul.treeview-menu a').filter(function() { return this.href == url.origin+'/admin/machine-stopped'; }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
-        } else if(url.pathname+url.hash == '/admin/ng-product#step-1' || url.pathname+url.hash == '/admin/ng-product#step-2' || url.pathname+url.hash == '/admin/ng-product#step-3' || url.pathname+url.hash == '/admin/ng-product#step-4' ){
-            $('ul.sidebar-menu a').filter(function() { return this.href == url.origin+'/admin/ng-product'; }).parent().addClass('active');
-            $('ul.treeview-menu a').filter(function() { return this.href == url.origin+'/admin/ng-product'; }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
-        } else if(url.pathname+url.hash == '/admin/machine-stopped-worker#step-1' || url.pathname+url.hash == '/admin/machine-stopped-worker#step-2' || url.pathname+url.hash == '/admin/machine-stopped-worker#step-3' || url.pathname+url.hash == '/admin/machine-stopped-worker#step-4' ){
-            $('ul.sidebar-menu a').filter(function() { return this.href == url.origin+'/admin/machine-stopped-worker'; }).parent().addClass('active');
-            $('ul.treeview-menu a').filter(function() { return this.href == url.origin+'/admin/machine-stopped-worker'; }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
-        }else if(url.pathname == '/admin/summary-treatment' || url.pathname== '/admin/summary-treatment/') {
-            $('ul.sidebar-menu a').filter(function () {return this.href == url.origin + '/admin/treatment';}).parent().addClass('active');
-            $('ul.treeview-menu a').filter(function () {return this.href == url.origin + '/admin/treatment';}).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
-        }else {
-            $('ul.sidebar-menu a').filter(function () {return this.href == url;}).parent().addClass('active');
-            $('ul.treeview-menu a').filter(function () {return this.href == url;}).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
-        }
-        
-        
-        
+    var url = window.location;
+    if(url.pathname == '/admin/summary-error' || url.pathname== '/admin/summary-error/'){
+        $('ul.sidebar-menu a').filter(function() { return this.href == url.origin+'/admin/error'; }).parent().addClass('active');
+        $('ul.treeview-menu a').filter(function() { return this.href == url.origin+'/admin/error'; }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+    } else if(url.pathname+url.hash == '/admin/machine-stopped#step-1' || url.pathname+url.hash == '/admin/machine-stopped#step-2' || url.pathname+url.hash == '/admin/machine-stopped#step-3' || url.pathname+url.hash == '/admin/machine-stopped#step-4' ){
+        $('ul.sidebar-menu a').filter(function() { return this.href == url.origin+'/admin/machine-stopped'; }).parent().addClass('active');
+        $('ul.treeview-menu a').filter(function() { return this.href == url.origin+'/admin/machine-stopped'; }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+    } else if(url.pathname+url.hash == '/admin/ng-product#step-1' || url.pathname+url.hash == '/admin/ng-product#step-2' || url.pathname+url.hash == '/admin/ng-product#step-3' || url.pathname+url.hash == '/admin/ng-product#step-4' ){
+        $('ul.sidebar-menu a').filter(function() { return this.href == url.origin+'/admin/ng-product'; }).parent().addClass('active');
+        $('ul.treeview-menu a').filter(function() { return this.href == url.origin+'/admin/ng-product'; }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+    } else if(url.pathname+url.hash == '/admin/machine-stopped-worker#step-1' || url.pathname+url.hash == '/admin/machine-stopped-worker#step-2' || url.pathname+url.hash == '/admin/machine-stopped-worker#step-3' || url.pathname+url.hash == '/admin/machine-stopped-worker#step-4' ){
+        $('ul.sidebar-menu a').filter(function() { return this.href == url.origin+'/admin/machine-stopped-worker'; }).parent().addClass('active');
+        $('ul.treeview-menu a').filter(function() { return this.href == url.origin+'/admin/machine-stopped-worker'; }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+    }else if(url.pathname == '/admin/summary-treatment' || url.pathname== '/admin/summary-treatment/') {
+        $('ul.sidebar-menu a').filter(function () {return this.href == url.origin + '/admin/treatment';}).parent().addClass('active');
+        $('ul.treeview-menu a').filter(function () {return this.href == url.origin + '/admin/treatment';}).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+    }else {
+        $('ul.sidebar-menu a').filter(function () {return this.href == url;}).parent().addClass('active');
+        $('ul.treeview-menu a').filter(function () {return this.href == url;}).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+    }
     </script>
   </section>
   <!-- /.sidebar -->
