@@ -97,9 +97,9 @@ $(function () {
         calHeatmap.getCountTT();
     });*/
 
-    calHeatmap.getAllLinesName = function(){
+    calHeatmap.getAllLinesName = function(fid){
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/line/factory/" +  fid ,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -110,10 +110,11 @@ $(function () {
             success: function(response) {
                 $('#select-line').empty();
                 $("#select-line").append("<option value='ALL'>ALL</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#select-line").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#select-line").append("<option value="+value.name+">"+value.name+"</option>");
                     });
+                    $("#select-line").prop("selectedIndex",0).change();
                 }
             },
             error:function(data,status,err) {
@@ -124,12 +125,10 @@ $(function () {
 
     calHeatmap.getAllMachineNameByLineName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/machine/select-box",
+            url: "/v3/api/fukoku/machine/findAllByLine/" + $("#select-line").val(),
             type: 'GET',
             dataType: 'JSON',
-            data:{
-                "lineName"  :   $("#select-line").val()
-            },
+            data:{},
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
@@ -137,10 +136,11 @@ $(function () {
             success: function(response) {
                 $('#select-machine').empty();
                 $("#select-machine").append("<option value='ALL'>ALL</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#select-machine").append("<option value="+value.MAPPING_NAME+">"+value.MACHINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#select-machine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
+                    $("#select-machine").prop("selectedIndex",0).change();
                 }
             },
             error:function(data,status,err) {
@@ -149,15 +149,15 @@ $(function () {
         });
     };
 
-    calHeatmap.getAllLinesName();
-    calHeatmap.getAllMachineNameByLineName('ALL');
+    calHeatmap.getAllLinesName(2);
+    calHeatmap.getAllMachineNameByLineName();
     $('#select-line').on('click', function () {
         calHeatmap.getAllMachineNameByLineName();
     });
 
     calHeatmap.getCountAlarm = function(line, machine, label){
         $.ajax({
-            url: "/v1/api/fukoku/cal-heatmap/alarm",
+            url: "/v3/api/fukoku/cal-heatmap/alarm",
             type: 'GET',
             dataType: 'JSON',
             data:{
