@@ -13,9 +13,9 @@ $(function () {
         }
     });
 
-    ngProduct.getLineCounting = function (callback, productionDate) {
+    ngProduct.getLineCounting = function (productionDate, callback) {
         $.ajax({
-            url: "http://113.198.137.142:8080/v1/api/fukoku/ng-product/number-line/"+productionDate,
+            url: "/v1/api/fukoku/ng-product/number-line/"+productionDate,
             type: 'GET',
             dataType: 'JSON',
             data: {},
@@ -36,7 +36,7 @@ $(function () {
 
     ngProduct.getMachineCounting = function (lineParam, productionDate, callback) {
         $.ajax({
-            url: "http://113.198.137.142:8080/v1/api/fukoku/ng-product/number-machine/"+lineParam+"/"+productionDate,
+            url: "/v1/api/fukoku/ng-product/number-machine/"+lineParam+"/"+productionDate,
             type: 'GET',
             dataType: 'JSON',
             data: {},
@@ -72,9 +72,10 @@ $(function () {
         buttonClicked1 = element;
         buttonClicked1.style.background = "black";
     }
+
     ngProduct.getAllLinesName = function(callback){
         $.ajax({
-            url: "http://113.198.137.142:8080/v3/api/fukoku/line/factory/" +  2 ,
+            url: "/v3/api/fukoku/line/factory/" +  2 ,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -93,32 +94,14 @@ $(function () {
         });
     };
 
-    var buttonClickedHistory = null;
-    var buttonClicked1History = null;
-
-    function highlightButtonLineHistory(element) {
-        if (buttonClickedHistory != null) {
-            buttonClickedHistory.style.background = "#00a65a";
-        }
-        buttonClickedHistory = element;
-        buttonClickedHistory.style.background = "black";
-    }
-    function highlightButtonMachineHistory(element) {
-        if (buttonClicked1History != null) {
-            buttonClicked1History.style.background = "#dd4b39";
-        }
-        buttonClicked1History = element;
-        buttonClicked1History.style.background = "black";
-    }
+    
 
     ngProduct.getAllMachineNameByLineName = function(line, callback){
         $.ajax({
-            url: "http://113.198.137.142:8080/v3/api/fukoku/machine/findAllByLine/" + line,
+            url: "/v3/api/fukoku/machine/findAllByLine/" + line,
             type: 'GET',
             dataType: 'JSON',
-            data:{
-                "lineName"  :   line
-            },
+            data:{},
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
@@ -134,30 +117,32 @@ $(function () {
         });
     };
 
-    function getNumberByLine() {
+    function getCountLine() {
         ngProduct.getAllLinesName(function (response) {
             if (response.code == 200) {
                 $("#selectLineButtonList").html("");
                 $("#selectLineButtonList").append("<button class='btn btn-success' style='margin-right:5px; margin-bottom:5px;' data-id='' id='btnLine'>ALL</button>");
                 var productionDate = $('#txtProductionDate').val() == "" ? "0" : $('#txtProductionDate').val();
-                ngProduct.getLineCounting(function (response1) {
+                ngProduct.getLineCounting(productionDate, function (response1) {
                     var total = 0;
                     for (var v = 0; v < response.data.length; v++) {
-                        for (var v1 = 0; v1 < response1.DATA.length; v1++) {
-                            if (response.data[v].name == response1.DATA[v1].ATTRIBUTE) {
-                                $("#selectLineButtonList").append("<button class='btn btn-success' style='margin-right:5px; margin-bottom:5px;' data-id=" + response.data[v].name + " id='btnLine'>" + response.data[v].name + "(" + response1.DATA[v1].NUMBER + ")</button>");
-                                total += response1.DATA[v1].NUMBER;
+                        if(response1.CODE == "7777") {
+                            for (var v1 = 0; v1 < response1.DATA.length; v1++) {
+                                if (response.data[v].name == response1.DATA[v1].ATTRIBUTE) {
+                                    $("#selectLineButtonList").append("<button class='btn btn-success' style='margin-right:5px; margin-bottom:5px;' data-id=" + response.data[v].name + " id='btnLine'>" + response.data[v].name + "(" + response1.DATA[v1].NUMBER + ")</button>");
+                                    total += response1.DATA[v1].NUMBER;
+                                }
                             }
                         }
                     }
                     $("#selectLineButtonList").val($("#selectLineButtonList button:first").html('ALL(' + total + ')'));
-                }, productionDate)
+                })
 
             }
         });
     }
 
-    getNumberByLine();
+    getCountLine();
 
     var lineId = "";
     var machineId = "";
@@ -166,13 +151,20 @@ $(function () {
         lineId = $(this).data("id");
         checkPagination = true;
         currentPage = 1;
+        machineId = "";
         if(lineId == ''){
-            ngProduct.getAllngProduct('', '');
+
             $("#selectMachineButtonList").html("");
+            ngProduct.getAllngProduct('', '');
             return;
         }
+
+        ngProduct.getAllngProduct(lineId,'');
+        $("#selectMachineButtonList").html("");
+
+
         ngProduct.getAllMachineNameByLineName(lineId, function (response) {
-            $("#selectMachineButtonList").html("");
+
             if (response.code == 200) {
                 $("#selectMachineButtonList").append("<button class='btn btn-danger' style='margin-right:5px; margin-bottom: 5px;' id='btnMachine' data-id=''>ALL</button>");
                 var productionDate = $('#txtProductionDate').val()==""?"0":$('#txtProductionDate').val();
@@ -205,39 +197,39 @@ $(function () {
         ngProduct.getAllngProduct(lineId, machineId);
     });
 
-    ngProduct.getAllProductName = function(){
-        $.ajax({
-            url: "http://113.198.137.142:8080/v1/api/fukoku/product/select-box",
-            type: 'GET',
-            dataType: 'JSON',
-            data: {
-                "line"         :       $("#selectLine").val(),
-                "machine"      :       $("#selectMachine").val()
-            },
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("Content-Type", "application/json");
-            },
-            success: function(response) {
-                $('#selectProduct').empty();
-                $("#selectProduct").append("<option value=''>품종</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectProduct").append("<option value='"+value.NAME+"'>"+value.NAME+"</option>");
-                    });
-                }
-            },
-            error:function(data,status,err) {
-                console.log("error: "+data+" status: "+status+" err:"+err);
-            }
-        });
-    };
+    // ngProduct.getAllProductName = function(){
+    //     $.ajax({
+    //         url: "http://113.198.137.142:8080/v1/api/fukoku/product/select-box",
+    //         type: 'GET',
+    //         dataType: 'JSON',
+    //         data: {
+    //             "line"         :       $("#selectLine").val(),
+    //             "machine"      :       $("#selectMachine").val()
+    //         },
+    //         beforeSend: function(xhr) {
+    //             xhr.setRequestHeader("Accept", "application/json");
+    //             xhr.setRequestHeader("Content-Type", "application/json");
+    //         },
+    //         success: function(response) {
+    //             $('#selectProduct').empty();
+    //             $("#selectProduct").append("<option value=''>품종</option>");
+    //             if(response.CODE == "7777"){
+    //                 $.each(response.DATA, function(key, value){
+    //                     $("#selectProduct").append("<option value='"+value.NAME+"'>"+value.NAME+"</option>");
+    //                 });
+    //             }
+    //         },
+    //         error:function(data,status,err) {
+    //             console.log("error: "+data+" status: "+status+" err:"+err);
+    //         }
+    //     });
+    // };
 
     //TODO: SERVER SIDE REQUEST
     ngProduct.getAllngProduct = function (lId, mId) {
         openLoading();
         $.ajax({
-            url: "http://113.198.137.142:8080/v1/api/fukoku/ng-product",
+            url: "/v1/api/fukoku/ng-product",
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -292,7 +284,7 @@ $(function () {
         format: 'YYYY-MM-DD',
     }).on('dp.change', function (ev) {
         $("#selectMachineButtonList").html("");
-        getNumberByLine();
+        getCountLine();
         checkPagination = true;
         ngProduct.getAllngProduct(lineId, machineId);
     });

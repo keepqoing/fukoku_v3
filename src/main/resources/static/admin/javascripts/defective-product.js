@@ -129,22 +129,26 @@ $(function () {
                 defectiveProduct.getLineCounting(productionDate, function (response1) {
                     var total = 0;
                     for(var v=0;v<response.data.length;v++){
+                        if(response1.DATA != null) {
+                            for (var v1 = 0; v1 < response1.DATA.length; v1++) {
 
-                        for(var v1=0;v1<response1.DATA.length;v1++) {
+                                if (response.data[v].name == response1.DATA[v1].ATTRIBUTE) {
 
-                            if (response.data[v].name == response1.DATA[v1].ATTRIBUTE) {
+                                    $("#selectLineButtonList").append("<button class='btn btn-success' style='margin-right:5px; margin-bottom:5px;' data-id=" + response.data[v].name + " id='btnLine'>" + response.data[v].name + "(" + response1.DATA[v1].NUMBER + ")</button>");
+                                    total += response1.DATA[v1].NUMBER;
+                                }
 
-                                $("#selectLineButtonList").append("<button class='btn btn-success' style='margin-right:5px; margin-bottom:5px;' data-id=" + response.data[v].name + " id='btnLine'>" + response.data[v].name +"("+response1.DATA[v1].NUMBER+ ")</button>");
-                                total += response1.DATA[v1].NUMBER;
                             }
-
                         }
                     }
-                    for(var v1=0;v1<response1.DATA.length;v1++) {
 
-                        if (response1.DATA[v1].ATTRIBUTE == 'OTHER') {
-                            $("#selectLineButtonList").append("<button class='btn btn-success' style='margin-right:5px; margin-bottom:5px;' data-id=" + response1.DATA[v1].ATTRIBUTE + " id='btnLine'>" + response1.DATA[v1].ATTRIBUTE + "(" + response1.DATA[v1].NUMBER + ")</button>");
-                            total += response1.DATA[v1].NUMBER;
+                    if(response1.DATA != null) {
+                        for (var v1 = 0; v1 < response1.DATA.length; v1++) {
+
+                            if (response1.DATA[v1].ATTRIBUTE == 'OTHER') {
+                                $("#selectLineButtonList").append("<button class='btn btn-success' style='margin-right:5px; margin-bottom:5px;' data-id=" + response1.DATA[v1].ATTRIBUTE + " id='btnLine'>" + response1.DATA[v1].ATTRIBUTE + "(" + response1.DATA[v1].NUMBER + ")</button>");
+                                total += response1.DATA[v1].NUMBER;
+                            }
                         }
                     }
 
