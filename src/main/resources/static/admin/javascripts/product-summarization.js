@@ -541,7 +541,7 @@ $(function () {
     // Get all machine name
     productSummarization.getAllMachinesName = function(callback){
         $.ajax({
-            url: "/v3/api/fukoku/machine/findAll",
+            url: "/v3/api/fukoku/machine/findAllDistinct",
             type: 'GET',
             dataType: 'JSON',
             data:{},
