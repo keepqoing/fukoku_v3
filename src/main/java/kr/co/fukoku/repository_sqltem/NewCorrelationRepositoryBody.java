@@ -22,7 +22,7 @@ public class NewCorrelationRepositoryBody implements NewCorrelationRepository {
     private static DecimalFormat df2 = new DecimalFormat(".###");
 
     // DB Name for previous version
-    String dbName = "fukuko_v2";
+    String dbName = "fukoku_v2";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
