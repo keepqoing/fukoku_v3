@@ -1792,7 +1792,9 @@ FIND_ALL_PD("SELECT \n" +
         ALARM_FREQ("select ref_machine, alarm_code, alarm_name, count(alarm_code) counting\n" +
                 "from fukoku_v2.alarm_histories \n" +
                 "where ref_line LIKE ? and work_date between ? and ?\n" +
-                "group by alarm_code;"),
+                " group by alarm_code" +
+                " ORDER BY COUNT(alarm_code) DESC " +
+                " LIMIT ?;"),
         COUNT_ALARM_BY_ID("SELECT COUNT(1) FROM fukoku_v2.alarm_histories WHERE alarm_id = ?"),
         UPDATE_TIME("UPDATE fukoku_v2.alarm_histories SET end_time = ?, duration = ? WHERE alarm_id = ?");
 
