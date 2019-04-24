@@ -5,21 +5,23 @@ import io.swagger.annotations.ApiImplicitParams;
 import kr.co.fukoku.filters.NonActiveStateFilter;
 import kr.co.fukoku.model.DefectiveProduct;
 
+import kr.co.fukoku.model.response.Table;
+import kr.co.fukoku.repository.DefectiveProductRepository;
 import kr.co.fukoku.service.DefectiveProductService;
-import kr.co.fukoku.utils.Counting;
-import kr.co.fukoku.utils.Pagination;
-import kr.co.fukoku.utils.ResponseList;
-import kr.co.fukoku.utils.StatusCode;
+import kr.co.fukoku.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -28,6 +30,9 @@ public class DefectiveProductV2RestController {
 
 	@Autowired
 	private DefectiveProductService defectiveProductService;
+
+	@Autowired
+	private DefectiveProductRepository defectiveProductRepository;
 
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "line", dataType = "string", paramType = "query"),
@@ -80,5 +85,24 @@ public class DefectiveProductV2RestController {
 		}
 		return response;
 	}
+
+	@RequestMapping(value = "/download", method = RequestMethod.GET)
+	public ResponseEntity<InputStreamResource> downloadAll() throws IOException {
+		DefectiveProduct d = new DefectiveProduct();
+		List<Map<String, Object>>  f =(List<Map<String, Object>> ) defectiveProductRepository.downloadAll(d);
+
+
+		ByteArrayInputStream in = ExcelGeneratorDynamic.customersToExcel(f, Table.DEFECTIVE_PRODUCT_COLUMN);
+		// return IOUtils.toByteArray(in);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "attachment; filename=defective-product.xlsx");
+
+		return ResponseEntity
+				.ok()
+				.headers(headers)
+				.body(new InputStreamResource(in));
+	}
+
 
 }

@@ -26,6 +26,8 @@ public class Table {
 	
 	
 	public static final String DEPARTMENT_COLUMN[] = {"seq","code","name","parent","remark"};
+	public static final String DEFECTIVE_PRODUCT_COLUMN[] = {"id","date","line","product_name","amount","type",
+	"machine","reason", "assembly_state","detail", "important", "related_file"};
 	
 	public static final String DATABASE_INFOR ="Database infor(s)";
 	public static final String DATABASE_INFOR_COLUMN[] = {"seq", "db_name", "db_ip_address", "db_port_no" , "db_user_name","db_user_password", "db_type", "remark"};

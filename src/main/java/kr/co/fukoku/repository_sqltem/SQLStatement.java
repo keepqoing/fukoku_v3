@@ -1739,6 +1739,7 @@ FIND_ALL_PD("SELECT \n" +
 
 
     public enum DefectiveProductListSQL {
+        DOWNLOAD_ALL("SELECT * FROM fukoku_v2.VIEW_DEFECTIVE_PRODUCT_V2;"),
         FIND_ALL("SELECT * FROM fukoku_v2.VIEW_DEFECTIVE_PRODUCT_V2 " +
                 "WHERE line LIKE ? " +
                 "      AND mapping_name LIKE ? " +

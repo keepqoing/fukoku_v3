@@ -303,4 +303,30 @@ $(function () {
         defectiveProduct.getAllnonActiveStates();
     });
     defectiveProduct.getAllnonActiveStates("","");
+
+
+    // Download button is clicked
+    $(document).on('click', '#btnExport', function () {
+        openLoading();
+        $.ajax({
+            url: '/v3/api/fukoku/defective-product/download',
+            type: 'GET',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            dataType: 'JSON',
+            data: {},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (response) {
+
+                closeLoading();
+            },
+            error: function (data, status, err) {
+                console.log("error: " + data + " status: " + status + " err:" + err);
+            }
+        });
+    });
 });

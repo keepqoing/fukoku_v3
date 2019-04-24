@@ -26,6 +26,11 @@ public class DefectiveProductServiceBody implements DefectiveProductService {
     }
 
     @Override
+    public List<DefectiveProduct> downloadAll() {
+        return defectiveProductRepository.downloadAll();
+    }
+
+    @Override
     public List<Counting> getNumberByLine(String productionDate) {
         return defectiveProductRepository.findNumberByLine(productionDate);
     }

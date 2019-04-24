@@ -22,6 +22,29 @@ public class DefectiveProductRepositoryBody implements DefectiveProductRepositor
 
 
     @Override
+    public List<DefectiveProduct> downloadAll() {
+        RowMapper<DefectiveProduct> rowMapper = (rs, rowNum) -> {
+            DefectiveProduct defectiveProduct = new DefectiveProduct();
+            defectiveProduct.setId(rs.getInt("id"));
+            defectiveProduct.setDate(rs.getString("date"));
+            defectiveProduct.setLine(rs.getString("line"));
+            defectiveProduct.setProductName(rs.getString("product_name"));
+            defectiveProduct.setAmount(rs.getInt("amount"));
+            defectiveProduct.setType(rs.getString("type"));
+            defectiveProduct.setMachine(rs.getString("machine"));
+            defectiveProduct.setReason(rs.getString("reason"));
+            defectiveProduct.setAssemblyState(rs.getString("assembly_state"));
+            defectiveProduct.setDetail(rs.getString("detail"));
+            defectiveProduct.setImportant(rs.getString("important"));
+            defectiveProduct.setRelatedFile(rs.getString("related_file"));
+
+            return defectiveProduct;
+        };
+        return jdbcTemplate.query(SQLStatement.DefectiveProductListSQL.DOWNLOAD_ALL.toString(),
+                new Object[]{}, rowMapper);
+    }
+
+    @Override
     public List<DefectiveProduct> findAll(NonActiveStateFilter filter, Pagination pagination) {
         pagination.setTotalCount(count(filter));
 

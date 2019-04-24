@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface DefectiveProductService {
     List<DefectiveProduct> getAllDefectiveProduct(NonActiveStateFilter filter, Pagination pagination);
+    List<DefectiveProduct> downloadAll();
     List<Counting> getNumberByLine(String productionDate);
     List<Counting> getNumberByMachine(String line, String productionDate);
 

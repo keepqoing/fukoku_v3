@@ -10,6 +10,7 @@ import kr.co.fukoku.utils.Pagination;
 import java.util.List;
 
 public interface DefectiveProductRepository {
+    List<DefectiveProduct> downloadAll();
     List<DefectiveProduct> findAll(NonActiveStateFilter filter, Pagination pagination);
     List<Counting> findNumberByLine(String productionDate);
     List<Counting> findNumberByMachine(String line, String productionDate);
