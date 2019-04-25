@@ -105,6 +105,8 @@ public interface ProcessMachine3Repository {
 			"	ppv.type,\r\n" + 
 			"	ppv.usl,\r\n" + 
 			"	ppv.lsl,\r\n" + 
+			"	ppv.usl_plc,\r\n" + 
+			"	ppv.lsl_plc,\r\n" + 
 			"	ppv.unit_kind,\r\n" + 
 			"	ppv.transform_value,\r\n" + 
 			"	ppv.remark,\r\n" + 
@@ -118,6 +120,8 @@ public interface ProcessMachine3Repository {
 			@Result(property="unitKind",column="unit_kind"),
 			@Result(property="transformValue",column="transform_value"),
 			@Result(property="refProcessChainMachineId",column="ref_process_chain_machine_id"),
+			@Result(property="lslPlc",column="lsl_plc"),
+			@Result(property="uslPlc",column="usl_plc"),
 	})
 	List<ProductProcessVar> finProductProcessVar(Map<Object, String> params);
 	
