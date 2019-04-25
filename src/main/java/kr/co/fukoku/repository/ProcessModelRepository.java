@@ -10,62 +10,26 @@ import java.util.List;
 @Repository
 public interface ProcessModelRepository {
 
-    // Insert into proccess_chain table and get the last_insert_id for next table's (process_chain_element) foreign key
-//    @Select("INSERT INTO process_chain ("
-//            + "	seq, name, ref_line"
-//            + ") VALUES ("
-//            + "	#{f.seq}, #{f.name}, #{f.ref_line} "
-//            + ")")
-   // @Options(useGeneratedKeys = true, keyProperty = "id")
-//    @Options(useGeneratedKeys = true, keyProperty = "ID", keyColumn = "ID")
-//    @SelectKey(before = false, keyProperty = "ID", statement = "SELECT LAST_INSERT_ID()", resultType = int.class)
-    // int save(@Param("f") ProcessModel f);
+    @Select("SELECT id from process_chain WHERE ref_line = #{p_line}")
+    int getProcessChainIdByLine(@Param("p_line") String p_line);
 
-//    @Select("SELECT LAST_INSERT_ID()")
     @Select("CALL proc_insert_process_chain("
             + "	#{f.seq}, #{f.name}, #{f.ref_line} "
             + ")")
     int getLastID(@Param("f") ProcessChain f);
 
 
-    // Insert into process_chain_element table and get the last_insert_id for next table's (process_chain_machine) foreign key
-//    @Insert("INSERT INTO process_chain_product ("
-//            + "	ref_product, ref_process_chain_id, status"
-//            + ") VALUES ("
-//            + "	#{f.ref_product}, #{f.ref_process_chain_id}, #{f.status} "
-//            + ");")
-//    int saveProcessProduct(@Param("f") ProcessProductFrm f);
-
     @Select("CALL proc_insert_process_chain_product( "
         + "	#{f.ref_product}, #{f.ref_process_chain_id}, #{f.status} "
         + ");")
     int saveProcessProduct(@Param("f") ProcessProductFrm f);
 
-    // Insert into process_chain_element table and get the last_insert_id for next table's (process_chain_machine) foreign key
-//    @Insert("INSERT INTO process_chain_element ("
-//            + "	stage, name, ref_process_chain_id"
-//            + ") VALUES ("
-//            + "	#{f.stage}, #{f.name}, #{f.ref_process_chain_id} "
-//            + ");")
-//    int saveProcessChainElement(@Param("f") ProcessChainElementModelFrm f);
 
-//    @Select("SELECT LAST_INSERT_ID()")
     @Select("CALL proc_insert_process_chain_element("
             + "	#{f.stage}, #{f.name}, #{f.ref_process_chain_id} "
             + ");")
     int getLastPCEID(@Param("f") ProcessChainElementModelFrm f);
 
-
-    // Insert into process_chain_machine table
-//    @Insert("INSERT INTO process_chain_machine ("
-//            + " seq, ref_process, ref_machine, ref_process_chain_element, next_sequence"
-//            + ") VALUES ("
-//            + "	#{f.seq}, "
-//            + " #{f.refProcess}, "
-//            + " #{f.refMachine}, "
-//            + " #{f.refProcessChainElement}, "
-//            + " #{f.next_sequence}"
-//            + ");")
     @Select("CALL proc_insert_process_chain_machine ("
             + "	#{f.seq}, "
             + " #{f.refProcess}, "
@@ -128,7 +92,4 @@ public interface ProcessModelRepository {
             @Result(property="name",column="ref_line")
     })
     List<Line> findAllLineInProcessModel();
-
-
-
 }

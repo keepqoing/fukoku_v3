@@ -29,6 +29,16 @@ public class ProcessModelController {
             for(ProcessChain processChain: frm){
                 ProcessChain pro = processChain;
 
+
+//                System.out.println("id of the line " + pro.getRef_line() + " is " + pro.getId());
+//                System.out.println("after id of the line " + pro.getRef_line() + " is "
+//                        + repository.getProcessChainIdByLine(pro.getRef_line()));
+                int truncateSucess = repository.truncateProcessModel(pro.getName());
+                if(truncateSucess != 1){
+                    map.put("code", 500);
+                    map.put("message", "Error! " );
+                }
+
                 // TRUNCATE FIRST
                 /*
                 int truncateSucess = repository.truncateProcessModel(pro.getRef_line());
