@@ -86,6 +86,27 @@
             border-top: none;
         }
 
+
+
+        svg {
+            font: 10px sans-serif;
+            shape-rendering: crispEdges;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+        }
+
+        path.domain {
+            stroke: none;
+        }
+
+        .y .tick line {
+            stroke: #ddd;
+        }
+
     </style>
 
 
@@ -295,7 +316,11 @@
             </div>
         </div>
         <div id="alarm_chart" class="tabcontent">
-            <h3>Paris</h3>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                    <div class="table" id="stackedBarChart" style="width:1200px; margin: 0 auto;"></div>
+                </div>
+            </div>
 
         </div>
     </section>
@@ -375,6 +400,8 @@
 
 </div>
 <th:block layout:fragment="script">
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="../../static/admin/javascripts/d3/stackedBarChart.js"></script>
     <script src="../../static/admin/javascripts/alarm-statistics.js"></script>
     <script id="ALARM_HISTORY_TEMPLATE" type="text/x-jquery-tmpl">
     <tr data-id="{{= ID}}"style="text-align:center;">

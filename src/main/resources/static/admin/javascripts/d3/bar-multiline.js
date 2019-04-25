@@ -69,6 +69,8 @@ function barchartMultiLine(data, settings) {
     // yLine.domain([0, d3.max(data, function(d) {return Math.max(d.line1, d.line2); })]).nice();
     yLine.domain([0, d3.max(data, function(d) {return Math.max(d.line1, d.line2, d.line3, d.line4, d.line5, d.line6); })]).nice();
 
+
+
     var rect = svg.selectAll("rect")
         .data(data)
 

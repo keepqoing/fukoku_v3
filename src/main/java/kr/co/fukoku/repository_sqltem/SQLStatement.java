@@ -2703,13 +2703,13 @@ FIND_ALL_PD("SELECT \n" +
 
 
         // Alarm Graphs
-        ALARM_GRAPH_BY_YEAR("SELECT DISTINCT alarm, \n" +
-                "SUM(total_alarm_year) total_alarm_year\n" +
-                "FROM fukoku_v2.alarm_counting\n" +
-                "WHERE a_year = ?'\n" +
-                "AND total_alarm_year > 0\n" +
-                "GROUP BY alarm\n" +
-                "ORDER BY alarm;");
+        ALARM_GRAPH_BY_YEAR(" SELECT DISTINCT alarm alarm, " +
+                " SUM(total_alarm_year) total_alarm_year " +
+                " FROM fukoku_v2.alarm_counting " +
+                " WHERE a_year = ? " +
+                " AND total_alarm_year > 0 " +
+                " GROUP BY alarm " +
+                " ORDER BY alarm;");
 
         private String value;
 

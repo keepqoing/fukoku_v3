@@ -583,7 +583,12 @@ public class AlarmStatisticsRepositoryBody implements AlarmStatisticsRepository 
     @Override
     public List<MainAlarmStatistics> graphAlarmCountingByYear(String p_year) {
         RowMapper<MainAlarmStatistics> rowMapper = (rs, rowNum) -> {
-            return getObject(rs, true);
+            MainAlarmStatistics alarmStatistics = new MainAlarmStatistics();
+            alarmStatistics.setAlarm(rs.getString("alarm"));
+            alarmStatistics.setTotal_alarm_year(rs.getString("total_alarm_year"));
+
+
+            return alarmStatistics;
         };
         return jdbcTemplate.query(SQLStatement.AlarmStatisticsSQL.ALARM_GRAPH_BY_YEAR.toString(),
                 new Object[]{p_year}, rowMapper);
