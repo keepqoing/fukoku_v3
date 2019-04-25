@@ -1473,7 +1473,12 @@ function isChecked(){
 
 // ===================== START: SAVE TO DATABASE =========================================================
 // ============= INSERT INTO DATABASE =========================================
-$("#btnSaveAll").click(function () {
+// $("#btnSaveAll").click(function () {
+//
+//     DBInsertion();
+// });
+
+$(document).on('click','#btnSaveAll',function () {
 
     DBInsertion();
 });
@@ -1586,15 +1591,14 @@ function DBInsertion(){
     lines.insertData();
 }
 
-$("#btnTest").click(function () {
+// $("#btnTest").click(function () {
+//     removeHiddenControls("hiddenTextBox");
+//     lines.getLineInProcessModel();
+// });
 
-
+$(document).on('click','#btnTest',function () {
     removeHiddenControls("hiddenTextBox");
     lines.getLineInProcessModel();
-
-
-
-
 });
 
 // function is used to delete all the helping textbox that we created and hid
