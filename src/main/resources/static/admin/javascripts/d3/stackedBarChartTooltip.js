@@ -43,7 +43,7 @@ function layer(d){
 
 var offsetSelect = d3.ui.select({
       after: "svg",
-      style: {position: "absolute", left: width - padding.right + 15 + "px", top: yRangeWidth + "px"},
+      style: {position: "absolute", left: width - padding.right + 15 + "px", top: yRangeWidth + "px", display:"none"},
       onUpdate: function() {
         update(dataSet1)
       },
@@ -51,7 +51,7 @@ var offsetSelect = d3.ui.select({
     }),
     orderSelect = d3.ui.select({
       after: "svg",
-      style: {position: "absolute", left: width - padding.right + 15 + "px", top: yRangeWidth - 20 + "px"},
+      style: {position: "absolute", left: width - padding.right + 15 + "px", top: yRangeWidth - 20 + "px", display: "none"},
       onUpdate: function() {
         update(dataSet1)
       },

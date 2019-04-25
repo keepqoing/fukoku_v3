@@ -88,23 +88,25 @@
 
 
 
-        svg {
-            font: 10px sans-serif;
-            shape-rendering: crispEdges;
+        #stackedBar {
+            position: relative;
         }
-
         .axis path,
         .axis line {
             fill: none;
             stroke: #000;
+            shape-rendering: crispEdges;
         }
-
-        path.domain {
-            stroke: none;
+        .axis .tick line {
+            stroke: #ccc;
+            /*opacity: 0.5;*/
+            pointer-events: none;
         }
-
-        .y .tick line {
-            stroke: #ddd;
+        .highlight {
+            font-weight: bold ;
+        }
+        svg {
+            overflow: visible;
         }
 
     </style>
@@ -318,7 +320,7 @@
         <div id="alarm_chart" class="tabcontent">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                    <div class="table" id="stackedBar" style="width:1200px; margin: 0 auto;"></div>
+                    <div  id="stackedBar" style="width:1200px; margin: 0 auto;"></div>
                 </div>
             </div>
 
@@ -401,6 +403,9 @@
 </div>
 <th:block layout:fragment="script">
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+    <script src="https://gitcdn.xyz/repo/cool-Blue/d3-lib/master/inputs/select/select.js"></script>
+    <script src="https://gitcdn.xyz/repo/cool-Blue/d3-lib/master/plot/plot-transform.js"></script>
     <script src="../../static/admin/javascripts/d3/stackedBarChartTooltip.js"></script>
     <script src="../../static/admin/javascripts/alarm-statistics.js"></script>
     <script id="ALARM_HISTORY_TEMPLATE" type="text/x-jquery-tmpl">
