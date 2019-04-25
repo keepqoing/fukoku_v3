@@ -528,27 +528,33 @@ $(function () {
     alarmStatistics.drawStackedBarChart = function(){
         /* Data in strings like it would be if imported from a csv */
 
-        var data = [
-            { month: "1", PULLEY이송상하서보이상: "10", 가열구간온도LOW: "15", 고무링공급상하서보이상: "9", 공급이송좌우이상: "6", 도포부HST액레벨점검: "6", 상부트레이유무이상: "6"},
-            { month: "2", PULLEY이송상하서보이상: "12", 가열구간온도LOW: "18", 고무링공급상하서보이상: "9", 공급이송좌우이상: "4", 도포부HST액레벨점검: "61", 상부트레이유무이상: "36" },
-            { month: "3", PULLEY이송상하서보이상: "05", 가열구간온도LOW: "20", 고무링공급상하서보이상: "8", 공급이송좌우이상: "2", 도포부HST액레벨점검: "36" , 상부트레이유무이상: "36"},
-            { month: "4", PULLEY이송상하서보이상: "01", 가열구간온도LOW: "15", 고무링공급상하서보이상: "5", 공급이송좌우이상: "4", 도포부HST액레벨점검: "26", 상부트레이유무이상: "36" },
-            { month: "5", PULLEY이송상하서보이상: "02", 가열구간온도LOW: "10", 고무링공급상하서보이상: "4", 공급이송좌우이상: "2", 도포부HST액레벨점검: "16" , 상부트레이유무이상: "36"},
-            { month: "6", PULLEY이송상하서보이상: "03", 가열구간온도LOW: "12", 고무링공급상하서보이상: "6", 공급이송좌우이상: "3", 도포부HST액레벨점검: "12", 상부트레이유무이상: "36" },
-            { month: "7", PULLEY이송상하서보이상: "04", 가열구간온도LOW: "15", 고무링공급상하서보이상: "8", 공급이송좌우이상: "1", 도포부HST액레벨점검: "22" , 상부트레이유무이상: "36"},
-            { month: "8", PULLEY이송상하서보이상: "06", 가열구간온도LOW: "11", 고무링공급상하서보이상: "9", 공급이송좌우이상: "4", 도포부HST액레벨점검: "62", 상부트레이유무이상: "36" },
-            { month: "9", PULLEY이송상하서보이상: "10", 가열구간온도LOW: "13", 고무링공급상하서보이상: "9", 공급이송좌우이상: "5", 도포부HST액레벨점검: "31" , 상부트레이유무이상: "36"},
-            { month: "10", PULLEY이송상하서보이상: "16", 가열구간온도LOW: "19", 고무링공급상하서보이상: "6", 공급이송좌우이상: "9", 도포부HST액레벨점검: "44", 상부트레이유무이상: "36" },
-            { month: "11", PULLEY이송상하서보이상: "19", 가열구간온도LOW: "17", 고무링공급상하서보이상: "5", 공급이송좌우이상: "7", 도포부HST액레벨점검: "46", 상부트레이유무이상: "36" },
-            { month: "12", PULLEY이송상하서보이상: "19", 가열구간온도LOW: "17", 고무링공급상하서보이상: "5", 공급이송좌우이상: "7", 도포부HST액레벨점검: "46", 상부트레이유무이상: "36" },
+        var dataSet1 = [
+            {   name: "AXIS 01 위치 미확인" ,
+                values: [    { xlabel:1, counting: 3000 },
+                    { xlabel:2, counting: 1300 },
+                    { xlabel:3, counting: 3700 },
+                    { xlabel:4, counting: 4900 },
+                    { xlabel:5, counting: 700 }] },
+            {   name: "AXIS19 상하회전 실린더 이상" ,
+                values: [    { xlabel:1, counting: 2000 },
+                { xlabel:2, counting: 4000 },
+                { xlabel:3, counting: 1810 },
+                { xlabel:4, counting: 6540 },
+                { xlabel:5, counting: 2820 }] },
+            {   name: "J.B 조립 불량" ,
+                values: [    { xlabel:1, counting: 1100 },
+                    { xlabel:2, counting: 1700 },
+                    { xlabel:3, counting: 1680 },
+                    { xlabel:4, counting: 4000 },
+                    { xlabel:5, counting: 4900 }] }
         ];
 
         var settings = {
-            selector: "#stackedBarChart",
+            selector: "#stackedBar",
             width: 800,
             height: 350
         };
-        stackedBarChart(data, settings);
+        stackedBarChart(dataSet1, settings);
 
     }
     alarmStatistics.drawStackedBarChart();

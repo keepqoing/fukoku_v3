@@ -366,7 +366,7 @@ $(function () {
                         loadDataToTable(response.data);
                     }
                 } else{
-                    console.log("Data cannot be read");
+                    console.log("Data cannot be read of this line");
                     $("#btnSearchLine").trigger("click");
                 }
             },
@@ -448,10 +448,14 @@ $(function () {
 // =============== END Server Side ======================================
 
 // When the search line button is clicked
-$("#btnSearchLine").click(function () {
+// $("#btnSearchLine").click(function () {
+//     alert("hello");
+//     getCheckBoxValues();
+// });
+$(document).on('click','#btnSearchLine',function () {
+
     getCheckBoxValues();
 });
-
 
 // === Step 1 - create Line
 function createLine(arrLine){
@@ -806,7 +810,7 @@ function getCheckBoxValues(){
     }else{
         m_option = m_option.slice(0,-1);
     }
-
+     console.log("m_option = " + m_option);
     if(m_option=="0"){
         swal({
                 title: "라인을 선택하십시오!",
