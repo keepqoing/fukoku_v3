@@ -54,7 +54,7 @@ app.controller('MainCtrl', function($scope, $http,$rootScope, $location) {
 				  "stopTime": endDate,
 				  "lsl":$location.search().lsl,
 				  "usl":$location.search().usl
-		};
+		  };
 			console.log(params);
 			var post = $http({
 	            method: "POST",

@@ -186,7 +186,15 @@
 			<version>5.0.0-HBase-2.0</version>
 			<scope>provided</scope>
 		</dependency>
-
+		
+		
+		<dependency>
+			<groupId>jdk.tools</groupId>
+			<artifactId>jdk.tools</artifactId>
+			<scope>system</scope>
+			<systemPath>C:\Program Files\Java\jdk1.8.0_191\lib\tools.jar</systemPath>
+			<version>1.6</version>
+		</dependency>
 
 	</dependencies>
 
