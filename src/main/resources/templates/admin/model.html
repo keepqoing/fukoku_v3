@@ -77,6 +77,8 @@
             max-height: 100%;
             max-width: 100%;
             margin: 0 auto;
+
+            overflow:scroll;
         }
 
 
@@ -137,8 +139,8 @@
                         </div>
                         <div class="row">
 
-                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                                        <div id="parent">
+                                    <div id="parent" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+
                                             <table class="table" id="fixTable">
                                                 <thead >
                                                     <tr id="tableHeader" class="table-head"></tr>
@@ -153,7 +155,8 @@
                                                 <!--</tr>-->
                                                 </tbody>
                                             </table>
-                                        </div>
+
+
                                     </div>
                         </div>
 
@@ -188,8 +191,35 @@
     </script>
 <!--    <script src="../../static/admin/sweet_alert/sweetalert.min-new.js"></script>-->
     <script src="../../static/admin/javascripts/fixedTableHeader/tableHeadFixer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/floatthead/2.1.3/jquery.floatThead.min.js"></script>
     <script src="/static/admin/javascript_v3/model.js"></script>
+    <script>
+        $(document).ready(function(){
 
+
+            $("#fixTable th").each(function(index){
+                var index2 = index;
+                $(this).width(function(index2){
+                    return $("#fixTable td").eq(index).width();
+                });
+            });
+
+
+
+            setTimeout(() => {
+                var $table = $('table');
+                $table.floatThead({
+                    responsiveContainer: function($table){
+                        return $table.closest('.table-responsive');
+                    }
+                });
+
+            }, 3000)
+
+
+
+        });
+    </script>
 </th:block>
 
 </body>

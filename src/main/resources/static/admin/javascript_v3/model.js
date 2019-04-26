@@ -119,7 +119,7 @@ $(function () {
         divLine.innerHTML = "";
         // console.log("Line checkbox length = " + lineArr.length);
         for(i=0; i< lineArr.length; i++){
-            console.log("fist lineArr["+i+"] = " + lineArr[i]);
+            // console.log("fist lineArr["+i+"] = " + lineArr[i]);
             divLine.appendChild(lines.createCheckBox(lineArr[i]));
         }
 
