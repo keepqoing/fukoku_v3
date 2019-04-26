@@ -1092,7 +1092,7 @@ function removeStage(btnObj){
             closeOnConfirm: true,
             animation: "slide-from-top",
             inputPlaceholder: "공정단계 (보기: 1)",
-            confirmButtonText: '저장',
+            confirmButtonText: '예',
             confirmButtonColor: "#00a65a",
             cancelButtonText: "취소"
         },
