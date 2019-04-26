@@ -16,6 +16,11 @@ $(function () {
         }
     });
 
+
+
+
+
+
 // ============== Server Side ============================================
 
     //TODO: SERVER SIDE REQUEST
@@ -75,9 +80,10 @@ $(function () {
                     if (response.data.length > 0) {
                         lineArr = [];
                         for(i = 0; i < response.data.length; i++){
-                            var arr = [response.data[i].id, response.data[i].name];
-                            lineArr.push(arr);
+                            // var arr = [response.data[i].id, response.data[i].name];
+                            lineArr.push(response.data[i].name);
                         }
+                        lines.getProcessModelData();
                         lines.createLineCheckBox();
 
 
@@ -113,21 +119,22 @@ $(function () {
         divLine.innerHTML = "";
         // console.log("Line checkbox length = " + lineArr.length);
         for(i=0; i< lineArr.length; i++){
-            divLine.appendChild(lines.createCheckBox(lineArr[i][0], lineArr[i][1]));
+            console.log("fist lineArr["+i+"] = " + lineArr[i]);
+            divLine.appendChild(lines.createCheckBox(lineArr[i]));
         }
 
         // console.log(lineFromDB.length);
-        for(var i=0; i < lineFromDB.length; i++){
-            // console.log(lineFromDB[i]);
-            var chk = document.getElementById("chk"+lineFromDB[i]);
-            if(chk != null) {
-                chk.checked = true;
-                isChecked();
-            }
-        }
+        // for(var i=0; i < lineFromDB.length; i++){
+        //     // console.log(lineFromDB[i]);
+        //     var chk = document.getElementById("chk"+lineFromDB[i]);
+        //     if(chk != null) {
+        //         chk.checked = false;
+        //         isChecked();
+        //     }
+        // }
     }
 
-    lines.createCheckBox = function(lineId, lineName){
+    lines.createCheckBox = function(lineName){
         var label = document.createElement("label");
         label.setAttribute("class", "line-label");
         label.innerText = lineName;
@@ -347,7 +354,8 @@ $(function () {
             }
         });
     };
-
+    // ********* FIrst Load Page
+    // lines.getProcessModelData();
 
     // Get Process Model by Checking the Line Checkboxes
     // This function reads all the process model from the database
@@ -366,7 +374,7 @@ $(function () {
                         loadDataToTable(response.data);
                     }
                 } else{
-                    console.log("Data cannot be read of this line");
+                    // console.log("Data cannot be read of this line");
                     $("#btnSearchLine").trigger("click");
                 }
             },
@@ -452,8 +460,10 @@ $(function () {
 //     alert("hello");
 //     getCheckBoxValues();
 // });
-$(document).on('click','#btnSearchLine',function () {
 
+// Line checkbox
+$(document).on('click','#btnSearchLine',function () {
+    lineArr = [];
     getCheckBoxValues();
 });
 
@@ -804,13 +814,15 @@ function getCheckBoxValues(){
 
     $.each($("input[name='m_option']:checked"), function(){
         m_option += $(this).val()+",";
+        lineArr.push($(this).val())
     });
     if(m_option == ""){
         m_option = "0"; // ALL
     }else{
         m_option = m_option.slice(0,-1);
     }
-     console.log("m_option = " + m_option);
+     // console.log("m_option = " + m_option);
+    /*
     if(m_option=="0"){
         swal({
                 title: "라인을 선택하십시오!",
@@ -833,6 +845,18 @@ function getCheckBoxValues(){
     }else {
         createLine(m_option);
     }
+
+
+    */
+
+    console.log("lineArr is null = "+ lineArr);
+
+
+    if(lineArr != null) {
+        // console.log("lineArr = "+ lineArr);
+        createLine(m_option);
+    }
+
 }
 
 
@@ -1428,42 +1452,48 @@ function checkLineBox(lineName){
     $('input[class="select_line"]').each(function() {
         // console.log("value ", $(this).val());
         // console.log("lineName ", lineName.trim());
-        if ($.trim($(this).val()) == lineName.trim()) {
-            $(this).prop('checked', true);
-        }
+        // if ($.trim($(this).val()) == lineName.trim()) {
+        //     $(this).prop('checked', true);
+        // }
     });
 }
 
 // set selected = selected when the option is chosen
 $(document).on('change','input:checkbox',function(){
-    if($(this).is(":checked"))
-    {
-        // isChecked();
-        lines.getProcessModelDataByLine($(this).val());
-    }else{
-        $("tr.tr"+$(this).val()).remove();
-        checkIfNoMoreRow();
-    }
+    // // alert( $(this).val());
+    // // if($(this).is(":checked"))
+    // // {
+        isChecked();
+    //     // lines.getProcessModelDataByLine($(this).val());
+    // // }else{
+    // //     $("tr.tr"+$(this).val()).remove();
+    // //     checkIfNoMoreRow();
+    // // }
+
 
 });
 
 function isChecked(){
 
-    var array = [];
     let options = document.getElementsByClassName("select_line");
+
     for (let option of options){
         if($(option).is(":checked")) {
-            // array.push(option.value);
-            // console.log(option.value);
+            // lines.getProcessModelDataByLine(option.value);
+
             lines.getProcessModelDataByLine(option.value);
+        }else{
+            // alert(option.value);
+
+            $("tr.tr"+option.value).remove();
+
+            // checkIfNoMoreRow();
         }
     }
 
-
-    // if(array.length > 0){
-    //     lines.getProcessModelDataByLine(array.join());
-    // }
-
+    if ($('.select_line:checked').length == 0) {
+        lines.getProcessModelData();
+    }
 
 
     // console.log(array);
@@ -2115,4 +2145,6 @@ function checkProductDuplicated(btnObj){
     }
 
 }
+
+
 // ===================== END: READ FROM DATABASE =====================================================

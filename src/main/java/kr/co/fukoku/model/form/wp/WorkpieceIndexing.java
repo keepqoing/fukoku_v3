@@ -14,6 +14,8 @@ public class WorkpieceIndexing {
 	private String start;
 	private String stop;
 	
+	private long offset; 
+	
 	private long usl;
 	private long lsl;
 	
@@ -85,6 +87,12 @@ public class WorkpieceIndexing {
 	}
 	public void setLsl(long lsl) {
 		this.lsl = lsl;
+	}
+	public long getOffset() {
+		return offset;
+	}
+	public void setOffset(long offset) {
+		this.offset = offset;
 	}
 	
 	
