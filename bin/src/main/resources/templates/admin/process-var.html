@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout" ng-app="fukoku">
+
+<head>
+
+    <title>공정항목관리</title>
+    
+    <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
+    <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/d3/d3.min.js}" charset="utf-8"></script>
+    <script th:src="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/angular-nvd3/dist/angular-nvd3.js}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-sanitize.js"></script>
+    
+    
+    <style>
+    #clicked 
+	{
+	background-color:red;
+	}
+	#unclick 
+	{
+	background-color:blue;
+	}
+    </style>
+    
+</head>
+<body ng-controller="MainCtrl">
+
+<div layout:fragment="content">
+
+    <section class="content-header">
+        <h1>
+            공정항목관리
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xl-10 col-lg-10 col-md-6 col-sm-6 col-xs-12">
+                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">공정항목추가</button>
+                                    <form id="fileUploadForm"  class="btn btn-info btn-file">Upload <input type="file" id="btImport" name="file" (change)="btImport()"> </form>
+                                    <button type="button" id="btExport" class="btn btn-info" ng-click="btExport()">Download</button>
+                                </div>
+                                
+                                <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                     <div class="box-tools">
+						                <div class="input-group input-group-sm" style="min-width: 150px;">
+						                  <input type="text" name="table_search" class="form-control pull-right" id="txtSearch" placeholder="검색">
+						
+						                  <div class="input-group-btn">
+						                    <button type="button" class="btn btn-default" ng-click="btSearch()"><i class="fa fa-search"></i></button>
+						                  </div>
+						                </div>
+						              </div>
+                                </div>
+                        </div>
+                        <br/>
+                        
+                         <br/>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <table  class="table table-bordered table-striped" id="dtTable">
+                                    <thead class="table-head">
+                                    <tr>
+                                        <!-- <th>#</th> -->
+                                        <th>공정항목순번 <i class="fa fa-fw fa-sort" ng-click="btOrder('seq')" style="cursor: pointer;"></i></th>
+                                        <th>공정항목명 <i class="fa fa-fw fa-sort" ng-click="btOrder('name')" style="cursor: pointer;"></i></th>
+                                        <th>공정명 </th>
+                                        <th>공정항목유형 <i class="fa fa-fw fa-sort" ng-click="btOrder('item_type')" style="cursor: pointer;"></i></th>
+                                        <th>설명</th>
+                                        <th>수정</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+	                                    <tr  ng-repeat="f in processVars">
+	                                    	<td>{{f.seq}}</td>
+	                                    	<td>{{f.name}}</td>
+	                                    	<td>{{f.process.name}}</td>
+	                                    	<td>{{f.item_type}}</td>
+	                                    	<td>{{f.remark}}</td>
+	                                    	<td style="width:100px">
+	                                    			<button data-f-id="{{f.id}}" ng-click="btEdit(f.id)" style="width:30px;" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i></button>
+	                                    			<button data-f-id="{{f.id}}" ng-click="btDelete(f.id)" style="width:30px" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i></button>
+	                                     	</td>
+	                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalFrm">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="box box-primary modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">공정항목관리</h4>
+                </div>
+
+                <form class="form-horizontal" enctype="multipart/form-data" id="frm" ng-submit="onSubmitFrm()">
+                    <div class="box-body">
+                    
+                    	<div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">공정항목순번:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtSeq" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">공정항목명:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtName" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">공정명:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="selectOpt"  required>
+                                	<option value="">공정명</option>
+                                	<option ng-repeat="o in processes" value="{{o.id}}">{{o.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                       
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">공정항목유형:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtItemType" placeholder="" required/>
+                            </div>
+                        </div>
+                       		 
+                        
+                        
+                        
+                        <div class="form-group">
+                            <label for="txtRemark" class="col-sm-2 control-label">설명:</label>
+                            <div class="col-sm-10">
+                                <textarea rows="5" class="form-control" id="txtRemark"></textarea>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">저장</button>
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">저장
+                        </button>
+                    </div><!-- /.box-footer -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<th:block layout:fragment="script">
+<script th:src="@{/static/admin/javascript_v3/process-var.js}"></script>
+</th:block>
+</body>
+</html>

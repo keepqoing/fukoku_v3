@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+
+<head>
+
+    <title>알람통계</title>
+    <style type="text/css">
+        /*table {*/
+            /*font-size: 8pt;*/
+            /*display: block;*/
+            /*overflow-x: auto;*/
+
+        /*}*/
+
+        .table-head {
+            background-color: #3c8dbc;
+            color: white;
+        }
+
+        table thead th {
+            text-align: center;
+        }
+
+        table tbody tr {
+            text-align: center;
+        }
+
+        #mainTable td, #mainTable th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        td, th{
+            text-align: center;
+            /*vertical-align: middle!important;*/
+        }
+
+        .column-label{
+            font-size: 17px;
+            display: inline-block;
+            padding-right: 10px;
+            text-indent: -2px;
+            /*font-weight: bold;*/
+        }
+        .select_column{
+            width: 18px;
+            height: 18px;
+        }
+
+
+        table .head {
+            background-color: #3c8dbc;
+            color: white;
+        }
+
+        /*.table td  {*/
+            /*min-width: 220px;*/
+        /*}*/
+        /*td:first-child {*/
+            /*min-width: 100px!important;*/
+        /*}*/
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                var d1 = new Date();
+                var d2 = new Date();
+
+                $('#startYear').datetimepicker({
+                    format: 'YYYY',
+                    defaultDate: d1
+                });
+                $("#txtStartYear").val(d1.getFullYear());
+
+                $('#endYear').datetimepicker({
+                    format: 'YYYY',
+                    defaultDate: d2
+                });
+                $("#txtEndYear").val(d2.getFullYear());
+            });
+        });
+
+    </script>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+    <section class="content-header">
+        <h1>
+            알람통계
+        </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                <div class=""form-group>
+                                    <div class='input-group date' id='startYear'>
+                                        <input type='text' class="form-control" id="txtStartYear" placeholder="시작날짜"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                <div class=""form-group>
+                                    <div class='input-group date' id='endYear'>
+                                        <input type='text' class="form-control" id="txtEndYear" placeholder="종료날짜"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 col-xs-12" id="lineCheckboxes">
+                                <label class="column-label"><input class="select_column" name="m_option" type="checkbox" value="show_month" id="show_month" checked> 달보기</label>
+                                <label class="column-label"><input class="select_column" name="m_option" type="checkbox" value="show_product" id="show_product" checked> 제품보기</label>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                <div id="selectFactoryButtonList">
+
+                                </div>
+                            </div>
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                <div id="selectLineButtonList">
+
+                                </div>
+                            </div>
+
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                <div id="selectMachineButtonList">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <table class="table" id="mainTable">
+                                    <thead class="thead-inverse table-head" >
+                                        <tr id="tableHeader">
+
+                                        </tr>
+                                        <tr id="tableHeader2">
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="alarmTable">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Model will pop up when the user clicks on the alarm name -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1"   role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalHistory">
+        <div class="modal-dialog modal-lg" style="width:90%;">
+            <div class="modal-content" style="max-height: calc(100vh - 0px);overflow-y: auto;">
+                <div class="box box-primary modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            style="font-weight: bold; font-size: 18pt;"
+                            aria-hidden="true">X</span></button>
+                    <h4 class="modal-title">알람내역</h4>
+                </div>
+                <div class="row"></div>
+                <div class="modal-body">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                        <table class="table">
+                            <thead class="thead-inverse head">
+                            <tr>
+                                <th>#</th>
+                                <th>라인</th>
+                                <th>설비</th>
+                                <th>설비상태</th>
+                                <th>생산날짜</th>
+                                <th>시작날짜</th>
+                                <th>종료날짜</th>
+                                <th>분</th>
+                                <th>알람코드</th>
+                                <th>알람명</th>
+                            </tr>
+                            </thead>
+                            <tbody id="ALARM_HISTORY">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12 text-left">
+                            <div id="pageMessage">전시 <span id="limitPage"></span> 의 <span id="totalPage"></span> 페이지
+                                <span id="totalRecords"></span></div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                            <select class="form-control" style="width:100px;" id="PER_PAGE">
+                                <option value="15">15</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                            <div class="pull-right" id="PAGINATION">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--<script src="/static/admin/javascripts/libraries/bootstrap-waitingfor.js"></script>-->
+    <script src="/static/admin/javascript_v3/alarm-statistics.js"></script>
+    <script id="ALARM_HISTORY_TEMPLATE" type="text/x-jquery-tmpl">
+	    <tr data-id="{{= ID}}"style="text-align:center;">
+		    <td>{{= NO}}</td>
+			<td>{{= LINE}}</td>
+			<td>{{= MACHINE}}</td>
+			<td>{{= MSTATE}}</td>
+			<td>{{= WORK_DATE}}</td>
+			<td>{{= START_TIME}}</td>
+			<td>{{= END_TIME}}</td>
+			<td>{{= DURATION}}</td>
+			<td>{{= ALARM_CODE}}</td>
+			<td>{{= ALARM_NAME}}</td>
+
+		</tr>
+
+    </script>
+
+</div>
+<th:block layout:fragment="script">
+
+</th:block>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+
+<head>
+
+    <title>사용자관리</title>
+    <style type="text/css">
+        table {
+            font-size: 12pt;
+        }
+
+        table thead {
+            background-color: #3c8dbc;
+            color: white;
+        }
+
+        table thead th {
+            text-align: center;
+        }
+
+        table tbody tr {
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <section class="content-header">
+        <h1>
+            사용자관리
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div>
+                                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-xs-6">
+                                    <button type="button" id="btnNew" class="btn btn-success">사용자추가</button>
+                                </div>
+                                <!--<div class="col-xl-6 col-lg-6 col-md-6 col-sm-1 col-xs-1"></div>
+                                 <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-xs-5">
+                                    <select class="form-control" id="selectDepartmentSearch">
+                                        <option value="">부서</option>
+                                    </select>
+                                </div> -->
+                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-xs-6">
+                                    <input type="text" class="form-control" id="txtNameSearch" placeholder="이름"/>
+                                </div>
+                                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-4 col-xs-6">
+                                    <button type="button" class="form-control btn btn-primary" id="btnSearch">검색
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <table class="table">
+                                    <thead class="thead-inverse">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>사번</th>
+                                        <th>이름</th>
+                                        <th>전화번호</th>
+                                        <th>핸드폰</th>
+                                        <th>이메일</th>
+                                        <th>위치</th>
+                                        <th>역할</th>
+                                        <th>지위</th>
+                                        <!-- <th>부서</th>
+                                        <th>라인</th> -->
+                                        <th>수정</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="USER">
+                                    <tr role="row" class="odd" style="text-align:center;font-weight:bold;">
+                                        <td colspan="13">콘텐츠 없음</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="box-footer">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <div id="pageMessage">전시 <span id="limitPage"></span> 의 <span id="totalPage"></span>
+                                        페이지 <span id="totalRecords"></span></div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                    <select class="form-control" style="width:100px;" id="PER_PAGE">
+                                        <option value="15">15</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-12">
+                                    <div class="pull-right" id="PAGINATION">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- box-footer -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalUser">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="box box-primary modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">사용자관리</h4>
+                </div>
+
+                <form class="form-horizontal" enctype="multipart/form-data">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="txtEmployeeId" class="col-sm-2 control-label">사번:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtEmployeeId" placeholder="사번"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtPassword" class="col-sm-2 control-label">비밀번호:</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="txtPassword" placeholder="비밀번호"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtConfirmPassword" class="col-sm-2 control-label">비밀번호확인:</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="txtConfirmPassword" placeholder="비밀번호확인"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">이름:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtName" placeholder="이름"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtPhone" class="col-sm-2 control-label">전화번호:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtPhone" placeholder="전화번호"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtCellPhone" class="col-sm-2 control-label">핸드폰:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtCellPhone" placeholder="핸드폰"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtEmail" class="col-sm-2 control-label">이메일:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtEmail" placeholder="이메일"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectPosition" class="col-sm-2 control-label">위치:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="selectPosition">
+                                    <option value="">위치</option>
+                                    <option value="Tester">Tester</option>
+                                    <option value="Po1">Po1</option>
+                                    <option value="Po2">Po2</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectRole" class="col-sm-2 control-label">역할:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="selectRole">
+                                    <option value="">역할</option>
+                                    <option value="TECHNICAL">TECHNICAL</option>
+                                    <option value="ADMIN">ADMIN</option>
+                                    <option value="WORKER">WORKER</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectStatus" class="col-sm-2 control-label">지위:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="selectStatus">
+                                    <option value="">지위</option>
+                                    <option value="1">Enable</option>
+                                    <option value="0">Disable</option>
+                                </select>
+                            </div>
+                        </div>
+                       <!--  <div class="form-group">
+                            <label for="selectLine" class="col-sm-2 control-label">부서:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="selectDepartment">
+                                    <option value="">부서</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectLine" class="col-sm-2 control-label">라인:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="selectLine">
+                                    <option value="">라인</option>
+                                </select>
+                            </div>
+                        </div> -->
+                    </div><!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary pull-right btn-flat" id="btnSave">저장</button>
+                        <button type="button" class="btn btn-primary pull-right btn-flat" id="btnSaveUpdate"
+                                style="display:none;">Save
+                        </button>
+                    </div><!-- /.box-footer -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalUserChangedPassword">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="box box-primary modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">비밀번호 변경</h4>
+                </div>
+
+                <form class="form-horizontal" enctype="multipart/form-data">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="txtPasswordChanged" class="col-sm-2 control-label">비밀번호:</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="txtPasswordChanged" placeholder="비밀번호"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtConfirmPasswordChanged" class="col-sm-2 control-label">비밀번호확인:</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="txtConfirmPasswordChanged" placeholder="비밀번호확인"/>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary pull-right btn-flat" id="btnSaveChangedPassword">저장</button>
+                    </div><!-- /.box-footer -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalMessage" style="z-index: 10000">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="TITLE2">메시지</h4>
+                </div>
+                <div class="modal-body">
+                    <h5 id="MESSAGE1"><strong>이 기록을 삭제 하시겠습니까?</strong></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-red btn-default btn-ripple" data-dismiss="modal">아니</button>
+                    <button type="button" class="btn btn-indigo btn-danger" id="btnOk">승인</button>
+                </div>
+            </div><!--.modal-content-->
+        </div>
+    </div>
+    <script th:src="@{/static/admin/javascript_v3/user.js}"></script>
+    <script id="USER_TEMPLATE" type="text/x-jquery-tmpl">
+        <tr data-id="{{= ID}} "style="text-align:center;">
+            <td>{{= NO}}</td>
+            <td>{{= E_ID}}</td>
+            <td><strong>{{= NAME}}</strong></td>
+            <td><strong>{{= PHONE}}</strong></td>
+            <td><strong>{{= CELL_PHONE}}</strong></td>
+            <td><strong><span class="label label-primary label-as-badge" style="font-size:11pt">{{= EMAIL}}</span></strong></td>
+            <td><strong>{{= POSITION}}</strong></td>
+            <td><strong><span class="label label-success label-as-badge" style="font-size:11pt">{{= ROLE}}</span></strong></td>
+            <td>
+                {{if STATUS == 1}}
+                    <strong><span class="label label-success label-as-badge" style="font-size:11pt">ENABLED</span></strong>
+                {{else}}
+                    <strong><span class="label label-success label-as-badge" style="font-size:11pt">DISABLED</span></strong>
+                {{/if}}
+            </td>
+            <!--<td><strong>{{= DEPARTMENT}}</strong></td>
+            <td><strong>{{= LINE}}</strong></td>-->
+            <td style="text-align:center;">
+                <a href="javascript:;" id="btnEdit">
+                    <button class="btn btn-info btn-xs"><i class="fa fa-edit fa-lg"></i>Edit</button>
+                </a>
+                <a href="javascript:;" id="btnDelete">
+                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o fa-lg"></i>Delete</button>
+                </a>
+                <a href="javascript:;" id="btnPassword">
+                    <button class="btn btn-primary btn-xs"><i class="fa fa-edit fa-lg"></i>Password</button>
+                </a>
+            </td>
+        </tr>
+    </script>
+</div>
+<th:block layout:fragment="script">
+
+</th:block>
+</body>
+</html>

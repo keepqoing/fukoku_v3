@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout" ng-app="fukoku">
+
+<head>
+
+    <title>설비관리</title>
+    
+    <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
+    <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/d3/d3.min.js}" charset="utf-8"></script>
+    <script th:src="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/angular-nvd3/dist/angular-nvd3.js}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-sanitize.js"></script>
+    
+<!--      Latest compiled and minified CSS
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+
+		
+     -->
+    <style>
+        .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+    
+    
+	.wrapper {
+	
+ 		position: relative;
+	}
+	.wrapper .selected-items-box {
+	  cursor: pointer;
+	  border: solid 1px #ddd;
+	  padding:10px;
+	  background-color: #333;
+	  color: #ffffff;
+	}
+    
+    .selected-items-box .items-list {
+	  list-style-type: none;
+	  width: 100%;
+	  padding: 0;
+	  margin: 0;
+	}
+		.selected-items-box .items-list li {
+		  display: inline;
+		}
+		
+		.wrapper .list {
+		  display: contents;
+		  height: 200px;
+		  overflow-y: auto;
+		  overflow-x: hidden;
+		  border-left: solid 1px #C7C6C7;
+		  border-right: solid 1px #C7C6C7;
+		  border-bottom: solid 1px #C7C6C7;
+		  z-index: 100;
+		  position: absolute;
+		  width: 100%;
+		}
+		.list .items-list {
+		  list-style-type: none;
+		  width: 100%;
+		  padding: 0;
+		  margin: 0;
+		}
+		.list .items-list li {
+		  margin: 0;
+		  width: 100%;
+		  padding: 0;
+		  border-bottom: solid 1px #C7C6C7;
+		  padding: 5px;
+		  background-color: #fff;
+		}
+    
+    
+    
+    
+    </style>
+    
+</head>
+<body ng-controller="MainCtrl">
+
+<div layout:fragment="content">
+
+    <section class="content-header">
+        <h1>
+            	설비관리
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xl-10 col-lg-10 col-md-6 col-sm-6 col-xs-12">
+                                    <button type="button" id="btAdd" class="btn btn-success" ng-click="btAdd()">설비추가</button>
+                                    <form id="fileUploadForm"  class="btn btn-info btn-file">Upload <input type="file" id="btImport" name="file" (change)="btImport()"> </form>
+                                    <button type="button" id="btExport" class="btn btn-info" ng-click="btExport()">Download</button>
+                                </div>
+                                
+                                <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                     <div class="box-tools">
+						                <div class="input-group input-group-sm" style="min-width: 150px;">
+						                  <input type="text" name="table_search" class="form-control pull-right" id="txtSearch" placeholder="검색">
+						
+						                  <div class="input-group-btn">
+						                    <button type="button" class="btn btn-default" ng-click="btSearch()"><i class="fa fa-search"></i></button>
+						                  </div>
+						                </div>
+						              </div>
+						              
+						              
+						              
+							      
+                                </div>
+                                
+                                
+                        </div>
+                         <br/>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <table  class="table table-bordered table-striped" id="dtTable">
+                                    <thead class="table-head">
+                                    <tr>
+                                       <!--  <th>#</th> -->
+                                        <th>설비명 <i class="fa fa-fw fa-sort" ng-click="btOrder('name')" style="cursor: pointer;"></i></th>
+                                        <th>공정명 </th>                  
+                                        <th>설명 <i class="fa fa-fw fa-sort" ng-click="btOrder('remark')" style="cursor: pointer;"></i></th> 
+                                        <th>IP 주소 <i class="fa fa-fw fa-sort" ng-click="btOrder('ip')" style="cursor: pointer;"></i></th>
+                                        <th>도입일 <i class="fa fa-fw fa-sort" ng-click="btOrder('import_date')" style="cursor: pointer;"></i></th> <!-- imported date -->
+                                        <th>자산코드 <i class="fa fa-fw fa-sort" ng-click="btOrder('code')" style="cursor: pointer;"></i></th>  <!-- code -->
+                                        <th>제작업체</th> <!-- Manufacturer -->
+                                        <th>제작업체 담당자</th> <!-- Facility staff -->
+                                        <th>제작업체 연락처</th> <!-- Facility Contact person -->
+                                        <th>PLC 종류</th> <!-- plc_type -->
+                                        <th>통신모듈명</th> <!-- PLC communication device -->
+                                        <th>통신모듈 Station</th> <!-- 통신모듈 Station -->
+                                        <!-- <th>순번</th> -->
+                                        <th>수정</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+	                                    <tr  ng-repeat="f in machines">
+	                                    	<!-- <td>{{f.id}}</td> -->
+	                                    	<td>{{f.name}}</td>
+	                                    	<!-- <td>{{f.process.name}}</td> -->
+	                                    	<td><span style="margin-right:5px" ng-repeat="p in f.lst_process" class="label label-info">{{p.name}}</span></td>
+	                                    	<td>{{f.remark}}</td>
+	                                    	<td>{{f.ip}}</td>
+	                                    	<td>{{f.import_date}}</td>
+	                                    	<td>{{f.code}}</td>
+	                                    	<td>{{f.manufacturer}}</td>
+	                                    	<td>{{f.facility_staff}}</td>
+	                                    	<td>{{f.facility_contact_person}}</td>
+	                                    	<td>{{f.plc_type}}</td>
+	                                    	<td>{{f.plc_communication_device}}</td>
+	                                    	<td>{{f.station}}</td>
+	                                    	<!-- <td>{{f.seq}}</td> -->
+	                                    	
+	                                    	<td style="width:100px">
+	                                    			<button data-f-id="{{f.id}}" ng-click="btEdit(f.id)" style="width:30px;" type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i></button>
+	                                    			<button data-f-id="{{f.id}}" ng-click="btDelete(f.id)" style="width:30px" type="button" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-trash"></i></button>
+	                                     	</td>
+	                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Modal -->
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalFrm">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="box box-primary modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">설비관리</h4>
+                </div>
+
+                <form class="form-horizontal" enctype="multipart/form-data" id="frm" ng-submit="onSubmitFrm()">
+                    <div class="box-body">
+                    
+                    <!--  <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">순번:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtSeq" placeholder="" required/>
+                            </div>
+                        </div> -->
+                        
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">설비명:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtName" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                       <!--  <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">공정명:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="selectOptProcess"  required>
+                                	<option value="">공정</option>
+                                	<option ng-repeat="o in processes" value="{{o.id}}">{{o.name}}</option>
+                                </select>
+                            </div>
+                        </div> -->
+                        
+                        
+                        <div class="form-group">
+						 	 <label for="txtRemark" class="col-sm-2 control-label"></label>
+						    <div class="col-sm-10">
+						    	<!-- <select class="selectpicker" id="selectOptProcess" multiple data-live-search="true" required>
+						    	<option value="">공정</option>
+						    	<option value="">공정</option>
+						    	<option value="">공정</option>
+						    	<option value="">공정</option>
+						    	<option value="">공정</option>
+                                <option ng-repeat="o in processes" value="{{o.id}}">{{o.name}}</option> 
+								</select> -->
+								
+							
+							   <span ng-repeat="o in processes | filter: getSelectedItems">  <button style="margin-top:5px" type="button" class="btn btn-info" > {{o.name}} </button> </span>
+								
+								<span ><button type="button" style="margin-top:5px" class="btn btn-warning" data-toggle="collapse" data-target="#demo">공정명 <i class="fa fa-fw fa-toggle-down"></i></button></span> 
+								 <div id="demo" class="collapse">
+							        <div class="list">
+							          <ul class="items-list">
+							            <li ng-repeat="o in processes">
+							              <input type="checkbox" name="processCheck" ng-model="o.selected" value="{{o.id}}"/>
+							              <span>{{o.name}}</span>
+							            </li>
+							          </ul>
+							        </div>
+								 </div>
+								
+								
+								
+								
+							      
+							      
+							      
+        
+        
+						    </div>
+						</div>
+                        
+                        <div class="form-group">
+                            <label for="txtRemark" class="col-sm-2 control-label">설명:</label>
+                            <div class="col-sm-10">
+                                <textarea rows="5" class="form-control" id="txtRemark"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">IP 주소:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtIP" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        <div class="form-group">
+                            <label for="txtDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">도입일</label>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                <div class='input-group date' id='importDate'>
+                                    <input type='text' class="form-control" id="txtImportDate" placeholder="" required/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">자산코드:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtCode" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">제작업체:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtManufacturer" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">제작업체 담당자:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtFacilityStaff" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">제작업체 연락처:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtFacilityContactPerson" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">PLC 종류:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtPlctype" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">통신모듈명:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtPlcCommunicationDevice" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">통신모듈 Station:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtStation" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        
+                   
+                        
+                       
+                        
+                        
+                    </div><!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btSave" style="display:none;">저장</button>
+                        <button type="submit" class="btn btn-primary pull-right btn-flat" id="btUpdate" style="display:none;">저장
+                        </button>
+                    </div><!-- /.box-footer -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<th:block layout:fragment="script">
+<script th:src="@{/static/admin/javascript_v3/machine.js}"></script>
+<script>
+        $(document).ready(function () {
+            $(function () {
+                $('#importDate').datetimepicker({
+                	format: 'YYYY-MM-DD HH:mm:ss',
+                    defaultDate: new Date()
+                });
+            });
+        });
+    </script>
+<!--     
+    Latest compiled and minified JavaScript
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+				
+				(Optional) Latest compiled and minified JavaScript translation files
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/i18n/defaults-*.min.js"></script>
+					 -->	
+				<script>
+				$( document ).ready(function() {
+					$('.selected-items-box').bind('click', function(e) {
+				        $('.wrapper .list').slideToggle('fast');
+				    });
+				});
+				</script>
+				
+				
+</th:block>
+</body>
+</html>

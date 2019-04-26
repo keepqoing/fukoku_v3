@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+
+<head>
+
+    <title>조업시간코드관리</title>
+    <style type="text/css">
+        body { padding-right: 0 !important }
+        table {
+            font-size: 12pt;
+        }
+
+        table .head {
+            background-color: #3c8dbc;
+            color: white;
+        }
+
+        table thead th {
+            text-align: center;
+        }
+
+        table tbody tr {
+            text-align: center;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        window.addEventListener('resize', function (event) {
+            $("#chart").width(window.innerWidth * 0.9);
+            $("#chart").height(window.innerHeight);
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $('#startTime, #endTime').datetimepicker({
+                    format: 'HH:mm',
+                });
+                $('#startDate, #endDate').datetimepicker({
+                    format: 'YYYY-MM-DD',
+                    defaultDate: new Date()
+                });
+            });
+        });
+
+    </script>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <section class="content-header">
+        <h1>
+            조업시간코드관리
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div>
+                                <div class="col-xl-1 col-lg-1 col-md-2 col-sm-4 col-xs-5">
+                                    <div class="form-group">
+                                        <button type="button" id="btnNew" class="btn btn-success">조업시간코드추가</button>
+                                    </div>
+                                </div>
+                                <div class="col-xl-9 col-lg-9 col-md-7 col-sm-4 col-xs-2"></div>
+                                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-5">
+                                    <div class="form-group">
+                                        <select id="selectWorkingTypeNameSearch" class="form-control">
+                                            <option value="">근무유형명</option>
+                                            <option value="평일근무유형">평일근무유형</option>
+                                            <option value="휴일근무유형">휴일근무유형</option>
+                                            <option value="금요일근무유형">금요일근무유형</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <table class="table">
+                                    <thead class="thead-inverse head">
+                                    <tr>
+                                        <th>#</th>
+                                        <!--<th>근무유형코드</th>-->
+                                        <th>조업시간명(코드)</th>
+                                        <th>근무유형명</th>
+                                        <th>시간대</th>
+                                        <th>해당시간</th>
+                                        <th>해당요일</th>
+                                        <th>분</th>
+                                        <th>시작날짜</th>
+                                        <th>종료날짜</th>
+                                        <th>수정</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="OPERATING_TIME">
+                                    <tr role="row" class="odd" style="text-align:center;font-weight:bold;">
+                                        <td colspan="11">콘텐츠 없음</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div>전시 <span id="limitPage"></span> 의 <span id="totalPage"></span> 페이지 <span
+                                            id="totalRecords"></span></div>
+                                </div>
+                                <div class="col-xl-16 col-lg-6 col-md-6 col-sm-6 col-xs-12" style=" padding:25px 0px 10px 10px;">
+                                    <select class="form-control" style="width:100px;" id="PER_PAGE">
+                                        <option value="15">15</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-16 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="pull-right" id="PAGINATION">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- box-footer -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalOperatingTime">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="box box-primary modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">조업시간코드관리</h4>
+                </div>
+
+                <form class="form-horizontal" enctype="multipart/form-data" id="myForm">
+                    <div class="box-body">
+                        <!--<div class="form-group">
+                            <label for="selectItem" class="col-sm-2 control-label">세부항목:</label>
+                            <div class="col-sm-10">
+                                <select id="selectItem" class="form-control">
+                                    <option value="">세부항목</option>
+                                </select>
+                            </div>
+                        </div>-->
+                        <div class="form-group">
+                            <label for="txtWorkName" class="col-sm-2 control-label">조업시간명:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="txtWorkName" placeholder="조업시간"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectWorkingTypeName" class="col-sm-2 control-label">근무유형명:</label>
+                            <div class="col-sm-10">
+                                <select id="selectWorkingTypeName" class="form-control">
+                                    <option value="">근무유형명</option>
+                                    <option value="IG_DF_DAY">평일</option>
+                                    <option value="IG_DF_HID">휴일</option>
+                                    <option value="IG_DF_FRI">금요일</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectTimeTag" class="col-sm-2 control-label">시간대:</label>
+                            <div class="col-sm-10">
+                                <select id="selectTimeTag" class="form-control">
+                                    <option value="">시간대</option>
+                                    <option value="주간">주간</option>
+                                    <option value="야간">야간</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--<div class="form-group">
+                            <label class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">작업일:</label>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                <div class='input-group date'>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="crossDay" value="어제" style="height: 1.5em;width: 20px;">어제</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="crossDay" value="당일" style="height: 1.5em;width: 20px;">당일</label></span>
+                                </div>
+                            </div>
+                        </div>-->
+                        <div class="form-group">
+                            <label for="txtStartTime" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">시작시간</label>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                <div class='input-group date' id='startTime'>
+                                    <input type='text' class="form-control" id="txtStartTime" placeholder="시작시간"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtEndTime" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">종료시간</label>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                <div class='input-group date' id='endTime'>
+                                    <input type='text' class="form-control" id="txtEndTime" placeholder="완료시간"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">시작일:</label>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                <div class='input-group date'>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="startDate" value="월" style="height: 1.5em;width: 20px;">월</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="startDate" value="화" style="height: 1.5em;width: 20px;">화</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="startDate" value="수" style="height: 1.5em;width: 20px;">수</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="startDate" value="목" style="height: 1.5em;width: 20px;">목</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="startDate" value="금" style="height: 1.5em;width: 20px;">금</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="startDate" value="토" style="height: 1.5em;width: 20px;">토</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="startDate" value="일" style="height: 1.5em;width: 20px;">일</label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">종료일:</label>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                <div class='input-group date'>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="endDate" value="월" style="height: 1.5em;width: 20px;">월</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="endDate" value="화" style="height: 1.5em;width: 20px;">화</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="endDate" value="수" style="height: 1.5em;width: 20px;">수</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="endDate" value="목" style="height: 1.5em;width: 20px;">목</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="endDate" value="금" style="height: 1.5em;width: 20px;">금</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="endDate" value="토" style="height: 1.5em;width: 20px;">토</label></span>
+                                    <span style="margin-right: 15px;"><label><input type="radio" name="endDate" value="일" style="height: 1.5em;width: 20px;">일</label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtStartDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">시작날짜</label>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                <div class='input-group date' id='startDate'>
+                                    <input type='text' class="form-control" id="txtStartDate" placeholder="시작날짜"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtEndDate" class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">종료날짜</label>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                <div class='input-group date' id='endDate'>
+                                    <input type='text' class="form-control" id="txtEndDate" placeholder="종료날짜"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div><!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary pull-right btn-flat" id="btnSave">저장</button>
+                        <button type="button" class="btn btn-primary pull-right btn-flat" id="btnSaveUpdate"
+                                style="display:none;">저장
+                        </button>
+                    </div><!-- /.box-footer -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         id="modalMessage" style="z-index: 10000">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="TITLE2">메시지</h4>
+                </div>
+                <div class="modal-body">
+                    <h5 id="MESSAGE1"><strong>이 기록을 삭제 하시겠습니까?</strong></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-red btn-default btn-ripple" data-dismiss="modal">아니</button>
+                    <button type="button" class="btn btn-indigo btn-danger" id="btnOk">승인</button>
+                </div>
+            </div><!--.modal-content-->
+        </div>
+    </div>
+    <script src="/static/admin/javascripts/operating-time.js"></script>
+    <script id="OPERATING_TIME_TEMPLATE" type="text/x-jquery-tmpl">
+        <tr data-id="{{= ID}} "style="text-align:center;">
+            <td>{{= NO}}</td>
+            <!--<td><strong>{{= WORKING_CODE}}</strong></td>-->
+            <td><strong>{{= WORK_TYPE_NAME}}</strong></td>
+            <td><strong>{{= WORKING_TYPE_NAME}}</strong></td>
+            <td><strong>{{= TIME_TAG}}</strong></td>
+            <td><strong>{{= START_TIME}} ~  {{= END_TIME}}</strong></td>
+            <td><strong>{{= START_DAY}} ~ {{= END_DAY}}</strong></td>
+            <td><strong>{{= DURATION}}</strong></td>
+            <td><strong>{{= START_DATE}}</strong></td>
+            <td><strong>{{= END_DATE}}</strong></td>
+            <td style="text-align:center;">
+                <a href="javascript:;" id="btnEdit">
+                <button class="btn btn-info btn-xs"><i class="fa fa-edit fa-lg"></i></button>
+            </a>
+            <a href="javascript:;" id="btnDelete">
+                <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o fa-lg"></i> </button>
+            </a>
+            </td>
+        </tr>
+    </script>
+</div>
+<th:block layout:fragment="script">
+
+</th:block>
+</body>
+</html>
