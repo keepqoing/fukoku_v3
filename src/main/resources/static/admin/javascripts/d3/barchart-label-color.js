@@ -55,7 +55,10 @@ function barchartLabel(data, settings){
         .attr("height", function(d){ return height - margin.top - margin.bottom - yScale(d[settings.y]); })
         .attr("width", function(d){ return 20;})
 
-        .attr("fill", function(d,i){console.log(colors[i]); return colors[i]})
+        .attr("fill", function(d,i){ return colors[i]})
+
+        .on("click", function(d,i){console.log(d); })
+
         ;
 
     svg.append("g")
