@@ -68,7 +68,7 @@ $(function() {
                         "size": {
 
                             "canvasHeight": 280,
-                            "canvasWidth": 400
+                            "canvasWidth": 500
                         }
                     });
 

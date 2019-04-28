@@ -137,7 +137,7 @@ $(function () {
             "size": {
 
                 "canvasHeight": 350,
-                "canvasWidth": 400
+                "canvasWidth": 500
 
             },
             header: {
@@ -356,7 +356,7 @@ $(function () {
                             "size": {
 
                                 "canvasHeight": 350,
-                                "canvasWidth": 400
+                                "canvasWidth": 500
 
                             },
                             header: {
@@ -419,7 +419,7 @@ $(function () {
                             "size": {
 
                                 "canvasHeight": 350,
-                                "canvasWidth": 400
+                                "canvasWidth": 500
 
                             },
                             header: {
@@ -480,7 +480,7 @@ $(function () {
                                 "size": {
 
                                     "canvasHeight": 350,
-                                    "canvasWidth": 400
+                                    "canvasWidth": 500
 
                                 },
                                 header: {
