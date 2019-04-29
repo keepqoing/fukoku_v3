@@ -15,7 +15,7 @@ $(function () {
     });
 
     $(document).ready(function () {
-        process.getLineName();
+        process.getLineName(2);
 
     });
 
@@ -34,11 +34,11 @@ $(function () {
     process.getPrefixMachineName = function () {
         $.ajax({
            /* url:"/v1/api/fukoku/machine/select-box",*/
-            url: "/v1/api/fukoku/faultime/machineName",
+            url: "/v3/api/fukoku/machine/findAllByLine/" + getline,
             type: 'GET',
             dataType: 'JSON',
             data: {
-                "lineName": getline
+
 
             },
             beforeSend: function (xhr) {
@@ -53,11 +53,11 @@ $(function () {
                     elt.removeChild(elt.lastChild);
                 }
 
-                var i, len = response.DATA.length;
+                var i, len = response.data.length;
 
                 for (i = 0; i < len; i++) {
                     var option = document.createElement("option");
-                    option.text = response.DATA[i].MACHINE;
+                    option.text = response.data[i].name;
                     elt.add(option);
                 }
 
@@ -69,10 +69,10 @@ $(function () {
     }
 
     var totalHourEachMonth = {monthsAll: []};
-    process.getLineName = function () {
+    process.getLineName = function (fid) {
 
         $.ajax({
-            url: "/v1/api/fukoku/faultime/lineName",
+            url: "/v3/api/fukoku/line/factory/" +  fid ,
             type: 'GET',
             dataType: 'JSON',
             data: {},
@@ -88,11 +88,11 @@ $(function () {
                     elt.removeChild(elt.lastChild);
                 }
 
-                var i, len = response.DATA.length;
+                var i, len = response.data.length;
 
                 for (i = 0; i < len; i++) {
                     var option = document.createElement("option");
-                    option.text = response.DATA[i].LINE_NAME;
+                    option.text = response.data[i].name;
                     elt.add(option);
                 }
 

@@ -39,13 +39,14 @@ $(function () {
         });
     };*/
 
-    productSummarization.productPie1 = function () {
+    // productSummarization.productPie1 = function () {
 
         /**
          * NG PRODUCT AND DEFECTIVE PRODUCT
          *
          * NOT GOOD PRODUCT
          */
+        /*
         new d3pie("product-pie1", {
             "data": {
                 "content": [
@@ -78,10 +79,11 @@ $(function () {
                 location: "top-center",
             },
         });
-
+*/
         /**
          * DEFECTIVE PRODUCT
          */
+        /*
         new d3pie("product-pie2", {
             "data": {
                 "content": [
@@ -114,10 +116,11 @@ $(function () {
                 location: "top-center",
             },
         });
-
+        */
         /**
          * GOOD PRODUCT
          */
+        /*
         new d3pie("product-pie3", {
             "data": {
                 "content": [
@@ -150,65 +153,69 @@ $(function () {
                 location: "top-center",
             },
         });
-
+        */
 
         /**
          * Group barchart for line
          */
+        /*
         var settings = {
             selector: "#product-line-group-barchart",
             height: 350,
             width: document.getElementById("div-product-line-canvas").offsetWidth - 60
         }
-        var data = [
-            {
-            "categorie":"IB", "values":[
-                {"value":100, "rate": "3"},
-                {"value":200, "rate": "4"},
-                {"value":300, "rate": "5"}
-                ]
-            },
-            {
-                "categorie":"HA", "values":[
-                {"value":100, "rate": "3"},
-                {"value":200, "rate": "4"},
-                {"value":300, "rate": "5"}
-                ]
-            },
-            {
-                "categorie":"HB", "values":[
-                {"value":100, "rate": "3"},
-                {"value":200, "rate": "4"},
-                {"value":300, "rate": "5"}
-                ]
-            },
-            {
-                "categorie":"HC", "values":[
-                {"value":100, "rate": "3"},
-                {"value":200, "rate": "4"},
-                {"value":300, "rate": "5"}
-                ]
-            },
-            {
-                "categorie":"HD", "values":[
-                {"value":100, "rate": "3"},
-                {"value":200, "rate": "4"},
-                {"value":300, "rate": "5"}
-                ]
-            },
-            {
-                "categorie":"PD", "values":[
-                {"value":100, "rate": "3"},
-                {"value":200, "rate": "4"},
-                {"value":300, "rate": "5"}
-                ]
-            }
-        ];
-        groupBarchart(data, settings);
+        */
+
+        // var data = [
+        //     {
+        //     "categorie":"IB", "values":[
+        //         {"value":100, "rate": "3"},
+        //         {"value":200, "rate": "4"},
+        //         {"value":300, "rate": "5"}
+        //         ]
+        //     },
+        //     {
+        //         "categorie":"HA", "values":[
+        //         {"value":100, "rate": "3"},
+        //         {"value":200, "rate": "4"},
+        //         {"value":300, "rate": "5"}
+        //         ]
+        //     },
+        //     {
+        //         "categorie":"HB", "values":[
+        //         {"value":100, "rate": "3"},
+        //         {"value":200, "rate": "4"},
+        //         {"value":300, "rate": "5"}
+        //         ]
+        //     },
+        //     {
+        //         "categorie":"HC", "values":[
+        //         {"value":100, "rate": "3"},
+        //         {"value":200, "rate": "4"},
+        //         {"value":300, "rate": "5"}
+        //         ]
+        //     },
+        //     {
+        //         "categorie":"HD", "values":[
+        //         {"value":100, "rate": "3"},
+        //         {"value":200, "rate": "4"},
+        //         {"value":300, "rate": "5"}
+        //         ]
+        //     },
+        //     {
+        //         "categorie":"PD", "values":[
+        //         {"value":100, "rate": "3"},
+        //         {"value":200, "rate": "4"},
+        //         {"value":300, "rate": "5"}
+        //         ]
+        //     }
+        // ];
+        // groupBarchart(data, settings);
 
         /**
          * Group barchart for machine
          */
+        /*
         var settings1 = {
             selector: "#product-machine-group-barchart",
             height: 350,
@@ -216,7 +223,7 @@ $(function () {
         }
         groupBarchart(data, settings1);
     }
-
+    */
     // productSummarization.productPie1();
 
     //btnGetMachine
@@ -258,6 +265,8 @@ $(function () {
 
                             }
                             groupBarchart(response.DATA, settings);
+                    }else{
+                        $("#product-machine-group-barchart").html("콘텐츠 없음");
                     }
                 }
             },
@@ -292,6 +301,7 @@ $(function () {
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function (response) {
+
                 if (response.CODE == "7777") {
                     $("#product-line-group-barchart").html("");
                     if (response.DATA.length > 0) {
@@ -305,7 +315,8 @@ $(function () {
                         }
                         groupBarchart(response.DATA, settings);
 
-
+                    }else{
+                        $("#product-line-group-barchart").html("콘텐츠 없음");
                     }
                 }
 
@@ -327,6 +338,7 @@ $(function () {
         }
     });
 
+    /*
     productSummarization.getAllProductByOK = function () {
         $.ajax({
             url: "/v1/api/fukoku/product_status_freq/graph-by-ok-product",
@@ -344,10 +356,11 @@ $(function () {
                 if (response.CODE == "7777") {
                     $("#product-pie-ok").html("");
                     if (response.DATA.length > 0) {
-
+                        */
                         /**
                          * GOOD PRODUCT
                          */
+                        /*
                         new d3pie("product-pie-ok", {
                             "data": {
                             "content": response.DATA
@@ -379,9 +392,11 @@ $(function () {
             }
         });
     };
+    */
 
 
     // ======= Chart 2: Get product by ng and df
+    /*
     $("#btnNG").click(function (){
         if($("#txtNGStartTime").val()=="" ){
             alert("Input data");
@@ -390,7 +405,9 @@ $(function () {
             productSummarization.getAllProductByDF();
         }
     });
+     */
 
+    /*
     productSummarization.getAllProductByNG = function () {
         $.ajax({
             url: "/v1/api/fukoku/product_status_freq/graph-by-ng-product",
@@ -408,10 +425,11 @@ $(function () {
                 if (response.CODE == "7777") {
                     $("#product-pie-ng").html("");
                     if (response.DATA.length > 0) {
-
+                        */
                         /**
                          * NOT GOOD PRODUCT
                          */
+                        /*
                         new d3pie("product-pie-ng", {
                             "data": {
                                 "content": response.DATA
@@ -442,8 +460,10 @@ $(function () {
             }
         });
     };
+    */
 
 
+    /*
     productSummarization.getAllProductByDF = function () {
         $.ajax({
             url: "/v1/api/fukoku/product_status_freq/graph-by-df-product",
@@ -469,9 +489,12 @@ $(function () {
                             }
                         }
 
+
+     */
                         /**
                          * DF PRODUCT
                          */
+                        /*
                         if(!is_empty) {
                             new d3pie("product-pie-df", {
                                 "data": {
@@ -504,7 +527,7 @@ $(function () {
             }
         });
     };
-
+    */
 
     // Add line to select box
     productSummarization.getAllLinesName = function(callback){
