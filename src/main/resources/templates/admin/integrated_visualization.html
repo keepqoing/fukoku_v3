@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" style="margin: 0;">
+                            <div class="row" style="margin: 0; position: relative;">
                                 <div id="mainChartContainer" class="col-lg-9 col-md-9 col-sm-8 col-xs-8 bar-chart-container">
                                     <div style="width:100%; padding-top: 10px; display: flex; position: absolute; flex-direction: row; justify-content: center;">
                                         <div class="chips">
@@ -78,14 +78,11 @@
                                     </div>
                                     <nav id="context-menu-ddwv" class="context-menu-ddwv">
                                         <ul class="context-menu-ddwv__items">
-                                            <li class="context-menu-ddwv__item">
-                                                <a href="#" class="context-menu-ddwv__link" data-action="menu 1"><i class="fa fa-eye"></i> Menu 1</a>
+                                            <li id="liDayly" class="context-menu-ddwv__item">
+                                                <a href="#" class="context-menu-ddwv__link" data-action="dayly">일별정보</a>
                                             </li>
-                                            <li class="context-menu-ddwv__item">
-                                                <a href="#" class="context-menu-ddwv__link" data-action="menu 2"><i class="fa fa-edit"></i> Menu 2</a>
-                                            </li>
-                                            <li class="context-menu-ddwv__item">
-                                                <a href="#" class="context-menu-ddwv__link" data-action="menu 3"><i class="fa fa-times"></i> Menu 3</a>
+                                            <li id="liWeekly" class="context-menu-ddwv__item">
+                                                <a href="#" class="context-menu-ddwv__link" data-action="weekly">주별정보</a>
                                             </li>
                                         </ul>
                                     </nav>
@@ -165,6 +162,7 @@
     <script th:src="@{/static/admin/integrated_visualization/js/bootstrap-colorpicker.min.js}"></script>
     <script th:src="@{/static/admin/integrated_visualization/js/three.min.js}"></script>
     <script th:src="@{/static/admin/integrated_visualization/js/threex.domevents.js}"></script>
+    <script th:src="@{/static/admin/integrated_visualization/js/d3.v5.min.js}"></script>
     <script th:src="@{/static/admin/integrated_visualization/js/OrbitControls.js}"></script>
     <script th:src="@{/static/admin/integrated_visualization/js/contextMenuDDWV.js}"></script>
     <script th:src="@{/static/admin/integrated_visualization/js/DDWV.js}"></script>

@@ -61,9 +61,25 @@ $(document).ready(function(){
 /**
  * Listens for contextmenu events.
  */
-function boxContextMenuWasCalled(pageX, pageY){
+function boxContextMenuWasCalled(pageX, pageY, fullBarLabels){
     toggleMenuOn();
     positionMenu(pageX, pageY);
+    console.log(fullBarLabels);
+    let line = fullBarLabels.graph.lineLabel;
+    let machine = fullBarLabels.graph.machineLabel;
+    let state = fullBarLabels.graph.stateLabel;
+    if (fullBarLabels.graph.xAxis == '라인' || fullBarLabels.graph.yAxis == '라인'){
+        line = fullBarLabels.info['라인'];
+    };
+    if (fullBarLabels.graph.xAxis == '설비' || fullBarLabels.graph.yAxis == '설비'){
+        machine = fullBarLabels.info['설비'];
+    };
+
+    $("ul.context-menu-ddwv__items").attr("data-item",encodeURIComponent(JSON.stringify({
+        line: line,
+        machine: machine,
+        state: state
+    })));
 }
 
 /**
@@ -72,7 +88,7 @@ function boxContextMenuWasCalled(pageX, pageY){
 function clickListener() {
     document.addEventListener( "click", function(e) {
         var clickeElIsLink = clickInsideElement( e, contextMenuLinkClassName );
-                
+
         if ( clickeElIsLink ) {
             e.preventDefault();
             menuItemListener( clickeElIsLink );
@@ -91,7 +107,7 @@ function clickListener() {
 function keyupListener() {
     window.onkeyup = function(e) {
         if ( e.keyCode === 27 ) {
-        toggleMenuOff();
+            toggleMenuOff();
         }
     }
 }
@@ -108,7 +124,7 @@ function resizeListener() {
 /**
  * Turns the custom context menu on.
  */
-function toggleMenuOn() {      
+function toggleMenuOn() {
     if ( menuState !== 1 ) {
         menuState = 1;
         menu.classList.add( contextMenuActive );
@@ -127,7 +143,7 @@ function toggleMenuOff() {
 
 /**
  * Positions the menu properly.
- * 
+ *
  * @param {Object} e The event
  */
 function positionMenu(clickCoordsX, clickCoordsY) {
@@ -152,7 +168,7 @@ function positionMenu(clickCoordsX, clickCoordsY) {
 
 /**
  * Dummy action function that logs an action when a menu item link is clicked
- * 
+ *
  * @param {HTMLElement} link The link that was clicked
  */
 function menuItemListener( link ) {

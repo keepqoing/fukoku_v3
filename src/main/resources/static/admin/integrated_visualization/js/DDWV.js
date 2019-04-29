@@ -29,7 +29,7 @@
         let distanceBetweenChildBoxes = 10;
 
         let loadingText = "LOADING...";
-        let fullScreenInfoText = "Item values are equal to zero or less than 0.1";
+        let fullScreenInfoText = "Item values are equal to zero";
 
         let barWidth = 100;
         let barLength = 100;
@@ -196,8 +196,14 @@
                                 type: 'simple',
                                 xAxis: barData.labels[j],
                                 yAxis: barData.data[i].label,
-                                info: info
-                            });
+                                info: info,
+                                graph: {
+                                    ...barData.more,
+                                stateLabel: childItem.label,
+                                xAxis: barData.xAxis,
+                                yAxis: barData.yAxis
+                            }
+                        });
                             cubes.push( { cube: cube, color: color, value: childItem.value } );
                         }
                     });
@@ -343,8 +349,8 @@
                         const info = new Object();
                         info[barData.yAxis] = yAxisTotalObject[key].yAxis;
                         info["항목"] = yAxisTotalObject[key].label;
-                        info["합계"] = `${yAxisTotalObject[key].value.toFixed(1)} (${yAxisTotalObject[key].unit})`;
-                        if (averageIsShown) info["평균"] = `${(yAxisTotalObject[key].value/yAxisTotalObject[key].count).toFixed(1)} (${yAxisTotalObject[key].unit})`;
+                        info["합계"] = `${yAxisTotalObject[key].value.toFixed(4)} (${yAxisTotalObject[key].unit})`;
+                        if (averageIsShown) info["평균"] = `${(yAxisTotalObject[key].value/yAxisTotalObject[key].count).toFixed(4)} (${yAxisTotalObject[key].unit})`;
                         fullBarLabels.push({
                             type: 'total',
                             xAxis: '',
@@ -392,8 +398,8 @@
                         const info = new Object();
                         info[barData.xAxis] = xAxisTotalObject[key].xAxis;
                         info["항목"] = xAxisTotalObject[key].label;
-                        info["합계"] = `${xAxisTotalObject[key].value.toFixed(1)} (${xAxisTotalObject[key].unit})`;
-                        if (averageIsShown) info["평균"] = `${(xAxisTotalObject[key].value/xAxisTotalObject[key].count).toFixed(1)} (${xAxisTotalObject[key].unit})`;
+                        info["합계"] = `${xAxisTotalObject[key].value.toFixed(4)} (${xAxisTotalObject[key].unit})`;
+                        if (averageIsShown) info["평균"] = `${(xAxisTotalObject[key].value/xAxisTotalObject[key].count).toFixed(4)} (${xAxisTotalObject[key].unit})`;
                         fullBarLabels.push({
                             type: 'total',
                             xAxis: xAxisTotalObject[key].xAxis,
@@ -418,7 +424,7 @@
                 var geometry = new THREE.TextGeometry( l, {
                     font: font,
                     size: yAxisLabelSize,
-                    height: 0.01
+                    height: 0.0001
                 });
                 var material = new THREE.MeshPhongMaterial( { color: yAxisLabelColor } );
                 var text = new THREE.Mesh(geometry, material);
@@ -443,7 +449,7 @@
             var geometry = new THREE.TextGeometry( label, {
                 font: font,
                 size: yAxisLabelSize,
-                height: 0.01
+                height: 0.0001
             });
             var material = new THREE.MeshPhongMaterial( { color: yAxisLabelColor } );
             var text = new THREE.Mesh(geometry, material);
@@ -472,7 +478,7 @@
                 var geometry = new THREE.TextGeometry( l, {
                     font: font,
                     size: xAxisLabelSize,
-                    height: 0.01
+                    height: 0.0001
                 });
                 var material = new THREE.MeshPhongMaterial( { color: xAxisLabelColor } );
                 var text = new THREE.Mesh(geometry, material);
@@ -497,7 +503,7 @@
             var geometry = new THREE.TextGeometry( label, {
                 font: font,
                 size: xAxisLabelSize,
-                height: 0.01
+                height: 0.0001
             });
             var material = new THREE.MeshPhongMaterial( { color: xAxisLabelColor } );
             var text = new THREE.Mesh(geometry, material);
@@ -534,7 +540,7 @@
                         var geometry = new THREE.TextGeometry( childItem.value.toString(), {
                             font: font,
                             size: barLabelSize,
-                            height: 0.01
+                            height: 0.0001
                         });
 
                         var material = new THREE.MeshPhongMaterial( { color: barLabelColor } );
@@ -567,7 +573,7 @@
                 var geometry = new THREE.TextGeometry( (i).toString() + " " + units, {
                     font: font,
                     size: scaleLabelSize,
-                    height: 0.01
+                    height: 0.0001
                 });
                 var material = new THREE.MeshPhongMaterial( { color: scaleLabelColor } );
                 var text = new THREE.Mesh(geometry, material);
@@ -619,12 +625,12 @@
                     let p = Math.floor(index/numberOfChildXAxises);
                     let q = index%numberOfChildXAxises;
                     let label = (averageIsShown)
-                        ? `${(yAxisTotalObject[key].value/yAxisTotalObject[key].count).toFixed(1)}\n(${yAxisTotalObject[key].value.toFixed(1)})`
-                        : yAxisTotalObject[key].value.toFixed(1);
+                        ? `${(yAxisTotalObject[key].value/yAxisTotalObject[key].count).toFixed(4)}\n(${yAxisTotalObject[key].value.toFixed(4)})`
+                        : yAxisTotalObject[key].value.toFixed(4);
                     var geometry = new THREE.TextGeometry( label, {
                         font: font,
                         size: barLabelSize,
-                        height: 0.01
+                        height: 0.0001
                     });
                     var material = new THREE.MeshPhongMaterial( { color: barLabelColor } );
                     var text = new THREE.Mesh(geometry, material);
@@ -665,12 +671,12 @@
                     let p = Math.floor(index/numberOfChildXAxises);
                     let q = index%numberOfChildXAxises;
                     let label = (averageIsShown)
-                        ? `${(xAxisTotalObject[key].value/xAxisTotalObject[key].count).toFixed(1)}\n(${xAxisTotalObject[key].value.toFixed(1)})`
-                        : xAxisTotalObject[key].value.toFixed(1);
+                        ? `${(xAxisTotalObject[key].value/xAxisTotalObject[key].count).toFixed(4)}\n(${xAxisTotalObject[key].value.toFixed(4)})`
+                        : xAxisTotalObject[key].value.toFixed(4);
                     var geometry = new THREE.TextGeometry( label, {
                         font: font,
                         size: barLabelSize,
-                        height: 0.01
+                        height: 0.0001
                     });
                     var material = new THREE.MeshPhongMaterial( { color: barLabelColor } );
                     var text = new THREE.Mesh(geometry, material);
@@ -859,9 +865,6 @@
                 document.getElementById("errorScreen").style.display = "none";
             }
         }
-
-
-
 
         const scaleIntervals = [1,3,5,10,20,50,100,200,500,1000,2000,5000,10000,20000,50000,100000, 200000, 500000, 1000000, 2000000, 50000000, 10000000];
 
@@ -1135,7 +1138,6 @@
                         var pageX = e.pageX - document.body.scrollLeft - document.documentElement.scrollLeft;
                         var pageY = e.pageY - document.body.scrollTop - document.documentElement.scrollTop;
 
-
                         // IE 8
                         if (pageX === undefined) {
                             pageX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
@@ -1145,7 +1147,7 @@
                         pageX -= Math.floor(container.getBoundingClientRect().left);
                         pageY -= Math.floor(container.getBoundingClientRect().top);
 
-                        boxContextMenuWasCalled(pageX, pageY);
+                        boxContextMenuWasCalled(pageX, pageY, fullBarLabels[i]);
                     });
                     });
                 }
