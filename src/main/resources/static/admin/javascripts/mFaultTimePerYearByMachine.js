@@ -331,9 +331,10 @@ process.breakdowntimeanalysisbyline = function () {
             // barchartLabel(graphObjArr, settings);
 
             barchartLabelWithClick(graphObjArr, settings,  $("#yearSelected").val(), "", "");
+            closeLoading();
         }
     });
-    closeLoading();
+
 }
 
 
