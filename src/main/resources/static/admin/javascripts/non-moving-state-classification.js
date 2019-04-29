@@ -73,6 +73,9 @@ $(function () {
                     });
 
                     $("#selectLineSearch").prop("selectedIndex",2).change();
+
+                    $('#btnSearch').click();
+
                 }
             },
             error:function(data,status,err) {
