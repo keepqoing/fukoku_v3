@@ -280,7 +280,7 @@ $(function() {
                 };
                 // barchartLabel(graphObjArr, settings);
 
-                barchartLabelWithClickNA(graphObjArr, settings,  $("#yearSelected").val(), "", "");
+                barchartLabelWithClickAlarm(graphObjArr, settings,  $("#yearSelected").val(), "", "");
 
 
                 closeLoading();
