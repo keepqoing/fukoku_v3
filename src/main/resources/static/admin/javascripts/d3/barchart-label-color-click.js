@@ -62,8 +62,8 @@ function barchartLabelWithClick(data, settings, pYear, pURL, pType){
             console.log(d.line1);
                 var queryString = "";
                 if(pType == "line"){
-                    console.log(d);
-                    alert(d);
+                    // console.log(d);
+                    // alert(d);
                    queryString = "?" + d.line1 + "&" + pYear;
                 }else if(pType == "machine"){
                     var machine = "";
