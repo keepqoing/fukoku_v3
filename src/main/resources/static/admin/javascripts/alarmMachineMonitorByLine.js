@@ -30,6 +30,21 @@ $(function() {
                     });
                     $("#selectLineSearch").prop("selectedIndex",0).change();
 
+
+                    var queryString = decodeURIComponent(window.location.search);
+                    queryString = queryString.substring(1);
+                    var queries = queryString.split("&");
+                    console.log("queries.length = " + queries.length);
+                    if(queries.length > 1){
+                        console.log("queries[0] = " + queries[0]);
+                        console.log("queries[1] = " + queries[1]);
+                        $("#selectLineSearch").val(queries[0]);
+                        $("#yearSelected").val(queries[1]);
+
+
+                        alarmMachineMonitor.breakdowntimeanalysisbyline();
+                    }
+
                 }
             },
             error:function(data,status,err) {
@@ -333,11 +348,15 @@ $(function() {
                     x: "MACHINE",
                     y: "stopTime"
                 };
-                barchartLabel(graphObjArr, settings);
+                // barchartLabel(graphObjArr, settings);
+
+                barchartLabelWithClickAlarm(graphObjArr, settings, $("#yearSelected").val(), "alarmTimeAnalysisByMachine", "machine");
+
+                closeLoading();
 
             }
         });
-        closeLoading();
+
     }
 
 

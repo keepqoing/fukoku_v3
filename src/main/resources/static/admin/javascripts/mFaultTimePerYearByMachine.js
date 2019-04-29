@@ -54,6 +54,19 @@ $(function () {
                     elt.add(option);
                 }
 
+                var queryString = decodeURIComponent(window.location.search);
+                queryString = queryString.substring(1);
+                var queries = queryString.split("&");
+                console.log("queries.length = " + queries.length);
+                if(queries.length > 1){
+                    console.log("queries[0] = " + queries[0]);
+                    console.log("queries[1] = " + queries[1]);
+                    $("#machineName").val(queries[0]);
+                    $("#yearSelected").val(queries[1]);
+
+                    process.breakdowntimeanalysisbyline();
+                }
+
             },
             error: function (data, status, err) {
                 console.log("error: " + data + " status: " + status + " err:" + err);
@@ -101,9 +114,13 @@ $(function () {
         })
     }
 */    process.fineTotalHourByMachine = function () {
+        openLoading();
+
         $("#bar-label").empty();
         var machineName=$("#machineName").val();
         var year=$("#yearSelected").val();
+
+
         $.ajax({
             url: "/v1/api/fukoku/faultime/getTotalHourByMachine",
             type: 'GET',
@@ -154,7 +171,9 @@ $(function () {
                     x: "MACHINE",
                     y: "stopTime"
                 };
-                barchartLabel(response.GraphData, settings);
+                // barchartLabelWithClick(response.GraphData, settings);
+
+
 
 
             },
@@ -309,8 +328,9 @@ process.breakdowntimeanalysisbyline = function () {
                 x: "MACHINE",
                 y: "stopTime"
             };
-            barchartLabel(graphObjArr, settings);
+            // barchartLabel(graphObjArr, settings);
 
+            barchartLabelWithClick(graphObjArr, settings,  $("#yearSelected").val(), "", "");
         }
     });
     closeLoading();

@@ -15,7 +15,11 @@ $(function () {
     });
 
     $(document).ready(function () {
+
         process.getLineName(2);
+
+
+
     });
 
     $(document).on('click', "#btnQuery", function () {
@@ -48,6 +52,21 @@ $(function () {
                     var option = document.createElement("option");
                     option.text = response.data[i].name;
                     elt.add(option);
+                }
+
+
+                var queryString = decodeURIComponent(window.location.search);
+                queryString = queryString.substring(1);
+                var queries = queryString.split("&");
+                console.log("queries.length = " + queries.length);
+                if(queries.length > 1){
+                    console.log("queries[0] = " + queries[0]);
+                    console.log("queries[1] = " + queries[1]);
+                    $("#lineName").val(queries[0]);
+                    $("#yearSelected").val(queries[1]);
+
+
+                    process.breakdowntimeanalysisbyline();
                 }
 
             },
@@ -140,6 +159,7 @@ $(function () {
 
 
 process.breakdowntimeanalysisbyline = function () {
+    openLoading();
     $.ajax({
         url: "/v1/api/fukoku/daily-mstate-analysis/non_active_Time_by_machine",
         type: 'POST',
@@ -266,10 +286,10 @@ process.breakdowntimeanalysisbyline = function () {
                 x: "MACHINE",
                 y: "stopTime"
             };
-            barchartLabel(graphObjArr, settings);
+            // barchartLabel(graphObjArr, settings);
+            barchartLabelWithClick(graphObjArr, settings, $("#yearSelected").val(), "non_active_Time_by_machine", "machine");
 
-
-
+            closeLoading();
         }
     });
 }
@@ -294,3 +314,4 @@ process.findMStateByLineAndStartTimeAndEndTime();
     ID: 0, MACHINE_NAME: "IB_Balancer", _DATE: "2018-01", LINE_NAME: "IB", TOTAL_WAIT: "1.2670000344514847",TOTAL_MANUAL:"2.7289999946951866"
     }
 ];*/
+

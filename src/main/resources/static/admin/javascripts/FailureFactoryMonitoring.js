@@ -246,23 +246,17 @@ $(function () {
                     x: "line1",
                     y: "bar"
                 };
-                barchartLabel(graphObjArr, settings);
+                barchartLabelWithClick(graphObjArr, settings,  $("#yearSelected").val(), "stop_offl_Line", "line");
 
 
-
-
-
-
-
-
-
-
+                closeLoading();
 
                 // console.log(month);
 
             }
+
         });
-        closeLoading();
+
     }
 
 

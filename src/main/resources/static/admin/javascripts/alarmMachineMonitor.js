@@ -229,11 +229,15 @@ $(function() {
                     x: "MACHINE",
                     y: "stopTime"
                 };
-                barchartLabel(graphObjArr, settings);
+                // barchartLabel(graphObjArr, settings);
 
+                barchartLabelWithClickAlarm(graphObjArr, settings,
+                    $("#yearSelected").val(), "alarmTimeAnalysisByLine", "line");
+
+                closeLoading();
             }
         });
-        closeLoading();
+
     }
 
 

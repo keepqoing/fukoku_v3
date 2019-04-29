@@ -19,6 +19,23 @@ $(function() {
                         $("#selectLineSearch").append("<option value="+value.name+">"+value.name+"</option>");
                     });
                     //fualtMachineMonitorByLine.getFualtData();
+
+
+                    var queryString = decodeURIComponent(window.location.search);
+                    queryString = queryString.substring(1);
+                    var queries = queryString.split("&");
+                    console.log("queries.length = " + queries.length);
+                    if(queries.length > 1){
+                        console.log("queries[0] = " + queries[0]);
+                        console.log("queries[1] = " + queries[1]);
+                        $("#selectLineSearch").val(queries[0]);
+                        $("#yearSelected").val(queries[1]);
+
+
+
+                        fualtMachineMonitorByLine.breakdowntimeanalysisbyline();
+                    }
+
                 }
             },
             error:function(data,status,err) {
@@ -110,6 +127,7 @@ $(function() {
 
 
     fualtMachineMonitorByLine.breakdowntimeanalysisbyline = function () {
+        openLoading();
         $.ajax({
             url: "/v1/api/fukoku/daily-mstate-analysis/non_active_Time_by_machine",
             type: 'POST',
@@ -242,7 +260,9 @@ $(function() {
                     x: "MACHINE",
                     y: "stopTime"
                 };
-                barchartLabel(graphObjArr, settings);
+                // barchartLabelWithClickNA(graphObjArr, settings);
+                barchartLabelWithClickNA(graphObjArr, settings, $("#yearSelected").val(), "faultTimeAnalysisByMachine", "machine");
+                closeLoading();
 
             }
         });

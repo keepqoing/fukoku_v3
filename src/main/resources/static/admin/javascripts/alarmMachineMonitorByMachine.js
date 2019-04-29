@@ -31,6 +31,20 @@ $(function() {
                         $("#selectMachine").append("<option value='"+value.name+"' data-id="+value.ID+">"+value.name+"</option>");
                     });
                     $("#selectMachine").prop("selectedIndex",1).change();
+
+
+                    var queryString = decodeURIComponent(window.location.search);
+                    queryString = queryString.substring(1);
+                    var queries = queryString.split("&");
+                    console.log("queries.length = " + queries.length);
+                    if(queries.length > 1){
+                        console.log("queries[0] = " + queries[0]);
+                        console.log("queries[1] = " + queries[1]);
+                        $("#selectMachine").val(queries[0]);
+                        $("#yearSelected").val(queries[1]);
+
+                        alarm.breakdowntimeanalysisbyline();
+                    }
                 }
             },
             error:function(data,status,err) {
@@ -264,12 +278,15 @@ $(function() {
                     x: "MACHINE",
                     y: "stopTime"
                 };
-                barchartLabel(graphObjArr, settings);
+                // barchartLabel(graphObjArr, settings);
+
+                barchartLabelWithClickNA(graphObjArr, settings,  $("#yearSelected").val(), "", "");
 
 
+                closeLoading();
             }
         });
-        closeLoading();
+
     }
 
 });

@@ -68,7 +68,7 @@ $(function() {
                         "size": {
 
                             "canvasHeight": 280,
-                            "canvasWidth": 500
+                            "canvasWidth": 400
                         }
                     });
 
@@ -233,11 +233,16 @@ $(function() {
                     x: "LINE",
                     y: "NONACTIVE"
                 };
-                barchartLabel(graphObjArr, settings);
+                // barchartLabel(graphObjArr, settings);
+
+                barchartLabelWithClickNA(graphObjArr, settings,
+                    $("#yearSelected").val(), "faultTimeAnalysisByLine", "line");
+
+                closeLoading();
 
             }
         });
-        closeLoading();
+
     }
 
 
