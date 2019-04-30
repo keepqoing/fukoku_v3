@@ -77,10 +77,12 @@ function barchartLabelWithClick(data, settings, pYear, pURL, pType){
                     }
 
                    queryString = "?" + machine + "&" + pYear;
+                }else{
+
+
+                    queryString = "?" + pYear;
                 }
-                console.log("queryString = " + queryString);
-                console.log("pURL = " + pURL);
-                console.log("pURL + queryString = " + pURL + queryString);
+
                 window.location.href = pURL + queryString;
 
         })
