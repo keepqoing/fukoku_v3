@@ -68,7 +68,7 @@ public class DailyMstateAnalysisRepoSQLBuilder {
 
     public static String productionStatus(@Param("f") DailyMstateAnalysisFilter filter){
         System.out.println(filter.toString());
-        String lines[] = new String[]{"ha", "hb", "hc", "hd", "ib", "pd"};
+        String lines[] = new String[]{"hc", "ib", "ha", "hd", "pd", "hb", "pb", "pc", "pa", "pe", "ia", "va", "ja"};
         StringBuffer buffer = new StringBuffer();
         int i=0;
         for (String l: lines) {
@@ -186,7 +186,7 @@ public class DailyMstateAnalysisRepoSQLBuilder {
 
     public static String breakdowntimeanalysisbyline(@Param("f") DailyMstateAnalysisFilter filter){
         System.out.println(filter.toString());
-        String lines[] = new String[]{"hc", "ib", "ha", "hd", "pd", "hb"};
+        String lines[] = new String[]{"hc", "ib", "ha", "hd", "pd", "hb", "pb", "pc", "pa", "pe", "ia", "va", "ja"};
         StringBuffer buffer = new StringBuffer();
         int i=0;
         System.out.println("###### filter.getLine() "+filter.getLine());
