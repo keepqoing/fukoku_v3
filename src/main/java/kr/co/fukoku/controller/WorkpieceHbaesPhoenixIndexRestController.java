@@ -34,11 +34,11 @@ public class WorkpieceHbaesPhoenixIndexRestController {
         
 		String machineName = wp.getMachine().split("_")[1];
 		
-		long startDate = MyConverter.convertDateToMilliseconds(wp.getStartTime(), "YYYY/MM/DD HH:mm:ss");
-		long stopDate =  MyConverter.convertDateToMilliseconds(wp.getStopTime(), "YYYY/MM/DD HH:mm:ss"); 
+		long startDate = MyConverter.convertDateToMilliseconds(wp.getStartTime(), "yyyy-MM-dd HH:mm");
+		long stopDate =  MyConverter.convertDateToMilliseconds(wp.getStopTime(), "yyyy-MM-dd HH:mm"); 
 		String key= wp.getLine()+"+"+machineName+"+"+wp.getProduct()+"+"+wp.getProcesses().get(0);
-		System.out.println(key+"+"+startDate);
-		System.out.println(key+"+"+stopDate);
+		System.out.println(wp.getStartTime()+ "====>" + key+"+"+startDate);
+		System.out.println(wp.getStopTime()+ "====>" +key+"+"+stopDate);
 		List<Workpiece> data = service.findWorkpieceHbaseIndex(key+"+"+startDate, key+"+"+stopDate , wp.getOffset());
 		if(data.size() != 0){
             map.put("code",200);

@@ -43,7 +43,7 @@ public interface WorkpieceHBaseRealTimeRepository {
 			+ " *  from \"workpiece\" \r\n" + 
 			"where "
 			+ "\"ROWKEY\" >= #{start} "
-			+ "and \"ROWKEY\" <=  #{stop} LIMIT 20 offset #{offset}")
+			+ "and \"ROWKEY\" <  #{stop} LIMIT 20 offset #{offset}")
 	@Results(value={
 			@Result(property = "rowKey" , column = "lpmprd"),
             @Result(property = "dailySeq" , column = "ds"),
