@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style>
+
+        body {
+            font: 10px arial;
+        }
+
+        .stop {
+            color: #fff;
+            background-color: #FF0000;
+        }
+
+        .offline {
+            color: #fff;
+            background-color: #666666;
+        }
+
+        .waiting {
+            color: #0A0A0A;
+            background-color: #FFD800;
+        }
+
+        .run {
+            color: #fff;
+            background-color: #336600;
+        }
+
+    </style>
+    <style>
+        ul, li {
+            margin: 1px;
+            padding: 1px;
+        }
+
+        /*Using CSS for table*/
+        .demotbl {
+            border-collapse: collapse;
+            border: 1px solid #69899F;
+        }
+
+        .demotbl th {
+            border: 2px solid #69899F;
+            color: #3E5260;
+            padding: 10px;
+        }
+
+        .demotbl td {
+            border: 1px dotted black;
+            color: #002F5E;
+            padding: 15px;
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div layout:fragment="content">
+    <section class="content-header">
+        <h1>
+            설비상태현황(도면)
+        </h1>
+    </section>
+    <!--<div id="container1" class="demotbl" style="position: absolute; left:0px; top:0px"></div>-->
+    <section class="content">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="box box-primary">
+                    <!--<div class="box-header with-border">
+                        <h3 class="box-title">Lines: 라인 전체 도면 </h3>
+
+                    </div>-->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-12">
+
+                                <!--<button type="button" class="btn btn-primary">NoActive</button>-->
+                                <span style="width: 20px; height: 20px; background-color: green; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                <span style="margin-right: 10px;">  RUN</span>
+                                <span style="width: 20px; height: 20px; background-color: #FFD800; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                <span style="margin-right: 10px;">  WAITING</span>
+                                <span style="width: 20px; height: 20px; background-color: #FF0000; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                <span style="margin-right: 10px;">  STOP</span>
+                                <span style="width: 20px; height: 20px; background-color: #666666; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                <span style="margin-right: 10px;">  OFFLINE</span>
+                                <span style="width: 20px; height: 20px; background-color: #0000ff; display: inline-block; vertical-align: middle; border-radius: 50%;"></span>
+                                <span style="margin-right: 10px;">  MANUAL</span>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-4 col-xs-12"></div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <select class="form-control" id="scenes_list" size="1" onchange="selectScene();"
+                                            ondblclick="selectScene();"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                            <div id="container1" class="demotbl"></div>
+                            <div id="controls" style="display: none;">
+                                <div id="status">Loading...</div>
+                                <hr/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="khihortmodal" role="dialog">
+                        <div class="modal-dialog modal-sm">
+
+                            <!-- Modal content-->
+                            <div class="modal-content" style="width:700px; margin: 0 auto;">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;
+                                    </button>
+                                    <h4 class="modal-title" id="textHeader">Machine name: </h4>
+                                    <h4 class="modal-title" id="statu">Status: RUN</h4>
+                                </div>
+                                <div class="modal-body" id="bar-chart">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal fade" id="khihortmodal2" role="dialog">
+                        <div class="modal-dialog modal-sm">
+
+                            <!-- Modal content-->
+                            <div class="modal-content" style="width:700px; margin: 0 auto;">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;
+                                    </button>
+                                    <h4 class="modal-title" id="textHeader2">Machine name: </h4>
+                                    <h4 class="modal-title" id="statu2">Status: RUN</h4>
+                                </div>
+                                <div class="modal-body" id="bar-chart2">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="khihortmodal3" role="dialog">
+                        <div class="modal-dialog modal-sm">
+
+                            <!-- Modal content-->
+                            <div class="modal-content" style="width:700px; margin: 0 auto;">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;
+                                    </button>
+                                    <h4 class="modal-title" id="textHeader3">Machine name: </h4>
+                                    <h4 class="modal-title" id="statu3">Status: RUN</h4>
+                                </div>
+                                <div class="modal-body" id="bar-chart3">
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                            <table class="table">
+                                                <thead class="thead-inverse">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>알람종료시간</th>
+                                                    <th>알람시작시간</th>
+                                                    <th>조치시간(hr)</th>
+                                                    <th>아람상태</th>
+                                                    <th>라인명</th>
+                                                    <th>설비명</th>
+                                                    <th>고장코드</th>
+                                                    <th>대분류</th>
+                                                    <th>중분류</th>
+                                                    <th>소분류</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <th scope="row">1</th>
+                                                    <td>2017/10/23 10:39:28</td>
+                                                    <td>2017/10/23 09:39:28</td>
+                                                    <td>1</td>
+                                                    <td>TAG COMMENT</td>
+                                                    <td>HC</td>
+                                                    <td>압입기</td>
+                                                    <td>F1-1-10</td>
+                                                    <td>PLC</td>
+                                                    <td>PLC</td>
+                                                    <td>소손</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">1</th>
+                                                    <td>2017/10/23 10:39:28</td>
+                                                    <td>2017/10/23 09:39:28</td>
+                                                    <td>2</td>
+                                                    <td>TAG COMMENT</td>
+                                                    <td>HC</td>
+                                                    <td>압입기</td>
+                                                    <td>F11-1-7</td>
+                                                    <td>PLC</td>
+                                                    <td>유압실센서</td>
+                                                    <td>누손</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">1</th>
+                                                    <td>2017/10/23 10:39:28</td>
+                                                    <td>2017/10/23 09:39:28</td>
+                                                    <td>3</td>
+                                                    <td>TAG COMMENT</td>
+                                                    <td>HC</td>
+                                                    <td>압입기</td>
+                                                    <td>F5-3-6</td>
+                                                    <td>겐서</td>
+                                                    <td>오토센서</td>
+                                                    <td>피손</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script src='http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js'></script>
+                    <script src="/static/admin/javascripts/d3/barchart.js"></script>
+                    <script src="/static/admin/javascripts/d3/barchart-line.js"></script>
+                    <!-- <script src="../../static/admin/fonts/droid/droid_sans_regular.typeface.json"></script>-->
+
+                    <script src="../../static/admin/build/threeOld.js"></script>
+                   <!-- <script src="../../static/admin/controls/optiomizeGltf.js"></script>-->
+                    <script type="text/javascript" src="../../static/admin/controls/Projector.js"></script>
+                    <script src="../../static/admin/threeJs/lib/dat.gui.min.js"></script>
+                    <script src="../../static/admin/controls/OrbitControls.js"></script>
+                    <script src="../../static/admin/threeJs/lib/GLTFLoader.js"></script>
+                    <script src="../../static/admin/javascripts/line-process.js"></script>
+                    <script src="../../static/admin/javascripts/line_color.js"></script>
+                    <script src="../../static/admin/javascripts/add3DObjectColor.js"></script>
+                    <script src="../../static/admin/controls/EvenControl.js"></script>
+
+                    <link rel="stylesheet"
+                          href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+                    <link rel="stylesheet"
+                          href="../../static/admin/bootstrap/css/contextMenu/contextMenu.min.css">
+                    <script src="../../static/admin/bootstrap/js/contextMenu/contextMenu.min.js"></script>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</section>
+
+
+</div>
+</body>
+</html>

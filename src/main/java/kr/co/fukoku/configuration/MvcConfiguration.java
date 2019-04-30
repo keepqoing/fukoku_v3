@@ -139,6 +139,8 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		
 		registry.addViewController("/admin/define-enviroment-variable").setViewName("/admin/define-enviroment-variable");
 		
+	
+		registry.addViewController("/admin/process-v2").setViewName("/admin/process-v2");
 	}
 
 	@Override
