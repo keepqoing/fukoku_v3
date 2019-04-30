@@ -135,6 +135,10 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		
 		registry.addViewController("/admin/ng-product-listing").setViewName("/admin/workpiece/ng-product-listing");
 		
+		registry.addViewController("/admin/data-analytic-mgt").setViewName("/admin/data-analytic-mgt");
+		
+		registry.addViewController("/admin/define-enviroment-variable").setViewName("/admin/define-enviroment-variable");
+		
 	}
 
 	@Override
