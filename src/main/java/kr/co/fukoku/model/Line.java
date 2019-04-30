@@ -43,6 +43,8 @@ public class Line {
 		this.acronym = acronym;
 	}
 	
+	List<SensorAdHoc> lstSensorAdHoc;
+	
 	
 	
 	@JsonProperty("process_chain")
@@ -186,6 +188,14 @@ public class Line {
 
 	public void setDailySeq(Map<String, Object> dailySeq) {
 		this.dailySeq = dailySeq;
+	}
+
+	public List<SensorAdHoc> getLstSensorAdHoc() {
+		return lstSensorAdHoc;
+	}
+
+	public void setLstSensorAdHoc(List<SensorAdHoc> lstSensorAdHoc) {
+		this.lstSensorAdHoc = lstSensorAdHoc;
 	}
 	
 	

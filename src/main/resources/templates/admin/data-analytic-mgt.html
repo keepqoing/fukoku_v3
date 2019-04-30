@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="admin/layout" ng-app="fukoku">
+
+<head>
+
+    <title>라인관리</title>
+    
+    <link rel="stylesheet" th:href="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.min.css}"/>
+    <script th:src="@{/static/admin/angular/bower_components/angular/angular.min.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/d3/d3.min.js}" charset="utf-8"></script>
+    <script th:src="@{/static/admin/angular/bower_components/nvd3/build/nv.d3.js}"></script>
+    <script th:src="@{/static/admin/angular/bower_components/angular-nvd3/dist/angular-nvd3.js}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-sanitize.js"></script>
+    
+    <style>
+        .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+    </style>
+    
+    
+    
+</head>
+<body ng-controller="MainCtrl">
+
+<div layout:fragment="content">
+
+    <section class="content-header">
+        <h1>
+            	라인관리
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        
+                         <br/>
+                        <div class="row">
+                        
+								    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-4 col-xs-12">
+                        				<table class="table table-hover table-bordered table-striped"  id="monitoring_mstate_tmp">
+			                        			
+			                        	</table>
+                        			</div>
+                        			
+								    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-4 col-xs-12">
+                        				<table class="table table-hover table-bordered table-striped"  id="monitoring_workpiece_amount_tmp">
+			                        			
+			                        	</table>
+                        			</div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    
+
+</div>
+<th:block layout:fragment="script">
+
+
+<script th:src="@{/static/admin/javascript_v3/line.js}"></script>
+<script>
+$(document).ready(function () {
+						
+				
+					findWorkpieces = function(){
+							$("#monitoring_mstate_tmp tbody, #monitoring_mstate_tmp tbody").empty();
+							$.ajax({ 
+							    url:  "/v3/api/fukoku/data-analytic-mgt/",
+							    type: "GET",
+							    dataType: 'json',
+							    beforeSend: function(xhr) {
+				                    xhr.setRequestHeader("Accept", "application/json");
+				                    xhr.setRequestHeader("Content-Type", "application/json");
+							    },
+							    success: function(data) { 
+									console.log(data);
+									displayDataInTable_monitoring_mstate_tmp(data.monitoring_mstate_tmp);
+									displayDataInTable_monitoring_workpiece_amount_tmp(data.monitoring_workpiece_amount_tmp);
+							    },
+				                error:function(jqXHR, status, thrownError) {
+				                    var responseText = jQuery.parseJSON(jqXHR.responseText);
+				                    console.log(responseText);
+				                }
+							});
+					
+				       };
+				       
+				       displayDataInTable_monitoring_mstate_tmp = function(workpieces){ 
+							 try{
+					            var dataTable = $('#monitoring_mstate_tmp').DataTable({
+					            	 "paging": true,
+					                 "lengthChange": true,
+					                 "searching": false,
+					                 "ordering": true,
+					                 "info": false,
+					                 "autoWidth": true,
+					                 "data": workpieces,
+					                 "destroy": true,
+					                 "columns": [
+					                {
+							            "title" : "Line",
+							            "data" :"line"
+							        } ,
+							        {
+							            "title" : "Machine",
+							            "data" :"machine"
+							        } ,
+							        {
+							            "title" : "State",
+							            "data" :"mstate_id"
+							        } ,
+							        {
+							            "title" : "Product",
+							            "data" :"product_name"
+							        } ,
+					                {
+					                	"title" : "Work Date",
+					                	"data" :"work_date"
+					                } ,
+					                {
+					                     "title": "Start Time",
+					                     "data": "start_time"
+					                 }, {
+					                     "title": "Stop Time",
+					                     "data": "end_time"
+
+					                 },{
+					                     "title": "Alarm",
+					                     "data": "status_alarm"
+					                 }
+					                 ]
+					             });
+
+					         }catch(err) {
+					             console.log(err);
+					         }
+						}
+				       
+				       displayDataInTable_monitoring_workpiece_amount_tmp = function(workpieces){ 
+							 try{
+					            var dataTable = $('#monitoring_workpiece_amount_tmp').DataTable({
+					                 "paging": true,
+					                 "lengthChange": true,
+					                 "searching": false,
+					                 "ordering": true,
+					                 "info": false,
+					                 "autoWidth": true,
+					                 "data": workpieces,
+					                 "destroy": true,
+					                 "columns": [
+					                {
+							            "title" : "Line",
+							            "data" :"line_name"
+							        } ,
+							        {
+							            "title" : "Machine",
+							            "data" :"machine_name"
+							        } ,
+							        {
+							            "title" : "Product",
+							            "data" :"product_name"
+							        } ,
+							        {
+							            "title" : "Process",
+							            "data" :"process_name"
+							        } ,
+					                {
+					                	"title" : "Work Date",
+					                	"data" :"work_date"
+					                } ,
+					                {
+					                     "title": "Start Time",
+					                     "data": "machine_start_time"
+					                 }, {
+					                     "title": "Stop Time",
+					                     "data": "machine_end_time"
+
+					                 },{
+					                     "title": "생산수량",
+					                     "data": "daily_seq"
+					                 },{
+					                     "title": "양품수량",
+					                     "data": "good_product"
+					                 },{
+					                     "title": "불량수량",
+					                     "data": "ng_product"
+					                 }
+					                 ]
+					             });
+
+					         }catch(err) {
+					             console.log(err);
+					         }
+						}
+				       
+				       
+				       findWorkpieces();
+						
+});
+					</script>
+</th:block>
+</body>
+</html>

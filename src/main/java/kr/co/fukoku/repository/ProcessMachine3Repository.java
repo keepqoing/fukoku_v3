@@ -37,7 +37,10 @@ public interface ProcessMachine3Repository {
 			@Result(property="name", column="name2"),
 			@Result(property="processChain", column="name",
 				one = @One(select  = "kr.co.fukoku.repository.ProcessMachine3Repository.findProcessChainByRefLine")
-			)
+			),
+			@Result(property="lstSensorAdHoc", column="id",
+				many = @Many(select  = "kr.co.fukoku.repository.SensorAdHocRepository.findSensorAdHoc")
+			),
 	})
 	List<Line> findAll(@Param("f") LineFrm f);
 	
@@ -155,6 +158,10 @@ public interface ProcessMachine3Repository {
 			@Result(property="processChain", column="refLine=name, productStatus=productStatus ",
 				one = @One(select  = "kr.co.fukoku.repository.ProcessMachine3Repository.findProcessChainByRefLinePassProductStatus")
 			)
+			,
+			@Result(property="lstSensorAdHoc", column="id",
+				many = @Many(select  = "kr.co.fukoku.repository.SensorAdHocRepository.findSensorAdHoc")
+			),
 	})
 	List<Line> findAllByLineNameAndProductStatus(@Param("f") LineFrm f);
 	
