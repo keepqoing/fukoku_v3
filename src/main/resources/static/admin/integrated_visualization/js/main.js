@@ -1,6 +1,7 @@
 const startDateOfDatabase = "2018-01-01";
 const companies = ['보령 댐퍼 공장', '보령 러버 공장'];
-const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', "Jun", 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
+//const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', "Jun", 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
+const months = ['1월', '2월', '3월', '4월', '5월', "6월", '7월', '8월', '9월', '10월', '11월', '12월'];
 let currentLines = [];
 let currentMachines = [];
 let machinesName = new Object();
@@ -1135,6 +1136,7 @@ function getAnalysisData(xAxis, yAxis, lineLabel, machineLabel){
     } else {
 
         $('#btnSendRequest').prop('disabled', true);
+        openLoading();
         $.ajax({
             headers: {
                 'Access-Control-Allow-Headers': '*',
@@ -1165,6 +1167,7 @@ function getAnalysisData(xAxis, yAxis, lineLabel, machineLabel){
                         console.log("Result has been not found!");
                         break;
                 }
+                closeLoading();
                 $('#btnSendRequest').prop('disabled', false);
             }
         });
@@ -1420,7 +1423,7 @@ function init2DGraphScreen(){
         graph.style.height = "300px";
         graph.style.backgroundColor = "rgba(255,255,255,0.95)";
         let close = document.createElement("img");
-        close.setAttribute('th:src', '@{/static/admin/integrated_visualization/images/close.svg}');
+        close.setAttribute('src', '/static/admin/integrated_visualization/images/close.svg');
         close.setAttribute('width', '20px');
         close.setAttribute('height', '20px');
         close.setAttribute('alt', 'close button');
