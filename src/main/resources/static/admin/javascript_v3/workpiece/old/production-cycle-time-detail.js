@@ -348,37 +348,37 @@ app.controller('MainCtrl', function($scope, $http,$location) {
     		 */
     			
     			/*** Old Process design ***/
-    		$scope.btSearch = function(){
-  			  
-  			  var start = $("#startTime").find("input").val();
-  		      var end = $("#endTime").find("input").val();
-  		      var currentDate = new Date(start);
-  		      var newEnd = new Date(end);
-  		      $scope.dayBetween = [];
-  		 	  $scope.dayIndexBetween = 0 ;
-  		      while (currentDate <= newEnd) {
-  		    	  $scope.dayBetween.push($scope.formatDateTime(new Date(currentDate)));
-  		          currentDate.setDate(currentDate.getDate() + 1);
-  		      }
-  		      console.log($scope.dayBetween);
-  		      
-  			 	$scope.processesSelected = [];
-  				$('input[name="ckProcess"]:checked').each(function() {
-  					   console.log(this.value);
-  					   $scope.processesSelected.push(this.value);
-  				});
-  				
-  				$scope.findWorkpieces($("#selectLine").val() , $("#selectProduct").val() ,
-  						$("#selectMachine option:selected").html()  , $scope.processesSelected, start,end);
-  				
-  				$scope.seletedDate = $scope.dayBetween[0];
-  				
-  				if($scope.dayIndexBetween == 0 ){
-  					 $("#previous").prop('disabled', true);
-  				 }else{
-  					 $("#previous").prop('disabled', false);
-  				 }
-  		 };
+    			$scope.btSearch = function(){
+    				  
+    				  var start = $("#startTime").find("input").val();
+    			      var end = $("#endTime").find("input").val();
+    			      var currentDate = new Date(start);
+    			      var newEnd = new Date(end);
+    			      $scope.dayBetween = [];
+    			 	  $scope.dayIndexBetween = 0 ;
+    			      while (currentDate <= newEnd) {
+    			    	  $scope.dayBetween.push($scope.formatDateTime(new Date(currentDate)));
+    			          currentDate.setDate(currentDate.getDate() + 1);
+    			      }
+    			      console.log($scope.dayBetween);
+    			      
+    				 	$scope.processesSelected = [];
+    					$('input[name="ckProcess"]:checked').each(function() {
+    						   console.log(this.value);
+    						   $scope.processesSelected.push(this.value);
+    					});
+    					
+    					$scope.findWorkpieces($("#selectLine").val() , $("#selectProduct").val() ,
+    							$("#selectMachine").val()  , $scope.processesSelected,$scope.dayBetween[0],$scope.dayBetween[0]);
+    					
+    					$scope.seletedDate = $scope.dayBetween[0];
+    					
+    					if($scope.dayIndexBetween == 0 ){
+    						 $("#previous").prop('disabled', true);
+    					 }else{
+    						 $("#previous").prop('disabled', false);
+    					 }
+    			 };
     			
     			 $scope.all = function(){
     				 $scope.dayIndexBetween=0;
@@ -460,147 +460,133 @@ app.controller('MainCtrl', function($scope, $http,$location) {
     		  }
     		 
      
-    		
-    			/***********************************************************
-    			  *  Params
-    			  ************************************************************/
-    			 /**
-    				 * Variable
-    				 */
-    				$scope.lines;
-    				$scope.machines;
-    				$scope.processes;
-    				$scope.products;
-    			    
-    			    
-    			       
+    		 /***********************************************************
+    		  *  Params
+    		  ************************************************************/
+    		 /**
+    			 * Variable
+    			 */
+    			$scope.lines;
+    			$scope.machines;
+    			$scope.processes;
+    			$scope.products;
+    		    
+    		    
+    		       
 
-    				
-    				/***
-    				 * Function()
-    				 */
-    				
+    			
+    			/***
+    			 * Function()
+    			 */
+    			
 
-    			    $scope.findLineByLineName = function(lineName){  
-    			        var post = $http({
-    			            method: "GET",
-    			            url: "/v3/api/fukoku/workpiece-params/lines",
-    			            dataType: 'json',
-    			            headers: { "Content-Type": "application/json" }
-    			        });
-    			        post.success(function (response, status) {
-    			            if(response.code == "200"){
-    			                $scope.lines = response.data;
-    			            }else{
-    			            	console.log( "No data ");
-    			            }
-    			            console.log( $scope.lines);
-    			        });
-    			        post.error(function (data, status) {
-    			            console.log(data);
-    			        });
-    			    }
-    			    
-    			    $scope.findMachineAndProductByLineNaME = function(lineName){  
-    			        var post = $http({
-    			            method: "GET",
-    			            url: "/v3/api/fukoku/workpiece-params/product-machine/"+lineName,
-    			            dataType: 'json',
-    			            headers: { "Content-Type": "application/json" }
-    			        });
-    			        post.success(function (response, status) {
-    			        	$("#selectMachine").empty();
-    			            if(response.code == "200"){
-    			                $scope.machines = response.data.process_chain_element;
-    			                $("#selectMachine").append("<option value=''>설비</option>");
-    			                for(i = 0;i  < $scope.machines.length ; i++){
-    			                	for(j = 0; j  < $scope.machines[i].process_chain_machine.length ; j++){
-    			                		$("#selectMachine").append("<option value='"+$scope.machines[i].process_chain_machine[j].id+"'>"+$scope.machines[i].process_chain_machine[j].ref_machine+"</option>");
-    			                	}
-    			                }
-    			                $scope.products = response.data.process_chain_product;
-    			            }else{
-    			            	
-    			            }
-    			            console.log( "machine" , $scope.machines);
-    			            
-    			            console.log( "products" , $scope.products);
-    			        });
-    			        post.error(function (data, status) {
-    			            console.log(data);
-    			        });
-    			    }
-    			    
-    			    $scope.findMachineByLineName = function(lineName){  
-    			        var post = $http({
-    			            method: "GET",
-    			            url: "/v1/api/fukoku/machine/"+lineName,
-    			            dataType: 'json',
-    			            headers: { "Content-Type": "application/json" }
-    			        });
-    			        post.success(function (response, status) {
-    			            if(response.code == "200"){
-    			                $scope.machines = response.data;
-    			            }else{
-    			            	
-    			            }
-    			            console.log( $scope.machines);
-    			        });
-    			        post.error(function (data, status) {
-    			            console.log(data);
-    			        });
-    			    }
-    				
-    			    $scope.findProcessVar = function(process_chain_machine_id){  
-    			        var post = $http({
-    			            method: "GET",
-    			            url: "/v3/api/fukoku/workpiece-params/process-var/"+process_chain_machine_id,
-    			            dataType: 'json',
-    			            headers: { "Content-Type": "application/json" }
-    			        });
-    			        post.success(function (response, status) {
-    			            if(response.code == "200"){
-    			                $scope.processes = response.data;
-    			            }else{
-    			            	
-    			            }
-    			            console.log( $scope.processes);
-    			        });
-    			        post.error(function (data, status) {
-    			            console.log(data);
-    			        });
-    			    }
-    			    
-    			    
-    				
-    				
-    				/*******************************************************************************
-    				 * Onload()
-    				 *******************************************************************************/
-    			    
-    			    $scope.findLineByLineName("NA");
-    			    
-    				
-    				
-    				
-    				
-    				/*******************************************************************************
-    				 * Event()
-    				 *******************************************************************************/
-    			     $("#selectLine").change(function(){
-    			    	// $scope.findMachineByLineName($("#selectLine").val());
-    			    	// $scope.findProductByLine($("#selectLine").val());
-    			    	 
-    			    	 $scope.findMachineAndProductByLineNaME($("#selectLine").val());
-    			     });
-    			     
-    			     $("#selectMachine").change(function(){  //alert($("#selectMachine option:selected").html());
-    			    	 $scope.findProcessVar($("#selectMachine").val());
-    			     });
-    			     
-    			     /***
-    			      * End Params
-    			      */
+    		    $scope.findLineByLineName = function(lineName){  
+    		        var post = $http({
+    		            method: "GET",
+    		            url: "/v1/api/fukoku/line/"+lineName,
+    		            dataType: 'json',
+    		            headers: { "Content-Type": "application/json" }
+    		        });
+    		        post.success(function (response, status) {
+    		            if(response.code == "200"){
+    		                $scope.lines = response.data;
+    		            }else{
+    		            	
+    		            }
+    		            console.log( $scope.lines);
+    		        });
+    		        post.error(function (data, status) {
+    		            console.log(data);
+    		        });
+    		    }
+    		    
+    		    $scope.findMachineByLineName = function(lineName){  
+    		        var post = $http({
+    		            method: "GET",
+    		            url: "/v1/api/fukoku/machine/"+lineName,
+    		            dataType: 'json',
+    		            headers: { "Content-Type": "application/json" }
+    		        });
+    		        post.success(function (response, status) {
+    		            if(response.code == "200"){
+    		                $scope.machines = response.data;
+    		            }else{
+    		            	
+    		            }
+    		            console.log( $scope.machines);
+    		        });
+    		        post.error(function (data, status) {
+    		            console.log(data);
+    		        });
+    		    }
+    			
+    		    $scope.findProcessByLineNameAndMachineName = function(lineName, machineName){  
+    		    	console.log(lineName +" - "+ machineName);
+    		        var post = $http({
+    		            method: "GET",
+    		            url: "/v1/api/fukoku/process/"+lineName+"/"+machineName,
+    		            dataType: 'json',
+    		            headers: { "Content-Type": "application/json" }
+    		        });
+    		        post.success(function (response, status) {
+    		            if(response.code == "200"){
+    		                $scope.processes = response.data;
+    		            }else{
+    		            	
+    		            }
+    		            console.log( $scope.processes);
+    		        });
+    		        post.error(function (data, status) {
+    		            console.log(data);
+    		        });
+    		    }
+    		    
+    		    $scope.findProductByLine = function(lineName){  
+    		        var post = $http({
+    		            method: "GET",
+    		            url: "/v1/api/fukoku/product/"+lineName,
+    		            dataType: 'json',
+    		            headers: { "Content-Type": "application/json" }
+    		        });
+    		        post.success(function (response, status) {
+    		            if(response.code == "200"){
+    		                $scope.products = response.data;
+    		            }else{
+    		            	
+    		            }
+    		            console.log( $scope.products);
+    		        });
+    		        post.error(function (data, status) {
+    		            console.log(data);
+    		        });
+    		    }
+    			
+    			
+    			/*******************************************************************************
+    			 * Onload()
+    			 *******************************************************************************/
+    		    
+    		    $scope.findLineByLineName("NA");
+    		    
+    			
+    			
+    			
+    			
+    			/*******************************************************************************
+    			 * Event()
+    			 *******************************************************************************/
+    		     $("#selectLine").change(function(){
+    		    	 $scope.findMachineByLineName($("#selectLine").val());
+    		    	 $scope.findProductByLine($("#selectLine").val());
+    		     });
+    		     
+    		     $("#selectMachine").change(function(){ 
+    		    	 $scope.findProcessByLineNameAndMachineName($("#selectLine").val(),$("#selectMachine option:selected").html());
+    		     });
+    		     
+    		     /***
+    		      * End Params
+    		      */
 	
 	
 	

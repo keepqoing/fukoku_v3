@@ -30,7 +30,7 @@ $(function () {
 
     corelations.getAllLinesName1 = function(){
         $.ajax({
-            url: "http://113.198.137.142:8080/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/workpiece-params/lines",
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -41,9 +41,9 @@ $(function () {
             success: function(response) {
                 $('#selectLine').empty();
                // $("#selectLine").append("<option value=''>라인</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectLine").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                if(response.code == "200"){
+                    $.each(response.data, function(key, value){
+                        $("#selectLine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
 
                     //alert($("#selectLine").val());
@@ -60,22 +60,30 @@ $(function () {
 
     corelations.getAllMachineNameByLineName = function(){
         $.ajax({
-            url: "http://113.198.137.142:8080/v1/api/fukoku/machine/select-box",
+            url: "/v3/api/fukoku/workpiece-params/product-machine/"+ $("#selectLine").val(),
             type: 'GET',
             dataType: 'JSON',
-            data:{
-                "lineName"  :   $("#selectLine").val()
-            },
+//            data:{
+//                "lineName"  :   $("#selectLine").val()
+//            },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function(response) {
                 $('#selectMachine').empty();
-                //$("#selectMachine").append("<option value=''>설비</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectMachine").append("<option value="+value.MAPPING_NAME+">"+value.MACHINE_NAME+"</option>");
+                
+//                for(i = 0;i  < $scope.machines.length ; i++){
+//                	for(j = 0; j  < $scope.machines[i].process_chain_machine.length ; j++){
+//                		$("#selectMachine").append("<option value='"+$scope.machines[i].process_chain_machine[j].id+"'>"+$scope.machines[i].process_chain_machine[j].ref_machine+"</option>");
+//                	}
+//                }
+                
+                if(response.code == "200"){
+                    $.each(response.data.process_chain_element, function(key, value){
+                    	$.each(value.process_chain_machine, function(key, value){
+                    		 $("#selectMachine").append("<option value="+value.ref_machine+">"+value.ref_machine+"</option>");
+                    	});
                     });
                     corelations.getProductName($("#selectLine").val() , $("#machine").val());
                 }
@@ -210,6 +218,8 @@ $(function () {
     });*/
 
     corelations.getAllProduct= function(line,machine,product,startDate,endDate,process){
+    	openLoading();
+        
         console.log(line,machine,product,startDate, endDate,process);
         $.ajax({
             url: "http://113.198.137.142:8080/v1/api/fukoku/ppn/selectPpn",
@@ -252,14 +262,17 @@ $(function () {
                     drawCorrelation(dataP, settings);
                     drawCorrelation(dataPn, settings2);
                 }
+                closeLoading();
             },
             error:function(data,status,err) {
+            	  closeLoading();
                 console.log("error: "+data+" status: "+status+" err:"+err);
             }
         });
     };
 
     $("#btnQuery").click(function(){
+    	 
         var line = $("#selectLine").val();
         var machine = $("#selectMachine").val();
         var product = "";//$('#selectProduct').val();
@@ -268,6 +281,7 @@ $(function () {
         var process = "";//$('#process input[name=optionsRadios]:checked').val();
 
         corelations.getAllProduct(line,machine,product,startDate,endDate,process);
+        
     });
 
 });

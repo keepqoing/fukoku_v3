@@ -306,7 +306,7 @@ app.controller('MainCtrl', function($scope, $http,$rootScope, $location ) {
 				});
 				
 				$scope.findWorkpieces($("#selectLine").val() , $("#selectProduct").val() ,
-						$("#selectMachine option:selected").html()  , $scope.processesSelected, start,end);
+						$("#selectMachine").val()  , $scope.processesSelected,$scope.dayBetween[0],$scope.dayBetween[0]);
 				
 				$scope.seletedDate = $scope.dayBetween[0];
 				
@@ -317,12 +317,10 @@ app.controller('MainCtrl', function($scope, $http,$rootScope, $location ) {
 				 }
 		 };
 		
-		 
-		 
 		 $scope.all = function(){
 			 $scope.dayIndexBetween=0;
 			 $scope.findWorkpieces($("#selectLine").val() , $("#selectProduct").val() ,
-					 $("#selectMachine option:selected").html() , $scope.processesSelected,
+						$("#selectMachine").val()  , $scope.processesSelected,
 						$scope.dayBetween[0],
 						$scope.dayBetween[$scope.dayBetween.length-1]);
 			 $scope.seletedDate = "All: "+ $scope.dayBetween[0] +" to "+ $scope.dayBetween[$scope.dayBetween.length-1];
@@ -340,7 +338,7 @@ app.controller('MainCtrl', function($scope, $http,$rootScope, $location ) {
 		 $scope.previous = function(){
 			 $scope.dayIndexBetween-=1 ;
 			 $scope.findWorkpieces($("#selectLine").val() , $("#selectProduct").val() ,
-					 $("#selectMachine option:selected").html() , $scope.processesSelected, 
+						$("#selectMachine").val()  , $scope.processesSelected, 
 						$scope.dayBetween[$scope.dayIndexBetween],
 						$scope.dayBetween[ $scope.dayIndexBetween]);
 			 $scope.seletedDate = $scope.dayBetween[$scope.dayIndexBetween];
@@ -358,7 +356,7 @@ app.controller('MainCtrl', function($scope, $http,$rootScope, $location ) {
 		 $scope.next = function(){
 			 $scope.dayIndexBetween+=1 ;
 			 $scope.findWorkpieces($("#selectLine").val() , $("#selectProduct").val() ,
-					 $("#selectMachine option:selected").html()  , $scope.processesSelected,
+						$("#selectMachine").val()  , $scope.processesSelected,
 						$scope.dayBetween[ $scope.dayIndexBetween],
 						$scope.dayBetween[ $scope.dayIndexBetween]);
 			 $scope.seletedDate = $scope.dayBetween[$scope.dayIndexBetween];
@@ -582,7 +580,7 @@ app.controller('MainCtrl', function($scope, $http,$rootScope, $location ) {
 		    $scope.findLineByLineName = function(lineName){  
 		        var post = $http({
 		            method: "GET",
-		            url: "/v3/api/fukoku/workpiece-params/lines",
+		            url: "/v1/api/fukoku/line/"+lineName,
 		            dataType: 'json',
 		            headers: { "Content-Type": "application/json" }
 		        });
@@ -590,39 +588,9 @@ app.controller('MainCtrl', function($scope, $http,$rootScope, $location ) {
 		            if(response.code == "200"){
 		                $scope.lines = response.data;
 		            }else{
-		            	console.log( "No data ");
-		            }
-		            console.log( $scope.lines);
-		        });
-		        post.error(function (data, status) {
-		            console.log(data);
-		        });
-		    }
-		    
-		    $scope.findMachineAndProductByLineNaME = function(lineName){  
-		        var post = $http({
-		            method: "GET",
-		            url: "/v3/api/fukoku/workpiece-params/product-machine/"+lineName,
-		            dataType: 'json',
-		            headers: { "Content-Type": "application/json" }
-		        });
-		        post.success(function (response, status) {
-		        	$("#selectMachine").empty();
-		            if(response.code == "200"){
-		                $scope.machines = response.data.process_chain_element;
-		                $("#selectMachine").append("<option value=''>설비</option>");
-		                for(i = 0;i  < $scope.machines.length ; i++){
-		                	for(j = 0; j  < $scope.machines[i].process_chain_machine.length ; j++){
-		                		$("#selectMachine").append("<option value='"+$scope.machines[i].process_chain_machine[j].id+"'>"+$scope.machines[i].process_chain_machine[j].ref_machine+"</option>");
-		                	}
-		                }
-		                $scope.products = response.data.process_chain_product;
-		            }else{
 		            	
 		            }
-		            console.log( "machine" , $scope.machines);
-		            
-		            console.log( "products" , $scope.products);
+		            console.log( $scope.lines);
 		        });
 		        post.error(function (data, status) {
 		            console.log(data);
@@ -649,10 +617,11 @@ app.controller('MainCtrl', function($scope, $http,$rootScope, $location ) {
 		        });
 		    }
 			
-		    $scope.findProcessVar = function(process_chain_machine_id){  
+		    $scope.findProcessByLineNameAndMachineName = function(lineName, machineName){  
+		    	console.log(lineName +" - "+ machineName);
 		        var post = $http({
 		            method: "GET",
-		            url: "/v3/api/fukoku/workpiece-params/process-var/"+process_chain_machine_id,
+		            url: "/v1/api/fukoku/process/"+lineName+"/"+machineName,
 		            dataType: 'json',
 		            headers: { "Content-Type": "application/json" }
 		        });
@@ -669,7 +638,25 @@ app.controller('MainCtrl', function($scope, $http,$rootScope, $location ) {
 		        });
 		    }
 		    
-		    
+		    $scope.findProductByLine = function(lineName){  
+		        var post = $http({
+		            method: "GET",
+		            url: "/v1/api/fukoku/product/"+lineName,
+		            dataType: 'json',
+		            headers: { "Content-Type": "application/json" }
+		        });
+		        post.success(function (response, status) {
+		            if(response.code == "200"){
+		                $scope.products = response.data;
+		            }else{
+		            	
+		            }
+		            console.log( $scope.products);
+		        });
+		        post.error(function (data, status) {
+		            console.log(data);
+		        });
+		    }
 			
 			
 			/*******************************************************************************
@@ -686,14 +673,12 @@ app.controller('MainCtrl', function($scope, $http,$rootScope, $location ) {
 			 * Event()
 			 *******************************************************************************/
 		     $("#selectLine").change(function(){
-		    	// $scope.findMachineByLineName($("#selectLine").val());
-		    	// $scope.findProductByLine($("#selectLine").val());
-		    	 
-		    	 $scope.findMachineAndProductByLineNaME($("#selectLine").val());
+		    	 $scope.findMachineByLineName($("#selectLine").val());
+		    	 $scope.findProductByLine($("#selectLine").val());
 		     });
 		     
-		     $("#selectMachine").change(function(){  //alert($("#selectMachine option:selected").html());
-		    	 $scope.findProcessVar($("#selectMachine").val());
+		     $("#selectMachine").change(function(){ 
+		    	 $scope.findProcessByLineNameAndMachineName($("#selectLine").val(),$("#selectMachine option:selected").html());
 		     });
 		     
 		     /***

@@ -212,7 +212,7 @@
 							    										
 							    										<div class="processWrapper" ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id">
 											    								<a style="cursor: pointer;" href="/admin/workpiece-spc-detail-thesis?l={{f.name}}&p={{pcp.ref_product}}&m={{m.ref_machine}}&pr={{pvar.name}}&lsl={{pvar.lsl}}&usl={{pvar.usl}}" class="label label-info"><b>{{pvar.name}}</b></a> <span>{{pvar.lsl}} ~ {{pvar.usl}} {{pvar.unit_kind}}</span>
-																				
+																				<span  class="label label-info">Cp 1.67, Cpk 1.67</span>
 											    			     		</div>
 							    			     				</div>
 							    			     		</div> 
@@ -225,6 +225,7 @@
 															            
 							    										<div class="processWrapper" ng-repeat="pvar in m.productProcessVars" ng-if="pvar.ref_product_id == pcp.id">
 											    								<a style="cursor: pointer;" href="/admin/workpiece-spc-detail-thesis?l={{f.name}}&p={{pcp.ref_product}}&m={{m.ref_machine}}&pr={{pvar.name}}&lsl={{pvar.lsl}}&usl={{pvar.usl}}" class="label label-info"><b>{{pvar.name}}</b></a> <span>{{pvar.lsl}} ~ {{pvar.usl}} {{pvar.unit_kind}}</span>
+											    			     				<span  class="label label-info">Cp 1.67, Cpk 1.67</span>
 											    			     		</div>
 							    			     				</div>
 							    			     				

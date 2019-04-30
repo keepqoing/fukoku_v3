@@ -152,11 +152,11 @@
 		                                </div>
 		                            </div>
 		                            
+		                            
 		                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
 		                                <div class="form-group">
-			                                <select class="form-control" id="selectMachine">
-			                                    <option value="">설비</option>
-			                                    <option ng-repeat="m in machines" value="{{m.mapping_name}}">{{m.name}}</option>
+			                                <select class="form-control" id="selectMachine" >
+			                                    
 			                                </select>
 		                                </div>
 		                            </div>
@@ -166,7 +166,7 @@
 		                                <div class="form-group">
 			                                <select class="form-control" id="selectProduct">
 			                                    <option value="">품종</option>
-			                                   <option ng-repeat="p in products" value="{{p.name}}">{{p.name}}</option>
+			                                   <option ng-repeat="p in products" value="{{p.ref_product}}">{{p.ref_product}}</option>
 			                                </select>
 		                                </div>
 		                            </div>

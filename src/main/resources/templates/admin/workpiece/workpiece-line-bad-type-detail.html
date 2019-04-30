@@ -171,11 +171,11 @@
 		                                </div>
 		                            </div>
 		                            
+		                            
 		                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
 		                                <div class="form-group">
-			                                <select class="form-control" id="selectMachine">
-			                                    <option value="">설비</option>
-			                                    <option ng-repeat="m in machines" value="{{m.mapping_name}}">{{m.name}}</option>
+			                                <select class="form-control" id="selectMachine" >
+			                                    
 			                                </select>
 		                                </div>
 		                            </div>
@@ -185,7 +185,7 @@
 		                                <div class="form-group">
 			                                <select class="form-control" id="selectProduct">
 			                                    <option value="">품종</option>
-			                                   <option ng-repeat="p in products" value="{{p.name}}">{{p.name}}</option>
+			                                   <option ng-repeat="p in products" value="{{p.ref_product}}">{{p.ref_product}}</option>
 			                                </select>
 		                                </div>
 		                            </div>
@@ -237,13 +237,13 @@
 
                          <div class="row" style="padding: 0 0 0 25px;">
 	                            <p id="totalFound"></p>
-	                            <label style="font-size:14px;" class="label label-success" ng-bind-html="seletedDate"></label>
+	                            <!-- <label style="font-size:14px;" class="label label-success" ng-bind-html="seletedDate"></label> -->
 	                        </div>
-	                        <div class="row blockDisplay" style="padding: 10px 0 0 25px;">
+	                        <!-- <div class="row blockDisplay" style="padding: 10px 0 0 25px;">
 	                            <button class="btn btn-info" id="all" ng-click="all()">All</button>
 	                            <button class="btn btn-info" id="previous" ng-click="previous()">Previous</button>
 	                            <button class="btn btn-info" id="next" ng-click="next()">Next</button>
-	                        </div>
+	                        </div> -->
 
                         <!-- filteringResult -->
                         <div id="filteringResult" style="display: none;">

@@ -280,8 +280,10 @@ public class WorkpieceProcessCycleTimeServiceImpl implements WorkpieceProcessCyc
 		}
 		
         
-		double[] nums ={minMachineCycleTime, minProcessCycleTime, minProcessIntervalCycleTime, minProductionCycleTime, 
-				maxMachineCycleTime, maxProcessCycleTime,maxProcessIntervalCycleTime,maxProductionCycleTime};
+//		double[] nums ={minMachineCycleTime, minProcessCycleTime, minProcessIntervalCycleTime, minProductionCycleTime, 
+//				maxMachineCycleTime, maxProcessCycleTime,maxProcessIntervalCycleTime,maxProductionCycleTime};
+		double[] nums ={minMachineCycleTime,
+				maxMachineCycleTime};
 		Arrays.sort(nums);
 		
 		SingleDataMultiLinesVisualization singleData = new SingleDataMultiLinesVisualization();

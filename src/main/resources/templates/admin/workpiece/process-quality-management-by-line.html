@@ -140,26 +140,7 @@
         }
     </style>
 
-    <script>
-        $(document).ready(function () {
-            $(function () {
-                var d1 = new Date();
-                var d2 = new Date();
-                d1.setDate(d1.getDate() - 1);
-                d1.setHours(0,0,0);
-                d2.setHours(0,0,0);
-                $('#startDate').datetimepicker({
-                    format: 'YYYY-MM-DD',
-                    defaultDate: d1
-                });
-                $('#endDate').datetimepicker({
-                    format: 'YYYY-MM-DD',
-                    defaultDate:  d2
-                });
-            });
-        });
-
-    </script>
+    
 </head>
 <body>
 <div layout:fragment="content">
@@ -662,6 +643,27 @@
             "              </div>");
 
         $("#info").html(line +" -  "+ machineName +" - <b>"+ processHTML1.trim().slice(0, -1) +"</b> 공정분석")
+
+    </script>
+    
+    <script>
+    jQuery(document).ready(function($){
+            $(function () {
+                var d1 = new Date();
+                var d2 = new Date();
+                d1.setDate(d1.getDate() - 1);
+                d1.setHours(0,0,0);
+                d2.setHours(0,0,0);
+                $('#startDate').datetimepicker({
+                    format: 'YYYY-MM-DD',
+                    defaultDate: d1
+                });
+                $('#endDate').datetimepicker({
+                    format: 'YYYY-MM-DD',
+                    defaultDate:  d2
+                });
+            });
+        });
 
     </script>
 
