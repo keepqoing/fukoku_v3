@@ -98,7 +98,11 @@ public interface MStateMonitoringRepository {
 	})
 	List<ProcessChainMachine> findProcessChainMachineByRefIdV2(@Param("id") long id );
 	
-	@Select("select work_date, line, machine , SUBSTRING_INDEX(SUBSTRING_INDEX(mstate_id, '_' , -3), '_' , 1) as mstate_id from monitoring_mstate_tmp where machine=#{ref_machine} order by id desc limit 1")
+	@Select("select work_date, line, machine , SUBSTRING_INDEX(SUBSTRING_INDEX(mstate_id, '_' , -3), '_' , 1) as mstate_id "
+			+ " ,(select CONCAT(daily_seq, ' ', product_name) AS product_amt     from monitoring_workpiece_amount_tmp where \r\n" + 
+			"			machine_name=machine \r\n" + 
+			"			order by id desc limit 1) AS product_amt "
+			+ " from monitoring_mstate_tmp where machine=#{ref_machine} order by id desc limit 1")
 	Map<String, Object> findLastMStateV2(@Param("ref_machine") String refMachine );
 	
 	

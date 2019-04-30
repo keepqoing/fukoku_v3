@@ -450,10 +450,16 @@
 							                  <td ng-repeat="p in processes">
 							                      <div ng-repeat="pce in l.process_chain.process_chain_element" ng-if="p.name == pce.name">
 							                  			<!-- {{pce.name}} -->
-							                  			<div ng-repeat="pcm in pce.process_chain_machine"  style="margin-top:10px;width:130px;">
+							                  			<div  ng-repeat="pcm in pce.process_chain_machine"  style="text-align: left;margin-top:10px;width:130px;">
 							                  					<div  class="label label-default" style="margin-right: 2px;padding: 7px;margin-bottom:5px;color:blue">{{pcm.ref_machine}}</div> 
 							                  					<div  class="{{pcm.mstate.mstate_id}}"  style="width: 25px; height: 25px;  display: inline-block; vertical-align: middle; border-radius: 50%;"> </div>
+							                  					<div style="clear:float"></div>
+							                  					<div style="" class="label label-info" ng-if="pcm.mstate.product_amt != null">
+									                  			    {{pcm.mstate.product_amt}}
+											                 	</div>
 							                  			</div>
+							                  			
+							                  			
 							                  			 
 							                  	  </div>
 							                  </td>
