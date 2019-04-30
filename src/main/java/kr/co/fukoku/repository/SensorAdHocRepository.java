@@ -31,6 +31,17 @@ public interface SensorAdHocRepository {
 	})
 	List<SensorAdHoc> findSensorAdHoc(@Param("line") String lineId);
 	
+	@Select("SELECT * FROM sensor_ad_hoc  where id=#{id}")
+	@Results(value={
+			@Result(property="sensorName",column="name"),
+			@Result(property="temperature",column="temperature"),
+			@Result(property="humidity",column="humidity"),
+			@Result(property="startTime",column="start_time"),
+			@Result(property="endTime",column="end_time"),
+			@Result(property="refLine",column="ref_line"),
+	})
+	SensorAdHoc findOne(@Param("id") long id);
+	
 	@Insert("INSERT INTO sensor_ad_hoc ("
 			+ "  name, temperature, humidity , start_time,end_time, ref_line "
 			+ ") VALUES ("
@@ -51,7 +62,7 @@ public interface SensorAdHocRepository {
 			+ " end_time=#{f.endTime},"
 			+ " ref_line=#{f.refLine}"
 			+ "		 WHERE id=#{f.id}")
-	boolean update(@Param("f") LineFrm frm);
+	boolean update(@Param("f") SensorAdHoc frm);
 	
 	@Delete("DELETE FROM sensor_ad_hoc WHERE id=#{id}")
 	boolean delete(@Param("id") long id);

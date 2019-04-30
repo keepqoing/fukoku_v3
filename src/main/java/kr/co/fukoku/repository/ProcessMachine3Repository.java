@@ -31,6 +31,7 @@ public interface ProcessMachine3Repository {
 	
 	@SelectProvider(type = ProcessMachineSQLBuilder3.class, method = "find")
 	@Results(value={
+			@Result(property="id",column="id"),
 			@Result(property="startDate",column="start_date"),
 			@Result(property="endDate",column="end_date"),
 			@Result(property="layoutName",column="layout_name"),

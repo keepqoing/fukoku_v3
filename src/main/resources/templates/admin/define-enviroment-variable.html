@@ -219,13 +219,13 @@
 		    				<div class="lineWrapper">
 		    					<div>{{f.name}}</div>
 		    					<div>
-		    						<button  type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-plus"></i> Add </button>
+		    						<button  type="button" id="btAddSensor" data-line="{{f.id}}" class="btn btn-info btn-xs"><i class="fa fa-fw fa-plus"></i> Add </button>
 		    				    </div>
 		    				    
 		    				    	<div ng-repeat="fs in f.lstSensorAdHoc">
 		    				    		<span class="label label-success">{{fs.sensorName}}</span>
-		    				    		<button  type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i>   </button>
-		    				    		<button  type="button" class="btn btn-info btn-xs"><i class="fa fa-fw fa-trash"></i>  </button>
+		    				    		<button  type="button" data-line="{{fs.id}}" class="btClickUpdateSensor btn btn-info btn-xs"><i class="fa fa-fw fa-edit"></i>   </button>
+		    				    		<button  type="button" data-line="{{fs.id}}" class="btClickDeleteSensor btn btn-info btn-xs"><i class="fa fa-fw fa-trash"></i>  </button>
 		    				    	</div>
 		    					
 		    				</div>
@@ -361,11 +361,11 @@
 
 </div>
 <th:block layout:fragment="script">
-<script th:src="@{/static/admin/javascript_v3/process-machine4.js}"></script>
+<script th:src="@{/static/admin/javascript_v3/define-environment-variable.js}"></script>
 <script>
 	$(document).ready(function(){
-			
-
+		
+		
 	});
 </script>
 					
