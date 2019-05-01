@@ -27,27 +27,7 @@
             text-align: center;
         }
     </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-        window.addEventListener('resize', function (event) {
-            $("#chart").width(window.innerWidth * 0.9);
-            $("#chart").height(window.innerHeight);
-        });
-    </script>
-    <script>
-        $(document).ready(function () {
-            $(function () {
-                $('#startTime, #endTime').datetimepicker({
-                    format: 'HH:mm',
-                });
-                $('#startDate, #endDate').datetimepicker({
-                    format: 'YYYY-MM-DD',
-                    defaultDate: new Date()
-                });
-            });
-        });
 
-    </script>
 
 </head>
 <body>
@@ -317,8 +297,7 @@
             </div><!--.modal-content-->
         </div>
     </div>
-
-    <script src="../../static/admin/javascript_v3/break-time.js"></script>
+    <script src="/static/admin/javascripts/break-time.js"></script>
     <script id="OPERATING_TIME_TEMPLATE" type="text/x-jquery-tmpl">
         <tr data-id="{{= ID}} "style="text-align:center;">
             <td>{{= NO}}</td>
@@ -343,7 +322,26 @@
     </script>
 </div>
 <th:block layout:fragment="script">
+    <script>
+        window.addEventListener('resize', function (event) {
+            $("#chart").width(window.innerWidth * 0.9);
+            $("#chart").height(window.innerHeight);
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $('#startTime, #endTime').datetimepicker({
+                    format: 'HH:mm',
+                });
+                $('#startDate, #endDate').datetimepicker({
+                    format: 'YYYY-MM-DD',
+                    defaultDate: new Date()
+                });
+            });
+        });
 
+    </script>
 </th:block>
 </body>
 </html>

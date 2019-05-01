@@ -15,7 +15,7 @@ $(function () {
 
     operatingTime.getAllLinesName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/line/factory/" + 2,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -28,11 +28,11 @@ $(function () {
                 $('#selectLineSearch').empty();
                 //$("#selectLine").append("<option value=''>라인</option>");
                 $("#selectLineSearch").append("<option value=''>라인</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
                         lineArray.push(value.LINE_NAME);
-                        $("#chkBox").append("<input type=\"checkbox\" id="+value.LINE_NAME+" style=\"width: 35px; height: 20px\" value="+value.LINE_NAME+">"+value.LINE_NAME+"");
-                        $("#selectLineSearch").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                        $("#chkBox").append("<input type=\"checkbox\" id="+value.name+" style=\"width: 35px; height: 20px\" value="+value.name+">"+value.name+"");
+                        $("#selectLineSearch").append("<option value="+value.name+">"+value.name+"</option>");
                     });
                 }
             },
