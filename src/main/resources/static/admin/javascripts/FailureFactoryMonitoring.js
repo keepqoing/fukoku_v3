@@ -16,15 +16,22 @@ $(function () {
 
     $(document).ready(function () {
 
-      //  process.getFactoryName();
-    var queryString = decodeURIComponent(window.location.search);
-    queryString = queryString.substring(1);
-    var queries = queryString.split("&");
-    console.log("queries.length = " + queries.length);
-    if(queries.length > 1){
-        $("#yearSelected").val(queries[0]);
-        process.breakdowntimeanalysisbyline();
-    }
+        $(function () {
+            $('#startTime').datetimepicker({
+                format: 'YYYY',
+                defaultDate: new Date()
+            });
+        });
+
+          //  process.getFactoryName();
+        var queryString = decodeURIComponent(window.location.search);
+        queryString = queryString.substring(1);
+        var queries = queryString.split("&");
+        console.log("queries.length = " + queries.length);
+        if(queries.length > 1){
+            $("#yearSelected").val(queries[0]);
+            process.breakdowntimeanalysisbyline();
+        }
 
 
     });
@@ -149,8 +156,7 @@ $(function () {
             success: function (response) {
 
                 let data = response.breakdowntimeanalysisbyline;
-                console.log("================= response.breakdowntimeanalysisbyline : \n");
-                console.log(data);
+
                 var lines = ["HC", "IB", "HA", "HD", "PD", "HB", "PB", "PC", "PA", "PE", "IA", "VA", "JA"];
                 var month = [0,0,0,0,0,0,0,0,0,0,0,0]; var working_time = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
