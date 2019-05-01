@@ -28,8 +28,21 @@ public interface SensorAdHocRepository {
 			@Result(property="startTime",column="start_time"),
 			@Result(property="endTime",column="end_time"),
 			@Result(property="refLine",column="ref_line"),
+			@Result(property="refFactory",column="ref_factory"),
 	})
 	List<SensorAdHoc> findSensorAdHoc(@Param("line") String lineId);
+	
+	@Select("SELECT * FROM sensor_ad_hoc  where ref_factory=#{refFactory}")
+	@Results(value={
+			@Result(property="sensorName",column="name"),
+			@Result(property="temperature",column="temperature"),
+			@Result(property="humidity",column="humidity"),
+			@Result(property="startTime",column="start_time"),
+			@Result(property="endTime",column="end_time"),
+			@Result(property="refLine",column="ref_line"),
+			@Result(property="refFactory",column="ref_factory"),
+	})
+	List<SensorAdHoc> findSensorAdHocByRefFactory(@Param("refFactory") long refFactory);
 	
 	@Select("SELECT * FROM sensor_ad_hoc  where id=#{id}")
 	@Results(value={
@@ -39,18 +52,20 @@ public interface SensorAdHocRepository {
 			@Result(property="startTime",column="start_time"),
 			@Result(property="endTime",column="end_time"),
 			@Result(property="refLine",column="ref_line"),
+			@Result(property="refFactory",column="ref_factory"),
 	})
 	SensorAdHoc findOne(@Param("id") long id);
 	
 	@Insert("INSERT INTO sensor_ad_hoc ("
-			+ "  name, temperature, humidity , start_time,end_time, ref_line "
+			+ "  name, temperature, humidity , start_time,end_time, ref_line, ref_factory "
 			+ ") VALUES ("
 			+ "	#{f.sensorName}, "
 			+ " #{f.temperature}, "
 			+ " #{f.humidity}, "
 			+ " #{f.startTime}, "
 			+ " #{f.endTime}, "
-			+ " #{f.refLine} "
+			+ " #{f.refLine}, "
+			+ " #{f.refFactory} "
 			+ ");")
 	boolean save(@Param("f") SensorAdHoc f);
 	
@@ -60,7 +75,7 @@ public interface SensorAdHocRepository {
 			+ " humidity=#{f.humidity},"
 			+ " start_time=#{f.startTime} ,"
 			+ " end_time=#{f.endTime},"
-			+ " ref_line=#{f.refLine}"
+			+ " ref_line=#{f.refLine} "
 			+ "		 WHERE id=#{f.id}")
 	boolean update(@Param("f") SensorAdHoc frm);
 	

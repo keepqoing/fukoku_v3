@@ -39,6 +39,9 @@ app.controller('MainCtrl', function($scope, $http) {
 	
 	$scope.dataOneLine;
 	
+	
+	$scope.sensorFactories; 
+	
 	/***
 	 * Function()
 	 */
@@ -145,6 +148,7 @@ app.controller('MainCtrl', function($scope, $http) {
             if(response.code == 200){
             	$scope.factories = response.data;
             	$scope.findLineByFactoryId($scope.selectCtrl.selectedValue,$scope.status);
+            	$scope.findSensorFactory($scope.selectCtrl.selectedValue);
             }else{
             	$scope.message = response.message;
             }
@@ -453,20 +457,40 @@ app.controller('MainCtrl', function($scope, $http) {
 		 */
 		
 		
+		$(document).on('click',"#btAddSensorFactory" , function(){
+			$('#frm').trigger("reset");
+			$("#modalFrm").modal('show');
+			$("#txtRefFactory").val($("#selectOptFactory").val());
+			$("#txtRefLine").val(0);
+			$("#btSave").show();
+			$("#btUpdate").hide();
+		});
+		
 		$(document).on('click',"#btAddSensor" , function(){
 			$('#frm').trigger("reset");
 			$("#modalFrm").modal('show');
 			$("#txtRefLine").val($(this).data("line"));
-			
+			$("#txtRefFactory").val(0);
 			$("#btSave").show();
 			$("#btUpdate").hide();
+		});
+		
+		$(document).on('click',".btClickUpdateSensorFactory" , function(){
+			$('#frm').trigger("reset");
+			$("#modalFrm").modal('show');
+			$("#txtRefLine").val($(this).data("line"));
+			$("#txtRefLine").val(0);
+			findOne($(this).data("line"));
+			
+			$("#btSave").hide();
+			$("#btUpdate").show();
 		});
 		
 		$(document).on('click',".btClickUpdateSensor" , function(){
 			$('#frm').trigger("reset");
 			$("#modalFrm").modal('show');
 			$("#txtRefLine").val($(this).data("line"));
-			
+			$("#txtRefFactory").val(0);
 			findOne($(this).data("line"));
 			
 			$("#btSave").hide();
@@ -485,6 +509,7 @@ app.controller('MainCtrl', function($scope, $http) {
 				"temperature" : $("#txtTemperature").val() ,
 				"humidity" : $("#txtHumidity").val(),
 				"refLine" : $("#txtRefLine").val(),
+				"refFactory" : $("#txtRefFactory").val(),
 				"endTime" : "",
 				"startTime" : ""
 			};
@@ -529,6 +554,7 @@ app.controller('MainCtrl', function($scope, $http) {
 						swal({position: 'top-end',type: 'error',title: '데이터가 저장되지 않았습니다.',showConfirmButton: false,timer: 1500})
 					}
 					$scope.findAll();
+					$scope.findSensorFactory($scope.selectCtrl.selectedValue);
 			    },
                 error:function(jqXHR, status, thrownError) {
                     var responseText = jQuery.parseJSON(jqXHR.responseText);
@@ -553,6 +579,7 @@ app.controller('MainCtrl', function($scope, $http) {
 					if(data.code == 200){
 						swal({position: 'top-end',type: 'success',title: '데이터가 저장되었습니다.',showConfirmButton: false,timer: 1500})
 						$scope.findAll();
+						$scope.findSensorFactory($scope.selectCtrl.selectedValue);
 					}else{
 						swal({position: 'top-end',type: 'error',title: '데이터가 저장되지 않았습니다.',showConfirmButton: false,timer: 1500})
 					}
@@ -587,6 +614,7 @@ app.controller('MainCtrl', function($scope, $http) {
 					if(data.code == 200){
 						swal({position: 'top-end',type: 'success',title: '데이터가 삭제되었습니다.',showConfirmButton: false,timer: 1500})
 						$scope.findAll();
+						$scope.findSensorFactory($scope.selectCtrl.selectedValue);
 					}else{
 						swal({position: 'top-end',type: 'error',title: '데이터가 삭제되지 않았습니다.',showConfirmButton: false,timer: 1500})
 					}
@@ -627,6 +655,28 @@ app.controller('MainCtrl', function($scope, $http) {
 			});
 	
       };
+      
+      $scope.findSensorFactory = function(id){
+			$.ajax({ 
+			    url:  "/v3/api/fukoku/sensor/find-sensor-factory/"+id,
+			    type: "GET",
+			    dataType: 'json',
+			    beforeSend: function(xhr) {
+                 xhr.setRequestHeader("Accept", "application/json");
+                 xhr.setRequestHeader("Content-Type", "application/json");
+			    },
+			    success: function(data) { 
+					console.log(data);
+					$scope.sensorFactories = data.data;
+			    },
+             error:function(jqXHR, status, thrownError) {
+                 var responseText = jQuery.parseJSON(jqXHR.responseText);
+                 console.log(responseText);
+             }
+			});
 	
+    };
+
+      
 	
 });

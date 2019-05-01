@@ -67,6 +67,26 @@ public class SensorAdHocRestController {
         return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
     }
 	
+	@RequestMapping(value="/find-sensor-factory/{refFactory}")
+    public ResponseEntity<Map<String,Object>> findAll(@PathVariable("refFactory") long refFactory)  {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+        	List<SensorAdHoc> data = repository.findSensorAdHocByRefFactory(refFactory);
+        	if(data.size() > 0 ) {
+        		map.put("data", data);
+        		map.put("code", 200);
+        	}else {
+        		map.put("code", 404);
+        		map.put("message", "Data not found!");
+        	}
+        }catch(Exception e) {
+        	e.printStackTrace();
+        	map.put("code", 500);
+    		map.put("message", "Error! " + e.getMessage());
+        }
+        return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+    }
+	
 	@RequestMapping(value="/{id}",method = RequestMethod.GET)
     public ResponseEntity<Map<String,Object>> findOne(@PathVariable("id") long id)  {
         Map<String, Object> map = new HashMap<String, Object>();

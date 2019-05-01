@@ -9,6 +9,7 @@ public class SensorAdHoc {
 	private String startTime;
 	private String endTime;
 	private String refLine;
+	private String refFactory;
 	public long getId() {
 		return id;
 	}
@@ -50,6 +51,12 @@ public class SensorAdHoc {
 	}
 	public void setRefLine(String refLine) {
 		this.refLine = refLine;
+	}
+	public String getRefFactory() {
+		return refFactory;
+	}
+	public void setRefFactory(String refFactory) {
+		this.refFactory = refFactory;
 	}
 	
 	
