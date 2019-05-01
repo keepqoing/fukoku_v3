@@ -88,6 +88,97 @@ public class WorkpieceSQLBuilderMariaDB {
                 "                                WHERE F._name LIKE '%%' AND L._name LIKE  gpa.line_name ORDER BY LMD.seq DESC LIMIT 1)\r\n" + 
                 "                and gpa.work_date='"+filter.getStartTime()+"' and line_name='PD' GROUP BY gpa.product_name\r\n" + 
                 "" +
+                "UNION\n" +
+                "SELECT  \r\n" + 
+                "               'PB' as ref_line, gpa.machine_name ,gpa.product_name as model , IFNULL(max(CAST(gpa.daily_seq AS INTEGER)),0) AS max_ds, \r\n" + 
+                "                (SELECT IFNULL(sum(total),0)  FROM assign_working_time WHERE _date=gpa.work_date and ref_product=gpa.product_name) as max_target\r\n" + 
+                "                FROM monitoring_workpiece_product_amount gpa WHERE \r\n" + 
+                "                gpa.machine_name=(SELECT LMD.join_name-- ,  LMD.seq\r\n" + 
+                "                                FROM machines M  \r\n" + 
+                "                                INNER JOIN lines_machines_detail LMD ON LMD.ref_machine_id = M.id  \r\n" + 
+                "                                INNER JOIN _lines L ON LMD.ref_line_id = L.id  \r\n" + 
+                "                                INNER JOIN factories F ON L.ref_factory = F.id \r\n" + 
+                "                                WHERE F._name LIKE '%%' AND L._name LIKE  gpa.line_name ORDER BY LMD.seq DESC LIMIT 1)\r\n" + 
+                "                and gpa.work_date='"+filter.getStartTime()+"' and line_name='PB' GROUP BY gpa.product_name\r\n" + 
+                "" +
+                "UNION\n" +
+                "SELECT  \r\n" + 
+                "               'PC' as ref_line, gpa.machine_name ,gpa.product_name as model , IFNULL(max(CAST(gpa.daily_seq AS INTEGER)),0) AS max_ds, \r\n" + 
+                "                (SELECT IFNULL(sum(total),0)  FROM assign_working_time WHERE _date=gpa.work_date and ref_product=gpa.product_name) as max_target\r\n" + 
+                "                FROM monitoring_workpiece_product_amount gpa WHERE \r\n" + 
+                "                gpa.machine_name=(SELECT LMD.join_name-- ,  LMD.seq\r\n" + 
+                "                                FROM machines M  \r\n" + 
+                "                                INNER JOIN lines_machines_detail LMD ON LMD.ref_machine_id = M.id  \r\n" + 
+                "                                INNER JOIN _lines L ON LMD.ref_line_id = L.id  \r\n" + 
+                "                                INNER JOIN factories F ON L.ref_factory = F.id \r\n" + 
+                "                                WHERE F._name LIKE '%%' AND L._name LIKE  gpa.line_name ORDER BY LMD.seq DESC LIMIT 1)\r\n" + 
+                "                and gpa.work_date='"+filter.getStartTime()+"' and line_name='PC' GROUP BY gpa.product_name\r\n" + 
+                "" +
+                "UNION\n" +
+                "SELECT  \r\n" + 
+                "               'PA' as ref_line, gpa.machine_name ,gpa.product_name as model , IFNULL(max(CAST(gpa.daily_seq AS INTEGER)),0) AS max_ds, \r\n" + 
+                "                (SELECT IFNULL(sum(total),0)  FROM assign_working_time WHERE _date=gpa.work_date and ref_product=gpa.product_name) as max_target\r\n" + 
+                "                FROM monitoring_workpiece_product_amount gpa WHERE \r\n" + 
+                "                gpa.machine_name=(SELECT LMD.join_name-- ,  LMD.seq\r\n" + 
+                "                                FROM machines M  \r\n" + 
+                "                                INNER JOIN lines_machines_detail LMD ON LMD.ref_machine_id = M.id  \r\n" + 
+                "                                INNER JOIN _lines L ON LMD.ref_line_id = L.id  \r\n" + 
+                "                                INNER JOIN factories F ON L.ref_factory = F.id \r\n" + 
+                "                                WHERE F._name LIKE '%%' AND L._name LIKE  gpa.line_name ORDER BY LMD.seq DESC LIMIT 1)\r\n" + 
+                "                and gpa.work_date='"+filter.getStartTime()+"' and line_name='PA' GROUP BY gpa.product_name\r\n" + 
+                "" +
+                "UNION\n" +
+                "SELECT  \r\n" + 
+                "               'PE' as ref_line, gpa.machine_name ,gpa.product_name as model , IFNULL(max(CAST(gpa.daily_seq AS INTEGER)),0) AS max_ds, \r\n" + 
+                "                (SELECT IFNULL(sum(total),0)  FROM assign_working_time WHERE _date=gpa.work_date and ref_product=gpa.product_name) as max_target\r\n" + 
+                "                FROM monitoring_workpiece_product_amount gpa WHERE \r\n" + 
+                "                gpa.machine_name=(SELECT LMD.join_name-- ,  LMD.seq\r\n" + 
+                "                                FROM machines M  \r\n" + 
+                "                                INNER JOIN lines_machines_detail LMD ON LMD.ref_machine_id = M.id  \r\n" + 
+                "                                INNER JOIN _lines L ON LMD.ref_line_id = L.id  \r\n" + 
+                "                                INNER JOIN factories F ON L.ref_factory = F.id \r\n" + 
+                "                                WHERE F._name LIKE '%%' AND L._name LIKE  gpa.line_name ORDER BY LMD.seq DESC LIMIT 1)\r\n" + 
+                "                and gpa.work_date='"+filter.getStartTime()+"' and line_name='PE' GROUP BY gpa.product_name\r\n" + 
+                "" +
+                "UNION\n" +
+                "SELECT  \r\n" + 
+                "               'IA' as ref_line, gpa.machine_name ,gpa.product_name as model , IFNULL(max(CAST(gpa.daily_seq AS INTEGER)),0) AS max_ds, \r\n" + 
+                "                (SELECT IFNULL(sum(total),0)  FROM assign_working_time WHERE _date=gpa.work_date and ref_product=gpa.product_name) as max_target\r\n" + 
+                "                FROM monitoring_workpiece_product_amount gpa WHERE \r\n" + 
+                "                gpa.machine_name=(SELECT LMD.join_name-- ,  LMD.seq\r\n" + 
+                "                                FROM machines M  \r\n" + 
+                "                                INNER JOIN lines_machines_detail LMD ON LMD.ref_machine_id = M.id  \r\n" + 
+                "                                INNER JOIN _lines L ON LMD.ref_line_id = L.id  \r\n" + 
+                "                                INNER JOIN factories F ON L.ref_factory = F.id \r\n" + 
+                "                                WHERE F._name LIKE '%%' AND L._name LIKE  gpa.line_name ORDER BY LMD.seq DESC LIMIT 1)\r\n" + 
+                "                and gpa.work_date='"+filter.getStartTime()+"' and line_name='IA' GROUP BY gpa.product_name\r\n" + 
+                "" +
+                "UNION\n" +
+                "SELECT  \r\n" + 
+                "               'VA' as ref_line, gpa.machine_name ,gpa.product_name as model , IFNULL(max(CAST(gpa.daily_seq AS INTEGER)),0) AS max_ds, \r\n" + 
+                "                (SELECT IFNULL(sum(total),0)  FROM assign_working_time WHERE _date=gpa.work_date and ref_product=gpa.product_name) as max_target\r\n" + 
+                "                FROM monitoring_workpiece_product_amount gpa WHERE \r\n" + 
+                "                gpa.machine_name=(SELECT LMD.join_name-- ,  LMD.seq\r\n" + 
+                "                                FROM machines M  \r\n" + 
+                "                                INNER JOIN lines_machines_detail LMD ON LMD.ref_machine_id = M.id  \r\n" + 
+                "                                INNER JOIN _lines L ON LMD.ref_line_id = L.id  \r\n" + 
+                "                                INNER JOIN factories F ON L.ref_factory = F.id \r\n" + 
+                "                                WHERE F._name LIKE '%%' AND L._name LIKE  gpa.line_name ORDER BY LMD.seq DESC LIMIT 1)\r\n" + 
+                "                and gpa.work_date='"+filter.getStartTime()+"' and line_name='VA' GROUP BY gpa.product_name\r\n" + 
+                "" +
+                "UNION\n" +
+                "SELECT  \r\n" + 
+                "               'JA' as ref_line, gpa.machine_name ,gpa.product_name as model , IFNULL(max(CAST(gpa.daily_seq AS INTEGER)),0) AS max_ds, \r\n" + 
+                "                (SELECT IFNULL(sum(total),0)  FROM assign_working_time WHERE _date=gpa.work_date and ref_product=gpa.product_name) as max_target\r\n" + 
+                "                FROM monitoring_workpiece_product_amount gpa WHERE \r\n" + 
+                "                gpa.machine_name=(SELECT LMD.join_name-- ,  LMD.seq\r\n" + 
+                "                                FROM machines M  \r\n" + 
+                "                                INNER JOIN lines_machines_detail LMD ON LMD.ref_machine_id = M.id  \r\n" + 
+                "                                INNER JOIN _lines L ON LMD.ref_line_id = L.id  \r\n" + 
+                "                                INNER JOIN factories F ON L.ref_factory = F.id \r\n" + 
+                "                                WHERE F._name LIKE '%%' AND L._name LIKE  gpa.line_name ORDER BY LMD.seq DESC LIMIT 1)\r\n" + 
+                "                and gpa.work_date='"+filter.getStartTime()+"' and line_name='JA' GROUP BY gpa.product_name\r\n" + 
+                "" +
                 "ORDER BY ref_line ASC;\n");
         System.out.println(buffer.toString());
         return buffer.toString();
@@ -133,7 +224,16 @@ public class WorkpieceSQLBuilderMariaDB {
 	        }catch (Exception e){
 	            e.printStackTrace();
 	        }
-
+	        	buffer.append(" SELECT " +
+                    "      MAX(W.daily_seq) as products, " +
+                    "      AB.target , 'HC'  as line_name " +
+                    "FROM good_product_analysis_hc W, " +
+                    "     (SELECT SUM(A.total) as target " +
+                    "      FROM assign_working_time A " +
+                    "      WHERE  A.ref_line ='HC' AND A._date ='"+filter.getStartTime()+"'" +
+                    "      ) AS AB " +
+                    "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='HC' AND ref_machine='HC_TP'");
+	        	buffer.append(" UNION ");
 	            buffer.append(" SELECT " +
 	                    "      MAX(W.daily_seq) as products, " +
 	                    "      AB.target ,  'IB'  as line_name " +
@@ -146,13 +246,13 @@ public class WorkpieceSQLBuilderMariaDB {
 	            buffer.append(" UNION ");
 	            buffer.append(" SELECT " +
 	                    "      MAX(W.daily_seq) as products, " +
-	                    "      AB.target , 'HC'  as line_name " +
-	                    "FROM good_product_analysis_hc W, " +
+	                    "      AB.target , 'HA'  as line_name " +
+	                    "FROM good_product_analysis_ha W, " +
 	                    "     (SELECT SUM(A.total) as target " +
 	                    "      FROM assign_working_time A " +
-	                    "      WHERE  A.ref_line ='HC' AND A._date ='"+filter.getStartTime()+"'" +
+	                    "      WHERE  A.ref_line ='HA' AND A._date ='"+filter.getStartTime()+"'" +
 	                    "      ) AS AB " +
-	                    "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='HC' AND ref_machine='HC_TP'");
+	                    "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='HA' AND ref_machine='HA_Runout'");
 	            buffer.append(" UNION ");
 	            buffer.append(" SELECT " +
 	                    "      MAX(W.daily_seq) as products, " +
@@ -164,35 +264,95 @@ public class WorkpieceSQLBuilderMariaDB {
 	                    "      ) AS AB " +
 	                    "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='HD' AND ref_machine='HD_Runout'");
 	            buffer.append(" UNION ");
-	            buffer.append(" SELECT " +
-	                    "      MAX(W.daily_seq) as products, " +
-	                    "      AB.target , 'HA'  as line_name " +
-	                    "FROM good_product_analysis_ha W, " +
-	                    "     (SELECT SUM(A.total) as target " +
-	                    "      FROM assign_working_time A " +
-	                    "      WHERE  A.ref_line ='HA' AND A._date ='"+filter.getStartTime()+"'" +
-	                    "      ) AS AB " +
-	                    "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='HA' AND ref_machine='HA_Runout'");
-	        buffer.append(" UNION ");
-	        buffer.append(" SELECT " +
-	                "      MAX(W.daily_seq) as products, " +
-	                "      AB.target , 'PD'  as line_name " +
-	                "FROM good_product_analysis_pd W, " +
-	                "     (SELECT SUM(A.total) as target " +
-	                "      FROM assign_working_time A " +
-	                "      WHERE  A.ref_line ='PD' AND A._date ='"+filter.getStartTime()+"'" +
-	                "      ) AS AB " +
-	                "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='PD' AND ref_machine='PD_Pnt'");
-	        buffer.append(" UNION ");
-	        buffer.append(" SELECT " +
-	                "      MAX(W.daily_seq) as products, " +
-	                "      AB.target , 'HB'  as line_name " +
-	                "FROM good_product_analysis_hb W, " +
-	                "     (SELECT SUM(A.total) as target " +
-	                "      FROM assign_working_time A " +
-	                "      WHERE  A.ref_line ='HB' AND A._date ='"+filter.getStartTime()+"'" +
-	                "      ) AS AB " +
-	                "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='HB' AND ref_machine='HB_Tmarker'");
+		        buffer.append(" SELECT " +
+		                "      MAX(W.daily_seq) as products, " +
+		                "      AB.target , 'PD'  as line_name " +
+		                "FROM good_product_analysis_pd W, " +
+		                "     (SELECT SUM(A.total) as target " +
+		                "      FROM assign_working_time A " +
+		                "      WHERE  A.ref_line ='PD' AND A._date ='"+filter.getStartTime()+"'" +
+		                "      ) AS AB " +
+		                "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='PD' AND ref_machine='PD_Pnt'");
+		        buffer.append(" UNION ");
+		        buffer.append(" SELECT " +
+		                "      MAX(W.daily_seq) as products, " +
+		                "      AB.target , 'HB'  as line_name " +
+		                "FROM good_product_analysis_hb W, " +
+		                "     (SELECT SUM(A.total) as target " +
+		                "      FROM assign_working_time A " +
+		                "      WHERE  A.ref_line ='HB' AND A._date ='"+filter.getStartTime()+"'" +
+		                "      ) AS AB " +
+		                "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='HB' AND ref_machine='HB_Tmarker'");
+		        buffer.append(" UNION ");
+		        buffer.append(" SELECT " +
+		                "      MAX(W.daily_seq) as products, " +
+		                "      AB.target , 'PB'  as line_name " +
+		                "FROM good_product_analysis_pb W, " +
+		                "     (SELECT SUM(A.total) as target " +
+		                "      FROM assign_working_time A " +
+		                "      WHERE  A.ref_line ='PB' AND A._date ='"+filter.getStartTime()+"'" +
+		                "      ) AS AB " +
+		                "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='PB' AND ref_machine='PB_Paka'");
+		        buffer.append(" UNION ");
+		        buffer.append(" SELECT " +
+		                "      MAX(W.daily_seq) as products, " +
+		                "      AB.target , 'PC'  as line_name " +
+		                "FROM good_product_analysis_pc W, " +
+		                "     (SELECT SUM(A.total) as target " +
+		                "      FROM assign_working_time A " +
+		                "      WHERE  A.ref_line ='PC' AND A._date ='"+filter.getStartTime()+"'" +
+		                "      ) AS AB " +
+		                "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='PC' AND ref_machine=''");
+		        buffer.append(" UNION ");
+		        buffer.append(" SELECT " +
+		                "      MAX(W.daily_seq) as products, " +
+		                "      AB.target , 'PA'  as line_name " +
+		                "FROM good_product_analysis_pa W, " +
+		                "     (SELECT SUM(A.total) as target " +
+		                "      FROM assign_working_time A " +
+		                "      WHERE  A.ref_line ='PA' AND A._date ='"+filter.getStartTime()+"'" +
+		                "      ) AS AB " +
+		                "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='PA' AND ref_machine=''");
+		        buffer.append(" UNION ");
+		        buffer.append(" SELECT " +
+		                "      MAX(W.daily_seq) as products, " +
+		                "      AB.target , 'PE'  as line_name " +
+		                "FROM good_product_analysis_pe W, " +
+		                "     (SELECT SUM(A.total) as target " +
+		                "      FROM assign_working_time A " +
+		                "      WHERE  A.ref_line ='PE' AND A._date ='"+filter.getStartTime()+"'" +
+		                "      ) AS AB " +
+		                "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='PE' AND ref_machine=''");
+		        buffer.append(" UNION ");
+		        buffer.append(" SELECT " +
+		                "      MAX(W.daily_seq) as products, " +
+		                "      AB.target , 'IA'  as line_name " +
+		                "FROM good_product_analysis_ia W, " +
+		                "     (SELECT SUM(A.total) as target " +
+		                "      FROM assign_working_time A " +
+		                "      WHERE  A.ref_line ='IA' AND A._date ='"+filter.getStartTime()+"'" +
+		                "      ) AS AB " +
+		                "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='IA' AND ref_machine=''");
+		        buffer.append(" UNION ");
+		        buffer.append(" SELECT " +
+		                "      MAX(W.daily_seq) as products, " +
+		                "      AB.target , 'VA'  as line_name " +
+		                "FROM good_product_analysis_va W, " +
+		                "     (SELECT SUM(A.total) as target " +
+		                "      FROM assign_working_time A " +
+		                "      WHERE  A.ref_line ='VA' AND A._date ='"+filter.getStartTime()+"'" +
+		                "      ) AS AB " +
+		                "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='VA' AND ref_machine=''");
+		        buffer.append(" UNION ");
+		        buffer.append(" SELECT " +
+		                "      MAX(W.daily_seq) as products, " +
+		                "      AB.target , 'JA'  as line_name " +
+		                "FROM good_product_analysis_ja W, " +
+		                "     (SELECT SUM(A.total) as target " +
+		                "      FROM assign_working_time A " +
+		                "      WHERE  A.ref_line ='JA' AND A._date ='"+filter.getStartTime()+"'" +
+		                "      ) AS AB " +
+		                "WHERE W.production_date ='"+filter.getStartTime()+"' AND W.ref_line='JA' AND ref_machine='JA_13'");
 	       // }
 
 

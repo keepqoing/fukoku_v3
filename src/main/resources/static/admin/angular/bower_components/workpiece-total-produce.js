@@ -15,7 +15,7 @@ app.controller('MainCtrl', function($scope, $http , $compile,$interval) {
     $scope.target3;
     $scope.target4;
 
-    $scope.producedProductByLine=[6];
+    $scope.producedProductByLine=[13];
 
 
     $scope.lineList = function(){
@@ -43,7 +43,7 @@ app.controller('MainCtrl', function($scope, $http , $compile,$interval) {
     }
 
     $scope.findAssignedProducedProduct = function(){
-        //openLoading();
+        openLoading();
         data = {
             "LINE_NAME": $("#selectLine").val(),
             "START_TIME": $("#startTime").find("input").val()
@@ -64,34 +64,46 @@ app.controller('MainCtrl', function($scope, $http , $compile,$interval) {
                 lineNamePlusModel[0]= ""; lineNamePlusModel[1]= "";lineNamePlusModel[2]= ""; lineNamePlusModel[3]= "";lineNamePlusModel[4]= "";lineNamePlusModel[5]= "";lineNamePlusModel[6]= "";
                 lineNamePlusModelBlue[0]= ""; lineNamePlusModelBlue[1]= "";lineNamePlusModelBlue[2]= ""; lineNamePlusModelBlue[3]= "";lineNamePlusModelBlue[4]= "";lineNamePlusModelBlue[5]= "";
 
-                var lineArr = ["IB","HC","HD","PD","HA","HB"];
+                var lineArr = ["HC","IB","HA","HD","PD","HB","PB","PC","PA","PE","IA","VA","JA"]
                 for(l=0; lineArr.length  >  l ; l++) {
                     for (j = 0; response.getWorkPlanGroupByModel.length > j; j++) {
                         if (response.getWorkPlanGroupByModel[j].ref_line == lineArr[l]) {
                             lineNamePlusModelBlueTarget[l] = response.getWorkPlanGroupByModel[j].target;
-                            lineNamePlusModelBlue[l] += "" +
-                                ((response.getWorkPlanGroupByModel[j].target == null || response.getWorkPlanGroupByModel[j].target == 0) ? "작업계획없음" : response.getWorkPlanGroupByModel[j].ref_product + " : " + response.getWorkPlanGroupByModel[j].target) + " ,";
+                            lineNamePlusModelBlue[l] += "" + ((response.getWorkPlanGroupByModel[j].target == null || response.getWorkPlanGroupByModel[j].target == 0) ? "작업계획없음" : response.getWorkPlanGroupByModel[j].ref_product + " : " + response.getWorkPlanGroupByModel[j].target) + " ,";
+                        }else{
+                        	lineNamePlusModelBlue[l] = "작업계흭없음";
                         }
                     }
                 }
 
-
-                $scope.producedProductByLine[0]=0;$scope.producedProductByLine[1]=0;$scope.producedProductByLine[2]=0;$scope.producedProductByLine[3]=0;$scope.producedProductByLine[4]=0;$scope.producedProductByLine[5]=0;$scope.producedProductByLine[6]=0;
+                $scope.producedProductByLine[0]=0;
+                $scope.producedProductByLine[1]=0;
+                $scope.producedProductByLine[2]=0;
+                $scope.producedProductByLine[3]=0;
+                $scope.producedProductByLine[4]=0;
+                $scope.producedProductByLine[5]=0;
+                $scope.producedProductByLine[6]=0;
+                $scope.producedProductByLine[7]=0;
+                $scope.producedProductByLine[8]=0;
+                $scope.producedProductByLine[9]=0;
+                $scope.producedProductByLine[10]=0;
+                $scope.producedProductByLine[11]=0;
+                $scope.producedProductByLine[12]=0;
 
                 for(m=0;response.getMaxDsAndTargetByModelFromLastMachine.length > m;m++){
-                   if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "IB"){
+                   if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "HC"){
                        // lineNamePlusModel[0] += ""+response.getMaxDsAndTargetByModelFromLastMachine[m].model + ":"+ response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds+",";
                        $scope.producedProductByLine[0] += response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds;
                     }
-                    if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "HC"){
+                    if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "IB"){
                        // lineNamePlusModel[1] += ""+response.getMaxDsAndTargetByModelFromLastMachine[m].model + ":"+ response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds+",";
                         $scope.producedProductByLine[1] += response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds;
                    }
-                    if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "HD"){
+                    if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "HA"){
                        // lineNamePlusModel[2] += ""+response.getMaxDsAndTargetByModelFromLastMachine[m].model + ":"+ response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds+",";
                         $scope.producedProductByLine[2] += response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds;
                     }
-                    if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "HA"){
+                    if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "HD"){
                        // lineNamePlusModel[3] += ""+response.getMaxDsAndTargetByModelFromLastMachine[m].model + ":"+ response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds+",";
                         $scope.producedProductByLine[3] += response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds;
                     }
@@ -103,15 +115,44 @@ app.controller('MainCtrl', function($scope, $http , $compile,$interval) {
                        // lineNamePlusModel[5] += ""+response.getMaxDsAndTargetByModelFromLastMachine[m].model + ":"+ response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds+",";
                         $scope.producedProductByLine[5] += response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds;
                     }
-
-                }
-
-                for(let p = 0; lineArr.length > p  ; p++){
-                    console.log(p , p+ " --- "+ lineNamePlusModelBlue[p]);
-                    if(lineNamePlusModelBlue[p] == ""){
-                        lineNamePlusModelBlue[p] = "작업계흭없음";
+                    if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "PB"){
+                        // lineNamePlusModel[5] += ""+response.getMaxDsAndTargetByModelFromLastMachine[m].model + ":"+ response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds+",";
+                         $scope.producedProductByLine[6] += response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds;
                     }
+                    if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "PC"){
+                        // lineNamePlusModel[5] += ""+response.getMaxDsAndTargetByModelFromLastMachine[m].model + ":"+ response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds+",";
+                         $scope.producedProductByLine[7] += response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds;
+                    }
+                    if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "PA"){
+                        // lineNamePlusModel[5] += ""+response.getMaxDsAndTargetByModelFromLastMachine[m].model + ":"+ response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds+",";
+                         $scope.producedProductByLine[8] += response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds;
+                    }
+                    if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "PE"){
+                        // lineNamePlusModel[5] += ""+response.getMaxDsAndTargetByModelFromLastMachine[m].model + ":"+ response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds+",";
+                         $scope.producedProductByLine[9] += response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds;
+                    }
+                    if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "IA"){
+                        // lineNamePlusModel[5] += ""+response.getMaxDsAndTargetByModelFromLastMachine[m].model + ":"+ response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds+",";
+                         $scope.producedProductByLine[10] += response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds;
+                    }
+                    if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "VA"){
+                        // lineNamePlusModel[5] += ""+response.getMaxDsAndTargetByModelFromLastMachine[m].model + ":"+ response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds+",";
+                         $scope.producedProductByLine[11] += response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds;
+                    }
+                    if(response.getMaxDsAndTargetByModelFromLastMachine[m].ref_line == "JS"){
+                        // lineNamePlusModel[5] += ""+response.getMaxDsAndTargetByModelFromLastMachine[m].model + ":"+ response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds+",";
+                         $scope.producedProductByLine[12] += response.getMaxDsAndTargetByModelFromLastMachine[m].max_ds;
+                    }
+
                 }
+
+//                console.log("lineArr",lineArr);
+//                for(let p = 0; lineArr.length > p  ; p++){
+//                    console.log(p , p+ " --- "+ lineNamePlusModelBlue[p]);
+//                    if(lineNamePlusModelBlue[p] == ""){
+//                        lineNamePlusModelBlue[p] = "작업계흭없음";
+//                    }
+//                }
 
                 $scope.line1 = "("+lineNamePlusModelBlue[0].slice(0, -1)+") "  + response.TargetAndProducedProduct[0].line_name ;
                 $scope.line2 = "("+lineNamePlusModelBlue[1].slice(0, -1)+") "  +response.TargetAndProducedProduct[1].line_name ;
@@ -119,6 +160,13 @@ app.controller('MainCtrl', function($scope, $http , $compile,$interval) {
                 $scope.line4 = "("+lineNamePlusModelBlue[3].slice(0, -1)+") "  +response.TargetAndProducedProduct[3].line_name ;
                 $scope.line5 = "("+lineNamePlusModelBlue[4].slice(0, -1)+") "  +response.TargetAndProducedProduct[4].line_name ;
                 $scope.line6 = "("+lineNamePlusModelBlue[5].slice(0, -1)+") "  +response.TargetAndProducedProduct[5].line_name ;
+                $scope.line7 = "("+lineNamePlusModelBlue[6].slice(0, -1)+") "  +response.TargetAndProducedProduct[6].line_name ;
+                $scope.line8 = "("+lineNamePlusModelBlue[7].slice(0, -1)+") "  +response.TargetAndProducedProduct[7].line_name ;
+                $scope.line9 = "("+lineNamePlusModelBlue[8].slice(0, -1)+") "  +response.TargetAndProducedProduct[8].line_name ;
+                $scope.line10 = "("+lineNamePlusModelBlue[9].slice(0, -1)+") "  +response.TargetAndProducedProduct[9].line_name ;
+                $scope.line11 = "("+lineNamePlusModelBlue[10].slice(0, -1)+") "  +response.TargetAndProducedProduct[10].line_name ;
+                $scope.line12 = "("+lineNamePlusModelBlue[11].slice(0, -1)+") "  +response.TargetAndProducedProduct[11].line_name ;
+                $scope.line13 = "("+lineNamePlusModelBlue[12].slice(0, -1)+") "  +response.TargetAndProducedProduct[12].line_name ;
 
                 $scope.target1 = lineNamePlusModelBlueTarget[0];
                 $scope.target2 = lineNamePlusModelBlueTarget[1];
@@ -126,6 +174,13 @@ app.controller('MainCtrl', function($scope, $http , $compile,$interval) {
                 $scope.target4 = lineNamePlusModelBlueTarget[3];
                 $scope.target5 = lineNamePlusModelBlueTarget[4];
                 $scope.target6 = lineNamePlusModelBlueTarget[5];
+                $scope.target7 = lineNamePlusModelBlueTarget[6];
+                $scope.target8 = lineNamePlusModelBlueTarget[7];
+                $scope.target9 = lineNamePlusModelBlueTarget[8];
+                $scope.target10 = lineNamePlusModelBlueTarget[9];
+                $scope.target11 = lineNamePlusModelBlueTarget[10];
+                $scope.target12 = lineNamePlusModelBlueTarget[11];
+                $scope.target13 = lineNamePlusModelBlueTarget[12];
 
                 $scope.generateGraph(response);
                 //$scope.findAssignedProducedProductHbase();
@@ -138,11 +193,11 @@ app.controller('MainCtrl', function($scope, $http , $compile,$interval) {
                // $scope.lines = "Error!";
                // alert(response.message);
             }
-           // closeLoading();
+          closeLoading();
         });
         post.error(function (data, status) {
             console.log(data);
-           // closeLoading();
+           closeLoading();
         });
 
     };
@@ -189,7 +244,7 @@ app.controller('MainCtrl', function($scope, $http , $compile,$interval) {
         $scope.options = {
             chart: {
                 type: 'multiBarHorizontalChart',
-                height: 450,
+                height: 750,
                 margin: {
                     top: 30,
                     right: 75,
@@ -273,7 +328,41 @@ app.controller('MainCtrl', function($scope, $http , $compile,$interval) {
                             "label" : $scope.line6 ,
                             //"value" : response.TargetAndProducedProduct[5].products == null ? 0 :response.TargetAndProducedProduct[5].products
                             "value" : $scope.producedProductByLine[5] == null ? 0 : $scope.producedProductByLine[5]
+                        },{
+                            "label" : $scope.line7 ,
+                            //"value" : response.TargetAndProducedProduct[5].products == null ? 0 :response.TargetAndProducedProduct[5].products
+                            "value" : $scope.producedProductByLine[6] == null ? 0 : $scope.producedProductByLine[6]
+                        },{
+                            "label" : $scope.line8 ,
+                            //"value" : response.TargetAndProducedProduct[5].products == null ? 0 :response.TargetAndProducedProduct[5].products
+                            "value" : $scope.producedProductByLine[7] == null ? 0 : $scope.producedProductByLine[7]
                         }
+                        ,{
+                            "label" : $scope.line9 ,
+                            //"value" : response.TargetAndProducedProduct[5].products == null ? 0 :response.TargetAndProducedProduct[5].products
+                            "value" : $scope.producedProductByLine[8] == null ? 0 : $scope.producedProductByLine[8]
+                        }
+                        ,{
+                            "label" : $scope.line10 ,
+                            //"value" : response.TargetAndProducedProduct[5].products == null ? 0 :response.TargetAndProducedProduct[5].products
+                            "value" : $scope.producedProductByLine[9] == null ? 0 : $scope.producedProductByLine[9]
+                        }
+                        ,{
+                            "label" : $scope.line11 ,
+                            //"value" : response.TargetAndProducedProduct[5].products == null ? 0 :response.TargetAndProducedProduct[5].products
+                            "value" : $scope.producedProductByLine[10] == null ? 0 : $scope.producedProductByLine[10]
+                        }
+                        ,{
+                            "label" : $scope.line12 ,
+                            //"value" : response.TargetAndProducedProduct[5].products == null ? 0 :response.TargetAndProducedProduct[5].products
+                            "value" : $scope.producedProductByLine[11] == null ? 0 : $scope.producedProductByLine[11]
+                        }
+                        ,{
+                            "label" : $scope.line13 ,
+                            //"value" : response.TargetAndProducedProduct[5].products == null ? 0 :response.TargetAndProducedProduct[5].products
+                            "value" : $scope.producedProductByLine[12] == null ? 0 : $scope.producedProductByLine[12]
+                        }
+                        
                     ]
                 },
                 {
@@ -303,6 +392,34 @@ app.controller('MainCtrl', function($scope, $http , $compile,$interval) {
                         {
                             "label" : $scope.line6,
                             "value" : $scope.target6 == null ? 0 : $scope.target6
+                        },
+                        {
+                            "label" : $scope.line7,
+                            "value" : $scope.target7 == null ? 0 : $scope.target7
+                        },
+                        {
+                            "label" : $scope.line8,
+                            "value" : $scope.target8 == null ? 0 : $scope.target8
+                        },
+                        {
+                            "label" : $scope.line9,
+                            "value" : $scope.target9 == null ? 0 : $scope.target9
+                        },
+                        {
+                            "label" : $scope.line10,
+                            "value" : $scope.target10 == null ? 0 : $scope.target10
+                        },
+                        {
+                            "label" : $scope.line11,
+                            "value" : $scope.target11 == null ? 0 : $scope.target11
+                        },
+                        {
+                            "label" : $scope.line12,
+                            "value" : $scope.target12 == null ? 0 : $scope.target12
+                        },
+                        {
+                            "label" : $scope.line13,
+                            "value" : $scope.target13 == null ? 0 : $scope.target13
                         }
                     ]
                 }
