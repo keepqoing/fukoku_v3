@@ -273,14 +273,14 @@ $(function() {
 
                 var settings = {
                     selector: "#bar-label",
-                    width: $(barPanel).width(),
+                    width: 600,
                     height: $(barPanel).height() - 97,
                     x: "MACHINE",
                     y: "stopTime"
                 };
                 // barchartLabel(graphObjArr, settings);
 
-                barchartLabelWithClickAlarm(graphObjArr, settings,  $("#yearSelected").val(), "", "");
+                barchartLabelWithClickAlarm(graphObjArr, settings,  $("#yearSelected").val(), "alarmTimeAnalysisAllLine", "");
 
 
                 closeLoading();

@@ -96,8 +96,27 @@ $(function() {
     };
 
     // First Loading Page
-    $(document).ready(function(){
-       // alarmMachineMonitor.getAlarmData();
+    $(document).ready(function () {
+
+        $(function () {
+            $('#startTime').datetimepicker({
+                format: 'YYYY',
+                defaultDate: new Date()
+            });
+
+        });
+
+        //  process.getFactoryName();
+        var queryString = decodeURIComponent(window.location.search);
+        queryString = queryString.substring(1);
+        var queries = queryString.split("&");
+        console.log("queries.length = " + queries.length);
+        if(queries.length > 1){
+            $("#yearSelected").val(queries[0]);
+            alarmMachineMonitor.breakdowntimeanalysisbyline
+        }
+
+
     });
 
 
@@ -117,7 +136,7 @@ $(function() {
             success: function (response) {
                 console.log("response", response);
                 let data = response.breakdowntimeanalysisbyline;
-                var lines = ["HC", "IB", "HA", "HD", "PD", "HB"];
+                var lines = ["HC", "IB", "HA", "HD", "PD", "HB", "PB", "PC", "PA", "PE", "IA", "VA", "JA"];
 
                 var tr = "";
                 $("#tbody").empty();
@@ -128,6 +147,7 @@ $(function() {
                 for (var l = 0; l < lines.length; l++) {
                     var month = [0,0,0,0,0,0,0,0,0,0,0,0]; var working_time = [0,0,0,0,0,0,0,0,0,0,0,0];
                     var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
+                    var non_active_ratio = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
                     for (var i = 0; i < data.length; i++) {
 
@@ -146,6 +166,7 @@ $(function() {
                     }
                     var total_alarm_time_s = 0;
                     var total_working_time_s = 0;
+                    var total_non_active_ratio = 0;
 
                     for (var t = 0; t < month.length; t++) {
                         if(Number.isNaN(month[t]) || Number.isFinite(month[t]) ){
@@ -153,6 +174,9 @@ $(function() {
                         }
                         if(Number.isNaN(working_time[t]) || Number.isFinite(working_time[t]) ){
                             total_working_time_s += working_time[t] ;
+                        }
+                        if (!Number.isNaN(non_active_ratio[t])) {
+                            total_non_active_ratio += non_active_ratio[t];
                         }
 
                     }
@@ -176,7 +200,7 @@ $(function() {
                         "<td>"+(month[11] / 3600).toFixed(2)+"</td>" +
                         "<td>"+(total_alarm_time_s / 3600).toFixed(2)+"</td>" +
                         "<td>"+(total_working_time_s / 3600).toFixed(2)+"</td>" +
-                        "<td>"+  ((total_alarm_time_s / total_working_time_s) * 100).toFixed(2) +"</td>" +
+                        "<td>"+  total_non_active_ratio.toFixed(2) +"</td>" +
                         "</tr>";
                     $("#tbody").append(tr);
 
@@ -224,7 +248,7 @@ $(function() {
 
                 var settings = {
                     selector: "#bar-label",
-                    width: $(barPanel).width(),
+                    width: 600,
                     height: $(barPanel).height() - 97,
                     x: "MACHINE",
                     y: "stopTime"

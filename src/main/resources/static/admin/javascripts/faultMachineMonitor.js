@@ -127,8 +127,7 @@ $(function() {
                 // console.log("response", response);
                 let data = response.breakdowntimeanalysisbyline;
                 var lines = ["HC", "IB", "HA", "HD", "PD", "HB", "PB", "PC", "PA", "PE", "IA", "VA", "JA"];
-                var month = [0,0,0,0,0,0,0,0,0,0,0,0]; var working_time = [0,0,0,0,0,0,0,0,0,0,0,0];
-                var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
+
                 var tr = "";
                 $("#tbody").empty();
                 $("#bar-label").empty();
@@ -136,6 +135,8 @@ $(function() {
                 var graphObjArr = [];
                 var pieObjArr = [];
                 for (var l = 0; l < lines.length; l++) {
+                    var month = [0,0,0,0,0,0,0,0,0,0,0,0]; var working_time = [0,0,0,0,0,0,0,0,0,0,0,0];
+                    var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
                     for (var i = 0; i < data.length; i++) {
 
                         if(data[i].month == 1 && lines[l] == data[i].line){ month[0] = data[i].fault_time_s; working_time[0] = data[i].working_time_s ; non_active_ratio[0] = (data[i].fault_time_s / data[i].working_time_s) * 100  }
@@ -151,7 +152,7 @@ $(function() {
                         if(data[i].month == 11 && lines[l] == data[i].line){ month[10] = data[i].fault_time_s; working_time[10] = data[i].working_time_s ; non_active_ratio[10] = (data[i].fault_time_s / data[i].working_time_s) * 100}
                         if(data[i].month == 12 && lines[l] == data[i].line){ month[11] = data[i].fault_time_s; working_time[11] = data[i].working_time_s ; non_active_ratio[11] = (data[i].fault_time_s / data[i].working_time_s) * 100}
                     }
-                    if(l < 6) {
+
                         var total_working_nonactive_time_s = 0;
                         var total_working_time_s = 0;
                         var  total_non_active_ratio = 0;
@@ -198,44 +199,7 @@ $(function() {
                         pieObj.value = parseInt(((total_working_nonactive_time_s / 3600)+1) * 10);
                         pieObjArr.push(pieObj);
 
-                    }else{
-                        var total_working_nonactive_time_s = 0;
-                        var total_working_time_s = 0;
-                        var  total_non_active_ratio = 0;
 
-
-
-                        var tr =
-                            "<tr><td>" + lines[l] + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "</tr>";
-                        $("#tbody").append(tr);
-
-
-                        var graphObj = {};
-                        var pieObj = {};
-                        graphObj.LINE = lines[l];
-                        graphObj.NONACTIVE = 0;
-                        graphObjArr.push(graphObj);
-
-                        pieObj.label = lines[l];
-                        pieObj.value = 1;
-                        pieObjArr.push(pieObj);
-                    }
                 }
                 var pie = new d3pie("donut-label", {
                     "data": {
@@ -268,5 +232,27 @@ $(function() {
     }
 
 
+    $(document).ready(function () {
+
+        $(function () {
+            $('#startTime').datetimepicker({
+                format: 'YYYY',
+                defaultDate: new Date()
+            });
+            //  fualtMachineMonitor.getFualtData();
+        });
+
+        //  process.getFactoryName();
+        var queryString = decodeURIComponent(window.location.search);
+        queryString = queryString.substring(1);
+        var queries = queryString.split("&");
+        console.log("queries.length = " + queries.length);
+        if(queries.length > 1){
+            $("#yearSelected").val(queries[0]);
+            fualtMachineMonitor.breakdowntimeanalysisbyline
+        }
+
+
+    });
 
 });

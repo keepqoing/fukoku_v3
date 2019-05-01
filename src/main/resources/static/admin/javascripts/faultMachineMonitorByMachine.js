@@ -375,7 +375,7 @@ $(function() {
                 };
                 // barchartLabel(graphObjArr, settings);
 
-                barchartLabelWithClickNA(graphObjArr, settings,  $("#yearSelected").val(), "", "");
+                barchartLabelWithClickNA(graphObjArr, settings,  $("#yearSelected").val(), "faultTimeAnalysisAllLine", "");
 
                 closeLoading();
             }

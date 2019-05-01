@@ -226,6 +226,7 @@ $(function() {
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function (response) {
+                if (response.breakdowntimeanalysisbyline.length > 0) {
                 console.log("response", response);
                 $("#bar-label").empty();
                 let data = response.breakdowntimeanalysisbyline;
@@ -343,7 +344,7 @@ $(function() {
 
                 var settings = {
                     selector: "#bar-label",
-                    width: $(barPanel).width(),
+                    width: 600,
                     height: $(barPanel).height() - 97,
                     x: "MACHINE",
                     y: "stopTime"
@@ -351,9 +352,13 @@ $(function() {
                 // barchartLabel(graphObjArr, settings);
 
                 barchartLabelWithClickAlarm(graphObjArr, settings, $("#yearSelected").val(), "alarmTimeAnalysisByMachine", "machine");
-
+                }else{
+                    $("#tbody").empty();
+                    $("#bar-label").empty();
+                    $("#donut-label").empty();
+                    $("#tbody").append("<tr><td colspan='17'>콘텐츠 없음</td></tr>");
+                }
                 closeLoading();
-
             }
         });
 

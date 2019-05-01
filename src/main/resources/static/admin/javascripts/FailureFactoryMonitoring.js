@@ -158,149 +158,157 @@ $(function () {
                 let data = response.breakdowntimeanalysisbyline;
 
                 var lines = ["HC", "IB", "HA", "HD", "PD", "HB", "PB", "PC", "PA", "PE", "IA", "VA", "JA"];
-                var month = [0,0,0,0,0,0,0,0,0,0,0,0]; var working_time = [0,0,0,0,0,0,0,0,0,0,0,0];
-                var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
+
                 var tr = "";
                 $("#bar-label").empty();
                 $("#donut-label").empty();
-
+                $("#tbody").empty();
                 var graphObjArr = [];
                 var pieObjArr = [];
                 for (var l = 0; l < lines.length; l++) {
+                    var month = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                    var working_time = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                    var non_active_ratio = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
                     for (var i = 0; i < data.length; i++) {
                         // console.log("data[i].line = " + data[i].line);
-                        if(data[i].month == 1 && lines[l] == data[i].line){ month[0] = data[i].working_nonactive_time_s; working_time[0] = data[i].working_time_s ; non_active_ratio[0] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;  }
+                        if (data[i].month == 1 && lines[l] == data[i].line) {
+                            month[0] = data[i].working_nonactive_time_s;
+                            working_time[0] = data[i].working_time_s;
+                            non_active_ratio[0] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;
+                        }
 
                         // else{ month[0] = 0; working_time[0] = 0 ; non_active_ratio[0] = 0; }
 
-                        if(data[i].month == 2 && lines[l] == data[i].line){ month[1] = data[i].working_nonactive_time_s; working_time[1] = data[i].working_time_s ; non_active_ratio[1] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;}
+                        if (data[i].month == 2 && lines[l] == data[i].line) {
+                            month[1] = data[i].working_nonactive_time_s;
+                            working_time[1] = data[i].working_time_s;
+                            non_active_ratio[1] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;
+                        }
                         // else{ month[1] = 0; working_time[1] = 0; non_active_ratio[1] = 0;}
 
-                        if(data[i].month == 3 && lines[l] == data[i].line){ month[2] = data[i].working_nonactive_time_s; working_time[2] = data[i].working_time_s ; non_active_ratio[2] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;}
+                        if (data[i].month == 3 && lines[l] == data[i].line) {
+                            month[2] = data[i].working_nonactive_time_s;
+                            working_time[2] = data[i].working_time_s;
+                            non_active_ratio[2] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;
+                        }
                         // else{ month[2] = 0; working_time[2] = 0 ; non_active_ratio[2] = 0;}
 
-                        if(data[i].month == 4 && lines[l] == data[i].line){ month[3] = data[i].working_nonactive_time_s; working_time[3] = data[i].working_time_s ; non_active_ratio[3] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;}
+                        if (data[i].month == 4 && lines[l] == data[i].line) {
+                            month[3] = data[i].working_nonactive_time_s;
+                            working_time[3] = data[i].working_time_s;
+                            non_active_ratio[3] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;
+                        }
                         // else{ month[3] = 0; working_time[3] = 0 ; non_active_ratio[3] = 0;}
 
-                        if(data[i].month == 5 && lines[l] == data[i].line){ month[4] = data[i].working_nonactive_time_s; working_time[4] = data[i].working_time_s ; non_active_ratio[4] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;}
+                        if (data[i].month == 5 && lines[l] == data[i].line) {
+                            month[4] = data[i].working_nonactive_time_s;
+                            working_time[4] = data[i].working_time_s;
+                            non_active_ratio[4] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;
+                        }
                         // else{ month[4] = 0; working_time[4] = 0; non_active_ratio[4] = 0;}
 
-                        if(data[i].month == 6 && lines[l] == data[i].line){ month[5] = data[i].working_nonactive_time_s; working_time[5] = data[i].working_time_s ; non_active_ratio[5] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;}
+                        if (data[i].month == 6 && lines[l] == data[i].line) {
+                            month[5] = data[i].working_nonactive_time_s;
+                            working_time[5] = data[i].working_time_s;
+                            non_active_ratio[5] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;
+                        }
                         // else{ month[5] = 0; working_time[5] = 0; non_active_ratio[5] = 0;}
 
-                        if(data[i].month == 7 && lines[l] == data[i].line){ month[6] = data[i].working_nonactive_time_s; working_time[6] = data[i].working_time_s ; non_active_ratio[6] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;}
+                        if (data[i].month == 7 && lines[l] == data[i].line) {
+                            month[6] = data[i].working_nonactive_time_s;
+                            working_time[6] = data[i].working_time_s;
+                            non_active_ratio[6] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;
+                        }
                         // else{ month[6] = 0; working_time[6] = 0; non_active_ratio[6] = 0;}
 
-                        if(data[i].month == 8 && lines[l] == data[i].line){ month[7] = data[i].working_nonactive_time_s; working_time[7] = data[i].working_time_s ; non_active_ratio[7] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;}
+                        if (data[i].month == 8 && lines[l] == data[i].line) {
+                            month[7] = data[i].working_nonactive_time_s;
+                            working_time[7] = data[i].working_time_s;
+                            non_active_ratio[7] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;
+                        }
                         // else{ month[7] = 0; working_time[7] = 0; non_active_ratio[7] = 0;}
 
-                        if(data[i].month == 9 && lines[l] == data[i].line){ month[8] = data[i].working_nonactive_time_s; working_time[8] = data[i].working_time_s ; non_active_ratio[8] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;}
+                        if (data[i].month == 9 && lines[l] == data[i].line) {
+                            month[8] = data[i].working_nonactive_time_s;
+                            working_time[8] = data[i].working_time_s;
+                            non_active_ratio[8] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;
+                        }
                         // else{ month[8] = 0; working_time[8] = 0; non_active_ratio[8] = 0;}
 
-                        if(data[i].month == 10 && lines[l] == data[i].line){ month[9] = data[i].working_nonactive_time_s; working_time[9] = data[i].working_time_s ; non_active_ratio[9] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;}
+                        if (data[i].month == 10 && lines[l] == data[i].line) {
+                            month[9] = data[i].working_nonactive_time_s;
+                            working_time[9] = data[i].working_time_s;
+                            non_active_ratio[9] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;
+                        }
                         // else{ month[9] = 0; working_time[9] = 0; non_active_ratio[9] = 0;}
 
-                        if(data[i].month == 11 && lines[l] == data[i].line){ month[10] = data[i].working_nonactive_time_s; working_time[10] = data[i].working_time_s ; non_active_ratio[10] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;}
+                        if (data[i].month == 11 && lines[l] == data[i].line) {
+                            month[10] = data[i].working_nonactive_time_s;
+                            working_time[10] = data[i].working_time_s;
+                            non_active_ratio[10] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;
+                        }
                         // else{ month[10] = 0; working_time[10] = 0; non_active_ratio[10] = 0;}
 
-                        if(data[i].month == 12 && lines[l] == data[i].line){ month[11] = data[i].working_nonactive_time_s; working_time[11] = data[i].working_time_s ; non_active_ratio[11] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;}
+                        if (data[i].month == 12 && lines[l] == data[i].line) {
+                            month[11] = data[i].working_nonactive_time_s;
+                            working_time[11] = data[i].working_time_s;
+                            non_active_ratio[11] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;
+                        }
                         // else{ month[11] = 0; working_time[11] = 0; non_active_ratio[11] = 0;}
                     }
 
-                    if(l < 6) {
-                        var total_working_nonactive_time_s = 0;
-                        var total_working_time_s = 0;
-                        var total_non_active_ratio = 0;
-                        for (var t = 0; t < month.length; t++) {
-                            if (!Number.isNaN(month[t])) {
-                                total_working_nonactive_time_s += month[t];
-                            }
-                            if (!Number.isNaN(working_time[t])) {
-                                total_working_time_s += working_time[t];
-                            }
-                            if (!Number.isNaN(non_active_ratio[t])) {
-                                total_non_active_ratio += non_active_ratio[t];
-                            }
+
+                    var total_working_nonactive_time_s = 0;
+                    var total_working_time_s = 0;
+                    var total_non_active_ratio = 0;
+                    for (var t = 0; t < month.length; t++) {
+                        if (!Number.isNaN(month[t])) {
+                            total_working_nonactive_time_s += month[t];
                         }
-
-
-                        var tr =
-                            "<tr><td>" + lines[l] + "</td>" +
-                            "<td>" + (month[0] / 3600).toFixed(2) + "</td>" +
-                            "<td>" + (month[1] / 3600).toFixed(2) + "</td>" +
-                            "<td>" + (month[2] / 3600).toFixed(2) + "</td>" +
-                            "<td>" + (month[3] / 3600).toFixed(2) + "</td>" +
-                            "<td>" + (month[4] / 3600).toFixed(2) + "</td>" +
-                            "<td>" + (month[5] / 3600).toFixed(2) + "</td>" +
-                            "<td>" + (month[6] / 3600).toFixed(2) + "</td>" +
-                            "<td>" + (month[7] / 3600).toFixed(2) + "</td>" +
-                            "<td>" + (month[8] / 3600).toFixed(2) + "</td>" +
-                            "<td>" + (month[9] / 3600).toFixed(2) + "</td>" +
-                            "<td>" + (month[10] / 3600).toFixed(2) + "</td>" +
-                            "<td>" + (month[11] / 3600).toFixed(2) + "</td>" +
-                            "<td>" + (total_working_nonactive_time_s / 3600).toFixed(2) + "</td>" +
-                            "<td>" + (total_working_time_s / 3600).toFixed(2) + "</td>" +
-                            "<td>" + total_non_active_ratio.toFixed(2) + "</td>" +
-                            "</tr>";
-                        $("#tbody").append(tr);
-
-
-                        var graphObj = {};
-                        var pieObj = {};
-                        graphObj.line1 = lines[l];
-                        graphObj.bar = (total_working_nonactive_time_s / 3600).toFixed(2);
-                        graphObjArr.push(graphObj);
-
-                        pieObj.label = lines[l];
-                        pieObj.value = parseInt(((total_working_nonactive_time_s / 3600) + 1) * 10);
-                        pieObjArr.push(pieObj);
-                    }else{
-                        var total_working_nonactive_time_s = 0;
-                        var total_working_time_s = 0;
-                        var total_non_active_ratio = 0;
-
-
-
-                        var tr =
-                            "<tr><td>" + lines[l] + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "<td>" + 0.00 + "</td>" +
-                            "</tr>";
-                        $("#tbody").append(tr);
-
-
-                        var graphObj = {};
-                        var pieObj = {};
-                        graphObj.line1 = lines[l];
-                        graphObj.bar = (total_working_nonactive_time_s / 3600).toFixed(2);
-                        graphObjArr.push(graphObj);
-
-                        pieObj.label = lines[l];
-                        pieObj.value = parseInt(((total_working_nonactive_time_s / 3600) + 1) * 10);
-                        pieObjArr.push(pieObj);
+                        if (!Number.isNaN(working_time[t])) {
+                            total_working_time_s += working_time[t];
+                        }
+                        if (!Number.isNaN(non_active_ratio[t])) {
+                            total_non_active_ratio += non_active_ratio[t];
+                        }
                     }
 
+
+                    var tr =
+                        "<tr><td>" + lines[l] + "</td>" +
+                        "<td>" + (month[0] / 3600).toFixed(2) + "</td>" +
+                        "<td>" + (month[1] / 3600).toFixed(2) + "</td>" +
+                        "<td>" + (month[2] / 3600).toFixed(2) + "</td>" +
+                        "<td>" + (month[3] / 3600).toFixed(2) + "</td>" +
+                        "<td>" + (month[4] / 3600).toFixed(2) + "</td>" +
+                        "<td>" + (month[5] / 3600).toFixed(2) + "</td>" +
+                        "<td>" + (month[6] / 3600).toFixed(2) + "</td>" +
+                        "<td>" + (month[7] / 3600).toFixed(2) + "</td>" +
+                        "<td>" + (month[8] / 3600).toFixed(2) + "</td>" +
+                        "<td>" + (month[9] / 3600).toFixed(2) + "</td>" +
+                        "<td>" + (month[10] / 3600).toFixed(2) + "</td>" +
+                        "<td>" + (month[11] / 3600).toFixed(2) + "</td>" +
+                        "<td>" + (total_working_nonactive_time_s / 3600).toFixed(2) + "</td>" +
+                        "<td>" + (total_working_time_s / 3600).toFixed(2) + "</td>" +
+                        "<td>" + total_non_active_ratio.toFixed(2) + "</td>" +
+                        "</tr>";
+                    $("#tbody").append(tr);
+
+
+                    var graphObj = {};
+                    var pieObj = {};
+                    graphObj.line1 = lines[l];
+                    graphObj.bar = (total_working_nonactive_time_s / 3600).toFixed(2);
+                    graphObjArr.push(graphObj);
+
+                    pieObj.label = lines[l];
+                    pieObj.value = parseInt(((total_working_nonactive_time_s / 3600) + 1) * 10);
+                    pieObjArr.push(pieObj);
+
                 }
-
-
-
-
                 var pie = new d3pie("donut-label", {
                     "data": {
-                        "content":pieObjArr
+                        "content": pieObjArr
                     },
                     "size": {
 
@@ -320,7 +328,7 @@ $(function () {
                 };
                 console.log("graphObjArr : ");
                 console.log(graphObjArr);
-                barchartLabelWithClick(graphObjArr, settings,  $("#yearSelected").val(), "stop_offl_Line", "line");
+                barchartLabelWithClick(graphObjArr, settings, $("#yearSelected").val(), "stop_offl_Line", "line");
 
 
                 closeLoading();
@@ -330,7 +338,6 @@ $(function () {
             }
 
         });
-
     }
 
 
