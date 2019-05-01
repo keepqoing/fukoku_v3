@@ -459,7 +459,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		
 		$(document).on('click',"#btAddSensorFactory" , function(){
 			$('#frm').trigger("reset");
-			$("#modalFrm").modal('show');
+			$("#modalFrmAddHoc").modal('show');
 			$("#txtRefFactory").val($("#selectOptFactory").val());
 			$("#txtRefLine").val(0);
 			$("#btSave").show();
@@ -468,7 +468,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		
 		$(document).on('click',"#btAddSensor" , function(){
 			$('#frm').trigger("reset");
-			$("#modalFrm").modal('show');
+			$("#modalFrmAddHoc").modal('show');
 			$("#txtRefLine").val($(this).data("line"));
 			$("#txtRefFactory").val(0);
 			$("#btSave").show();
@@ -477,7 +477,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		
 		$(document).on('click',".btClickUpdateSensorFactory" , function(){
 			$('#frm').trigger("reset");
-			$("#modalFrm").modal('show');
+			$("#modalFrmAddHoc").modal('show');
 			$("#txtRefLine").val($(this).data("line"));
 			$("#txtRefLine").val(0);
 			findOne($(this).data("line"));
@@ -488,7 +488,7 @@ app.controller('MainCtrl', function($scope, $http) {
 		
 		$(document).on('click',".btClickUpdateSensor" , function(){
 			$('#frm').trigger("reset");
-			$("#modalFrm").modal('show');
+			$("#modalFrmAddHoc").modal('show');
 			$("#txtRefLine").val($(this).data("line"));
 			$("#txtRefFactory").val(0);
 			findOne($(this).data("line"));
