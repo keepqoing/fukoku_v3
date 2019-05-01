@@ -182,7 +182,7 @@ $(function() {
             success: function (response) {
                 console.log("response", response);
                 let data = response.breakdowntimeanalysisbyline;
-                var lines = ["HC", "IB", "HA", "HD", "PD", "HB"];
+                var lines = ["HC", "IB", "HA", "HD", "PD", "HB", "PB", "PC", "PA", "PE", "IA", "VA", "JA"];
                 var month = [0,0,0,0,0,0,0,0,0,0,0,0]; var working_time = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var tr = "";
@@ -192,89 +192,167 @@ $(function() {
                 var graphObjArr = [];
                 var pieObjArr = [];
 
-                $("#bar-label").empty();
+
+                var total_working_nonactive_time_s = 0;
+                var total_working_time_s = 0;
+                var  total_non_active_ratio = 0;
+
                 for (var l = 0; l < lines.length; l++) {
-                    for (var m = 0; m < response.machines.length; m++) {
-                        for (var i = 0; i < data.length; i++) {
-                            if(data[i].month == 1 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[0] = data[i].fault_time_s; working_time[0] = data[i].working_time_s ; non_active_ratio[0] = (data[i].fault_time_s / data[i].working_time_s) * 100  }
-                            if(data[i].month == 2 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[1] = data[i].fault_time_s; working_time[1] = data[i].working_time_s ; non_active_ratio[1] = (data[i].fault_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 3 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[2] = data[i].fault_time_s; working_time[2] = data[i].working_time_s ; non_active_ratio[2] = (data[i].fault_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 4 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[3] = data[i].fault_time_s; working_time[3] = data[i].working_time_s ; non_active_ratio[3] = (data[i].fault_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 5 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[4] = data[i].fault_time_s; working_time[4] = data[i].working_time_s ; non_active_ratio[4] = (data[i].fault_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 6 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[5] = data[i].fault_time_s; working_time[5] = data[i].working_time_s ; non_active_ratio[5] = (data[i].fault_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 7 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[6] = data[i].fault_time_s; working_time[6] = data[i].working_time_s ; non_active_ratio[6] = (data[i].fault_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 8 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[7] = data[i].fault_time_s; working_time[7] = data[i].working_time_s ; non_active_ratio[7] = (data[i].fault_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 9 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[8] = data[i].fault_time_s; working_time[8] = data[i].working_time_s ; non_active_ratio[8] = (data[i].fault_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 10 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[9] = data[i].fault_time_s; working_time[9] = data[i].working_time_s ; non_active_ratio[9] = (data[i].fault_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 11 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[10] = data[i].fault_time_s; working_time[10] = data[i].working_time_s ; non_active_ratio[10] = (data[i].fault_time_s / data[i].working_time_s) * 100}
-                            if(data[i].month == 12 && lines[l] == data[i].line && response.machines[m].name == data[i].machine){ month[11] = data[i].fault_time_s; working_time[11] = data[i].working_time_s ; non_active_ratio[11] = (data[i].fault_time_s / data[i].working_time_s) * 100}
+                    if (l < 6) {
+                        for (var m = 0; m < response.machines.length; m++) {
+                            for (var i = 0; i < data.length; i++) {
+                                if (data[i].month == 1 && lines[l] == data[i].line && response.machines[m].name == data[i].machine) {
+                                    month[0] = data[i].fault_time_s;
+                                    working_time[0] = data[i].working_time_s;
+                                    non_active_ratio[0] = (data[i].fault_time_s / data[i].working_time_s) * 100
+                                }
+                                if (data[i].month == 2 && lines[l] == data[i].line && response.machines[m].name == data[i].machine) {
+                                    month[1] = data[i].fault_time_s;
+                                    working_time[1] = data[i].working_time_s;
+                                    non_active_ratio[1] = (data[i].fault_time_s / data[i].working_time_s) * 100
+                                }
+                                if (data[i].month == 3 && lines[l] == data[i].line && response.machines[m].name == data[i].machine) {
+                                    month[2] = data[i].fault_time_s;
+                                    working_time[2] = data[i].working_time_s;
+                                    non_active_ratio[2] = (data[i].fault_time_s / data[i].working_time_s) * 100
+                                }
+                                if (data[i].month == 4 && lines[l] == data[i].line && response.machines[m].name == data[i].machine) {
+                                    month[3] = data[i].fault_time_s;
+                                    working_time[3] = data[i].working_time_s;
+                                    non_active_ratio[3] = (data[i].fault_time_s / data[i].working_time_s) * 100
+                                }
+                                if (data[i].month == 5 && lines[l] == data[i].line && response.machines[m].name == data[i].machine) {
+                                    month[4] = data[i].fault_time_s;
+                                    working_time[4] = data[i].working_time_s;
+                                    non_active_ratio[4] = (data[i].fault_time_s / data[i].working_time_s) * 100
+                                }
+                                if (data[i].month == 6 && lines[l] == data[i].line && response.machines[m].name == data[i].machine) {
+                                    month[5] = data[i].fault_time_s;
+                                    working_time[5] = data[i].working_time_s;
+                                    non_active_ratio[5] = (data[i].fault_time_s / data[i].working_time_s) * 100
+                                }
+                                if (data[i].month == 7 && lines[l] == data[i].line && response.machines[m].name == data[i].machine) {
+                                    month[6] = data[i].fault_time_s;
+                                    working_time[6] = data[i].working_time_s;
+                                    non_active_ratio[6] = (data[i].fault_time_s / data[i].working_time_s) * 100
+                                }
+                                if (data[i].month == 8 && lines[l] == data[i].line && response.machines[m].name == data[i].machine) {
+                                    month[7] = data[i].fault_time_s;
+                                    working_time[7] = data[i].working_time_s;
+                                    non_active_ratio[7] = (data[i].fault_time_s / data[i].working_time_s) * 100
+                                }
+                                if (data[i].month == 9 && lines[l] == data[i].line && response.machines[m].name == data[i].machine) {
+                                    month[8] = data[i].fault_time_s;
+                                    working_time[8] = data[i].working_time_s;
+                                    non_active_ratio[8] = (data[i].fault_time_s / data[i].working_time_s) * 100
+                                }
+                                if (data[i].month == 10 && lines[l] == data[i].line && response.machines[m].name == data[i].machine) {
+                                    month[9] = data[i].fault_time_s;
+                                    working_time[9] = data[i].working_time_s;
+                                    non_active_ratio[9] = (data[i].fault_time_s / data[i].working_time_s) * 100
+                                }
+                                if (data[i].month == 11 && lines[l] == data[i].line && response.machines[m].name == data[i].machine) {
+                                    month[10] = data[i].fault_time_s;
+                                    working_time[10] = data[i].working_time_s;
+                                    non_active_ratio[10] = (data[i].fault_time_s / data[i].working_time_s) * 100
+                                }
+                                if (data[i].month == 12 && lines[l] == data[i].line && response.machines[m].name == data[i].machine) {
+                                    month[11] = data[i].fault_time_s;
+                                    working_time[11] = data[i].working_time_s;
+                                    non_active_ratio[11] = (data[i].fault_time_s / data[i].working_time_s) * 100
+                                }
+                            }
+
+                            for (var t = 0; t < month.length; t++) {
+                                if (!Number.isNaN(month[t])) {
+                                    total_working_nonactive_time_s += month[t];
+                                }
+                                if (!Number.isNaN(working_time[t])) {
+                                    total_working_time_s += working_time[t];
+                                }
+                                if (!Number.isNaN(non_active_ratio[t])) {
+                                    total_non_active_ratio += non_active_ratio[t];
+                                }
+                            }
                         }
-                        var total_working_nonactive_time_s = 0;
-                        var total_working_time_s = 0;
-                        var  total_non_active_ratio = 0;
-                        for (var t = 0; t < month.length; t++) {
-                            if(!Number.isNaN(month[t])){
-                                total_working_nonactive_time_s += month[t];
-                            }
-                            if(!Number.isNaN(working_time[t])){
-                                total_working_time_s += working_time[t];
-                            }
-                            if(!Number.isNaN(non_active_ratio[t])){
-                                total_non_active_ratio += non_active_ratio[t];
-                            }
-                        }
+
+
+                        var tr =
+                            "<tr><td>" + lines[l] + "</td>" +
+                            "<td>" + lines[l] + "_" + $("#selectMachine").val() + "</td>" +
+                            "<td>" + (month[0] / 3600).toFixed(2) + "</td>" +
+                            "<td>" + (month[1] / 3600).toFixed(2) + "</td>" +
+                            "<td>" + (month[2] / 3600).toFixed(2) + "</td>" +
+                            "<td>" + (month[3] / 3600).toFixed(2) + "</td>" +
+                            "<td>" + (month[4] / 3600).toFixed(2) + "</td>" +
+                            "<td>" + (month[5] / 3600).toFixed(2) + "</td>" +
+                            "<td>" + (month[6] / 3600).toFixed(2) + "</td>" +
+                            "<td>" + (month[7] / 3600).toFixed(2) + "</td>" +
+                            "<td>" + (month[8] / 3600).toFixed(2) + "</td>" +
+                            "<td>" + (month[9] / 3600).toFixed(2) + "</td>" +
+                            "<td>" + (month[10] / 3600).toFixed(2) + "</td>" +
+                            "<td>" + (month[11] / 3600).toFixed(2) + "</td>" +
+                            "<td>" + (total_working_nonactive_time_s / 3600).toFixed(2) + "</td>" +
+                            "<td>" + (total_working_time_s / 3600).toFixed(2) + "</td>" +
+                            "<td>" + total_non_active_ratio.toFixed(2) + "</td>" +
+                            "</tr>";
+                        $("#tbody").append(tr);
+
+                        // var graphObj = {};
+                        // graphObj.MACHINE = lines[l]+"_"+$("#selectMachine").val();
+                        // graphObj.stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
+                        // graphObjArr.push(graphObj);
+
+                        var graphObj = {};
+                        var pieObj = {};
+                        graphObj.MACHINE = lines[l] + "_" + $("#selectMachine").val();
+                        graphObj.stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
+                        graphObjArr.push(graphObj);
+
+                        pieObj.label = lines[l] + "_" + $("#selectMachine").val();
+                        pieObj.value = parseInt(((total_working_nonactive_time_s / 3600) + 1) * 10);
+                        pieObjArr.push(pieObj);
+
+
+                    } else {
+                        var tr =
+                            "<tr><td>" + lines[l] + "</td>" +
+                            "<td>" + lines[l] + "_" + $("#selectMachine").val() + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "</tr>";
+                        $("#tbody").append(tr);
+
+                        // var graphObj = {};
+                        // graphObj.MACHINE = lines[l]+"_"+$("#selectMachine").val();
+                        // graphObj.stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
+                        // graphObjArr.push(graphObj);
+
+                        var graphObj = {};
+                        var pieObj = {};
+                        graphObj.MACHINE = lines[l] + "_" + $("#selectMachine").val();
+                        graphObj.stopTime = 0;
+                        graphObjArr.push(graphObj);
+
+                        pieObj.label = lines[l] + "_" + $("#selectMachine").val();
+                        pieObj.value = 1;
+                        pieObjArr.push(pieObj);
                     }
 
-
-                    var tr =
-                        "<tr><td>"+lines[l]+"</td>"+
-                        "<td>"+lines[l]+"_"+$("#selectMachine").val()+"</td>"+
-                        "<td>"+(month[0] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[1] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[2] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[3] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[4] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[5] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[6] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[7] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[8] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[9] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[10] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[11] / 3600).toFixed(2)+"</td>" +
-                        "<td>"+(total_working_nonactive_time_s / 3600).toFixed(2)+"</td>" +
-                        "<td>"+(total_working_time_s / 3600).toFixed(2)+"</td>" +
-                        "<td>"+  total_non_active_ratio.toFixed(2)+"</td>" +
-                        "</tr>";
-                    $("#tbody").append(tr);
-
-                    // var graphObj = {};
-                    // graphObj.MACHINE = lines[l]+"_"+$("#selectMachine").val();
-                    // graphObj.stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
-                    // graphObjArr.push(graphObj);
-
-                    var graphObj = {};
-                    var pieObj = {};
-                    graphObj.MACHINE = lines[l]+"_"+$("#selectMachine").val();
-                    graphObj.stopTime = (total_working_nonactive_time_s / 3600).toFixed(2);
-                    graphObjArr.push(graphObj);
-
-                    pieObj.label = lines[l]+"_"+$("#selectMachine").val();
-                    pieObj.value = parseInt(((total_working_nonactive_time_s / 3600) + 1) * 10);
-                    pieObjArr.push(pieObj);
-
-
                 }
-
-                // var settings = {
-                //     selector: "#bar-label",
-                //     width: 1400,
-                //     height: 350,
-                //     x: "MACHINE",
-                //     y: "stopTime"
-                // };
-                // barchartLabel(graphObjArr, settings);
-                // console.log(month);
-
                 var pie = new d3pie("donut-label", {
                     "data": {
                         "content":pieObjArr
@@ -290,7 +368,7 @@ $(function() {
 
                 var settings = {
                     selector: "#bar-label",
-                    width: $(barPanel).width(),
+                    width: 600,
                     height: $(barPanel).height() - 97,
                     x: "MACHINE",
                     y: "stopTime"

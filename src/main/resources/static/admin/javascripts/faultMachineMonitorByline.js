@@ -141,7 +141,8 @@ $(function() {
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function (response) {
-                console.log("response", response);
+                if (response.breakdowntimeanalysisbyline.length > 0) {
+                // console.log("response", response);
                 $("#bar-label").empty();
                 let data = response.breakdowntimeanalysisbyline;
                 var lines = [$("#selectLineSearch").val()];
@@ -262,8 +263,13 @@ $(function() {
                 };
                 // barchartLabelWithClickNA(graphObjArr, settings);
                 barchartLabelWithClickNA(graphObjArr, settings, $("#yearSelected").val(), "faultTimeAnalysisByMachine", "machine");
+                }else{
+                    $("#tbody").empty();
+                    $("#bar-label").empty();
+                    $("#donut-label").empty();
+                    $("#tbody").append("<tr><td colspan='17'>콘텐츠 없음</td></tr>");
+                }
                 closeLoading();
-
             }
         });
     }

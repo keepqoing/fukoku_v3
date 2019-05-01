@@ -97,7 +97,7 @@ $(function() {
     };
 
     $('#btnQuery').click(function () {
-       // fualtMachineMonitor.getFualtData();
+        // fualtMachineMonitor.getFualtData();
         fualtMachineMonitor.breakdowntimeanalysisbyline();
     });
 
@@ -124,9 +124,9 @@ $(function() {
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function (response) {
-                console.log("response", response);
+                // console.log("response", response);
                 let data = response.breakdowntimeanalysisbyline;
-                var lines = ["HC", "IB", "HA", "HD", "PD", "HB"];
+                var lines = ["HC", "IB", "HA", "HD", "PD", "HB", "PB", "PC", "PA", "PE", "IA", "VA", "JA"];
                 var month = [0,0,0,0,0,0,0,0,0,0,0,0]; var working_time = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
                 var tr = "";
@@ -147,72 +147,96 @@ $(function() {
                         if(data[i].month == 7 && lines[l] == data[i].line){ month[6] = data[i].fault_time_s; working_time[6] = data[i].working_time_s ; non_active_ratio[6] = (data[i].fault_time_s / data[i].working_time_s) * 100}
                         if(data[i].month == 8 && lines[l] == data[i].line){ month[7] = data[i].fault_time_s; working_time[7] = data[i].working_time_s ; non_active_ratio[7] = (data[i].fault_time_s / data[i].working_time_s) * 100}
                         if(data[i].month == 9 && lines[l] == data[i].line){ month[8] = data[i].fault_time_s; working_time[8] = data[i].working_time_s ; non_active_ratio[8] = (data[i].fault_time_s / data[i].working_time_s) * 100}
-                        if(data[i].month == 10 && lines[l] == data[i].line){
-                            if(data[i].fault_time_s > 0 ){
-                                console.log(data[i]);
-                            }
-                            ;month[9] = data[i].fault_time_s; working_time[9] = data[i].working_time_s ; non_active_ratio[9] = (data[i].fault_time_s / data[i].working_time_s) * 100}
+                        if(data[i].month == 10 && lines[l] == data[i].line){ month[9] = data[i].fault_time_s; working_time[9] = data[i].working_time_s ; non_active_ratio[9] = (data[i].fault_time_s / data[i].working_time_s) * 100}
                         if(data[i].month == 11 && lines[l] == data[i].line){ month[10] = data[i].fault_time_s; working_time[10] = data[i].working_time_s ; non_active_ratio[10] = (data[i].fault_time_s / data[i].working_time_s) * 100}
                         if(data[i].month == 12 && lines[l] == data[i].line){ month[11] = data[i].fault_time_s; working_time[11] = data[i].working_time_s ; non_active_ratio[11] = (data[i].fault_time_s / data[i].working_time_s) * 100}
                     }
-                    var total_working_nonactive_time_s = 0;
-                    var total_working_time_s = 0;
-                    var  total_non_active_ratio = 0;
-                    for (var t = 0; t < month.length; t++) {
-                        if(!Number.isNaN(month[t])){
-                            total_working_nonactive_time_s += month[t];
+                    if(l < 6) {
+                        var total_working_nonactive_time_s = 0;
+                        var total_working_time_s = 0;
+                        var  total_non_active_ratio = 0;
+                        for (var t = 0; t < month.length; t++) {
+                            if(!Number.isNaN(month[t])){
+                                total_working_nonactive_time_s += month[t];
+                            }
+                            if(!Number.isNaN(working_time[t])){
+                                total_working_time_s += working_time[t];
+                            }
+                            if(!Number.isNaN(non_active_ratio[t])){
+                                total_non_active_ratio += non_active_ratio[t];
+                            }
                         }
-                        if(!Number.isNaN(working_time[t])){
-                            total_working_time_s += working_time[t];
-                        }
-                        if(!Number.isNaN(non_active_ratio[t])){
-                            total_non_active_ratio += non_active_ratio[t];
-                        }
+                        // console.log(lines[l] , month);
+
+                        var tr =
+                            "<tr><td>"+lines[l]+"</td>"+
+                            "<td>"+(month[0] / 3600).toFixed(2)+"</td>"+
+                            "<td>"+(month[1] / 3600).toFixed(2)+"</td>"+
+                            "<td>"+(month[2] / 3600).toFixed(2)+"</td>"+
+                            "<td>"+(month[3] / 3600).toFixed(2)+"</td>"+
+                            "<td>"+(month[4] / 3600).toFixed(2)+"</td>"+
+                            "<td>"+(month[5] / 3600).toFixed(2)+"</td>"+
+                            "<td>"+(month[6] / 3600).toFixed(2)+"</td>"+
+                            "<td>"+(month[7] / 3600).toFixed(2)+"</td>"+
+                            "<td>"+(month[8] / 3600).toFixed(2)+"</td>"+
+                            "<td>"+(month[9] / 3600).toFixed(2)+"</td>"+
+                            "<td>"+(month[10] / 3600).toFixed(2)+"</td>"+
+                            "<td>"+(month[11] / 3600).toFixed(2)+"</td>" +
+                            "<td>"+(total_working_nonactive_time_s / 3600).toFixed(2)+"</td>" +
+                            "<td>"+(total_working_time_s / 3600).toFixed(2)+"</td>" +
+                            "<td>"+  total_non_active_ratio.toFixed(2)+"</td>" +
+                            "</tr>";
+                        $("#tbody").append(tr);
+
+                        var graphObj = {};
+                        var pieObj = {};
+                        graphObj.LINE = lines[l];
+                        graphObj.NONACTIVE = (total_working_nonactive_time_s / 3600).toFixed(2);
+                        graphObjArr.push(graphObj);
+
+                        pieObj.label = lines[l];
+                        pieObj.value = parseInt(((total_working_nonactive_time_s / 3600)+1) * 10);
+                        pieObjArr.push(pieObj);
+
+                    }else{
+                        var total_working_nonactive_time_s = 0;
+                        var total_working_time_s = 0;
+                        var  total_non_active_ratio = 0;
+
+
+
+                        var tr =
+                            "<tr><td>" + lines[l] + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "<td>" + 0.00 + "</td>" +
+                            "</tr>";
+                        $("#tbody").append(tr);
+
+
+                        var graphObj = {};
+                        var pieObj = {};
+                        graphObj.LINE = lines[l];
+                        graphObj.NONACTIVE = 0;
+                        graphObjArr.push(graphObj);
+
+                        pieObj.label = lines[l];
+                        pieObj.value = 1;
+                        pieObjArr.push(pieObj);
                     }
-                    // console.log(lines[l] , month);
-
-                    var tr =
-                        "<tr><td>"+lines[l]+"</td>"+
-                        "<td>"+(month[0] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[1] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[2] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[3] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[4] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[5] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[6] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[7] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[8] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[9] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[10] / 3600).toFixed(2)+"</td>"+
-                        "<td>"+(month[11] / 3600).toFixed(2)+"</td>" +
-                        "<td>"+(total_working_nonactive_time_s / 3600).toFixed(2)+"</td>" +
-                        "<td>"+(total_working_time_s / 3600).toFixed(2)+"</td>" +
-                        "<td>"+  total_non_active_ratio.toFixed(2)+"</td>" +
-                        "</tr>";
-                    $("#tbody").append(tr);
-
-                    var graphObj = {};
-                    var pieObj = {};
-                    graphObj.LINE = lines[l];
-                    graphObj.NONACTIVE = (total_working_nonactive_time_s / 3600).toFixed(2);
-                    graphObjArr.push(graphObj);
-
-                    pieObj.label = lines[l];
-                    pieObj.value = parseInt(((total_working_nonactive_time_s / 3600)+1) * 10);
-                    pieObjArr.push(pieObj);
-
                 }
-
-                // $("#bar-label").empty();
-                // var settings = {
-                //     selector: "#bar-label",
-                //     width: 1000,
-                //     height: 350,
-                //     x: "MACHINE",
-                //     y: "stopTime"
-                // };
-                // barchartLabel(graphObjArr, settings);
-
                 var pie = new d3pie("donut-label", {
                     "data": {
                         "content":pieObjArr
@@ -223,12 +247,11 @@ $(function() {
                         "canvasWidth": 400
                     }
                 });
-
                 var barPanel = document.getElementById("piePanel");
 
                 var settings = {
                     selector: "#bar-label",
-                    width: $(barPanel).width(),
+                    width: 600,
                     height: $(barPanel).height() - 97,
                     x: "LINE",
                     y: "NONACTIVE"
@@ -242,14 +265,7 @@ $(function() {
 
             }
         });
-
     }
-
-
-
-
-
-
 
 
 

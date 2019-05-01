@@ -13,7 +13,7 @@ function barchartLabelWithClickNA(data, settings, pYear, pURL, pType){
 
     var xScale = d3.scale.ordinal()
     // .rangeRoundBands([0, width - margin.right+100 - margin.left], .3);
-        .rangeRoundBands([0, 400], .05);
+        .rangeRoundBands([0, 500], .05);
     var xAxis = d3.svg.axis()
         .scale(xScale)
         .orient("bottom");
@@ -95,7 +95,7 @@ function barchartLabelWithClickNA(data, settings, pYear, pURL, pType){
     //adding x axis to the bottom of chart
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(" + (margin.left - 20) + "," + (height - margin.bottom) + ")")
+        .attr("transform", "translate(" + (margin.left - 7) + "," + (height - margin.bottom) + ")")
         .call(xAxis);
 
 
