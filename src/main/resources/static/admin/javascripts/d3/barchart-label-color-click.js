@@ -1,6 +1,6 @@
 function barchartLabelWithClick(data, settings, pYear, pURL, pType){
     var margin = {top:30, right:30, bottom:50, left:30},
-        width  = settings.width,
+        width  = settings.width ,
         height = settings.height;
 
     var svg = d3.select(settings.selector)
@@ -13,7 +13,7 @@ function barchartLabelWithClick(data, settings, pYear, pURL, pType){
 
     var xScale = d3.scale.ordinal()
     // .rangeRoundBands([0, width - margin.right+100 - margin.left], .3);
-        .rangeRoundBands([0, 400], .05);
+        .rangeRoundBands([0, 500], .05);
     var xAxis = d3.svg.axis()
         .scale(xScale)
         .orient("bottom");
@@ -95,9 +95,10 @@ function barchartLabelWithClick(data, settings, pYear, pURL, pType){
         .call(yAxis);
 
     //adding x axis to the bottom of chart
+    // set gap by translate
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(" + (margin.left - 20) + "," + (height - margin.bottom) + ")")
+        .attr("transform", "translate(" + (margin.left - 7) + "," + (height - margin.bottom) + ")")
         .call(xAxis);
 
 
