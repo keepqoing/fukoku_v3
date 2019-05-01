@@ -510,6 +510,8 @@ app.controller('MainCtrl', function($scope, $http) {
 				"humidity" : $("#txtHumidity").val(),
 				"refLine" : $("#txtRefLine").val(),
 				"refFactory" : $("#txtRefFactory").val(),
+				"seq" : $("#txtSeq").val(),
+				"des" : $("#txtDes").val(),
 				"endTime" : "",
 				"startTime" : ""
 			};
@@ -524,7 +526,9 @@ app.controller('MainCtrl', function($scope, $http) {
 				"sensorName" : $("#txtName").val(),
 				"temperature" : $("#txtTemperature").val() ,
 				"humidity" : $("#txtHumidity").val(),
-				"refLine" : $("#txtRefLine").val()
+				"refLine" : $("#txtRefLine").val(),
+				"seq" : $("#txtSeq").val(),
+				"des" : $("#txtDes").val()
 			};
 			console.log(params);
 			update(params);
@@ -647,7 +651,9 @@ app.controller('MainCtrl', function($scope, $http) {
 					$("#txtTemperature").val(data.data.id);
 					$("#txtHumidity").val(data.data.humidity);
 					$("#txtRefLine").val(data.data.refLine);
-			    },
+
+					$("#txtSeq").val(data.data.seq);
+					$("#txtDes").val(data.data.des);},
                error:function(jqXHR, status, thrownError) {
                    var responseText = jQuery.parseJSON(jqXHR.responseText);
                    console.log(responseText);

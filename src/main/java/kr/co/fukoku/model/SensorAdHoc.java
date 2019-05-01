@@ -3,6 +3,8 @@ package kr.co.fukoku.model;
 public class SensorAdHoc {
 	
 	private long id;
+	private long seq;
+	private String des;
 	private String sensorName;
 	private long temperature;
 	private long humidity;
@@ -57,6 +59,18 @@ public class SensorAdHoc {
 	}
 	public void setRefFactory(String refFactory) {
 		this.refFactory = refFactory;
+	}
+	public long getSeq() {
+		return seq;
+	}
+	public void setSeq(long seq) {
+		this.seq = seq;
+	}
+	public String getDes() {
+		return des;
+	}
+	public void setDes(String des) {
+		this.des = des;
 	}
 	
 	

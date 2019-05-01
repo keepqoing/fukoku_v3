@@ -57,7 +57,7 @@ public interface SensorAdHocRepository {
 	SensorAdHoc findOne(@Param("id") long id);
 	
 	@Insert("INSERT INTO sensor_ad_hoc ("
-			+ "  name, temperature, humidity , start_time,end_time, ref_line, ref_factory "
+			+ "  name, temperature, humidity , start_time,end_time, ref_line, ref_factory, seq , des "
 			+ ") VALUES ("
 			+ "	#{f.sensorName}, "
 			+ " #{f.temperature}, "
@@ -65,7 +65,9 @@ public interface SensorAdHocRepository {
 			+ " #{f.startTime}, "
 			+ " #{f.endTime}, "
 			+ " #{f.refLine}, "
-			+ " #{f.refFactory} "
+			+ " #{f.refFactory}, "
+			+ " #{f.seq}, "
+			+ " #{f.des} "
 			+ ");")
 	boolean save(@Param("f") SensorAdHoc f);
 	
@@ -75,7 +77,7 @@ public interface SensorAdHocRepository {
 			+ " humidity=#{f.humidity},"
 			+ " start_time=#{f.startTime} ,"
 			+ " end_time=#{f.endTime},"
-			+ " ref_line=#{f.refLine} "
+			+ " ref_line=#{f.refLine} , seq=#{f.seq} , des=#{f.des} "
 			+ "		 WHERE id=#{f.id}")
 	boolean update(@Param("f") SensorAdHoc frm);
 	
