@@ -223,6 +223,28 @@ public class ProductRestController {
 		}
 		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 	}
-	
-	
+
+
+	// Chomrern as of 2019-05-01
+	@RequestMapping(value="/line/{line}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String,Object>> findProductByLine(@PathVariable("line") String line)  {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			List<Product> data = repository.findAllByLine(line);
+			if(data != null ) {
+				map.put("data", data);
+				map.put("code", 200);
+			}else {
+				map.put("code", 404);
+				map.put("message", "Data not found!");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			map.put("code", 500);
+			map.put("message", "Error! " + e.getMessage());
+		}
+		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+	}
+
+
 }

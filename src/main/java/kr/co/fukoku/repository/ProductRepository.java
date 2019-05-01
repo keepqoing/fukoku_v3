@@ -87,4 +87,12 @@ public interface ProductRepository {
 			@Result(property="customerName",column="customer_name")
 	})
 	List<Product> findAllProducts();
+
+	// Chomrern - as of 2019-05-01
+	@Select("SELECT DISTINCT pcp.ref_product name\n" +
+			"FROM process_chain pc , process_chain_element pce , process_chain_product pcp\n" +
+			"WHERE pc.id = pce.ref_process_chain_id\n" +
+			"AND pc.id = pcp.ref_process_chain_id\n" +
+			"AND pc.ref_line = #{line}; ")
+	List<Product> findAllByLine(@Param("line") String line);
 }

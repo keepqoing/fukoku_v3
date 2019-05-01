@@ -495,25 +495,25 @@ public class SQLStatement {
 
     // TODO: SQL STATEMENT FOR CATEGORY ITEM
     public enum OperatingTimeSQL{
-        FIND_ALL("SELECT *FROM operating_time WHERE ref_line LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
-        FIND_ALL_BY_ACTION_TYPE("SELECT *FROM operating_time WHERE ref_line LIKE ? AND action_type LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
-        FIND_ALL_BY_ACTION_TYPE_AND_WORKING_TYPE_NAME("SELECT *FROM operating_time WHERE ref_line LIKE ? AND working_type_name LIKE ? AND action_type LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
-        FIND_ALL_BY_WORKING_TYPE_NAME("SELECT *FROM operating_time WHERE ref_line LIKE ? AND working_type_name LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
-        FIND_ALL_BY_WORKING_TIME_FOR_SELECT_BOX("SELECT *FROM operating_time WHERE status = 1 AND action_type = '정상근무';"),
+        FIND_ALL("SELECT * FROM fukoku_v2.operating_time WHERE ref_line LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
+        FIND_ALL_BY_ACTION_TYPE("SELECT * FROM fukoku_v2.operating_time WHERE ref_line LIKE ? AND action_type LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
+        FIND_ALL_BY_ACTION_TYPE_AND_WORKING_TYPE_NAME("SELECT * FROM fukoku_v2.operating_time WHERE ref_line LIKE ? AND working_type_name LIKE ? AND action_type LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
+        FIND_ALL_BY_WORKING_TYPE_NAME("SELECT * FROM fukoku_v2.operating_time WHERE ref_line LIKE ? AND working_type_name LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;"),
+        FIND_ALL_BY_WORKING_TIME_FOR_SELECT_BOX("SELECT * FROM fukoku_v2.operating_time WHERE status = 1 AND action_type = '정상근무';"),
         FIND_ALL_BY_TIME_RANGE("SELECT start_date, end_date, duration " +
-                "FROM operating_time OT " +
+                "FROM fukoku_v2.operating_time OT " +
                 "WHERE OT.action_type = '계획정지' " +
                 "AND start_date BETWEEN ? AND ? " +
                 "AND start_date BETWEEN ? AND ?;"),
-        FIND_BY_ID("SELECT *FROM operating_time WHERE id = ?;"),
-        COUNT_ALL("SELECT COUNT(1) FROM operating_time WHERE ref_line LIKE ?;"),
-        COUNT_ALL_BY_ACTION_TYPE("SELECT COUNT(1) FROM operating_time WHERE ref_line LIKE ? AND action_type = ?;"),
-        COUNT_ALL_BY_ACTION_TYPE_AND_WORKING_TYPE_NAME("SELECT COUNT(1) FROM operating_time WHERE ref_line LIKE ? AND working_type_name = ? AND action_type = ?;"),
-        COUNT_ALL_WORKING_TYPE_NAME("SELECT COUNT(1) FROM operating_time WHERE ref_line LIKE ? AND action_type = ?;"),
-        ADD("INSERT INTO operating_time(working_code, working_type_name, work_type_name, time_tag, action_type, start_time, end_time, duration, ref_item, start_day, end_day, start_date, end_date, status, ref_line) " +
+        FIND_BY_ID("SELECT * FROM fukoku_v2.operating_time WHERE id = ?;"),
+        COUNT_ALL("SELECT COUNT(1) FROM fukoku_v2.operating_time WHERE ref_line LIKE ?;"),
+        COUNT_ALL_BY_ACTION_TYPE("SELECT COUNT(1) FROM fukoku_v2.operating_time WHERE ref_line LIKE ? AND action_type = ?;"),
+        COUNT_ALL_BY_ACTION_TYPE_AND_WORKING_TYPE_NAME("SELECT COUNT(1) FROM fukoku_v2.operating_time WHERE ref_line LIKE ? AND working_type_name = ? AND action_type = ?;"),
+        COUNT_ALL_WORKING_TYPE_NAME("SELECT COUNT(1) FROM fukoku_v2.operating_time WHERE ref_line LIKE ? AND action_type = ?;"),
+        ADD("INSERT INTO fukoku_v2.operating_time(working_code, working_type_name, work_type_name, time_tag, action_type, start_time, end_time, duration, ref_item, start_day, end_day, start_date, end_date, status, ref_line) " +
                 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, 1, ?)"),
-        DELETE("DELETE FROM operating_time WHERE id = ?"),
-        UPDATE("UPDATE operating_time " +
+        DELETE("DELETE FROM fukoku_v2.operating_time WHERE id = ?"),
+        UPDATE("UPDATE fukoku_v2.operating_time " +
                 "SET working_code = ?, working_type_name  = ?, work_type_name = ?, time_tag = ?, action_type = ?, start_time = ?, end_time = ?, duration = ?, ref_item = ?, start_day = ?, end_day = ?, start_date = ?, end_date = ?, status = 1, ref_line =? " +
                 "WHERE id = ?");
         private String value;
@@ -862,15 +862,15 @@ public class SQLStatement {
                 "        O.start_time, " +
                 "        O.end_time, " +
                 "        O.duration " +
-                "FROM assign_working_time A " +
-                "INNER JOIN operating_time O ON O.id = A.ref_operating_time " +
+                "FROM fukoku_v2.assign_working_time A " +
+                "INNER JOIN fukoku_v2.operating_time O ON O.id = A.ref_operating_time " +
                 "WHERE A.ref_line = ? AND short_date = ? " +
                 "ORDER BY cross_date ASC, A.ref_product ASC;"),
-        FIND_BY_ID("SELECT *FROM assign_working_time WHERE id = ?;"),
-        ADD("INSERT INTO assign_working_time(ref_operating_time, total, ref_line, ref_product, _date, short_date, cross_date, cross_date_label) VALUES(?, ?, ?, ?, ?, ?, ?, ?);"),
-        DELETE("DELETE FROM assign_working_time WHERE id = ?;"),
-        FIND_PLANNED_STOP_TIME("SELECT COUNT(1) FROM operating_time WHERE action_type = '계획정지' AND start_date <= ? AND end_date >= ? AND start_time <= ? AND end_time >= ? AND ref_line = ?"),
-        UPDATE("UPDATE assign_working_time SET ref_operating_time = ?, total = ?, ref_product = ?, cross_date = ?, cross_date_label = ? WHERE id = ?;");
+        FIND_BY_ID("SELECT * FROM fukoku_v2.assign_working_time WHERE id = ?;"),
+        ADD("INSERT INTO fukoku_v2.assign_working_time(ref_operating_time, total, ref_line, ref_product, _date, short_date, cross_date, cross_date_label) VALUES(?, ?, ?, ?, ?, ?, ?, ?);"),
+        DELETE("DELETE FROM fukoku_v2.assign_working_time WHERE id = ?;"),
+        FIND_PLANNED_STOP_TIME("SELECT COUNT(1) FROM fukoku_v2.operating_time WHERE action_type = '계획정지' AND start_date <= ? AND end_date >= ? AND start_time <= ? AND end_time >= ? AND ref_line = ?"),
+        UPDATE("UPDATE fukoku_v2.assign_working_time SET ref_operating_time = ?, total = ?, ref_product = ?, cross_date = ?, cross_date_label = ? WHERE id = ?;");
 
         private String value;
 

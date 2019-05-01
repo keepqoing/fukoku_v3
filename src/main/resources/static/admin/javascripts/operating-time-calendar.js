@@ -14,15 +14,11 @@ $(function () {
     });
 
     function getAllLineName(callback){
-    	var data = {
-				"name" : "",
-				"status" : "",
-		};
         $.ajax({
-            url: "/v3/api/fukoku/factory/find",
-            type: 'POST',
-            dataType: 'json',
-            data : JSON.stringify(data),
+            url: "/v3/api/fukoku/line/factory/" + 2,
+            type: 'GET',
+            dataType: 'JSON',
+            data:{},
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
@@ -128,14 +124,14 @@ $(function () {
             events: data,
         });
 
-                $('.fc-button-prev').click(function () {
-                    $('#calendar').fullCalendar('removeEvents');
-                    calendarPage.getAllCalendarsByMonthAndLine(function (data) {
-                        for(var i =0;i<data.length;i++) {
-                            $('#calendar').fullCalendar('renderEvent', data[i], 'stick');
-                        }
-                    });
-                });
+        $('.fc-button-prev').click(function () {
+            $('#calendar').fullCalendar('removeEvents');
+            calendarPage.getAllCalendarsByMonthAndLine(function (data) {
+                for(var i =0;i<data.length;i++) {
+                    $('#calendar').fullCalendar('renderEvent', data[i], 'stick');
+                }
+            });
+        });
 
 
         $('.fc-button-next').click(function () {
@@ -173,7 +169,7 @@ $(function () {
     }
 
     calendarPage.getAllCalendarsByMonthAndLine = function (callback) {
-        //openLoading();
+        openLoading();
         $.ajax({
             url: "/v1/api/fukoku/work-time-calendar",
             type: 'GET',
@@ -305,7 +301,7 @@ $(function () {
                         }*/
                     }
                 }
-                //closeLoading();
+                closeLoading();
                 if (callback) {
                     callback(data);
                 }
@@ -320,9 +316,9 @@ $(function () {
 
     getAllLineName(function (response) {
         $('#selectLine').empty();
-        if (response.CODE == "7777") {
-            $.each(response.DATA, function (key, value) {
-                $("#selectLine").append("<option value=" + value.MAPPING_NAME + ">" + value.LINE_NAME + "</option>");
+        if (response.code == 200) {
+            $.each(response.data, function (key, value) {
+                $("#selectLine").append("<option value=" + value.name + ">" + value.name + "</option>");
             });
         }
 
@@ -337,7 +333,7 @@ $(function () {
 
     calendarPage.getAllLinesName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/line/select-box",
+            url: "/v3/api/fukoku/line/factory/" + 2,
             type: 'GET',
             dataType: 'JSON',
             data:{},
@@ -347,9 +343,9 @@ $(function () {
             },
             success: function(response) {
                 $('#selectLine').empty();
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectLine").append("<option value="+value.MAPPING_NAME+">"+value.LINE_NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#selectLine").append("<option value="+value.name+">"+value.name+"</option>");
                     });
                 }
                 calendarPage.getAllProductName();
@@ -387,12 +383,11 @@ $(function () {
 
     calendarPage.getAllProductName = function(){
         $.ajax({
-            url: "/v1/api/fukoku/product/select-box",
+            url: "/v3/api/fukoku/product/line/"+ $("#selectLine").val(),
             type: 'GET',
             dataType: 'JSON',
             data: {
-                "line"         :       $("#selectLine").val(),
-                "machine"      :       ""
+
             },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -401,9 +396,9 @@ $(function () {
             success: function(response) {
                 $('#selectProduct').empty();
                 $("#selectProduct").append("<option value=''>품종</option>");
-                if(response.CODE == "7777"){
-                    $.each(response.DATA, function(key, value){
-                        $("#selectProduct").append("<option value='"+value.NAME+"'>"+value.NAME+"</option>");
+                if(response.code == 200){
+                    $.each(response.data, function(key, value){
+                        $("#selectProduct").append("<option value='"+value.name+"'>"+value.name+"</option>");
                     });
                 }
             },

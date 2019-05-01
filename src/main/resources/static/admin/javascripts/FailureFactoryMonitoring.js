@@ -160,8 +160,13 @@ $(function () {
                 var pieObjArr = [];
                 for (var l = 0; l < lines.length; l++) {
                     for (var i = 0; i < data.length; i++) {
-                        if(data[i].month == 1 && lines[l] == data[i].line){ month[0] = data[i].working_nonactive_time_s; working_time[0] = data[i].working_time_s ; non_active_ratio[0] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100  }
+                        console.log("data[i].line = " + data[i].line);
+                        if(data[i].month == 1 && lines[l] == data[i].line){ month[0] = data[i].working_nonactive_time_s; working_time[0] = data[i].working_time_s ; non_active_ratio[0] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100;  }
+                        else{ month[0] = 0; working_time[0] = 0 ; non_active_ratio[0] = 0; }
+
                         if(data[i].month == 2 && lines[l] == data[i].line){ month[1] = data[i].working_nonactive_time_s; working_time[1] = data[i].working_time_s ; non_active_ratio[1] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100}
+                        else{ month[1] = 0; working_time[1] = 0; non_active_ratio[1] = 0;}
+
                         if(data[i].month == 3 && lines[l] == data[i].line){ month[2] = data[i].working_nonactive_time_s; working_time[2] = data[i].working_time_s ; non_active_ratio[2] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100}
                         if(data[i].month == 4 && lines[l] == data[i].line){ month[3] = data[i].working_nonactive_time_s; working_time[3] = data[i].working_time_s ; non_active_ratio[3] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100}
                         if(data[i].month == 5 && lines[l] == data[i].line){ month[4] = data[i].working_nonactive_time_s; working_time[4] = data[i].working_time_s ; non_active_ratio[4] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100}
