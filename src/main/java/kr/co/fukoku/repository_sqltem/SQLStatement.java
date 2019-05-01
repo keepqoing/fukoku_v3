@@ -2722,4 +2722,41 @@ FIND_ALL_PD("SELECT \n" +
         }
     }
 
+    /*
+        Add by Jesuk Myung
+        Date : 2019-04-30
+        Description : for association analysis, find all fault state data.
+     */
+    public enum FaultAprioriSQL{
+
+        FIND_ALL("SELECT " +
+                " id,	ref_line,	ref_machine,	ref_product, "+
+                " mstate, "+
+                " work_date,	start_time,	end_time,	duration,	alarm_code,	alarm_name,	item,	sub_item,	error,	treatment,	department,	identifier "+
+                " FROM fukoku_v2.view_transfer_fault_history;");
+
+        private String value;
+        FaultAprioriSQL(String value){this.value = value;}
+        public String toString(){return this.value;}
+    }
+
+    /*
+        Add by Jesuk Myung
+        Date : 2019-04-30
+        Description : for association analysis, find all defective product data.
+     */
+    public enum DefectiveAprioriSQL {
+        FIND_ALL("SELECT * FROM fukoku_v2.VIEW_DEFECTIVE_PRODUCT_V2;");
+
+        private String value;
+
+        DefectiveAprioriSQL(String value) {
+            this.value = value;
+        }
+
+        public String toString() {
+            return this.value;
+        }
+    }
+
 }

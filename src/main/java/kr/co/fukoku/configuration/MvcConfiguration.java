@@ -100,6 +100,13 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/admin/failureRateAnalysis").setViewName("/admin/failureRateAnalysis");
 
 
+		// Add by Jesuk Myung
+		// Date : 2019-04-30
+		// Description : Fault association analysis page
+		registry.addViewController("/admin/fault-apriori").setViewName("/admin/fault-apriori");
+		registry.addViewController("/admin/defective-apriori").setViewName("/admin/defective-apriori");
+
+
 
 		//integrated_visualization
 		registry.addViewController("/admin/integrated_visualization").setViewName("/admin/integrated_visualization");
