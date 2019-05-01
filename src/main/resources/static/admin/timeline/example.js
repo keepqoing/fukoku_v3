@@ -10,7 +10,7 @@ $(document).ready(function() {
 
     function getLines(){
         $.ajax({
-            url: "http://113.198.137.142:8080/v1/api/fukoku/workpiece/line-list",
+            url: "/v3/api/fukoku/workpiece-params/lines",
             type: 'GET',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -18,11 +18,11 @@ $(document).ready(function() {
             },
             success: function (response) {
                 console.log(response);
-                for(var i=0;i<response.lines.length;i++){
+                for(var i=0;i<response.data.length;i++){
                     //console.log(response.lines[i].LINE_NAME);
-                    window.parent.$("#lineName").append("<option value="+ response.lines[i].LINE_NAME +">"+ response.lines[i].LINE_NAME +"</option>");
+                    window.parent.$("#lineName").append("<option value="+ response.data[i].name +">"+ response.data[i].name +"</option>");
                 }
-                window.parent.$('#lineName').find('option[value=IB]').attr('selected','selected');
+                window.parent.$('#lineName').find('option[value=HC]').attr('selected','selected');
                 getTimeLine();
 
 
