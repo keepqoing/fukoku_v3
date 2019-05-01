@@ -18,6 +18,7 @@
             color: white;
         }
 
+
         table thead th {
             text-align: center;
         }
@@ -48,6 +49,8 @@
             text-align: center;
             vertical-align: middle!important;
         }
+
+
 
     </style>
 
@@ -98,10 +101,13 @@
                         </div>
                         <br>
                         <div class="row">
+
+                            <div id="parent" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
-                                            <table class="table">
+                                            <table class="table" id="fixTable">
                                                 <thead class="thead-inverse head">
-                                                <tr>
+                                                <tr  id="tableHeader" class="table-head">
                                                     <th>라인</th>
                                                     <th>설비</th>
 
@@ -1154,11 +1160,1224 @@
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
+
+
+
+                                                <!-- ============ PB ==================== -->
+                                                <tr>
+                                                    <td>PB
+                                                        <button th:type="button" class="btn btn-success btnDetail"
+                                                                id="btnPBDetail">세부
+                                                        </button>
+                                                    </td>
+                                                    <td><div class="form-group">
+                                                        <select class="form-control" id="pbSelectMachine">
+                                                            <option>설비</option>
+                                                        </select>
+                                                    </div></td>
+                                                    <td style="font-weight:bold;" colspan="2" id="pbMachineEfficiencyRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pbTimeOperationRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pbTotalProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pbNetOperatingTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pbOperatingSpeedRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pbBypassedProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pbUPH"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pbTheoreticalCycleTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pbProcessCycleTime"></td>
+                                                </tr>
+
+
+                                                <tr class="pbPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
+                                                    <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
+                                                    <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
+
+                                                    <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
+                                                    <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
+
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">UPH = 생산수량 / 부하시간</td>
+                                                    <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
+                                                    <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
+                                                </tr>
+
+                                                <tr class="pbPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                </tr>
+
+                                                <tr class="pbPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>사간가동율</td>
+                                                    <td class="pbTimeOperationRate"></td>
+                                                    <td >부하시간</td>
+                                                    <td class="pbWorkingTime"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="pbTotalProduct"></td>
+
+                                                    <td >공정사이클타임</td>
+                                                    <td class="pbProcessCycleTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="pbTheoreticalCycleTime"></td>
+
+
+                                                    <td>직행수량</td>
+                                                    <td id="pbOkProduct"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="pbTotalProduct"></td>
+
+                                                    <td>목표부하시간</td>
+                                                    <td class="pbTargetWorkingTime"></td>
+                                                    <td>부하시간</td>
+                                                    <td class="pbWorkingTime"></td>
+                                                </tr>
+
+                                                <tr class="pbPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>성능가동율</td>
+                                                    <td class="pbTotalProductRate"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="pbWkNonActiveTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="pbTheoreticalCycleTime"></td>
+
+                                                    <td>생산수량</td>
+                                                    <td class="pbTotalProduct"></td>
+                                                    <td >공정사이클타임</td>
+                                                    <td class="pbProcessCycleTime"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="pbTotalProduct"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="pbWorkingTimeHour"></td>
+
+                                                    <td>목표수량</td>
+                                                    <td class="pbTargetProductQty"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="pbTotalProduct"></td>
+                                                </tr>
+
+
+                                                <tr class="pbPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>직행율</td>
+                                                    <td class="pbBypassedProductRate"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하시간</td>
+                                                    <td class="pbWorkingTime"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="pbWorkingTimeSecond"></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr class="pbPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="pbWkNonActiveTime"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="pbWkNonActiveTimeSecond"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <!-- ============ PC ==================== -->
+                                                <tr>
+                                                    <td>PC
+                                                        <button th:type="button" class="btn btn-success btnDetail"
+                                                                id="btnPCDetail">세부
+                                                        </button>
+                                                    </td>
+                                                    <td><div class="form-group">
+                                                        <select class="form-control" id="pcSelectMachine">
+                                                            <option>설비</option>
+                                                        </select>
+                                                    </div></td>
+                                                    <td style="font-weight:bold;" colspan="2" id="pcMachineEfficiencyRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pcTimeOperationRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pcTotalProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pcNetOperatingTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pcOperatingSpeedRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pcBypassedProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pcUPH"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pcTheoreticalCycleTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="pcProcessCycleTime"></td>
+                                                </tr>
+
+
+                                                <tr class="pcPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
+                                                    <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
+                                                    <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
+
+                                                    <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
+                                                    <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
+
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">UPH = 생산수량 / 부하시간</td>
+                                                    <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
+                                                    <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
+                                                </tr>
+
+                                                <tr class="pcPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                </tr>
+
+                                                <tr class="pcPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>사간가동율</td>
+                                                    <td class="pcTimeOperationRate"></td>
+                                                    <td >부하시간</td>
+                                                    <td class="pcWorkingTime"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="pcTotalProduct"></td>
+
+                                                    <td >공정사이클타임</td>
+                                                    <td class="pcProcessCycleTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="pcTheoreticalCycleTime"></td>
+
+
+                                                    <td>직행수량</td>
+                                                    <td id="pcOkProduct"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="pcTotalProduct"></td>
+
+                                                    <td>목표부하시간</td>
+                                                    <td class="pcTargetWorkingTime"></td>
+                                                    <td>부하시간</td>
+                                                    <td class="pcWorkingTime"></td>
+                                                </tr>
+
+                                                <tr class="pcPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>성능가동율</td>
+                                                    <td class="pcTotalProductRate"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="pcWkNonActiveTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="pcTheoreticalCycleTime"></td>
+
+                                                    <td>생산수량</td>
+                                                    <td class="pcTotalProduct"></td>
+                                                    <td >공정사이클타임</td>
+                                                    <td class="pcProcessCycleTime"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="pcTotalProduct"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="pcWorkingTimeHour"></td>
+
+                                                    <td>목표수량</td>
+                                                    <td class="pcTargetProductQty"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="pcTotalProduct"></td>
+                                                </tr>
+
+
+                                                <tr class="pcPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>직행율</td>
+                                                    <td class="pcBypassedProductRate"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하시간</td>
+                                                    <td class="pcWorkingTime"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="pcWorkingTimeSecond"></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr class="pcPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="pcWkNonActiveTime"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="pcWkNonActiveTimeSecond"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <!-- ============ PA ==================== -->
+                                                <tr>
+                                                    <td>PA
+                                                        <button th:type="button" class="btn btn-success btnDetail"
+                                                                id="btnPADetail">세부
+                                                        </button>
+                                                    </td>
+                                                    <td><div class="form-group">
+                                                        <select class="form-control" id="paSelectMachine">
+                                                            <option>설비</option>
+                                                        </select>
+                                                    </div></td>
+                                                    <td style="font-weight:bold;" colspan="2" id="paMachineEfficiencyRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="paTimeOperationRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="paTotalProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="paNetOperatingTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="paOperatingSpeedRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="paBypassedProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="paUPH"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="paTheoreticalCycleTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="paProcessCycleTime"></td>
+                                                </tr>
+
+
+                                                <tr class="paPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
+                                                    <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
+                                                    <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
+
+                                                    <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
+                                                    <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
+
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">UPH = 생산수량 / 부하시간</td>
+                                                    <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
+                                                    <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
+                                                </tr>
+
+                                                <tr class="paPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                </tr>
+
+                                                <tr class="paPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>사간가동율</td>
+                                                    <td class="paTimeOperationRate"></td>
+                                                    <td >부하시간</td>
+                                                    <td class="paWorkingTime"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="paTotalProduct"></td>
+
+                                                    <td >공정사이클타임</td>
+                                                    <td class="paProcessCycleTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="paTheoreticalCycleTime"></td>
+
+
+                                                    <td>직행수량</td>
+                                                    <td id="paOkProduct"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="paTotalProduct"></td>
+
+                                                    <td>목표부하시간</td>
+                                                    <td class="paTargetWorkingTime"></td>
+                                                    <td>부하시간</td>
+                                                    <td class="paWorkingTime"></td>
+                                                </tr>
+
+                                                <tr class="paPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>성능가동율</td>
+                                                    <td class="paTotalProductRate"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="paWkNonActiveTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="paTheoreticalCycleTime"></td>
+
+                                                    <td>생산수량</td>
+                                                    <td class="paTotalProduct"></td>
+                                                    <td >공정사이클타임</td>
+                                                    <td class="paProcessCycleTime"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="paTotalProduct"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="paWorkingTimeHour"></td>
+
+                                                    <td>목표수량</td>
+                                                    <td class="paTargetProductQty"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="paTotalProduct"></td>
+                                                </tr>
+
+
+                                                <tr class="paPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>직행율</td>
+                                                    <td class="paBypassedProductRate"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하시간</td>
+                                                    <td class="paWorkingTime"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="paWorkingTimeSecond"></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr class="paPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="paWkNonActiveTime"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="paWkNonActiveTimeSecond"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <!-- ============ PE ==================== -->
+                                                <tr>
+                                                    <td>PE
+                                                        <button th:type="button" class="btn btn-success btnDetail"
+                                                                id="btnPEDetail">세부
+                                                        </button>
+                                                    </td>
+                                                    <td><div class="form-group">
+                                                        <select class="form-control" id="peSelectMachine">
+                                                            <option>설비</option>
+                                                        </select>
+                                                    </div></td>
+                                                    <td style="font-weight:bold;" colspan="2" id="peMachineEfficiencyRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="peTimeOperationRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="peTotalProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="peNetOperatingTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="peOperatingSpeedRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="peBypassedProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="peUPH"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="peTheoreticalCycleTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="peProcessCycleTime"></td>
+                                                </tr>
+
+
+                                                <tr class="pePane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
+                                                    <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
+                                                    <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
+
+                                                    <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
+                                                    <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
+
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">UPH = 생산수량 / 부하시간</td>
+                                                    <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
+                                                    <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
+                                                </tr>
+
+                                                <tr class="pePane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                </tr>
+
+                                                <tr class="pePane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>사간가동율</td>
+                                                    <td class="peTimeOperationRate"></td>
+                                                    <td >부하시간</td>
+                                                    <td class="peWorkingTime"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="peTotalProduct"></td>
+
+                                                    <td >공정사이클타임</td>
+                                                    <td class="peProcessCycleTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="peTheoreticalCycleTime"></td>
+
+
+                                                    <td>직행수량</td>
+                                                    <td id="peOkProduct"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="peTotalProduct"></td>
+
+                                                    <td>목표부하시간</td>
+                                                    <td class="peTargetWorkingTime"></td>
+                                                    <td>부하시간</td>
+                                                    <td class="peWorkingTime"></td>
+                                                </tr>
+
+                                                <tr class="pePane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>성능가동율</td>
+                                                    <td class="peTotalProductRate"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="peWkNonActiveTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="peTheoreticalCycleTime"></td>
+
+                                                    <td>생산수량</td>
+                                                    <td class="peTotalProduct"></td>
+                                                    <td >공정사이클타임</td>
+                                                    <td class="peProcessCycleTime"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="peTotalProduct"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="peWorkingTimeHour"></td>
+
+                                                    <td>목표수량</td>
+                                                    <td class="peTargetProductQty"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="peTotalProduct"></td>
+                                                </tr>
+
+
+                                                <tr class="pePane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>직행율</td>
+                                                    <td class="peBypassedProductRate"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하시간</td>
+                                                    <td class="peWorkingTime"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="peWorkingTimeSecond"></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr class="pePane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="peWkNonActiveTime"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="peWkNonActiveTimeSecond"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+
+
+                                                <!-- ============ IA ==================== -->
+                                                <tr>
+                                                    <td>IA
+                                                        <button th:type="button" class="btn btn-success btnDetail"
+                                                                id="btnIADetail">세부
+                                                        </button>
+                                                    </td>
+                                                    <td><div class="form-group">
+                                                        <select class="form-control" id="iaSelectMachine">
+                                                            <option>설비</option>
+                                                        </select>
+                                                    </div></td>
+                                                    <td style="font-weight:bold;" colspan="2" id="iaMachineEfficiencyRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="iaTimeOperationRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="iaTotalProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="iaNetOperatingTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="iaOperatingSpeedRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="iaBypassedProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="iaUPH"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="iaTheoreticalCycleTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="iaProcessCycleTime"></td>
+                                                </tr>
+
+
+                                                <tr class="iaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
+                                                    <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
+                                                    <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
+
+                                                    <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
+                                                    <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
+
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">UPH = 생산수량 / 부하시간</td>
+                                                    <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
+                                                    <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
+                                                </tr>
+
+                                                <tr class="iaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                </tr>
+
+                                                <tr class="iaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>사간가동율</td>
+                                                    <td class="iaTimeOperationRate"></td>
+                                                    <td >부하시간</td>
+                                                    <td class="iaWorkingTime"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="iaTotalProduct"></td>
+
+                                                    <td >공정사이클타임</td>
+                                                    <td class="iaProcessCycleTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="iaTheoreticalCycleTime"></td>
+
+
+                                                    <td>직행수량</td>
+                                                    <td id="iaOkProduct"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="iaTotalProduct"></td>
+
+                                                    <td>목표부하시간</td>
+                                                    <td class="iaTargetWorkingTime"></td>
+                                                    <td>부하시간</td>
+                                                    <td class="iaWorkingTime"></td>
+                                                </tr>
+
+                                                <tr class="iaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>성능가동율</td>
+                                                    <td class="iaTotalProductRate"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="iaWkNonActiveTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="iaTheoreticalCycleTime"></td>
+
+                                                    <td>생산수량</td>
+                                                    <td class="iaTotalProduct"></td>
+                                                    <td >공정사이클타임</td>
+                                                    <td class="iaProcessCycleTime"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="iaTotalProduct"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="iaWorkingTimeHour"></td>
+
+                                                    <td>목표수량</td>
+                                                    <td class="iaTargetProductQty"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="iaTotalProduct"></td>
+                                                </tr>
+
+
+                                                <tr class="iaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>직행율</td>
+                                                    <td class="iaBypassedProductRate"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하시간</td>
+                                                    <td class="iaWorkingTime"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="iaWorkingTimeSecond"></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr class="iaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="iaWkNonActiveTime"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="iaWkNonActiveTimeSecond"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <!-- ============ VA ==================== -->
+                                                <tr>
+                                                    <td>VA
+                                                        <button th:type="button" class="btn btn-success btnDetail"
+                                                                id="btnvaDetail">세부
+                                                        </button>
+                                                    </td>
+                                                    <td><div class="form-group">
+                                                        <select class="form-control" id="vaSelectMachine">
+                                                            <option>설비</option>
+                                                        </select>
+                                                    </div></td>
+                                                    <td style="font-weight:bold;" colspan="2" id="vaMachineEfficiencyRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="vaTimeOperationRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="vaTotalProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="vaNetOperatingTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="vaOperatingSpeedRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="vaBypassedProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="vaUPH"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="vaTheoreticalCycleTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="vaProcessCycleTime"></td>
+                                                </tr>
+
+
+                                                <tr class="vaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
+                                                    <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
+                                                    <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
+
+                                                    <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
+                                                    <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
+
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">UPH = 생산수량 / 부하시간</td>
+                                                    <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
+                                                    <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
+                                                </tr>
+
+                                                <tr class="vaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                </tr>
+
+                                                <tr class="vaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>사간가동율</td>
+                                                    <td class="vaTimeOperationRate"></td>
+                                                    <td >부하시간</td>
+                                                    <td class="vaWorkingTime"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="vaTotalProduct"></td>
+
+                                                    <td >공정사이클타임</td>
+                                                    <td class="vaProcessCycleTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="vaTheoreticalCycleTime"></td>
+
+
+                                                    <td>직행수량</td>
+                                                    <td id="vaOkProduct"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="vaTotalProduct"></td>
+
+                                                    <td>목표부하시간</td>
+                                                    <td class="vaTargetWorkingTime"></td>
+                                                    <td>부하시간</td>
+                                                    <td class="vaWorkingTime"></td>
+                                                </tr>
+
+                                                <tr class="vaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>성능가동율</td>
+                                                    <td class="vaTotalProductRate"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="vaWkNonActiveTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="vaTheoreticalCycleTime"></td>
+
+                                                    <td>생산수량</td>
+                                                    <td class="vaTotalProduct"></td>
+                                                    <td >공정사이클타임</td>
+                                                    <td class="vaProcessCycleTime"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="vaTotalProduct"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="vaWorkingTimeHour"></td>
+
+                                                    <td>목표수량</td>
+                                                    <td class="vaTargetProductQty"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="vaTotalProduct"></td>
+                                                </tr>
+
+
+                                                <tr class="vaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>직행율</td>
+                                                    <td class="vaBypassedProductRate"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하시간</td>
+                                                    <td class="vaWorkingTime"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="vaWorkingTimeSecond"></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr class="vaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="vaWkNonActiveTime"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="vaWkNonActiveTimeSecond"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <!-- ============ JA ==================== -->
+                                                <tr>
+                                                    <td>JA
+                                                        <button th:type="button" class="btn btn-success btnDetail"
+                                                                id="btnJADetail">세부
+                                                        </button>
+                                                    </td>
+                                                    <td><div class="form-group">
+                                                        <select class="form-control" id="jaSelectMachine">
+                                                            <option>설비</option>
+                                                        </select>
+                                                    </div></td>
+                                                    <td style="font-weight:bold;" colspan="2" id="jaMachineEfficiencyRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="jaTimeOperationRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="jaTotalProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="jaNetOperatingTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="jaOperatingSpeedRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="jaBypassedProductRate"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="jaUPH"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="jaTheoreticalCycleTime"></td>
+                                                    <td style="font-weight:bold;" colspan="2" class="jaProcessCycleTime"></td>
+                                                </tr>
+
+
+                                                <tr class="jaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td colspan="2">설비종함효율 = 사간가동율 x 성능가동율 x 직행율</td>
+                                                    <td colspan="2">사간가동율 = (부하시간 - 부하비가동시간) / (부하시간) x 100</td>
+                                                    <td colspan="2">성능가동율 = (생산수량 x 이론사이클타임) / (부하시간 - 부하비가동시간) x 100</td>
+
+                                                    <td colspan="2">정미가동율 = (공정사이클타임 x 생산수량) / (부하시간 - 부하비가동시간) x 100</td>
+                                                    <td colspan="2">속도가동율 = 이론사이클타임 / 공정사이클타임 x 100</td>
+
+                                                    <td colspan="2">직행율 = 직행수량 / 생산수량 x 100</td>
+                                                    <td colspan="2">UPH = 생산수량 / 부하시간</td>
+                                                    <td colspan="2">이론사이클타임 = 목표부하시간 / 목표수량</td>
+                                                    <td colspan="2">공정사이클타임 = 부하시간 / 생산수량</td>
+                                                </tr>
+
+                                                <tr class="jaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                    <td class="subTitle">요소명</td>
+                                                    <td class="subTitle">값</td>
+                                                </tr>
+
+                                                <tr class="jaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>사간가동율</td>
+                                                    <td class="jaTimeOperationRate"></td>
+                                                    <td >부하시간</td>
+                                                    <td class="jaWorkingTime"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="jaTotalProduct"></td>
+
+                                                    <td >공정사이클타임</td>
+                                                    <td class="jaProcessCycleTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="jaTheoreticalCycleTime"></td>
+
+
+                                                    <td>직행수량</td>
+                                                    <td id="jaOkProduct"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="jaTotalProduct"></td>
+
+                                                    <td>목표부하시간</td>
+                                                    <td class="jaTargetWorkingTime"></td>
+                                                    <td>부하시간</td>
+                                                    <td class="jaWorkingTime"></td>
+                                                </tr>
+
+                                                <tr class="jaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>성능가동율</td>
+                                                    <td class="jaTotalProductRate"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="jaWkNonActiveTime"></td>
+                                                    <td>이론사이클타임</td>
+                                                    <td class="jaTheoreticalCycleTime"></td>
+
+                                                    <td>생산수량</td>
+                                                    <td class="jaTotalProduct"></td>
+                                                    <td >공정사이클타임</td>
+                                                    <td class="jaProcessCycleTime"></td>
+
+
+                                                    <td>생산수량</td>
+                                                    <td class="jaTotalProduct"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="jaWorkingTimeHour"></td>
+
+                                                    <td>목표수량</td>
+                                                    <td class="jaTargetProductQty"></td>
+                                                    <td>생산수량</td>
+                                                    <td class="jaTotalProduct"></td>
+                                                </tr>
+
+
+                                                <tr class="jaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>직행율</td>
+                                                    <td class="jaBypassedProductRate"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하시간</td>
+                                                    <td class="jaWorkingTime"></td>
+
+                                                    <td>부하시간</td>
+                                                    <td class="jaWorkingTimeSecond"></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr class="jaPane">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="jaWkNonActiveTime"></td>
+                                                    <td>부하비가동시간</td>
+                                                    <td class="jaWkNonActiveTimeSecond"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+
+
+
+
+
+
+
+
+
+
                                                 <!--<tr role="row" class="odd" style="text-align:center;font-weight:bold;">-->
                                                 <!--<td colspan="10">콘텐츠 없음</td>-->
                                                 <!--</tr>-->
                                                 </tbody>
                                             </table>
+                                </div>
                             </div>
                         </div>
 
@@ -1250,7 +2469,11 @@
         });
 
     </script>
-    <script src="/static/admin/javascripts/dashboard2-table.js"></script>
+
+    <script src="/static/admin/javascripts/dashboard2-table.js"></script>+
+
+
+
 </th:block>
 </body>
 </html>
