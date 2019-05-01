@@ -203,12 +203,22 @@ $(function () {
 
         switch(ln) {
             case "ALL":
-                calHeatmap.getCountAlarm("IB", ma, "(IB)");
-                calHeatmap.getCountAlarm("PD", ma, "(PD)");
-                calHeatmap.getCountAlarm("HA", ma, "(HA)");
-                calHeatmap.getCountAlarm("HB", ma, "(HB)");
                 calHeatmap.getCountAlarm("HC", ma, "(HC)");
+                calHeatmap.getCountAlarm("IB", ma, "(IB)");
+                calHeatmap.getCountAlarm("HA", ma, "(HA)");
                 calHeatmap.getCountAlarm("HD", ma, "(HD)");
+                calHeatmap.getCountAlarm("PD", ma, "(PD)");
+                calHeatmap.getCountAlarm("HB", ma, "(HB)");
+
+                calHeatmap.getCountAlarm("PB", ma, "(PB)");
+                calHeatmap.getCountAlarm("PC", ma, "(PC)");
+                calHeatmap.getCountAlarm("PA", ma, "(PA)");
+                calHeatmap.getCountAlarm("PE", ma, "(PE)");
+                calHeatmap.getCountAlarm("IA", ma, "(IA)");
+                calHeatmap.getCountAlarm("VA", ma, "(VA)");
+                calHeatmap.getCountAlarm("JA", ma, "(JA)");
+
+
                 break;
             case "IB":
                 if (ma == "ALL") {

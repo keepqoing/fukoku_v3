@@ -224,6 +224,14 @@ $(function () {
                 calHeatmap.getCountFS("PD", ma, "(PD)");
                 calHeatmap.getCountFS("HB", ma, "(HB)");
 
+                calHeatmap.getCountFS("PB", ma, "(PB)");
+                calHeatmap.getCountFS("PC", ma, "(PC)");
+                calHeatmap.getCountFS("PA", ma, "(PA)");
+                calHeatmap.getCountFS("PE", ma, "(PE)");
+                calHeatmap.getCountFS("IA", ma, "(IA)");
+                calHeatmap.getCountFS("VA", ma, "(VA)");
+                calHeatmap.getCountFS("JA", ma, "(JA)");
+
                 break;
             case "IB":
                 if (ma == "ALL") {

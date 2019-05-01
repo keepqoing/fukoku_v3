@@ -235,6 +235,13 @@ $(function () {
                 calHeatmap.getCountNAS("HB", ma, "(HB)");
 
 
+                calHeatmap.getCountNAS("PB", ma, "(PB)");
+                calHeatmap.getCountNAS("PC", ma, "(PC)");
+                calHeatmap.getCountNAS("PA", ma, "(PA)");
+                calHeatmap.getCountNAS("PE", ma, "(PE)");
+                calHeatmap.getCountNAS("IA", ma, "(IA)");
+                calHeatmap.getCountNAS("VA", ma, "(VA)");
+                calHeatmap.getCountNAS("JA", ma, "(JA)");
 
 
                 break;
