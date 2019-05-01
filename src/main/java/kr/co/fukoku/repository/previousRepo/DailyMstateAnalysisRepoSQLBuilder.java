@@ -201,7 +201,7 @@ public class DailyMstateAnalysisRepoSQLBuilder {
                 i++;
                 System.out.println(l);
                 buffer.append(" \n" +
-                        "SELECT \n" +
+                        "SELECT DISTINCT\n" +
                         "\tline , \n" +
                         "\tYEAR(start_date) AS year, \n" +
                         "\tMONTH(start_date) AS month, \n" +

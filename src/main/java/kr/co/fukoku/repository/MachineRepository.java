@@ -173,7 +173,7 @@ public interface MachineRepository {
 
 	// Chomrern - as of 2019-03-11. This api is requested by Bakhit
 	@Select("Select DISTINCT \n" +
-			"\tCASE WHEN SUBSTR(name,4) IN ('Pre1','Pre2','Pre3') THEN 'Pre' ELSE SUBSTR(name,4) END name from machine where status='1'")
+			"\tCASE WHEN SUBSTR(name,4) IN ('Pre1','Pre2','Pre3') THEN 'Pre' ELSE SUBSTR(name,4) END name from machine where status='1' ORDER BY seq")
 
 	List<Machine> findAllDistinctMachines();
 

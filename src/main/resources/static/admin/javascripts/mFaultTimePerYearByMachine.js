@@ -205,6 +205,7 @@ process.breakdowntimeanalysisbyline = function () {
         success: function (response) {
             console.log("response", response);
             let data = response.breakdowntimeanalysisbyline;
+
             var lines = ["HC", "IB", "HA", "HD", "PD", "HB", "PB", "PC", "PA", "PE", "IA", "VA", "JA"];
             var month = [0,0,0,0,0,0,0,0,0,0,0,0]; var working_time = [0,0,0,0,0,0,0,0,0,0,0,0];
             var non_active_ratio = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -216,9 +217,7 @@ process.breakdowntimeanalysisbyline = function () {
             var pieObjArr = [];
 
 
-            var total_working_nonactive_time_s = 0;
-            var total_working_time_s = 0;
-            var  total_non_active_ratio = 0;
+
 
 
 
@@ -291,7 +290,9 @@ process.breakdowntimeanalysisbyline = function () {
                                 non_active_ratio[11] = (data[i].working_nonactive_time_s / data[i].working_time_s) * 100
                             }
                         }
-
+                        var total_working_nonactive_time_s = 0;
+                        var total_working_time_s = 0;
+                        var  total_non_active_ratio = 0;
 
                         for (var t = 0; t < month.length; t++) {
                             if (!Number.isNaN(month[t])) {
