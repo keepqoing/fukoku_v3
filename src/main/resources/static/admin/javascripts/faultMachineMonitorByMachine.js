@@ -193,9 +193,6 @@ $(function() {
                 var pieObjArr = [];
 
 
-                var total_working_nonactive_time_s = 0;
-                var total_working_time_s = 0;
-                var  total_non_active_ratio = 0;
 
                 for (var l = 0; l < lines.length; l++) {
                     if (l < 6) {
@@ -262,6 +259,11 @@ $(function() {
                                     non_active_ratio[11] = (data[i].fault_time_s / data[i].working_time_s) * 100
                                 }
                             }
+
+                            var total_working_nonactive_time_s = 0;
+                            var total_working_time_s = 0;
+                            var  total_non_active_ratio = 0;
+
 
                             for (var t = 0; t < month.length; t++) {
                                 if (!Number.isNaN(month[t])) {
