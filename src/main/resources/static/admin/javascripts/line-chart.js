@@ -118,6 +118,10 @@ $(function () {
                         lineChart.matchLastMachine(selector,"T/Mark");
                         lineChart.onLoadLineChart(selector);
                     }
+                    if(line == "PB"){
+                        lineChart.matchLastMachine(selector,"도장기");
+                        lineChart.onLoadLineChart(selector);
+                    }
 
                 }
             },
@@ -190,12 +194,28 @@ $(function () {
     lineChart.getAllMachineNameByLineName("HA", "selectHAMachine");
     lineChart.getAllMachineNameByLineName("HB", "selectHBMachine");
 
+    lineChart.getAllMachineNameByLineName("PB", "selectPBMachine");
+    lineChart.getAllMachineNameByLineName("PC", "selectPCMachine");
+    lineChart.getAllMachineNameByLineName("PA", "selectPAMachine");
+    lineChart.getAllMachineNameByLineName("PE", "selectPEMachine");
+    lineChart.getAllMachineNameByLineName("IA", "selectIAMachine");
+    lineChart.getAllMachineNameByLineName("VA", "selectVAMachine");
+    lineChart.getAllMachineNameByLineName("JA", "selectJAMachine");
+
     lineChart.generateLineChart("chart1",datajson,"Dates");
     lineChart.generateLineChart("chart2",datajson,"Dates");
     lineChart.generateLineChart("chart3",datajson,"Dates");
     lineChart.generateLineChart("chart4",datajson,"Dates");
     lineChart.generateLineChart("chart5",datajson,"Dates");
     lineChart.generateLineChart("chart6",datajson,"Dates");
+
+    lineChart.generateLineChart("chart7",datajson,"Dates");
+    lineChart.generateLineChart("chart8",datajson,"Dates");
+    lineChart.generateLineChart("chart9",datajson,"Dates");
+    lineChart.generateLineChart("chart10",datajson,"Dates");
+    lineChart.generateLineChart("chart11",datajson,"Dates");
+    lineChart.generateLineChart("chart12",datajson,"Dates");
+    lineChart.generateLineChart("chart13",datajson,"Dates");
 
     lineChart.convertStrDateTimeToEpoch = function(dateTime){
         return moment(dateTime, 'YYYY-MM-DD HH:mm').toDate().getTime();

@@ -254,19 +254,25 @@ $(function () {
             success: function (response) {
                 if (response.CODE == "7777") {
                     $("#product-machine-group-barchart").html("");
+
+                    console.log(response);
+
                     if (response.DATA.length > 0) {
+                            if(response.DATA[0].values[0].value > 0) {
+                                var settings = {
+                                    selector: "#product-machine-group-barchart",
+                                    height: 350,
+                                    width: document.getElementById("div-product-machine-canvas").offsetWidth - 60,
+                                    y_text: "수량",
+                                    x_text: "라인"
 
-                            var settings = {
-                                selector: "#product-machine-group-barchart",
-                                height: 350,
-                                width: document.getElementById("div-product-machine-canvas").offsetWidth - 60,
-                                y_text: "수량",
-                                x_text: "라인"
-
+                                }
+                                groupBarchart(response.DATA, settings);
+                            }else{
+                                $("#product-machine-group-barchart").html("<p style='clear:both; font-size:18px; text-align: center'>콘텐츠 없음</p>");
                             }
-                            groupBarchart(response.DATA, settings);
                     }else{
-                        $("#product-machine-group-barchart").html("콘텐츠 없음");
+                        $("#product-machine-group-barchart").html("<p style='clear:both; font-size:18px; text-align: center'>콘텐츠 없음</p>");
                     }
                 }
             },
@@ -304,19 +310,23 @@ $(function () {
 
                 if (response.CODE == "7777") {
                     $("#product-line-group-barchart").html("");
+
+
                     if (response.DATA.length > 0) {
-
-                        var settings = {
-                            selector: "#product-line-group-barchart",
-                            height: 350,
-                            width: document.getElementById("div-product-line-canvas").offsetWidth - 60,
-                            y_text: "수량",
-                            x_text: "설비"
+                        if(response.DATA[0].values[0].value > 0) {
+                            var settings = {
+                                selector: "#product-line-group-barchart",
+                                height: 350,
+                                width: document.getElementById("div-product-line-canvas").offsetWidth - 60,
+                                y_text: "수량",
+                                x_text: "설비"
+                            }
+                            groupBarchart(response.DATA, settings);
+                        }else{
+                            $("#product-line-group-barchart").html("<p style='clear:both; font-size:18px; text-align: center'>콘텐츠 없음</p>");
                         }
-                        groupBarchart(response.DATA, settings);
-
                     }else{
-                        $("#product-line-group-barchart").html("콘텐츠 없음");
+                        $("#product-line-group-barchart").html("<p style='clear:both; font-size:18px; text-align: center'>콘텐츠 없음</p>");
                     }
                 }
 
@@ -329,14 +339,14 @@ $(function () {
 
 
     // ======= Chart 2: Get machine info by Line
-    $("#btnOKProduct").click(function (){
-        if($("#txtStartTimeOK").val()=="" ){
-            alert("Input data");
-        }else {
-            productSummarization.getAllProductByOK();
-
-        }
-    });
+    // $("#btnOKProduct").click(function (){
+    //     if($("#txtStartTimeOK").val()=="" ){
+    //         alert("Input data");
+    //     }else {
+    //         productSummarization.getAllProductByOK();
+    //
+    //     }
+    // });
 
     /*
     productSummarization.getAllProductByOK = function () {
@@ -592,8 +602,8 @@ $(function () {
     };
     productSummarization.getAllMachinesName(function () {
         productSummarization.getAllProductByMachine();
-        productSummarization.getAllProductByOK();
-        productSummarization.getAllProductByNG();
+        // productSummarization.getAllProductByOK();
+        // productSummarization.getAllProductByNG();
         // productSummarization.getAllProductByDF();
 
     });
