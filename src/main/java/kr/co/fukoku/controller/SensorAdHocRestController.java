@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.co.fukoku.model.Factory;
 import kr.co.fukoku.model.Line;
 import kr.co.fukoku.model.Product;
+import kr.co.fukoku.model.ProductProcessVar;
 import kr.co.fukoku.model.SensorAdHoc;
 import kr.co.fukoku.model.form.FactoryFrm;
 import kr.co.fukoku.model.form.LineFrm;
@@ -51,7 +52,7 @@ public class SensorAdHocRestController {
     public ResponseEntity<Map<String,Object>> findAll(@PathVariable("line") String line)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-        	List<SensorAdHoc> data = repository.findSensorAdHoc(line);
+        	List<ProductProcessVar> data = repository.findSensorAdHoc(line);
         	if(data.size() > 0 ) {
         		map.put("data", data);
         		map.put("code", 200);
@@ -71,7 +72,7 @@ public class SensorAdHocRestController {
     public ResponseEntity<Map<String,Object>> findAll(@PathVariable("refFactory") long refFactory)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-        	List<SensorAdHoc> data = repository.findSensorAdHocByRefFactory(refFactory);
+        	List<ProductProcessVar> data = repository.findSensorAdHocByRefFactory(refFactory);
         	if(data.size() > 0 ) {
         		map.put("data", data);
         		map.put("code", 200);
@@ -91,7 +92,7 @@ public class SensorAdHocRestController {
     public ResponseEntity<Map<String,Object>> findOne(@PathVariable("id") long id)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-        	SensorAdHoc data = repository.findOne(id);
+        	ProductProcessVar data = repository.findOne(id);
         	if(data != null ) {
         		map.put("data", data);
         		map.put("code", 200);
@@ -127,7 +128,7 @@ public class SensorAdHocRestController {
     }
 	
 	@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Map<String,Object>> save(@RequestBody SensorAdHoc frm)  {
+    public ResponseEntity<Map<String,Object>> save(@RequestBody ProductProcessVar frm)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
         	if(repository.save(frm)) {
@@ -146,7 +147,7 @@ public class SensorAdHocRestController {
     }
 	
 	@RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<Map<String,Object>> update(@RequestBody SensorAdHoc frm)  {
+    public ResponseEntity<Map<String,Object>> update(@RequestBody ProductProcessVar frm)  {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
         	if(repository.update(frm)) {

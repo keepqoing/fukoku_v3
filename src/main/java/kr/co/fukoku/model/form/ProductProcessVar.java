@@ -30,6 +30,12 @@ public class ProductProcessVar {
 	private String remark;
 	@JsonProperty("status")
 	private String status;
+	
+	
+	// for sensor
+	private long refLine;
+	private long refFactory;
+	
 	public long getId() {
 		return id;
 	}
@@ -107,6 +113,18 @@ public class ProductProcessVar {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public long getRefLine() {
+		return refLine;
+	}
+	public void setRefLine(long refLine) {
+		this.refLine = refLine;
+	}
+	public long getRefFactory() {
+		return refFactory;
+	}
+	public void setRefFactory(long refFactory) {
+		this.refFactory = refFactory;
 	}
 	
 	

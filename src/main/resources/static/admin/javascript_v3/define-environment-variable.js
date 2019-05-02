@@ -279,6 +279,39 @@ app.controller('MainCtrl', function($scope, $http) {
 		console.log( $scope.lsl + " ~ "+ $scope.usl);
 	}
 	
+	$scope.calculateLslUslSensor = function() {
+		$scope.lsl=0;
+		$scope.usl=0;
+		var lslPlc = $("#frmAddHoc #txtLslPlc").val() ;
+		var uslPlc = $("#frmAddHoc #txtUslPlc").val() ;
+		var sign = $("#frmAddHoc #selectSign").val() ;
+		var tranformValue = $("#frmAddHoc #txtTransformValue").val();
+		console.log(sign);
+		if( $.isNumeric($("#frmAddHoc #txtUslPlc").val()) && $.isNumeric($("#frmAddHoc #txtLslPlc").val()) && $.isNumeric($("#frmAddHoc #txtTransformValue").val()) ){
+			if(sign == '+'){
+				$scope.lsl = parseFloat(lslPlc) +  parseFloat(tranformValue);
+				$scope.usl = parseFloat(uslPlc) +  parseFloat(tranformValue);
+			}
+			else if(sign == '-'){
+				$scope.lsl = parseFloat(lslPlc) -  parseFloat(tranformValue);
+				$scope.usl = parseFloat(uslPlc) -  parseFloat(tranformValue);
+			}
+			else if(sign == '*'){
+				$scope.lsl = parseFloat(lslPlc) *  parseFloat(tranformValue);
+				$scope.usl = parseFloat(uslPlc) *  parseFloat(tranformValue);
+			}
+			else if(sign == "/"){
+				$scope.lsl = parseFloat(lslPlc) /  parseFloat(tranformValue);
+				$scope.usl = parseFloat(uslPlc) /  parseFloat(tranformValue);
+			}
+			
+		}
+		
+		$("#frmAddHoc #txtLsl").val($scope.lsl );
+		$("#frmAddHoc #txtUsl").val($scope.usl);
+		console.log( $scope.lsl + " ~ "+ $scope.usl);
+	}
+	
 	
 	$scope.save = function(method){
 		var data = {
@@ -458,43 +491,43 @@ app.controller('MainCtrl', function($scope, $http) {
 		
 		
 		$(document).on('click',"#btAddSensorFactory" , function(){
-			$('#frm').trigger("reset");
+			$('#frmAddHoc').trigger("reset");
 			$("#modalFrmAddHoc").modal('show');
-			$("#txtRefFactory").val($("#selectOptFactory").val());
-			$("#txtRefLine").val(0);
-			$("#btSave").show();
-			$("#btUpdate").hide();
+			$("#frmAddHoc #txtRefFactory").val($("#selectOptFactory").val());
+			$("#frmAddHoc #txtRefLine").val(0);
+			$("#frmAddHoc #btSave").show();
+			$("#frmAddHoc #btUpdate").hide();
 		});
 		
 		$(document).on('click',"#btAddSensor" , function(){
-			$('#frm').trigger("reset");
+			$('#frmAddHoc').trigger("reset");
 			$("#modalFrmAddHoc").modal('show');
-			$("#txtRefLine").val($(this).data("line"));
-			$("#txtRefFactory").val(0);
-			$("#btSave").show();
-			$("#btUpdate").hide();
+			$("#frmAddHoc #txtRefLine").val($(this).data("line"));
+			$("#frmAddHoc #txtRefFactory").val(0);
+			$("#frmAddHoc #btSave").show();
+			$("#frmAddHoc #btUpdate").hide();
 		});
 		
 		$(document).on('click',".btClickUpdateSensorFactory" , function(){
-			$('#frm').trigger("reset");
+			$('#frmAddHoc').trigger("reset");
 			$("#modalFrmAddHoc").modal('show');
-			$("#txtRefLine").val($(this).data("line"));
-			$("#txtRefLine").val(0);
+			$("#frmAddHoc #txtRefLine").val($(this).data("line"));
+			$("#frmAddHoc #txtRefLine").val(0);
 			findOne($(this).data("line"));
 			
-			$("#btSave").hide();
-			$("#btUpdate").show();
+			$("#frmAddHoc #btSave").hide();
+			$("#frmAddHoc #btUpdate").show();
 		});
 		
 		$(document).on('click',".btClickUpdateSensor" , function(){
-			$('#frm').trigger("reset");
+			$('#frmAddHoc').trigger("reset");
 			$("#modalFrmAddHoc").modal('show');
-			$("#txtRefLine").val($(this).data("line"));
-			$("#txtRefFactory").val(0);
+			$("#frmAddHoc #txtRefLine").val($(this).data("line"));
+			$("#frmAddHoc #txtRefFactory").val(0);
 			findOne($(this).data("line"));
 			
-			$("#btSave").hide();
-			$("#btUpdate").show();
+			$("#frmAddHoc #btSave").hide();
+			$("#frmAddHoc #btUpdate").show();
 		});
 		
 		$(document).on('click',".btClickDeleteSensor" , function(){
@@ -502,37 +535,49 @@ app.controller('MainCtrl', function($scope, $http) {
 		});
 		
 		
-		$(document).on('click',"#btSave" , function(){
+		
+		
+		$(document).on('click',"#frmAddHoc #btSave" , function(){
 			params = {
-				"id" : $("#txtSensorId").val(),
-				"sensorName" : $("#txtName").val(),
-				"temperature" : $("#txtTemperature").val() ,
-				"humidity" : $("#txtHumidity").val(),
-				"refLine" : $("#txtRefLine").val(),
-				"refFactory" : $("#txtRefFactory").val(),
-				"seq" : $("#txtSeq").val(),
-				"des" : $("#txtDes").val(),
-				"endTime" : "",
-				"startTime" : ""
+				"refLine" : $("#frmAddHoc #txtRefLine").val(),
+				"refFactory" : $("#frmAddHoc #txtRefFactory").val(),
+				"id" :  $("#frmAddHoc #txtSensorId").val(),
+				"seq" : $("#frmAddHoc #txtSeq").val(),
+				"type" : $("#frmAddHoc #selectType").val(),
+				"usl_plc" : $("#frmAddHoc #txtUslPlc").val(),
+				"lsl_plc" : $("#frmAddHoc #txtLslPlc").val(),
+				"unit_kind" : $("#frmAddHoc #txtUnitKind").val(),
+				"transform_value" : $("#frmAddHoc #txtTransformValue").val(),
+				"remark" : $("#frmAddHoc #txtRemark").val(),
+				"lsl" : $scope.lsl,
+				"usl" : $scope.usl,
+				"sign" : $("#frmAddHoc #selectSign").val(),
+				"name" : $("#frmAddHoc #txtSensorName").val()
 			};
 			console.log(params);
 			add(params);
-			$("#modalFrm").modal('hide');
+			$("#modalFrmAddHoc").modal('hide');
 		});
 		
-		$(document).on('click',"#btUpdate" , function(){
+		$(document).on('click',"#frmAddHoc #btUpdate" , function(){
 			params = {
-				"id" : $("#txtSensorId").val(),
-				"sensorName" : $("#txtName").val(),
-				"temperature" : $("#txtTemperature").val() ,
-				"humidity" : $("#txtHumidity").val(),
-				"refLine" : $("#txtRefLine").val(),
-				"seq" : $("#txtSeq").val(),
-				"des" : $("#txtDes").val()
+				"refLine" : $("#frmAddHoc #txtRefLine").val(),
+				"id" :  $("#frmAddHoc #txtSensorId").val(),
+				"seq" : $("#frmAddHoc #txtSeq").val(),
+				"type" : $("#frmAddHoc #selectType").val(),
+				"usl_plc" : $("#frmAddHoc #txtUslPlc").val(),
+				"lsl_plc" : $("#frmAddHoc #txtLslPlc").val(),
+				"unit_kind" : $("#frmAddHoc #txtUnitKind").val(),
+				"transform_value" : $("#frmAddHoc #txtTransformValue").val(),
+				"remark" : $("#frmAddHoc #txtRemark").val(),
+				"lsl" : $scope.lsl,
+				"usl" : $scope.usl,
+				"sign" : $("#frmAddHoc #selectSign").val(),
+				"name" : $("#frmAddHoc #txtSensorName").val()
 			};
 			console.log(params);
 			update(params);
-			$("#modalFrm").modal('hide');
+			$("#modalFrmAddHoc").modal('hide');
 		});
 		
 		
@@ -646,18 +691,27 @@ app.controller('MainCtrl', function($scope, $http) {
 			    },
 			    success: function(data) { 
 					console.log(data);
-					$("#txtSensorId").val(data.data.id);
-					$("#txtName").val(data.data.sensorName);
-					$("#txtTemperature").val(data.data.id);
-					$("#txtHumidity").val(data.data.humidity);
-					$("#txtRefLine").val(data.data.refLine);
+	            	$("#frmAddHoc #txtSeq").val(data.data.seq);
+	            	$("#frmAddHoc #txtSensorName").val(data.data.name);
+	            	
+	            	$("#frmAddHoc #txtUnitKind").val(data.data.unit_kind);
+	            	$("#frmAddHoc #txtTransformValue").val(data.data.transform_value);
+	            	$("#frmAddHoc #txtRemark").val(data.data.remark);
+	            	$("#frmAddHoc #txtUslPlc").val(data.data.usl_plc);
+	            	$("#frmAddHoc #txtLslPlc").val(data.data.lsl_plc);
+	            	
+	            	$("#frmAddHoc #txtLsl").val(data.data.lsl);
+	            	$("#frmAddHoc #txtUsl").val(data.data.usl);
+	            	$("#frmAddHoc #selectSign").val(data.data.sign);
+	            	
+					$("#frmAddHoc #txtSensorId").val(data.data.id);
+					$("#frmAddHoc #txtRefLine").val(data.data.refLine);
+					$("#frmAddHoc #txtRefFactory").val(data.data.refFactory);
 
-					$("#txtSeq").val(data.data.seq);
-					$("#txtDes").val(data.data.des);},
-               error:function(jqXHR, status, thrownError) {
+			    },error:function(jqXHR, status, thrownError) {
                    var responseText = jQuery.parseJSON(jqXHR.responseText);
                    console.log(responseText);
-               }
+                }
 			});
 	
       };

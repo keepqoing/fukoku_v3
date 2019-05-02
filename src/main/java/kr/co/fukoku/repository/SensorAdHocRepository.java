@@ -13,6 +13,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
+import kr.co.fukoku.model.ProductProcessVar;
 import kr.co.fukoku.model.SensorAdHoc;
 import kr.co.fukoku.model.form.LineFrm;
 
@@ -22,64 +23,93 @@ public interface SensorAdHocRepository {
 
 	@Select("SELECT * FROM sensor_ad_hoc  where ref_line=#{line}")
 	@Results(value={
-			@Result(property="sensorName",column="name"),
-			@Result(property="temperature",column="temperature"),
-			@Result(property="humidity",column="humidity"),
-			@Result(property="startTime",column="start_time"),
-			@Result(property="endTime",column="end_time"),
+			@Result(property="seq", column="seq"),
+			@Result(property="name", column="name"),
+			@Result(property="type", column="type"),
+			@Result(property="usl", column="usl"),
+			@Result(property="lsl", column="lsl"),
+			@Result(property="unitKind", column="unit_kind"),
+			@Result(property="transformValue", column="transform_value"),
+			@Result(property="remark", column="remark"),
+			@Result(property="uslPlc", column="usl_plc"),
+			@Result(property="lslPlc", column="lsl_plc"),
+			@Result(property="sign", column="sign"),
 			@Result(property="refLine",column="ref_line"),
-			@Result(property="refFactory",column="ref_factory"),
 	})
-	List<SensorAdHoc> findSensorAdHoc(@Param("line") String lineId);
+	List<ProductProcessVar> findSensorAdHoc(@Param("line") String lineId);
 	
 	@Select("SELECT * FROM sensor_ad_hoc  where ref_factory=#{refFactory}")
 	@Results(value={
-			@Result(property="sensorName",column="name"),
-			@Result(property="temperature",column="temperature"),
-			@Result(property="humidity",column="humidity"),
-			@Result(property="startTime",column="start_time"),
-			@Result(property="endTime",column="end_time"),
-			@Result(property="refLine",column="ref_line"),
+			@Result(property="seq", column="seq"),
+			@Result(property="name", column="name"),
+			@Result(property="type", column="type"),
+			@Result(property="usl", column="usl"),
+			@Result(property="lsl", column="lsl"),
+			@Result(property="unitKind", column="unit_kind"),
+			@Result(property="transformValue", column="transform_value"),
+			@Result(property="remark", column="remark"),
+			@Result(property="uslPlc", column="usl_plc"),
+			@Result(property="lslPlc", column="lsl_plc"),
+			@Result(property="sign", column="sign"),
 			@Result(property="refFactory",column="ref_factory"),
 	})
-	List<SensorAdHoc> findSensorAdHocByRefFactory(@Param("refFactory") long refFactory);
+	List<ProductProcessVar> findSensorAdHocByRefFactory(@Param("refFactory") long refFactory);
 	
-	@Select("SELECT * FROM sensor_ad_hoc  where id=#{id}")
+	@Select("SELECT * from sensor_ad_hoc where id=#{id}")
 	@Results(value={
-			@Result(property="sensorName",column="name"),
-			@Result(property="temperature",column="temperature"),
-			@Result(property="humidity",column="humidity"),
-			@Result(property="startTime",column="start_time"),
-			@Result(property="endTime",column="end_time"),
-			@Result(property="refLine",column="ref_line"),
-			@Result(property="refFactory",column="ref_factory"),
+			@Result(property="seq", column="seq"),
+			@Result(property="name", column="name"),
+			@Result(property="type", column="type"),
+			@Result(property="usl", column="usl"),
+			@Result(property="lsl", column="lsl"),
+			@Result(property="unitKind", column="unit_kind"),
+			@Result(property="transformValue", column="transform_value"),
+			@Result(property="remark", column="remark"),
+			@Result(property="uslPlc", column="usl_plc"),
+			@Result(property="lslPlc", column="lsl_plc"),
+			@Result(property="sign", column="sign")
 	})
-	SensorAdHoc findOne(@Param("id") long id);
+	ProductProcessVar findOne(@Param("id") long id);
 	
-	@Insert("INSERT INTO sensor_ad_hoc ("
-			+ "  name, temperature, humidity , start_time,end_time, ref_line, ref_factory, seq , des "
-			+ ") VALUES ("
-			+ "	#{f.sensorName}, "
-			+ " #{f.temperature}, "
-			+ " #{f.humidity}, "
-			+ " #{f.startTime}, "
-			+ " #{f.endTime}, "
-			+ " #{f.refLine}, "
-			+ " #{f.refFactory}, "
-			+ " #{f.seq}, "
-			+ " #{f.des} "
-			+ ");")
-	boolean save(@Param("f") SensorAdHoc f);
+	@Insert("INSERT INTO sensor_ad_hoc ("+
+			"	seq, " + 
+			"	ref_line, " + 
+			"	ref_factory, " + 
+			"	name," + 
+			"	type," + 
+			"	usl," + 
+			"	lsl," + 
+			"	unit_kind," + 
+			"	transform_value," + 
+			"	remark,  usl_plc, lsl_plc, sign " + 
+			" ) VALUES (" +
+			"	#{f.seq}, "+
+			"	#{f.refLine}, "+
+			"	#{f.refFactory}, "
+			+ " #{f.name}, "+
+			"	#{f.type}, "
+			+ " #{f.usl}, "
+			+ " #{f.lsl}, "
+			+ " #{f.unitKind}, "
+			+ " #{f.transformValue},"
+			+ " #{f.remark},  #{f.uslPlc}, #{f.lslPlc}, #{f.sign}"+
+			");")
+	boolean save(@Param("f") ProductProcessVar frm);
 	
-	@Update("UPDATE sensor_ad_hoc SET"
-			+ "	name=#{f.sensorName}, "
-			+ " temperature=#{f.temperature},"
-			+ " humidity=#{f.humidity},"
-			+ " start_time=#{f.startTime} ,"
-			+ " end_time=#{f.endTime},"
-			+ " ref_line=#{f.refLine} , seq=#{f.seq} , des=#{f.des} "
-			+ "		 WHERE id=#{f.id}")
-	boolean update(@Param("f") SensorAdHoc frm);
+	@Update("UPDATE sensor_ad_hoc set"
+			+ "	seq=#{f.seq}, " + 
+			"	name=#{f.name}," + 
+			"	type=#{f.type}," + 
+			"	usl=#{f.usl}," +  
+			"	lsl=#{f.lsl}," + 
+			"	unit_kind=#{f.unitKind}," + 
+			"	transform_value=#{f.transformValue}," +  
+			"	remark=#{f.remark} , "
+			+ " usl_plc=#{f.uslPlc}, "
+			+ " lsl_plc=#{f.lslPlc}, "
+			+ " sign=#{f.sign} "
+			+ " where id=#{f.id}")
+	boolean update(@Param("f") ProductProcessVar frm);
 	
 	@Delete("DELETE FROM sensor_ad_hoc WHERE id=#{id}")
 	boolean delete(@Param("id") long id);
