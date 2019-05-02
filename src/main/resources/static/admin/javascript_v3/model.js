@@ -953,8 +953,8 @@ function createStepAfterMainProcess(txtValue, btnObj) {
             th.setAttribute("data-id", i);
             th.setAttribute("style","width:237px;");
 
-            var btn = buttonDeleteStepHeader(lineName, th.getAttribute("data-id"));
-            th.appendChild(btn);
+            // var btn = buttonDeleteStepHeader(lineName, th.getAttribute("data-id"));
+            // th.appendChild(btn);
             theader.appendChild(th);
         }
     }
@@ -1884,8 +1884,8 @@ function createStepAfterMainProcessFromDB(lineName, stage, div, subResult) {
         th.id = "headerStep_" + stage;
         th.setAttribute("data-id", stage);
 
-        var btn = buttonDeleteStepHeader(lineName, th.getAttribute("data-id"));
-        th.appendChild(btn);
+        // var btn = buttonDeleteStepHeader(lineName, th.getAttribute("data-id"));
+        // th.appendChild(btn);
         theader.appendChild(th);
     }
 
