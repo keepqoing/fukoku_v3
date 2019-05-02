@@ -33,7 +33,7 @@ public interface ProcessVarRepository {
 	List<ProcessVar> findAll(@Param("f") ProcessVarFrm f);
 	
 	@Select("select pv.id , pv.name from product_process_var ppv inner join  process_var pv on ppv.ref_process_var_id = pv.id\r\n" + 
-			"where ppv.ref_process_chain_machine_id=#{f.id}")
+			"where ppv.ref_process_chain_machine_id=#{f.id} group by  pv.name")
 	@Results(value={
 			@Result(property="id", column="id"),
 			@Result(property="name", column="name")
