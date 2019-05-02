@@ -50,13 +50,13 @@ app.controller('MainCtrl', function($scope, $http) {
 	    return input;
 	  };
 	
-	  $scope.findProcessVar = function(){
+	  $scope.findProcessVar = function(processChainMachineId){
 		    var data = {
 					"name" : "",
 			};
 	        var post = $http({
-	            method: "POST",
-	            url: "/v3/api/fukoku/process-var/find",
+	            method: "GET",
+	            url: "/v3/api/fukoku/process-var/find-process-chain-machine-id/"+processChainMachineId,
 	            dataType: 'json',
 	            data : JSON.stringify(data),
 	            headers: { "Content-Type": "application/json" }
@@ -68,6 +68,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	            }else{
 	            	$scope.message = response.message;
 	            }
+	            console.log("var", $scope.processVars);
 	        });
 	        post.error(function (data, status) {
 	            console.log(data);
@@ -324,7 +325,7 @@ app.controller('MainCtrl', function($scope, $http) {
 	 * Onload()
 	 *******************************************************************************/
 	$scope.findFactories(); 
-	$scope.findProcessVar();
+	
 	$scope.findAll();
 	 
 	
@@ -382,6 +383,9 @@ app.controller('MainCtrl', function($scope, $http) {
 		$('#frm').trigger("reset");
 		$scope.processMachineId = processMachineId;
 		$scope.findProcessChainProducts(refProcessChainElementId); 
+		
+		$scope.findProcessVar(processMachineId);
+		
 		//alert(productId + " "+productName );
 		$("#txtProduct").val(productName);
 		$("#txtProductId").val(productId);
@@ -396,6 +400,9 @@ app.controller('MainCtrl', function($scope, $http) {
 			$('#frm').trigger("reset");
 			$scope.processMachineId = processMachineId;
 			$scope.findProcessChainProducts(refProcessChainElementId);
+			
+			$scope.findProcessVar(processMachineId);
+			
 			setTimeout(function(){ $scope.findOne(productProcessVar);  }, 0);
 			$("#txtProduct").val(productName);
 			$("#btSave").hide();
